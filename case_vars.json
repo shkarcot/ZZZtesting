@@ -1,0 +1,184 @@
+{
+  "case_vars": [
+    {
+      "name": "case_id",
+      "type": "string",
+      "dimension": "Case",
+      "is_default": true,
+      "variable_id": "d6be18b6-a4f1-4235-8b75-6fcfcb2dbb29",
+      "attributes": [
+
+      ],
+      "alias": "case_id",
+      "path_mapping": "case_id"
+    },
+    {
+      "name": "category",
+      "type": "string",
+      "dimension": "Case",
+      "is_default": true,
+      "variable_id": "253409a2-fe80-4865-9efe-4d8809e234c9",
+      "attributes": [
+
+      ],
+      "alias": "category",
+      "path_mapping": "category"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "dimension": "Case",
+      "is_default": true,
+      "variable_id": "d77aa3a9-ef8a-484d-8ba9-5ba845bc495f",
+      "attributes": [
+
+      ],
+      "alias": "name",
+      "path_mapping": "name"
+    },
+    {
+      "name": "version",
+      "type": "string",
+      "dimension": "Case",
+      "is_default": true,
+      "variable_id": "1b95724e-fd13-4bc0-99cb-146d4f3ff284",
+      "attributes": [
+
+      ],
+      "alias": "version",
+      "path_mapping": "version"
+    },
+    {
+      "path_mapping": "doc_id",
+      "type": "text",
+      "is_default": true,
+      "attributes": [
+
+      ],
+      "dimension": "Document",
+      "name": "doc_id",
+      "variable_id": "fe51c8e3-94a3-4292-8aef-7f0d2f8063ac",
+      "alias": "doc_id"
+    },
+    {
+      "path_mapping": "root_id",
+      "type": "text",
+      "is_default": true,
+      "attributes": [
+
+      ],
+      "dimension": "Document",
+      "name": "root_id",
+      "variable_id": "d3f64868-9de8-4e96-90b2-7187193e6b2e",
+      "alias": "root_id"
+    },
+    {
+      "name": "state",
+      "type": "string",
+      "dimension": "Case",
+      "is_default": true,
+      "variable_id": "3dd172cc-ee9e-4dbd-a511-3cadb97fb373",
+      "attributes": [
+
+      ],
+      "alias": "state",
+      "path_mapping": "state"
+    },
+    {
+      "name": "processing_state",
+      "type": "string",
+      "dimension": "Case",
+      "is_default": true,
+      "variable_id": "cca39b73-de4f-47c5-8d07-65680ef90752",
+      "attributes": [
+
+      ],
+      "alias": "processing_state",
+      "path_mapping": "processing_state"
+    },
+    {
+      "name": "display_name",
+      "type": "string",
+      "dimension": "Case",
+      "is_default": true,
+      "variable_id": "f73e0571-bea7-40ff-bea1-4986f329780c",
+      "attributes": [
+
+      ],
+      "alias": "display_name",
+      "path_mapping": "display_name"
+    },
+    {
+      "path_mapping": "metadata.properties.filename",
+      "type": "text",
+      "is_default": true,
+      "attributes": [
+
+      ],
+      "dimension": "Document",
+      "name": "filename",
+      "variable_id": "ff6c63b8-6746-48df-83e8-f7c1afb9f1cf",
+      "alias": "metadata_properties_filename"
+    },
+    {
+      "path_mapping": "is_root",
+      "type": "text",
+      "is_default": true,
+      "attributes": [
+
+      ],
+      "dimension": "Document",
+      "name": "is_root",
+      "variable_id": "db59b504-31e8-4465-97ae-2212e3c121bb",
+      "alias": "is_root"
+    },
+    {
+	  "path_mapping": "metadata.template_info.id",
+	  "type": "text",
+	  "is_default": true,
+	  "attributes": [
+
+	  ],
+	  "dimension": "Document",
+	  "name": "template_id",
+	  "variable_id": "7f969027-8729-4d78-89ee-7db0a75aeac7",
+	  "alias": "metadata_template_info_id"
+	},
+	{
+	  "path_mapping": "metadata.template_info.name",
+	  "type": "text",
+	  "is_default": true,
+	  "attributes": [
+
+	  ],
+	  "dimension": "Document",
+	  "name": "template_name",
+	  "variable_id": "c76066ca-e3d7-4e00-bb66-f4caeb368f8f",
+	  "alias": "metadata_template_info_name"
+	},
+	{
+	  "path_mapping": "metadata.template_info.score",
+	  "type": "text",
+	  "is_default": true,
+	  "attributes": [
+
+	  ],
+	  "dimension": "Document",
+	  "name": "template_score",
+	  "variable_id": "268309f6-cf0a-44cb-9296-0a78d5df942a",
+	  "alias": "metadata_template_info_score"
+	},
+	{
+	  "path_mapping": "child_cases",
+	  "type": "list",
+	  "is_default": true,
+	  "attributes": [
+
+	  ],
+	  "dimension": "Case",
+	  "name": "child_cases",
+	  "variable_id": "8b9e9a34-4920-4735-bdf6-c24d7a891999",
+	  "alias": "child_cases"
+	}
+  ]
+}
