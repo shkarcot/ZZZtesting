@@ -1,0 +1,143 @@
+{
+	"defaults": {
+		"core": {
+			"processor": "spacy"
+		},
+		"entities": {
+			"basic": "enabled",
+			"datetime": {
+				"processor": "duckling"
+			}
+		},
+		"intent": {
+			"model_name": "iuh_intent",
+			"model_id": "33d38f49-168b-4fed-92ce-1b38b5c1117f"
+		},
+		"default_scheduler_queue": "learning_scheduler_queue",
+		"min_train_len": {
+			"predict_value": 30
+		},
+		"append_strategy": {
+			"default": "append",
+			"feedback": "append"
+		},
+		"learning_model_history_db": "entity_data",
+		"learning_ensemble_db": "entity_data",
+		"learning_ensemble_collection": "learning_ensembles",
+		"learning_model_history_collection": "learning_models_history",
+		"learning_ensemble_history_db": "entity_data",
+		"learning_ensemble_history_collection": "learning_ensembles_history",
+		"s3_bucket_learning_dataset": "learning_datasets",
+		"general_sk_model_params": {
+			"regression": {
+				"test_size": 0.5,
+				"random_state": 0,
+				"scorer": "neg_mean_absolute_error",
+				"cv": 5
+			},
+			"classification": {
+				"test_size": 0.5,
+				"random_state": 0,
+				"scorer": "accuracy",
+				"cv": 5
+			}
+		},
+		"s3_bucket_corpuses": "xpms_corpuses",
+		"static_models": [
+			"485a2a35-cd52-4931-a9cf-2ca5f450efdf"
+		],
+		"s3_bucket_learning_model": "xpms_learning_models",
+		"model_mappings": {
+			"train_classifier": {
+				"default": {
+					"training_method": [
+						"SVM",
+						"train_model"
+					],
+					"parameters": {
+						"tuned_parameters": [{
+								"gamma": [
+									0.001,
+									0.0001
+								],
+								"kernel": [
+									"rbf"
+								],
+								"C": [
+									1,
+									10,
+									100,
+									1000
+								]
+							},
+							{
+								"kernel": [
+									"linear"
+								],
+								"C": [
+									1,
+									10,
+									100,
+									1000
+								]
+							}
+						],
+						"test_size": 0.5,
+						"random_state": 0,
+						"cv": 5,
+						"score": "precision"
+					},
+					"scoring_method": [
+						"SVM",
+						"run_model"
+					]
+				}
+			},
+			"predict_value": {
+				"one_dimensional": {
+					"training_method": [
+						"Averages",
+						"train_model"
+					],
+					"parameters": {
+						"quantile": 0.6
+					},
+					"scoring_method": [
+						"Averages",
+						"quantile_average"
+					]
+				}
+			}
+		},
+		"learning_model_collection": "learning_models",
+		"learning_model_db": "entity_data"
+	},
+	"keys": [
+		"fulltext"
+	],
+	"core": {
+		"processor": "spacy"
+	},
+	"entities": {
+		"datetime": {
+			"processor": "crackling"
+		},
+		"basic": "enabled"
+	},
+	"intent": {
+		"model_name": "cogx_intents",
+		"model_id": "ecce8429-0c83-4a54-87e9-78af94d724ba"
+	},
+	"action": {
+		"model_id": "895f8a64-9b33-4a7a-a0f5-9f4f54b5dfec",
+		"model_name": "cogx actions"
+	},
+	"db": {
+		"name": "entity_data",
+		"collections": {
+			"nlp_entity_cfg": "nlp_entity_cfg",
+			"nlp_domain_dict": "nlp_domain_dict",
+			"nlp_models": "nlp_models"
+		}
+	}
+}

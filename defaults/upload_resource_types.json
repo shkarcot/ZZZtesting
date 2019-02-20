@@ -1,0 +1,22 @@
+{
+	"corpus": {
+		"label": "Corpus",
+		"key": "corpus",
+		"values": ["json","txt"]
+	},
+	"dictionary": {
+		"label": "Dictionary",
+		"key": "dictionary",
+		"values": ["json", "csv"]
+	},
+	"semantic": {
+		"label": "Semantic",
+		"key": "semantic",
+		"values": ["owl", "rdf"]
+	},
+	"training_set": {
+		"label": "Training Set",
+		"key": "training_set",
+		"values": ["csv", "json", "zip"]
+	}
+}

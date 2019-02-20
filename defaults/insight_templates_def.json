@@ -1,0 +1,244 @@
+{
+	"realtime_requests": {
+		"extract_intent": {
+			"timeout": {
+				"unit": "seconds",
+				"value": "10"
+			},
+			"response_trigger": "processed_text",
+			"input": {
+				"sample": {
+					"trigger": "get_insight",
+					"data": {
+						"request_type": "get_intent",
+						"text": "please update my provider form address to xyz"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"trigger": {
+							"type": "string"
+						},
+						"data": {
+							"properties": {
+								"request_type": {
+									"type": "string",
+									"ui_type": "string"
+								},
+								"text": {
+									"type": "string",
+									"ui_type": "string"
+								},
+								"sample": {
+									"type": "string",
+									"ui_type": "string"
+								},
+								"commit": {
+									"type": "string",
+									"ui_type": "image"
+								}
+							},
+							"required": [
+								"request_type",
+								"text"
+							]
+						}
+					},
+					"required": [
+						"data",
+						"trigger"
+					]
+				}
+			},
+			"output": {
+				"trigger": "processed_text",
+				"sample": {
+					"trigger": "get_intent",
+					"data": {},
+					"metadata": {
+						"intent_verb": "update"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"trigger": {
+							"type": "string"
+						},
+						"metadata": {
+							"properties": {
+								"intent_verb": {
+									"type": "string",
+									"ui_type": "image"
+								}
+							},
+							"required": [
+								"intent_verb"
+							]
+						}
+					},
+					"required": [
+						"metadata",
+						"trigger"
+					]
+				}
+			}
+		},
+		"get_intent": {
+			"timeout": {
+				"unit": "seconds",
+				"value": "10"
+			},
+			"response_trigger": "process_text",
+			"input": {
+				"sample": {
+					"trigger": "get_insight",
+					"data": {
+						"request_type": "get_intent",
+						"text": "please update my provider form address to xyz"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"trigger": {
+							"type": "string"
+						},
+						"data": {
+							"properties": {
+								"request_type": {
+									"type": "string",
+									"ui_type": "string"
+								},
+								"text": {
+									"type": "string",
+									"ui_type": "string"
+								},
+								"sample": {
+									"type": "string",
+									"ui_type": "string"
+								},
+								"commit": {
+									"type": "string",
+									"ui_type": "image"
+								}
+							},
+							"required": [
+								"request_type",
+								"text"
+							]
+						}
+					},
+					"required": [
+						"data",
+						"trigger"
+					]
+				}
+			},
+			"output": {
+				"trigger": "processed_text",
+				"sample": {
+					"trigger": "get_intent",
+					"data": {},
+					"metadata": {
+						"intent_verb": "update"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"trigger": {
+							"type": "string"
+						},
+						"metadata": {
+							"properties": {
+								"intent_verb": {
+									"type": "string",
+									"ui_type": "image"
+								}
+							},
+							"required": [
+								"intent_verb"
+							]
+						}
+					},
+					"required": [
+						"metadata",
+						"trigger"
+					]
+				}
+			}
+		},
+		"get_name": {
+			"timeout": {
+				"unit": "seconds",
+				"value": "10"
+			},
+			"response_trigger": "get_name",
+			"input": {
+				"sample": {
+					"trigger": "get_insight",
+					"data": {
+						"request_type": "get_name"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"trigger": {
+							"type": "string"
+						},
+						"data": {
+							"properties": {
+								"request_type": {
+									"type": "string",
+									"ui_type": "image"
+								}
+							},
+							"required": [
+								"request_type"
+							]
+						}
+					},
+					"required": [
+						"data",
+						"trigger"
+					]
+				}
+			},
+			"output": {
+				"sample": {
+					"trigger": "get_insight",
+					"data": {},
+					"metadata": {
+						"name": "user"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"trigger": {
+							"type": "string"
+						},
+						"metadata": {
+							"properties": {
+								"name": {
+									"type": "string",
+									"ui_type": "image"
+								}
+							},
+							"required": [
+								"name"
+							]
+						}
+					},
+					"required": [
+						"metadata",
+						"trigger"
+					]
+				}
+			}
+		}
+	}
+}

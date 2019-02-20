@@ -1,0 +1,7 @@
+{
+    "name": "ont1",
+    "s3_url": "...",
+    "training_type": "entities_ontology",
+    "is_enabled": true
+
+}

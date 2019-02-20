@@ -1,0 +1,26 @@
+{
+	"entity": {
+		"label": "Entity",
+		"key": "entity"
+	},
+	"nlp": {
+		"label": "NLP",
+		"key": "nlp"
+	},
+	"insight": {
+		"label": "Insight",
+		"key": "insight"
+	},
+	"context": {
+		"label": "Context",
+		"key": "context"
+	},
+	"learning": {
+		"label": "Learning",
+		"key": "learning"
+	},
+	"preference": {
+		"label": "Preference",
+		"key": "preference"
+	}
+}

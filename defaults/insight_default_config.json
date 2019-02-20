@@ -1,0 +1,88 @@
+{
+	"defaults": {
+		"realtime_requests": {},
+		"default_session": {
+			"context": {
+
+			},
+			"entity_data": {
+
+			},
+			"preference": {
+
+			}
+		},
+		"realtime_request_prefix": "rt_",
+		"realtime_request_bk_prefix": "rt_bk_",
+		"realtime_must_enrichments": [
+			"platform_intent"
+		],
+		"realtime_enrichments": {
+			"platform_intent": [
+				"entity_name",
+				"extracted_attributes"
+			],
+			"message": [
+				"channel_type",
+				"to_entity",
+				"message"
+			]
+		},
+		"custom_message_db": "entity_data",
+		"custom_message_collection": "insight_custom_message",
+		"default_expirytimedelta_unit": "days",
+		"default_expirytimedelta_value": 1,
+		"session_database": "entity_data",
+		"session_collection": "insight_session",
+		"user_database": "entity_data",
+		"user_collection": "insight_user",
+		"session_timeout": 10000,
+		"raw_insight_coll": "insight_raw",
+		"raw_insight_db": "entity_data",
+		"default_channel": [
+			"message"
+		],
+		"entity_templates": {
+			"medication": "ins0017"
+		},
+		"groupable_entities": [
+			"medication"
+		],
+		"session_update_queries": [{
+			"'filter'": {
+				"'primary_key'": {
+					"data['entity_name']": "data['primary_key']"
+				},
+				"'and'": [{
+					"'metadata_key'": "'temporal'",
+					"'metadata_value'": {
+						"'tags'": "data['context']['time']['time_tags']"
+					}
+				}]
+			}
+		}],
+		"query_timeout": 900,
+		"queries_key_prefix": "query_",
+		"insight_updateable_keys": [
+			"context",
+			"preference",
+			"entity_data"
+		],
+		"insights_database": "entity_data",
+		"insights_collection": "insight_insights",
+		"session_data_attributes": {
+			"context": "context",
+			"preference": "preference",
+			"entity_data": "entity_data"
+		},
+		"session_key_prefix": "session_",
+		"entity_type_map": {
+			"patient": "user"
+		},
+		"push_notification_message_title": "Message from SAM - IUH Patient Discharge App",
+		"api_keys": {
+			"android": "AAAAPVQR3S4:APA91bFOkrQ9VFf247metHG1m6nUg0QTE8J4VmP2QoidDdSvQZVqAXtx5PbgY7RqvWJEGR5ce7J9wQNcuTyVDXXU2cuikPE8kmRBLO0SJHzgMprLwFYFEdOePRaAopOEpgc9idkKM9Vs"
+		}
+	},
+	"keys": {}
+}
