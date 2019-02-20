@@ -1,0 +1,352 @@
+[{
+		"table": "DocumentsList",
+		"collection": "form",
+		"config": [{
+				"key": "FileName",
+				"value": "file_name",
+				"type": "link",
+				"order": 1.0
+			},
+			{
+				"key": "Received",
+				"value": "timestamp",
+				"type": "string",
+				"order": 2.0
+			},
+			{
+				"key": "Pipeline",
+				"value": "pipeline",
+				"type": "string",
+				"order": 3.0
+			},
+			{
+				"key": "DocumentType",
+				"value": "doc_type",
+				"type": "string",
+				"order": 4.0
+			},
+			{
+				"key": "Status",
+				"value": "status",
+				"type": "string",
+				"order": 5.0
+			},
+			{
+				"key": "Confidence",
+				"value": "flow_file_id",
+				"type": "string",
+				"score_key": "iocr_text.score",
+				"score_collection": "form_field",
+				"order": 6.0
+			},
+			{
+				"key": "Link",
+				"value": "png_image",
+				"type": "magnetic",
+				"order": 7.0
+			}
+		]
+	},
+	{
+		"table": "DocumentDetails",
+		"collection": "form_field",
+		"collection2": "form",
+		"config": [{
+				"key": "Field",
+				"value": "name,field_image_path",
+				"type": "image",
+				"order": 1.0
+			},
+			{
+				"key": "IOCR",
+				"value": "iocr_text.text,iocr_text.score",
+				"error_value": "error.description",
+				"type": "string",
+				"order": 2.0
+			},
+			{
+				"key": "Clean",
+				"value": "iocr_text.text,iocr_text.score",
+				"error_value": "error.description",
+				"type": "string",
+				"order": 3.0
+			},
+			{
+				"key": "Match",
+				"value": "iocr_text.text,iocr_text.score",
+				"error_value": "error.description",
+				"type": "string",
+				"order": 4.0
+			},
+			{
+				"key": "Final Value",
+				"value": "iocr_text.text,iocr_text.score",
+				"error_value": "error.description",
+				"type": "string",
+				"order": 5.0
+			},
+			{
+				"key": "Review",
+				"value": "reviewed.value",
+				"parent_collection": "form",
+				"parent_key": "status",
+				"type": "string",
+				"order": 6.0
+			}
+		],
+		"config2": [{
+				"key": "File Name",
+				"value": "file_name",
+				"type": "string"
+			},
+			{
+				"key": "Received",
+				"value": "timestamp",
+				"type": "string"
+			},
+			{
+				"key": "Pipeline",
+				"value": "pipeline",
+				"type": "string"
+			},
+			{
+				"key": "Document Type",
+				"value": "doc_type",
+				"type": "string"
+			},
+			{
+				"key": "Status",
+				"value": "status",
+				"type": "string"
+			},
+			{
+				"key": "Confidence",
+				"value": "flow_file_id",
+				"type": "string",
+				"score_key": "iocr_text.score",
+				"score_collection": "form_field"
+			},
+			{
+				"key": "Link",
+				"value": "png_image",
+				"type": "magnetic"
+			},
+			{
+				"key": "Processors",
+				"value": "processors_name.#",
+				"type": "list"
+			}
+		]
+	},
+	{
+		"table": "DocumentReviewDetails",
+		"config": [{
+				"key": "rec_id",
+				"value": "_id",
+				"type": "string",
+				"collection": "form",
+				"level": 0.0
+			},
+			{
+				"key": "Name",
+				"value": "file_name",
+				"type": "string",
+				"collection": "form",
+				"level": 0.0
+			},
+			{
+				"key": "Processed",
+				"value": "timestamp",
+				"type": "string",
+				"collection": "form",
+				"level": 0.0
+			},
+			{
+				"key": "Document Confidence",
+				"value": "flow_file_id",
+				"type": "string",
+				"collection": "form",
+				"score_key": "iocr_text.score",
+				"score_collection": "form_field",
+				"level": 0.0
+			},
+			{
+				"key": "image_url",
+				"value": "preprocesssed_image_path",
+				"level": 0.0,
+				"type": "url",
+				"collection": "form"
+			},
+			{
+				"key": "id",
+				"value": "_id",
+				"level": 1.0,
+				"type": "string",
+				"collection": "form_field"
+			},
+			{
+				"key": "key",
+				"value": "name",
+				"level": 1.0,
+				"type": "string",
+				"collection": "form_field"
+			},
+			{
+				"key": "value",
+				"value": "iocr_text.text",
+				"review_value": "reviewed.value",
+				"level": 1.0,
+				"type": "string",
+				"collection": "form_field"
+			},
+			{
+				"key": "score",
+				"value": "iocr_text.score",
+				"level": 1.0,
+				"type": "string",
+				"collection": "form_field"
+			},
+			{
+				"key": "s3_path",
+				"value": "field_image_path",
+				"level": 1.0,
+				"type": "string",
+				"collection": "form_field"
+			},
+			{
+				"key": "coordinates",
+				"value": "name",
+				"level": 1.0,
+				"type": "list",
+				"list_collection": "form",
+				"collection": "form_field"
+			},
+			{
+				"key": "is_update",
+				"value": false,
+				"review_value": "reviewed.is_update",
+				"level": 1.0,
+				"type": "bool",
+				"collection": "form_field"
+			},
+			{
+				"key": "is_accept",
+				"value": false,
+				"review_value": "reviewed.is_accept",
+				"level": 1.0,
+				"type": "bool",
+				"collection": "form_field"
+			}
+		]
+	},
+	{
+		"table": "DocumentReviewList",
+		"collection": "form",
+		"config": [{
+				"key": "FileName",
+				"value": "file_name",
+				"type": "link",
+				"order": 1.0
+			},
+			{
+				"key": "Received",
+				"value": "timestamp",
+				"type": "string",
+				"order": 3.0
+			},
+			{
+				"key": "DocumentType",
+				"value": "doc_type",
+				"type": "string",
+				"order": 2.0
+			},
+			{
+				"key": "Status",
+				"value": "status",
+				"type": "string",
+				"order": 4.0
+			},
+			{
+				"key": "Confidence",
+				"value": "flow_file_id",
+				"type": "string",
+				"score_key": "iocr_text.score",
+				"score_collection": "form_field",
+				"order": 5.0
+			}
+		]
+	},
+	{
+		"chart_id": "one",
+		"date": "1",
+		"title": "Field Status",
+		"config": [{
+				"name": "Accepted",
+				"type": "area",
+				"key": "reviewed.is_accept",
+				"collection": "form_field",
+				"key_type": "bool",
+				"timestamp": "timestamp",
+				"color": "#3dae2b"
+			},
+			{
+				"name": "Corrected",
+				"type": "area",
+				"key": "reviewed.is_update",
+				"collection": "form_field",
+				"key_type": "bool",
+				"timestamp": "timestamp",
+				"color": "#09abff"
+			}
+		]
+	},
+	{
+		"chart_id": "two",
+		"title": "Document Status",
+		"config": [{
+				"name": "Processed",
+				"key": "status",
+				"collection": "form",
+				"key_type": "string",
+				"timestamp": "timestamp",
+				"color": "#3dae2b"
+			},
+			{
+				"name": "Reviewed",
+				"key": "status",
+				"collection": "form",
+				"key_type": "string",
+				"timestamp": "timestamp",
+				"color": "#09abff"
+			},
+			{
+				"name": "Error",
+				"key": "status",
+				"collection": "form",
+				"key_type": "string",
+				"timestamp": "timestamp",
+				"color": "#ff6000"
+			}
+		]
+	},
+	{
+		"time_selectors": [{
+				"title": "Today",
+				"value": "1d"
+			},
+			{
+				"title": "Past 7 Days",
+				"value": "7d"
+			},
+			{
+				"title": "Past 15 Days",
+				"value": "15d"
+			},
+			{
+				"title": "Past 30 Days",
+				"value": "30d"
+			}
+		],
+		"type": "selectors"
+	}
+]
