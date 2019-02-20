@@ -1,0 +1,67 @@
+{
+  "environment_variables": [
+    {
+      "value": "registry.gitlab.com/xp1/nifi-server",
+      "name": "DOCKER_IMAGE_NAME",
+      "secure": false
+    },
+    {
+      "value": "quay.io/xpms/nifi-server",
+      "name": "QUAY_IMAGE_NAME",
+      "secure": false
+    },
+    {
+      "value": "8080",
+      "name": "MS_PORT",
+      "secure": false
+    },
+    {
+      "value": "nifi-server",
+      "name": "PROJECT_NAME",
+      "secure": false
+    },
+    {
+      "value": "1",
+      "name": "CPU",
+      "secure": false
+    },
+    {
+      "value": "4g",
+      "name": "MEMORY",
+      "secure": false
+    },
+    {
+      "value": "sprint-4.0.5-develop",
+      "name": "VERSION",
+      "secure": false
+    }
+  ],
+  "timer": null,
+  "materials": [
+    {
+      "type": "git",
+      "attributes": {
+        "branch": "feature/sprint-4.0.5",
+        "destination": null,
+        "invert_filter": false,
+        "name": null,
+        "url": "git@gitlab.com:xp1/nifi-server.git",
+        "shallow_clone": false,
+        "filter": null,
+        "submodule_folder": null,
+        "auto_update": false
+      }
+    }
+  ],
+  "enable_pipeline_locking": false,
+  "parameters": [],
+  "template": "dockerBuildPushDeployTest",
+  "name": "nifi-server",
+  "origin": {
+    "type": "local",
+    "file": "cruise-config.xml"
+  },
+  "tracking_tool": null,
+  "stages": null,
+  "label_template": "${COUNT}"
+}

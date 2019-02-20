@@ -1,0 +1,59 @@
+FROM python:3.5-jessie
+
+RUN mkdir /root/.pip
+COPY pip.conf /root/.pip/pip.conf
+
+# rancher
+ADD https://github.com/rancher/cli/releases/download/v0.6.11/rancher-linux-amd64-v0.6.11.tar.gz /src/
+RUN cd /src && tar zxvf /src/rancher-linux-amd64-v0.6.11.tar.gz
+RUN apt-get -y update && apt-get -y upgrade && apt-get install alien -y
+RUN apt install -y libmysqlclient-dev curl python3-dev python3-pip
+RUN apt-get -y install nginx uwsgi supervisor
+
+#RUN apt-get install -y nodejs
+#RUN apt-get install -y npm
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-get install -yq nodejs build-essential
+
+RUN npm cache clean -f
+RUN npm install -g n
+RUN n 6.9.1
+RUN npm install -g gulp-cli
+
+COPY ./requirements.txt /src/
+WORKDIR /src/
+
+RUN pip3 install -r /src/requirements.txt
+RUN pip3 install uwsgi
+
+RUN pip3 install git+https://github.com/jhuapl-boss/django-oidc.git
+RUN pip3 install git+https://github.com/jhuapl-boss/drf-oidc-auth.git
+RUN pip3 install git+https://github.com/jhuapl-boss/boss-oidc.git
+
+COPY ./ui/package.json /src/
+RUN npm install /src/
+
+COPY . /src/console-api/
+WORKDIR /src/console-api/ui
+RUN cp -R /src/node_modules .
+
+ENV BRAND cogx
+RUN echo "BRAND=$BRAND"
+
+RUN chmod +x /src/console-api/ui/build.sh
+RUN sh /src/console-api/ui/build.sh
+
+
+# setup all the configfiles
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+COPY nginx-app.conf /etc/nginx/sites-available/default
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+RUN rm -rf /root/.pip
+ENV PYTHONPATH $PYTHONPATH:/src/console-api
+ENV DJANGO_ENV=prod
+EXPOSE 8089
+
+WORKDIR /src/console-api
+RUN touch db.sqlite3
+RUN chmod +x /src/console-api/db.sqlite3
+RUN chmod +x /src/console-api/start.sh
+CMD sh start.sh

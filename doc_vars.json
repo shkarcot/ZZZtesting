@@ -1,0 +1,358 @@
+{
+  "doc_vars": [
+    {
+      "path_mapping": "solution_id",
+      "type": "text",
+      "is_default": false,
+      "attributes": [
+
+      ],
+      "dimension": "Document",
+      "name": "solution_id",
+      "variable_id": "788b7b64-b116-46f6-a18f-69e063700245",
+      "alias": "solution_id"
+    },
+    {
+      "path_mapping": "page_groups",
+      "type": "text",
+      "is_default": false,
+      "attributes": [
+        {
+          "path_mapping": "page_groups.template_name",
+          "type": "text",
+          "is_default": false,
+          "attributes": [
+
+          ],
+          "dimension": "Document",
+          "name": "template_name",
+          "variable_id": "8dc7527a-52d4-4a8a-84e6-a5e386c4fb70",
+          "alias": "page_groups.template_name"
+        },
+        {
+          "path_mapping": "page_groups.template_id",
+          "type": "text",
+          "is_default": false,
+          "attributes": [
+
+          ],
+          "dimension": "Document",
+          "name": "template_id",
+          "variable_id": "cd7b260f-79d2-476a-a19b-06dda02c05b9",
+          "alias": "page_groups.template_id"
+        },
+        {
+          "path_mapping": "page_groups.template_score",
+          "type": "text",
+          "is_default": false,
+          "attributes": [
+
+          ],
+          "dimension": "Document",
+          "name": "template_score",
+          "variable_id": "a25ac725-088a-42e8-89e1-544e7c8ae3bd",
+          "alias": "page_groups.template_score"
+        },
+        {
+          "path_mapping": "page_groups.end_page",
+          "type": "text",
+          "is_default": false,
+          "attributes": [
+
+          ],
+          "dimension": "Document",
+          "name": "end_page",
+          "variable_id": "f3ee331f-0910-4507-bfdd-cf7b44847c27",
+          "alias": "page_groups.end_page"
+        },
+        {
+          "path_mapping": "page_groups.start_page",
+          "type": "text",
+          "is_default": false,
+          "attributes": [
+
+          ],
+          "dimension": "Document",
+          "name": "start_page",
+          "variable_id": "9feef17e-1b60-42e2-a301-02364b68f484",
+          "alias": "page_groups.start_page"
+        },
+        {
+          "path_mapping": "page_groups.score",
+          "type": "text",
+          "is_default": false,
+          "attributes": [
+
+          ],
+          "dimension": "Document",
+          "name": "score",
+          "variable_id": "00d6c5a3-7a24-4eef-b888-882dc8e3edea",
+          "alias": "page_groups.score"
+        }
+      ],
+      "dimension": "Document",
+      "name": "page_groups",
+      "variable_id": "bc956538-ce2c-4e47-8006-ec93160a40ca",
+      "alias": "page_groups"
+    },
+    {
+      "path_mapping": "metadata",
+      "type": "text",
+      "is_default": false,
+      "attributes": [
+        {
+          "path_mapping": "metadata.properties",
+          "type": "text",
+          "is_default": false,
+          "attributes": [
+            {
+              "path_mapping": "metadata.properties.size",
+              "type": "text",
+              "is_default": false,
+              "attributes": [
+
+              ],
+              "dimension": "Document",
+              "name": "size",
+              "variable_id": "e0966179-a46b-46da-a285-56559dc43892",
+              "alias": "metadata.properties.size"
+            },
+            {
+              "path_mapping": "metadata.properties.extension",
+              "type": "text",
+              "is_default": true,
+              "attributes": [
+
+              ],
+              "dimension": "Document",
+              "name": "extension",
+              "variable_id": "20534fbe-e940-4763-8365-8caf18f9d519",
+              "alias": "metadata_properties_extension"
+            },
+            {
+              "path_mapping": "metadata.properties.num_pages",
+              "type": "text",
+              "is_default": true,
+              "attributes": [
+
+              ],
+              "dimension": "Document",
+              "name": "num_pages",
+              "variable_id": "d1a95053-da30-44e0-970e-2393f753ba2d",
+              "alias": "metadata_properties_num_pages"
+            }
+          ],
+          "dimension": "Document",
+          "name": "properties",
+          "variable_id": "7dc184df-ac08-444a-b1b3-f4a422745b73",
+          "alias": "metadata.properties"
+        }
+      ],
+      "dimension": "Document",
+      "name": "metadata",
+      "variable_id": "3f03105f-8afa-4853-bac5-eff38878e4b0",
+      "alias": "metadata"
+    },
+    {
+      "path_mapping": "doc_state",
+      "type": "text",
+      "is_default": true,
+      "attributes": [
+
+      ],
+      "dimension": "Document",
+      "name": "doc_state",
+      "variable_id": "80899aaa-e6b5-4ff5-8189-ec470c7b3509",
+      "alias": "doc_state"
+    },
+    {
+      "path_mapping": "elements",
+      "type": "text",
+      "is_default": false,
+      "attributes": [
+        {
+          "path_mapping": "elements.elements",
+          "type": "text",
+          "is_default": false,
+          "attributes": [
+            {
+              "path_mapping": "elements.elements.confidence",
+              "type": "text",
+              "is_default": false,
+              "attributes": [
+
+              ],
+              "dimension": "Document",
+              "name": "confidence",
+              "variable_id": "60df60db-b0e3-4303-a3e0-8471e7d8a791",
+              "alias": "elements.elements.confidence"
+            },
+            {
+              "path_mapping": "elements.elements.has_label",
+              "type": "text",
+              "is_default": false,
+              "attributes": [
+
+              ],
+              "dimension": "Document",
+              "name": "has_label",
+              "variable_id": "acade41e-06c5-4b78-9470-6d782f62ff4f",
+              "alias": "elements.elements.has_label"
+            },
+            {
+              "path_mapping": "elements.elements.label",
+              "type": "text",
+              "is_default": false,
+              "attributes": [
+
+              ],
+              "dimension": "Document",
+              "name": "label",
+              "variable_id": "0b2b558c-b9fc-4cc9-a220-d82d40cb873e",
+              "alias": "elements.elements.label"
+            },
+            {
+              "path_mapping": "elements.elements.text",
+              "type": "text",
+              "is_default": false,
+              "attributes": [
+
+              ],
+              "dimension": "Document",
+              "name": "text",
+              "variable_id": "959d41fb-942b-43ce-83dd-399d040c23fb",
+              "alias": "elements.elements.text"
+            },
+            {
+              "path_mapping": "elements.elements.score",
+              "type": "text",
+              "is_default": false,
+              "attributes": [
+
+              ],
+              "dimension": "Document",
+              "name": "score",
+              "variable_id": "876077f1-6c2f-4ed2-bd91-e391c45f0a9f",
+              "alias": "elements.elements.score"
+            },
+            {
+              "path_mapping": "elements.elements.type",
+              "type": "text",
+              "is_default": false,
+              "attributes": [
+
+              ],
+              "dimension": "Document",
+              "name": "type",
+              "variable_id": "afadca4e-681f-4dd5-8ede-c817273e9a26",
+              "alias": "elements.elements.type"
+            },
+            {
+              "path_mapping": "elements.elements.parameters",
+              "type": "text",
+              "is_default": false,
+              "attributes": [
+                {
+                  "path_mapping": "elements.elements.parameters.has_label",
+                  "type": "text",
+                  "is_default": false,
+                  "attributes": [
+
+                  ],
+                  "dimension": "Document",
+                  "name": "has_label",
+                  "variable_id": "12bd1dbb-1a61-4181-9fe8-33dc60497ac2",
+                  "alias": "elements.elements.parameters.has_label"
+                },
+                {
+                  "path_mapping": "elements.elements.parameters.text",
+                  "type": "text",
+                  "is_default": false,
+                  "attributes": [
+
+                  ],
+                  "dimension": "Document",
+                  "name": "text",
+                  "variable_id": "7ce8d4e1-6b13-457b-b304-b012ba66c3ac",
+                  "alias": "elements.elements.parameters.text"
+                },
+                {
+                  "path_mapping": "elements.elements.parameters.label",
+                  "type": "text",
+                  "is_default": false,
+                  "attributes": [
+
+                  ],
+                  "dimension": "Document",
+                  "name": "label",
+                  "variable_id": "4734d8f0-c6fc-468d-9482-804521167663",
+                  "alias": "elements.elements.parameters.label"
+                }
+              ],
+              "dimension": "Document",
+              "name": "parameters",
+              "variable_id": "bd896293-0ce3-4ed5-9c0b-79412a1d20a7",
+              "alias": "elements.elements.parameters"
+            }
+          ],
+          "dimension": "Document",
+          "name": "elements",
+          "variable_id": "ae111f04-cf55-46f4-a86a-86d547f2d7c8",
+          "alias": "elements.elements"
+        },
+        {
+          "path_mapping": "elements.confidence",
+          "type": "text",
+          "is_default": false,
+          "attributes": [
+
+          ],
+          "dimension": "Document",
+          "name": "confidence",
+          "variable_id": "c2d9d30e-3eb2-4c3b-9498-84710f11a14a",
+          "alias": "elements.confidence"
+        },
+        {
+          "path_mapping": "elements.type",
+          "type": "text",
+          "is_default": false,
+          "attributes": [
+
+          ],
+          "dimension": "Document",
+          "name": "type",
+          "variable_id": "f0db31f4-8368-43d6-a9c6-e8167cb09efe",
+          "alias": "elements.type"
+        },
+        {
+          "path_mapping": "elements.parameters",
+          "type": "text",
+          "is_default": false,
+          "attributes": [
+
+          ],
+          "dimension": "Document",
+          "name": "parameters",
+          "variable_id": "5ead7f32-b87a-4b41-a45a-443a819d6e45",
+          "alias": "elements.parameters"
+        }
+      ],
+      "dimension": "Document",
+      "name": "elements",
+      "variable_id": "19dc0796-41c8-428d-90d5-b66b13745b92",
+      "alias": "elements"
+    },
+    {
+      "path_mapping": "children",
+      "type": "text",
+      "is_default": false,
+      "attributes": [
+
+      ],
+      "dimension": "Document",
+      "name": "children",
+      "variable_id": "e6d4a89d-c0e2-42e4-9722-385e2dc619f8",
+      "alias": "children"
+    }
+  ]
+}
