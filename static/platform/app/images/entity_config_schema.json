@@ -1,0 +1,59 @@
+{
+	"$schema": "http://json-schema.org/schema#",
+	"definitions": {
+		"attribute": {
+			"type": "object",
+			"properties": {
+				"key_name": {
+					"type": "string"
+				},
+				"synonym": {
+					"type": "array"
+				},
+				"type": {
+					"type": "string"
+				},
+				"values": {
+					"type": "array"
+				},
+				"rule_id": {
+                  "type": "array"
+                }
+			},
+			"required": ["key_name", "type", "synonym"]
+		},
+		"entity": {
+			"type": "object",
+			"properties": {
+				"entity_name": {
+					"type": "string"
+				},
+				"entity_synonym": {
+					"type": "array"
+				},
+				"attributes": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/attribute"
+					}
+				},
+				"primary_key": {
+					"type": "array"
+				},
+				"entity_type": {
+					"type": "string"
+				}
+			},
+			"required": ["entity_name", "attributes"]
+		}
+	},
+	"type": "object",
+	"properties": {
+		"entities": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/entity"
+			}
+		}
+	}
+}
