@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "required": ["service_key","display_name","service_endpoint","request_json","response_json"],
+    "properties": {
+        "service_key": {
+            "type": "string"
+        },
+        "display_name":{
+            "type" : "string"
+        },
+        "service_endpoint":{
+            "type" : "string"
+        },
+        "request_json":{
+            "type" : "object"
+        },
+        "response_json":{
+            "type" : "object"
+        }
+    }
+}
