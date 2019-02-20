@@ -1,0 +1,63 @@
+{
+  "test_cases":
+  [
+    [
+      {
+        "model_detail_data":
+        {
+          "name": "irsis",
+          "model_type": "classification",
+          "versions": [
+            {
+              "name": "irsis",
+              "is_active": true,
+              "version_id": "5f583dab-ffb5-4c57-8806-0a20bb48f7b0",
+              "training_dataset_id": "455c583c-8191-4016-917a-83f83873e20e",
+              "model_score": {
+                "f1": null,
+                "precision": null,
+                "accuracy": 0.8933333333333333,
+                "recall": null
+              },
+              "confusion_matrix": [
+                [
+                  23,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  14,
+                  8
+                ],
+                [
+                  0,
+                  0,
+                  30
+                ]
+              ],
+              "evaluation_dataset_id": "",
+              "previous_version_id": null,
+              "resource_ids": [],
+              "description": "",
+              "classes": [
+                1,
+                2,
+                3
+              ],
+              "training_ts": "2018-08-29T08:46:43.424760",
+              "algo_type": "classification",
+              "evaluation_dataset_name": "default",
+              "is_tagged": false,
+              "status": "ready",
+              "model_type": "classification",
+              "model_id": "6b753234-6260-46d3-8fe5-67cce60100ab",
+              "dataset_name": "iris"
+            }
+          ],
+          "model_id": "6b753234-6260-46d3-8fe5-67cce60100ab"
+        }
+      }
+    ]
+  ]
+}
