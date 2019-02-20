@@ -1,0 +1,231 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ popUpText $} </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+
+<div class="row overlay overlay-threshold" id="createThreshold">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h4 class="push-left">
+          <span ng-bind="labelForcreate"></span>
+          <span class="pull-right closeRule closebtn" ng-click="tuh.cancelCustomThreshold()">&times;</span>
+        </h4>
+        <div class="row">
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 form-group">
+                <label>Threshold for</label>
+                &lt;!&ndash;<input type="text" class="form-control" data-ng-model="tuh.objOfNewThreshold.attribute"
+                       placeholder="Type entity or attribute name" required>&ndash;&gt;
+                <select class="form-control custom-control" data-ng-model="tuh.objOfNewThreshold.attribute">
+                    <option value="" selected="true">Select the Threshold for</option>
+                    <option ng-repeat="(key, value) in tuh.mappingEntities track by $index" value="{$ value $}">{$ value $}</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 form-group">
+
+                <label>For the process</label>
+                <select class="form-control custom-control" data-ng-model="tuh.objOfNewThreshold.process">
+                    <option value="" selected="true">Select the process</option>
+                    <option ng-repeat="process in tuh.processList track by $index" value="{$ process.value $}">{$ process.name $}</option>
+                </select>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 form-group">
+                <label>Threshold value</label>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                <rzslider rz-slider-model="tuh.objOfNewThreshold.score"
+                          rz-slider-hide-limit-labels="true"
+                          rz-slider-always-show-bar="true"
+                          rz-slider-options="slider1.options"></rzslider>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <input type="number"  min="0" max="100" data-ng-model="tuh.objOfNewThreshold.score" class="input-slider-value">
+                <span>%</span>
+            </div>
+
+         </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <button class="btn btn-custom" ng-click="tuh.saveCustomThreshold()">
+                            <i class="fa fa-floppy-o"></i>
+                            <span>Save</span>
+                        </button>
+                        <button class="btn btn-cancel " ng-click="tuh.cancelCustomThreshold()" style="background-color: transparent; font-weight:bold">Cancel</button>
+                    </div>
+        </div>
+    </div>
+</div>
+<div class="row row-eq-height">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding case-queues">
+
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding" ng-show="!(cqc.showCaseQueContent)">
+
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 default-div" ng-show="!(cqc.allQueues.length>0)">
+                <div class="row nodata-container ">
+                    <div class="noQueuesText"> No Queues have been created</div>
+                    <button class="btn btn-add" ng-click="cqc.createNewQueue()">
+                        <img src="/app/images/add.png" style="width:13px;"/>
+                        <span>Create New Queue</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="quedata-container col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding" ng-show="(cqc.allQueues.length>0)">
+                <div class="row">
+                    <div class=" col-lg-12 col-sm-12 col-md-12 col-xs-12" style="margin-bottom:15px;">
+                        <button class="btn btn-add pull-right" ng-click="cqc.createNewQueue()">
+                            <img src="/app/images/add.png" style="width:13px;"/>
+                            <span>Create New Queue</span>
+                        </button>
+                    </div>
+                    <table class="table" id="table-desc">
+                        <thead>
+                            <tr>
+                                <th>Queue ID</th>
+                                <th>Queue name</th>
+                                <th>User Groups</th>
+                                <th>Created On</th>
+                                <th width="100px"></th>
+                            </tr>
+                        </thead>
+                        <tbody dir-paginate="queue in cqc.allQueues | itemsPerPage:filter_obj.no_of_recs"
+                        total-items="filter_obj.totalRecords" current-page="filter_obj.page_no"
+                        pagination-id="branchPagination" style="border-top: 1px solid #ddd;">
+                            <tr ng-mouseover="showEditIcons[$index]=true" ng-mouseleave="showEditIcons[$index]=false">
+                                <td ng-bind="queue.id"></td>
+                                <td ng-bind="queue.name"></td>
+                                <td ><span ng-repeat="group in queue.user_groups">{$ group.name $}<span ng-show="queue.user_groups.length-1 != $index">,</span></span></td>
+                                <td ng-bind="cqc.formatDate(queue.created_ts)"></td>
+                                <td class="text-center">
+                                    <span ng-show="showEditIcons[$index]">
+                                       <a style="margin-right:15px;" ng-click="cqc.editQueue(queue)" title="edit" alt="edit">
+                                        <i class="fa fa-pencil-square-o iconColor"></i></a>
+                                       <a  style="color:#a79d9d;" ng-click="cqc.deleteQueue(queue)" title="remove" alt="remove">
+                                        <i class="fa fa-trash iconColor"></i></a>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="right">
+                        <dir-pagination-controls max-size=filter_obj.no_of_recs direction-links="true"
+                                                 pagination-id="branchPagination" boundary-links="true"
+                                                 on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding caseque-content" ng-show="cqc.showCaseQueContent">
+            <div class="row">
+                 <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                     <label class="que-title">Create New Queue</label>
+                 </div>
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                     <span class="que-close pull-right" ng-click="cqc.closeNewQueue()"><i class="fa fa-times"></i></span>
+                 </div>
+            </div>
+            <div class="row">
+                 <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4 right-border">
+                     <form class="form-horizontal" validate-form ng-submit="cqc.saveNewQueue()">
+                         <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                              <div class="row">
+                                  <div class="form-group" ng-if="!cqc.createMode">
+                                    <label class="control-label dashboard-row" style="padding-top:10px;">Queue ID</label>
+                                     <input type="text" class="form-control inputStyle" ng-model="cqc.newQueueObj.id" placeholder="Type Queue Id" disabled>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="control-label dashboard-row" style="padding-top:10px;">Queue Name</label>
+                                     <input type="text" class="form-control inputStyle" ng-model="cqc.newQueueObj.name" placeholder="Type Queue name" required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="control-label dashboard-row" style="padding-top:10px;">User Groups</label>
+                                      <multiselect ng-model="cqc.newQueueObj.user_groups" class="multiSelect" options="cqc.flatUserGroupList" show-search="true" search-limit="100000" show-select-all="true" show-unselect-all="true" id-prop="id" display-prop="name">
+                                      </multiselect>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="control-label dashboard-row" style="padding-top:10px;">User Assignment Strategy</label>
+                                      <select class="form-control" ng-model="cqc.newQueueObj.user_assignment_strategy">
+                                        <option value="self_assignment">Self Assignment</option>
+                                        <option value="round_robin">Round Robin</option>
+                                      </select>
+                                  </div>
+                            </div>
+                            <div class="row" style="margin-top:35px;">
+                              <button type="submit" class="btn btn-go btn-custom">
+                                  <i class="fa fa-floppy-o"></i> Save
+                              </button>
+                              <button type="button" class="btn btn-reset" ng-click="cqc.closeNewQueue()" style="margin-right: 29px;border-radius: 17px;width: 100px;">Cancel</button>
+                            </div>
+                       </div>
+                     </form>
+                 </div>
+                <div class="col-lg-8 col-sm-8 col-md-8 col-xs-8">
+
+                     <div class="row">
+                         <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12" style="font-weight:bold;">Rules</div>
+                     </div>
+                     <div class="row">
+                         <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12" style="padding:0">
+
+                            <div class="row" ng-repeat="ruleCond in cqc.ruleObj.rule.conds" style="margin-bottom:10px;">
+                                <div class="col-lg-3 col-md-3 col-sm-3">
+                                    <select class="form-control" ng-model="ruleCond.lval">
+                                        <option value="">Select Variable</option>
+                                        <option ng-repeat="option in cqc.existingVariables" value="{$ option.alias $}">{$ option.alias $}</option>
+                                    </select>
+                                    <div ng-if="cqc.ruleObj.rule.run_type=='any' && cqc.ruleObj.rule.conds.length!=1 && cqc.ruleObj.rule.conds.length-1 != $index" style="margin-top:10px;">OR</div>
+                                    <div ng-if="cqc.ruleObj.rule.run_type=='all' && cqc.ruleObj.rule.conds.length!=1 && cqc.ruleObj.rule.conds.length-1 != $index   " style="margin-top:10px;">AND</div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3">
+                                    <select class="form-control" ng-model="ruleCond.fn">
+                                        <option value="">Select function</option>
+                                        <option ng-repeat="option in cqc.functionsList" value="{$ option.fn $}">{$ option.display_name $}</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                    <select class="form-control" ng-model="ruleCond.op" ng-change="cqc.checkForOperator(ruleCond.op,ruleCond,$index)">
+                                        <option value="">Select condition</option>
+                                        <option ng-repeat="option in cqc.operatorsList" value="{$ option.oper $}">{$ option.display_name $}</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                    <select class="form-control" ng-model="ruleCond.rval" ng-if="ruleCond.op == 'lookup'">
+                                        <option value="">Select Tag</option>
+                                        <option ng-repeat="opt in cqc.tagsArray" value="{$ opt $}">{$ opt $}</option>
+                                    </select>
+                                    <input type="text" class="form-control" ng-model="ruleCond.rval" ng-if="ruleCond.op != 'lookup'" placeholder="Enter value"/>
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-1">
+                                    <a ng-click="cqc.selectOperator('any')" ng-show="$index == 0">OR</a>
+                                    <a ng-click="cqc.addCondition()" ng-show="$index != 0"><span ng-show="cqc.ruleObj.rule.run_type=='any'">OR</span><span ng-show="cqc.ruleObj.rule.run_type=='all'">AND</span></a>
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-1">
+                                    <a ng-click="cqc.selectOperator('all')" ng-show="$index == 0">AND</a>
+                                    <a ng-click="cqc.delCond($index)" ng-show="$index != 0"><span class="fa fa-trash"></span></a>
+                                </div>
+                            </div>
+                            <div class="alert alert-danger" ng-show="cqc.conditionErr != ''">{$ cqc.conditionErr $}</div>
+                         </div>
+                     </div>
+                 </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>

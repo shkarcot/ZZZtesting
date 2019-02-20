@@ -1,0 +1,177 @@
+.img_height{
+    height:75px;
+}
+.textStyle{
+      font-weight: 500;
+        color: #383838;
+}
+.sourceCard{
+    border: none;
+    box-shadow: 0px 0px 4px 0px #eee;
+    display: block;
+    background: rgba(216, 216, 216, 0.64);
+    padding:20px;
+}
+.card-body{
+    cursor:pointer;
+}
+.imapHeight{
+    height: 200px;
+    cursor: pointer;
+}
+.imapText{
+    padding-left: 25px;
+    font-weight: 300;
+    margin:auto;
+}
+.heightFull{
+    max-height: 100% !important;
+}
+.sourceContainer{
+
+    height:80vh;
+    background-color: white;
+
+    .nav-tabs{
+        border-bottom:1px solid rgba(53, 170, 227, 0.53);
+
+        li {
+            a {
+                width:170px;
+                text-decoration: none;
+                background-color: transparent;
+                border:none;
+
+               :hover ,:focus {
+                   width:170px;
+               }
+            }
+        }
+    }
+    .nav-tabs > li.active > a{
+        background-color: transparent;
+        border: transparent;
+        border-bottom: 3px solid #35aae3;
+        text-decoration: none;
+        color: #35aae3 !important;
+        font-weight: bold;
+        padding: 10px 15px;
+        width: 170px;
+    }
+    .row-eq-height{
+        display: flex;
+        align-items: center;
+    }
+    .fullHeight{
+        height: 100%;
+    }
+    .fullWidth{
+        width:100%;
+    }
+    .btn-customIngest{
+        border: 0.5px solid #33aae3;
+        background-color: white;
+    }
+
+}
+.custom-checkbox {
+    display: block;
+    position: relative;
+    padding-left: 15px;
+    cursor: pointer;
+    font-size: 10px;
+    text-align: left;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin-bottom: 0px;
+}
+
+.custom-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.custom-checkbox .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 12px;
+    width: 12px;
+    background-color: #fff;
+    border: 1px solid #000;
+}
+.custom-checkbox .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+ .custom-checkbox input:checked ~ .checkmark:after {
+    display: block;
+}
+.custom-checkbox .checkmark:after {
+    left: 3px;
+    top: 1px;
+    width: 4px;
+    height: 7px;
+    border: 0.5px solid #000;
+    border-width: 0 1px 1px 0;
+    transform: rotate(45deg);
+}
+.uploadDropdown{
+    display: inline-block;
+    border: solid 0.5px rgba(51, 170, 227, 0.32);
+    padding:2px 12px !important;
+    line-height: 1px !important;
+}
+.filesTable .table > tbody > tr {
+    border-bottom: 1px solid #979797 !important;
+    .upload-file-name{
+        width: 70%;
+        max-width: 115px;
+        overflow: hidden;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+.btn-upload{
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-size: 16px;
+}
+.fixedBottom{
+    position: fixed;
+    bottom: 0;
+}
+.btn-customCancel {
+  padding: 12px 25px;
+  background-color: transparent;
+  color: black;
+}
+.uploadedlist{
+    .fileupload-text{
+        width:80%;
+        float:left;
+        text-align: left;
+    }
+    .file-injest-btn{
+        margin-bottom: 5px;
+        margin-top: -7px;
+        float: right;
+    }
+    td{
+        padding: 6px !important;
+        vertical-align: middle !important;
+    }
+    thead{
+        td{
+            padding:14px !important;
+        }
+    }
+}
+.padding-none{
+    padding-left: 0px !important;
+}

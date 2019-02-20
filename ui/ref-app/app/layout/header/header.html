@@ -1,0 +1,68 @@
+
+<nav class="navbar navbar-fixed-top">
+  <div class="navbar-custom">
+    <div class="navbar-header" style="width:74%">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" ng-click="goToDashboard()">
+        <div class="sample-image"></div>
+        <!--<span>-->
+          <!--<img class="header-image" src="/app/images/logo.png"/>-->
+        <!--</span><br>-->
+        <!--<span class="text-heading">Powered by-->
+          <!--<img class="header-image2" src="/app/images/xpms_logo.png"/>-->
+        <!--</span>-->
+      </a>
+
+      <a class="navbar-brand viewSolutions" style="width: 70%;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">
+        <div class="text" style="font-weight:bold;cursor:auto;" title="{$ solution_name $}" alt="{$ solution_name $}"> {$ solution_name $}</div>
+      </a>
+    </div>
+
+
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a class="navbar-brand viewSolutions" ui-sref="app.solution" style="font-weight:bold;">
+            View All Solutions
+          </a>
+        </li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <img src="/app/images/avatar.png" alt="Avatar" class="rounded-image">
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+                <a>
+                  <img src="/app/images/avatar.png" alt="Avatar" class="rounded-image">
+                  {$ loginData.username $}
+                </a>
+              </li>
+            <li>
+              <a ng-click="logout()">
+                <img src="/app/images/logout.png" class="logout-image"/>
+                Logout
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!--<div class="container-fluid-bottom">-->
+      <!--<div class="navbar-collapse" id="bs-example-navbar-collapse-1">-->
+        <!--<ul class="nav navbar-nav">-->
+          <!--<li class="header-items" ng-class="{'bg-nav':$root.currentState==='documentsList'}">-->
+            <!--<a ng-click="goToDashboard()">Dashboard </a>-->
+          <!--</li>-->
+          <!--<li class="header-items" ng-class="{'bg-nav':$root.currentState==='documentReview'}">-->
+            <!--<a ng-click="goToReview()" >Review Documents</a>-->
+          <!--</li>-->
+        <!--</ul>-->
+      <!--</div>-->
+  <!--</div>-->
+</nav>

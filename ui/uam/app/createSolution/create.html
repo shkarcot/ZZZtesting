@@ -1,0 +1,59 @@
+<div class="row row-eq-height">
+    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+      <div class="row">
+          <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+            <h3 class="heading">CREATE SOLUTION</h3>
+          </div>
+      </div>
+      <br>
+      <form ng-submit="createSolutionFunction();">
+          <div class="row">
+            <div class="row">
+              <div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">
+                  <label class="textHeading">Solution Name</label>
+                <input class="form-control" type="text" ng-model="solutionName" placeholder="Solution Name"  resspechars required/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">
+                  <label class="textHeading">Description</label>
+                  <textarea rows="20" class="form-control" cols="50" ng-model="solutionDes">Description (optional)</textarea>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">
+                 <div class="checkbox">
+                        <input type="checkbox" ng-model="createPipeline" style="margin-left:1px">
+                      <label>Create solution with processing pipeline ?</label>
+                 </div>
+              </div>
+            </div>
+              <br>
+            <div class="row">
+               <div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">
+                    <button class="btn btn-custom" type="submit">
+                        <i class="fa fa-floppy-o"></i> Save & Continue
+                    </button>
+                    <button class="btn btn-cancel" ui-sref="app.solution">Cancel</button>
+               </div>
+            </div>
+          </div>
+      </form>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 sideContainer">
+        <div class="row sidemenuText">
+            <h4>Create your solution in minitues using simple & intuitive interface</h4>
+        </div>
+        <br>
+       <ul class="SolutionList">
+           <li>Define your problem space by configuring Entities, Actions and Concepts</li>
+           <li>Configure Insights and Add Outcome to your solution</li>
+           <li>Train it</li>
+           <li>Add Rules & Manage Resources with your models</li>
+           <li>Give your feedback</li>
+           <li>View Predictions, and Insights to meet your outcome</li>
+       </ul>
+        <h4>How to Videos</h4>
+        <img src="/app/images/getstartred.png"/>
+    </div>
+</div>

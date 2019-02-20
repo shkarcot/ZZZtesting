@@ -1,0 +1,54 @@
+.unknownFormat{
+        padding-left: 10px;
+        padding-right: 10px;
+
+    .well{
+        background-color:white;
+        box-shadow: 0px 0px 1px 1px rgba(124, 214, 241, 0.48);
+        padding-left: 35px;
+        padding-right: 35px;
+    }
+    .panel-custom{
+        background-color: #f7f9fa !important;
+        border: 1px solid #d4d4d4;
+        padding:15px;
+
+        .panel-body{
+            padding:0px !important;
+        }
+        .panel-footer{
+            padding:0px !important;
+            background-color:#f7f9fa !important;
+            border-top: none;
+        }
+    }
+    .subheading{
+        font-size:10px;
+    }
+    .countSize{
+        font-size:14px;
+        color:black;
+    }
+    .timeFont{
+        font-size: 10px;
+        color: black;
+    }
+    .no-paddingLeft{
+        padding-left:0px;
+        padding-bottom:15px;
+        cursor:pointer;
+    }
+    .multiSelect .glyphicon {
+       font-size: 11px;
+    }
+    .titleHeading{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 16px;
+        margin-bottom:0px;
+        color:black;
+    }
+
+}
+

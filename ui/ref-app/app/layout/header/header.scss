@@ -1,0 +1,103 @@
+.rounded-image{
+    width:25px;
+    border-radius:50%;
+}
+.navbar{
+    margin-bottom:0px;
+}
+.navbar-custom{
+    background: url(/app/images/pattern.png);
+    background: linear-gradient(to right, #09134c, #5cb7ea);
+}
+.navbar-brand{
+    text-decoration:none;
+    border-right:1px solid #33aae3;
+    width:185px;
+    padding:0px;
+    margin-left:0px !important;
+}
+.header-image{
+    width:170px;
+}
+
+.header-height{
+    height:105px;
+}
+
+.header-image2 {
+    width:100px;
+}
+.text-heading{
+    font-size: 9px;
+    color: white;
+    padding-left: 6px;
+}
+
+.navbar-sub-heading{
+    font-size:9px;
+    color:white;
+    font-weight:400;
+    margin-left: 5px;
+}
+
+.bg-nav {
+    text-decoration: none;
+    color: white !important;
+    font-weight: bold;
+    font-size: 13px;
+    background-color: #5EB5EB;
+}
+
+.bg-nav a {
+    text-decoration: none;
+    color: white !important;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+
+.logout-image{
+    width:25px;
+}
+
+.navbar-nav > li > .dropdown-menu {
+    margin-top: 3px;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+}
+
+
+.navbar-header > a:hover{
+    color:White;
+}
+
+.dropdown-menu >li {
+    border-bottom:1px solid #eee;
+}
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+    background-color: #2e98cb;
+    border-color: #337ab7;
+}
+
+.nav > li > a {
+    color:white;
+}
+
+.nav > li > a:hover, .nav > li > a:focus {
+    background-color:transparent;
+}
+
+.viewSolutions{
+    color: white;
+    font-size: 12px;
+    border-right: 0px;
+
+    .text{
+        padding: 17px;
+    }
+}
+
+.container-fluid-bottom{
+    background-color:black;
+}
+

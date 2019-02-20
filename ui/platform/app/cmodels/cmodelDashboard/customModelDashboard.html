@@ -1,0 +1,905 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ popUpText $} </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+<script id="template1" type="text/ng-template">
+        <ul class="riskRatingInfoContent">
+            <li>One thing</li>
+            <li>Another thing <b>here</b></li>
+            <li>A one more thing</li>
+        </ul>
+</script>
+<script type="text/ng-template"  id="tree_item.html">
+
+    <tr style="width:100%">
+        <td><i class="fa" ng-class="data.folderClass" ng-click="toggleChildren(data)"></i></td>
+        <td style="width:80%">
+                {$data.name$}
+            <div id="expanded-data" ng-if="data.childrenVisible">
+                <table class="table table-striped" id="nested-table">
+                        <div ng-repeat="data in data.nodes" ng-include="'tree_item.html'"></div>
+                </table>
+            </div>
+        </td>
+    </tr>
+
+</script>
+<script type="text/ng-template" id="popover.html">
+  <table class="table">
+      <thead>
+    <tr>
+      <th class="col-md-3 col-xs-3" style="color:black;font-size:14px">Key</th>
+	  <th class="col-md-3 col-xs-3" style="color:black;font-size:14px">Value</th>
+	</tr>
+     </thead>
+       <tbody ng-repeat="metaobj in myAccess">
+         <tr ng-repeat="(key,value) in metaobj">
+      <th class="col-md-3 col-xs-3" style="color: #6f6f6f;font-size:12px">{$key$}</th>
+	  <th class="col-md-3 col-xs-3" style="color: #6f6f6f;font-size:12px">{$value$}</th>
+	     </tr>
+       </tbody>
+   </table>
+</script>
+<div class="row minPadding">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+         <h3 class="zeroMargin">
+                  <div class="dropdown">
+                      <a data-toggle="dropdown" class="noDecoration configureHeading">Models Configuration <b class="caret"></b></a>
+                      <breadcrumb-dropdown></breadcrumb-dropdown>
+                    </div>
+            </h3>
+    </div>
+</div>
+
+<div class="row overlay adaptContainer" id="datasetImport">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12"  style="margin-bottom:70px;">
+        <h4 class="push-left">
+          <span ng-bind="ImportDataset"></span>
+          <span class="pull-right closeRule closebtn" ng-click="canceldataSet()">&times;</span>
+        </h4>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <form ng-submit="mdc.sendDataSet()">
+                    <div class="form-group">
+                        <label>Data Set Name</label>
+                        <input type="text" ng-model="mdc.importDsObj.name" class="form-control custom-formControl" placeholder="Data Set Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea  rows="4" ng-model="mdc.importDsObj.description" cols="50" class="form-control custom-formControl" placeholder="Description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Data Format</label>
+                        <select class="form-control custom-formControl" ng-model="mdc.importDsObj.dataType">
+                            <option value="">Select data format</option>
+                            <option ng-repeat="option in mdc.datasetTypeList" value="{$ option $}">{$ option $}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Data Set</label>
+                        <br>
+                        <label><b>Choose From Local</b></label>
+                            <div>
+                              <button class="btn left button-primary" alt="browse" title="browse" type="button" style="cursor:pointer;position:relative;display:inline;border-radius:0">
+                                <input class="hide_file" ngf-select ng-model="fileInput" name="file"
+                                       ngf-change="uploadFile(fileInput)" type="file" style="font-size:13px;"/>
+                                  Browse
+                              </button>
+                            </div>
+                            <label class="entity-filepath" style="overflow: hidden;width: 80%;border: 1px solid #3babe1;height: 33px;">
+                                <span style="display:inline;" class="ng-binding" ng-show="browseFileName == undefined || browseFileName == ''">Please select the file</span>
+                                <span style="display:inline;" class="ng-binding" >{$ browseFileName $}</span>
+                            </label>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="form-group">
+                        <button class="btn btn-custom" type="submit">
+                            <i class="fa fa-floppy-o"></i>
+                            Save
+                        </button>
+                        <div class="loading-spiner-holder" ng-show="enabledatasetLoader">
+                            <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving dataset ...</i></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row overlay adaptContainer" id="binaryImport">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12"  style="margin-bottom:70px;">
+        <h4 class="push-left">
+          <span ng-bind="ImportDataset"></span>
+          <span class="pull-right closeRule closebtn" ng-click="cancelBinary()">&times;</span>
+        </h4>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <form ng-submit="mdc.sendBinary()">
+                    <div class="form-group">
+                        <label>Binary Name</label>
+                        <input type="text" ng-model="mdc.importBinaryObj.name" class="form-control custom-formControl" placeholder="Binary Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea  rows="4" ng-model="mdc.importBinaryObj.description" cols="50" class="form-control custom-formControl" placeholder="Description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Binary</label>
+                        <br>
+                        <label><b>Choose From Local</b></label>
+                            <div>
+                              <button class="btn left button-primary" alt="browse" title="browse" type="button" style="cursor:pointer;position:relative;display:inline;border-radius:0">
+                                <input class="hide_file" ngf-select ng-model="fileInputBinary" name="file"
+                                       ngf-change="uploadFileBinary(fileInputBinary)" type="file" style="font-size:13px;"/>
+                                  Browse
+                              </button>
+                            </div>
+                            <label class="entity-filepath" style="overflow: hidden;width: 80%;border: 1px solid #3babe1;height: 33px;">
+                                <span style="display:inline;" class="ng-binding" ng-show="browseFileName1 == undefined || browseFileName1 == ''">Please select the file</span>
+                                <span style="display:inline;" class="ng-binding" >{$ browseFileName1 $}</span>
+                            </label>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="form-group">
+                        <button class="btn btn-custom" type="submit">
+                            <i class="fa fa-floppy-o"></i>
+                            Save
+                        </button>
+                        <div class="loading-spiner-holder" ng-show="enablebinaryLoader">
+                            <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving binary ...</i></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row adaptContainer">
+    <div>
+        <ul class="nav nav-tabs nav-custom-tabs">
+              <li  class="active" ng-click="mdc.closeUploadSideBar()"><a data-toggle="tab" href=".extraction" aria-expanded="false">FEATURE Engineering</a></li>
+            <li  ng-click="mdc.closeUploadSideBar()"><a data-toggle="tab" href=".models" aria-expanded="true">MODELS</a></li>
+            <li ng-click="mdc.closeUploadSideBar()"><a data-toggle="tab" href=".datasets" aria-expanded="true">DATASETS</a></li>
+            <li ng-click="mdc.closeUploadSideBar()"><a data-toggle="tab" href=".binaries" aria-expanded="true">BINARIES</a></li>
+            <li ng-click="mdc.closeUploadSideBar()"><a data-toggle="tab" href=".resultv1" aria-expanded="true">RESULT_V1</a></li>
+             <li ng-click="mdc.closeUploadSideBar()"><a data-toggle="tab" href=".resultv2" aria-expanded="true">RESULT_V2</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade  models modelContentStyle">
+                <div class="row">
+                    <div class="col-sm-10 col-md-10 col-lg-10 col-xs-10">
+                        <form class="pull-right">
+                            <div>
+                                <label class="radioFilterStyle"><input type="radio" ng-model="mdc.ensembleFilter" ng-change="mdc.getAllModels()" value="all" name="filterModel"> <span class="filterLabelPad">All</span></label>
+                                <label class="radioFilterStyle"><input type="radio" ng-model="mdc.ensembleFilter" ng-change="mdc.getAllModels()" value="integrated" name="filterModel"><span class="filterLabelPad">Integrated</span></label>
+                                <label class="radioFilterStyle"><input type="radio" ng-model="mdc.ensembleFilter" ng-change="mdc.getAllModels()" value="independent" name="filterModel"><span class="filterLabelPad">Independent</span></label>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm-2 col-md-2 col-lg-2 col-xs-2">
+                        <button class="btn btn-add pull-right" ui-sref="app.customCreateEnsemble">
+                            <img src="/app/images/plus-default.png" style="width:10px;">
+                            <span>Create New Ensemble</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                        <hr style="border-top: 2px solid #dfe0e3;">
+                    </div>
+                </div>
+                <div class="well" style="box-shadow: none;border: none;">
+                   <div class="row">
+                      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" dir-paginate="data in mdc.modelsArray | itemsPerPage:filter_obj.no_of_recs" ng-click="mdc.goToModelDetails(data.model_id,data.name)"
+                      total-items="filter_obj.totalRecords" current-page="filter_obj.page_no"
+                        pagination-id="branchPagination">
+                         <div class="panel documentPanel" style="cursor:pointer">
+                            <div class="modelCardBody">
+                               <div class="modelHeading row" ng-if="!data.is_integrated">
+                                   <div class="col-sm-8 col-xs-8 col-lg-8 col-md-8 no-padding">
+                                       <label class="modelHeadStyle" title="{$ data.name $}">{$ data.name $}</label>
+                                   </div>
+                                   <div class="col-sm-4 col-xs-4 col-lg-4 col-md-4 no-padding" style="padding-left:5px;">
+                                       <span class="algoTypeStyle">Independent</span>
+                                   </div>
+                               </div>
+                                <div class="modelHeading row" ng-if="data.is_integrated">
+                                   <div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 no-padding">
+                                       <label class="modelHeadStyle" title="{$ data.name $}">{$ data.name $}</label>
+                                   </div>
+                               </div>
+                                <div class="algoTypeStyle">{$ data.model_type $}
+                                    <span class="pull-right" ng-show="data.status=='failed'" style="color:red" title="Last model failed"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+                                    <span class="pull-right" ng-show="data.status=='processing'" style="color: #e8e80a;" title="No model initialized"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+                                </div>
+                               <div class="templateBody">
+                                  <div class="row modelTopBody">
+                                     <div class="col-lg-4 col-sm-4 col-md-4 no-padding" ng-repeat="(key,value) in data.model_score">
+                                        <label class="modelLabel">{$ key $}</label>
+                                        <div class="textSubLabel">{$ value | number:4 $}</div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                    <div class="right">
+                        <dir-pagination-controls max-size=filter_obj.no_of_recs direction-links="true"
+                                                 pagination-id="branchPagination" boundary-links="true"
+                                                 on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+            </div>
+             <div class="tab-pane fade in active extraction">
+                <div class="row createEnsembleClass">
+                   <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 no-padding">
+                     <div class="model-header-labels">
+                        <ul class="nav nav-pills nav-pills-custom nav-justified">
+                           <li class="active ensembleActive" >
+                               <a href=".pip" data-toggle="tab"><span class="numbering">1</span>
+                            <span>Pipeline</span></a>
+                           </li>
+                           <li class="ensembleActive">
+                             <a href=".piplinejob" data-toggle="tab"><span class="numbering">2</span>
+                             <span>Pipeline Job</span></a>
+                           </li>
+                            <li class="ensembleActive">
+                             <a href=".stageconfig" data-toggle="tab"><span class="numbering">3</span>
+                             <span>Stage Configuration</span></a>
+                           </li>
+                          <!-- <li class="modelsActive">
+                             <a href=".dataview" data-toggle="tab"> <span class="numbering">4</span>
+                             <span>Data View</span></a>
+                            </li>
+                            <li class="trainActive">
+                             <a href=".graph" data-toggle="tab"> <span class="numbering">5</span>
+                             <span>Graph</span></a>
+                         </li>-->
+              </ul>
+                    </div>
+
+                       <div class="tab-content" style="background: white">
+                       <div class="tab-pane pip fade in active">
+                <div class="row" style="padding-top:10px;">
+                    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                        <div class="col-sm-2 col-md-2 col-lg-2 col-xs-2" style="float:right">
+                         <button class="btn btn-add pull-right" ui-sref="createPipelineNew()">
+                            <img src="/app/images/plus-default.png" style="width:10px;">
+                            <span>Create New Pipeline</span>
+                         </button>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 table-responsive" style="padding-top:15px">
+                            <table class="table" style="width:100%">
+                                <thead>
+                                    <tr>
+                                         <th>Pipeline Name</th>
+                                         <th>Type</th>
+                                         <th>Description</th>
+                                         <th>Comments</th>
+                                         <th>Status</th>
+                                         <th>Upd. By</th>
+                                         <th>Upd. At</th>
+                                         <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                 <tr ng-repeat="pipline in pipelinelist" ng-dblclick="piplinedbclick(pipline.id)">
+                                     <td>{$ pipline.pipeNm $}</td>
+                                     <td style="width:50px;">{$ pipline.type $}</td>
+                                     <td style="width:50px">{$ pipline.description $}</td>
+                                     <td>{$ pipline.reason $}</td>
+                                     <td>{$ pipline.statusCd $}</td>
+                                     <td>{$ pipline.updatedBy $}</td>
+                                     <td>{$ pipline.updatedAt | date:'dd-MM-yyyy HH:mm' $}</td>
+                                     <td>
+                                          <a ui-sref="createPipelineNew({id:pipline.id})" style="padding-left:20px">
+                                                  <span class="glyphicon glyphicon-edit"></span>
+                                          </a>
+                                     </td>
+                                 </tr>
+                                </tbody>
+                            </table>
+                    </div>
+
+                </div>
+            </div>
+                           <div class="tab-pane piplinejob">
+                                <div  ng-show="showlist" class="col-sm-3 col-md-3 col-lg-3 col-xs-3" style="float:right;padding-top: 8px;">
+                                     <button class="btn btn-add">
+                                        <span>Refresh</span>
+                                    </button>
+                                    <button class="btn btn-add " ui-sref="xstageconfig">
+                                        <img src="/app/images/plus-default.png" style="width:10px;">
+                                        <span>Create Pipeline Job</span>
+                                    </button>
+                                </div>
+                                <div  ng-show="showlist"  class="row ">
+                                    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12" style="padding-top: 10px;">
+                                          <div class="table-responsive">
+                                             <table class="table">
+                                                   <thead>
+                                                    <tr>
+                                                        <td >Name</td>
+                                                        <td >Description</td>
+                                                        <td >Pipeline Name</td>
+                                                        <td >Submit Date</td>
+                                                        <td >Start Date</td>
+                                                        <td >End Date</td>
+                                                        <td >Status</td>
+                                                        <td >Error Code</td>
+                                                        <td >Last update date</td>
+                                                    </tr>
+                                                   </thead>
+                                                 <tbody>
+                                                     <tr ng-repeat="data in pipelineJob" ng-dblclick="piplineJobdbclick(data.id)">
+                                                         <td>{$ data.pipejobNm $}</td>
+                                                         <td>{$ data.description $}</td>
+                                                         <td>{$ data.pipeInfo.dummy $}</td>
+                                                         <td>{$ data.submitAt | date:'dd-MM-yyyy HH:mm' $}</td>
+                                                         <td>{$ data.startAt | date:'dd-MM-yyyy HH:mm' $}</td>
+                                                         <td>{$ data.endAt | date:'dd-MM-yyyy HH:mm' $}</td>
+                                                         <td><span ng-if="data.statusCd== 'RUNNING'"><i class="fa fa-spinner fa-spin" style="font-size:18px"></i>{$ data.statusCd  $}</span>
+                                                             <span ng-if="data.statusCd== 'DRAFT'"><i class="fa fa-file-zip-o" style="font-size:18px"></i>{$ data.statusCd  $}</span>
+                                                             <span ng-if="data.statusCd== 'SUBMITTED'"><i class="fa fa-save" style="font-size:18px"></i>{$ data.statusCd  $}</span>
+                                                         </td>
+                                                         <td>{$ data.errorCd $}</td>
+                                                         <td>{$ data.updatedAt | date:'dd-MM-yyyy'  $}</td>
+                                                     </tr>
+                                                 </tbody>
+                                             </table>
+                                        </div>
+                                     </div>
+                                </div>
+                                <div ng-show="showhidedeails" class="piplinejob">
+                                    <form name="editForm" role="form">
+                                       <h6 class="section-title">
+                                            <a ng-click="piplinejoblist()" >Pipeline Job List ></a>Pipline Job Details
+                                      </h6>
+                                        <div>
+                                              <div class="row form-group">
+                                                <div class="col-sm-2" style="float: right;">
+                                                    <a><button class="btn btn-add pull-right" ng-click="pipjobRunButton()">
+                                                       <img src="/app/images/plus-default.png" style="width:10px;">
+                                                       <span>Run</span></button>
+                                                    </a>
+                                                    <a  ui-sref="xstageconfig({id:xstageDetails.id})"><span class="glyphicon glyphicon-edit" ></span></a>
+
+                                                </div>
+                                            </div>
+                                             <div class="panel panel-info">
+                                                    <div class="panel-heading">
+                                                      <h3 class="panel-title">
+                                                           Pipline Job Details
+                                                      </h3>
+                                                    </div>
+                                                    <div>
+                                                      <div class="panel-body">
+                                                         <div class="form-group row" style="margin-bottom:18px!important">
+                                                              <span for="inputPatient" class="col-sm-2 control-label">Job Name</span>
+                                                              <div class="col-sm-4">
+                                                                 <span><b>:</b>&nbsp;&nbsp;{$ xstageDetails.pipejobNm $}</span>
+                                                              </div>
+                                                              <span for="inputDOB" class="col-sm-2 control-label">Pipeline Name</span>
+                                                              <div class="col-sm-4">
+                                                                <span><b>:</b>&nbsp;&nbsp;{$ xstageDetails.pipeInfo $}</span>
+                                                              </div>
+                                                           </div>
+                                                           <div class="row form-group" style="margin-bottom:18px!important">
+                                                                <span for="inputBlood" ng-model="bloodgroup" class="col-sm-2 control-label">Job Description</span>
+                                                              <div class="col-sm-4">
+                                                                 <span><b>:</b>&nbsp;&nbsp;{$ xstageDetails.description $}</span>
+                                                              </div>
+                                                                <span for="inputAge"  class="col-sm-2 control-label">errorDesc</span>
+                                                              <div class="col-sm-4">
+                                                                 <span><b>:</b>&nbsp;&nbsp;{$ xstageDetails.errorDesc $}</span>
+                                                              </div>
+                                                           </div>
+                                                           <div class="row form-group" style="margin-bottom:18px!important">
+                                                              <span for="inputGender" class="col-sm-2 control-label" >Submit Date</span>
+                                                              <div class="col-sm-4">
+                                                                 <span><b>:</b>&nbsp;&nbsp;{$ xstageDetails.submitAt | date:'dd-MM-yyyy HH:mm:ss' $}</span>
+                                                              </div>
+                                                                 <span for="MotherName" class="col-sm-2 control-label" >Status</span>
+                                                              <div class="col-sm-4">
+                                                                <span><b>:</b>&nbsp;&nbsp;{$ xstageDetails.statusCd $}</span>
+                                                              </div>
+                                                           </div>
+                                                           <div class="row form-group" style="margin-bottom:18px!important">
+                                                                <span for="MonthlyIncome" class="col-sm-2 control-label">Start Date</span>
+                                                               <div class="col-sm-4">
+                                                                 <span><b>:</b>&nbsp;&nbsp;{$ xstageDetails.startAt | date:'dd-MM-yyyy' $}</span>
+                                                              </div>
+                                                             <span for="inputPassport" class="col-sm-2 control-label" >Error Code</span>
+                                                             <div class="col-sm-4">
+                                                                 <span><b>:</b>&nbsp;&nbsp;{$ xstageDetails.errorCd $}</span>
+                                                              </div>
+                                                           </div>
+                                                           <div class="row form-group" style="margin-bottom:18px!important">
+                                                                <span for="inputAge"  class="col-sm-2 control-label">End Date</span>
+                                                              <div class="col-sm-4">
+                                                                 <span><b>:</b>&nbsp;&nbsp;{$ xstageDetails.endAt | date:'dd-MM-yyyy HH:mm:ss' $}</span>
+                                                              </div>
+
+                                                           </div>
+
+
+                                                      </div>
+                                                    </div>
+                                             </div><!--/Personal -info Tab-->
+
+                                        </div>
+                                    </form>
+                                </div>
+
+                           </div>
+                           <div class="tab-pane dataview fade">
+                               <div class="row" style="padding-top:10px;">
+                    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                          <div class="table-responsive">
+                             <table class="table">
+                                  <thead>
+                                    <tr>
+                                        <th ng-repeat="kv in objkey track by $index"><span>{$kv$} </span>
+
+                                           <span style="margin-left: 5px;" class="grphicon" popover-placement="right"  popover-template="pipelinegraph(kv)"></span></th>
+
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                       <tr ng-repeat="x in objdata">
+                                          <td ng-repeat="th in objkey">{$x[th]$}</td>
+                                       </tr>
+                                  </tbody>
+                             </table>
+                        </div>
+                    </div>
+                </div>
+                          </div>
+                           <div class="tab-pane stageconfig fade">
+                <div class="row" style="padding-top:10px;">
+                     <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                        <div class="col-sm-2 col-md-2 col-lg-2 col-xs-2" style="float:right">
+                         <button class="btn btn-add pull-right" ui-sref="stageConfig({id:''})">
+                            <img src="/app/images/plus-default.png" style="width:10px;">
+                            <span>New Stage Config</span>
+                         </button>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12" style="padding-top:12px;">
+                          <div class="table-responsive">
+                             <table class="table">
+                                  <thead>
+
+                                         <th>ID</th>
+                                         <th>Stage GrpNm.</th>
+                                         <th>Stage Class</th>
+                                         <th>Stage Nm.</th>
+                                         <th>Comments</th>
+                                         <th>Delete Ind.</th>
+                                         <th>Last Updated</th>
+                                         <th></th>
+                                  </thead>
+                                  <tbody>
+                                       <tr data-ng-repeat="stagelist in stagecfgData" >
+                                            <td>{$ stagelist.id $}</td>
+                                            <td>{$ stagelist.stageGrpNm $}</td>
+                                             <td>{$ stagelist.classId $}</td>
+                                            <td>{$ stagelist.stageNm $}</td>
+                                            <td style="overflow: hidden;width:200px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;height: 48px;" data-toggle="tooltip" data-original-title="{$ stagelist.description $}"
+                                               title="{$ stagelist.description $}" data-placement="bottom"  data-html="true"  onmouseenter="tooltipEnterEvent($(this))" onmouseleave="tooltipLeaveEvent($(this))">{$ stagelist.description $}</td>
+                                             <td>{$ stagelist.statusCdcreatedAt $}</td>
+                                            <td>{$ stagelist.updatedAt $}</td>
+                                            <td>
+                                                <a ui-sref="stageConfig({id:stagelist.id})" style="padding-left:20px">
+                                                  <span class="glyphicon glyphicon-edit"></span>
+                                                  </a>
+                                            </td>
+                                       </tr>
+                                  </tbody>
+                             </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                           <div class="tab-pane graph fade">
+                <div class="row" style="padding-top:10px;">
+                    <div class="col-sm-9 col-lg-9 col-md-9 col-xs-9">
+                        <div class="col-sm-3"  data-ng-repeat="js in jsodata1">
+                                    <div id="{$'id'+$index$}"></div>
+                        </div>
+                    </div>
+                     <div class="col-sm-3 col-lg-3 col-md-3 col-xs-3">
+                            <div class="col form-group">
+                                    <label>Plotter</label>
+                                    <select class="form-control custom-formControl" ng-model="mdc.graphType" ng-change="mdc.graphChageType()">
+                                      <option value="">Select Graph Type</option>
+                                      <option ng-repeat="option in mdc.dataGraphTypeList" value="{$ option $}">{$ option $}</option>
+                                     </select>
+                            </div>
+                            <div class="col form-group">
+                                    <label>x-Axis</label>
+                                    <select class="form-control custom-formControl" ng-model="mdc.graphType" ng-change="mdc.graphChageType()">
+                                      <option value="">Select x-Axis</option>
+                                      <option ng-repeat="option in mdc.dataGraphTypeList" value="{$ option $}">{$ option $}</option>
+                                     </select>
+                            </div>
+                            <div class="col form-group">
+                                     <label>y-Axis</label>
+                                    <select class="form-control custom-formControl" ng-model="mdc.graphType" ng-change="mdc.graphChageType()">
+                                      <option value="">Select y-Axis</option>
+                                      <option ng-repeat="option in mdc.dataGraphTypeList" value="{$ option $}">{$ option $}</option>
+                                     </select>
+                            </div>
+                              <div class="col form-group"">
+                                     <label>Color Class</label>
+                                    <select class="form-control custom-formControl" ng-model="mdc.graphType" ng-change="mdc.graphChageType()">
+                                      <option value="">Select y-Axis</option>
+                                      <option ng-repeat="option in mdc.dataGraphTypeList" value="{$ option $}">{$ option $}</option>
+                                     </select>
+                            </div>
+                       <div class="col" style="padding-top:12px">
+                                   <button class="btn btn-custom" ng-click="mdc.getQuery()">
+                                          Export Image
+                                   </button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                </div>
+                </div>
+            </div>
+            <div class="tab-pane fade datasets">
+                <div class="row">
+                    <div class="col-lg-9 col-sm-9 col-xs-9 col-md-9">
+                        <div class="table-responsive">
+                            <table class="table" >
+                                <thead>
+                                    <tr>
+                                        <td >Name</td>
+                                        <td >Description</td>
+                                        <td >Created on</td>
+                                        <td >Type</td>
+                                        <td >Size</td>
+                                        <td style="width:10%"></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dir-paginate="data in mdc.listOfDataSets | itemsPerPage:filter_obj_dataset.no_of_recs" ng-mouseover="showIcons($index)" ng-mouseout="hideIcons($index)"
+                                    total-items="filter_obj_dataset.totalRecords" current-page="filter_obj_dataset.page_no"
+                                    pagination-id="branchPagination1">
+                                        <td>{$ data.name $}</td>
+                                        <td>{$ data.description $}</td>
+                                        <td ng-bind="mdc.formatDate(data.ts)"></td>
+                                        <td>{$ data.dataset_type $}</td>
+                                        <td>{$ data.size $}</td>
+                                        <td>
+                                          <span ng-show="showEditIcons[$index]">
+                                            <i class="fa fa-download iconColor" title="Download" ng-click="mdc.downloadFile(data.path)" style="margin-right: 10px;"></i>
+                                              <i class="fa fa-archive iconColor" ng-click="mdc.archiveDataset(data)" aria-hidden="true" title="Archive"></i>
+                                          </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="right">
+                            <dir-pagination-controls max-size=filter_obj_dataset.no_of_recs direction-links="true"
+                                                     pagination-id="branchPagination1" boundary-links="true"
+                                                     on-page-change="pageChangedDataset(newPageNumber)"></dir-pagination-controls>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-3 col-xs-3 col-md-3 uploadDiv">
+                        <div class="row">
+                            <div class="pull-right">
+                                <button class="btn btn-add" ng-click="uploadDataset();">
+                                    <img src="/app/images/import.png" style="width:10px;">
+                                    <span>Import Data Set</span>
+                                </button>
+                            </div>
+                        </div><br>
+                        <div class="uploadHeadStyle">Upload files to sftp and use them.</div>
+                        <div>
+                            <label class="uploadLabel">SFTP Details</label>
+                        </div>
+                        <hr style="margin-top:4px;">
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade binaries">
+                <div class="row">
+                    <div class="col-lg-9 col-sm-9 col-xs-9 col-md-9">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td >Name</td>
+                                        <td >Uploaded On</td>
+                                        <td >Size</td>
+                                        <td style="width:10%"></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dir-paginate="data in mdc.listOfBinaries | itemsPerPage:filter_obj_binary.no_of_recs"
+                                    total-items="filter_obj_binary.totalRecords" current-page="filter_obj_binary.page_no"
+                                    pagination-id="branchPagination2" ng-mouseover="showIconsBinary($index)" ng-mouseout="hideIconsBinary($index)">
+                                        <td>{$ data.name $}</td>
+                                        <td ng-bind="mdc.formatDate(data.created_ts)"></td>
+                                        <td>{$ data.size $}</td>
+                                        <td>
+                                          <span ng-show="showEditIconsBinary[$index]">
+                                            <i class="fa fa-download iconColor" title="Download" ng-click="mdc.downloadFileBinary(data.path)" style="margin-right: 10px;"></i>
+                                              <i class="fa fa-archive iconColor" ng-click="mdc.archiveBinary(data)" aria-hidden="true" title="Archive"></i>
+                                          </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="right">
+                            <dir-pagination-controls max-size=filter_obj_binary.no_of_recs direction-links="true"
+                                                     pagination-id="branchPagination2" boundary-links="true"
+                                                     on-page-change="pageChangedBinary(newPageNumber)"></dir-pagination-controls>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-3 col-xs-3 col-md-3 uploadDiv">
+                        <div class="row">
+                            <div class="pull-right">
+                                <button class="btn btn-add" ng-click="uploadBinary();">
+                                    <img src="/app/images/import.png" style="width:10px;">
+                                    <span>Import Binary</span>
+                                </button>
+                            </div>
+                        </div><br>
+                        <div class="uploadHeadStyle">Upload files to sftp and use them.</div>
+                        <div>
+                            <label class="uploadLabel">SFTP Details</label>
+                        </div>
+                        <hr style="margin-top:4px;">
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade  resultv1">
+                   <div class="row createEnsembleClass">
+                   <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 no-padding">
+                     <div class="model-header-labels">
+                        <ul class="nav nav-pills nav-pills-custom nav-justified">
+                           <li class="active ensembleActive" >
+                               <a href=".datavisul" data-toggle="tab"><span class="numbering">1</span>
+                              <span>Feedback</span></a>
+                           </li>
+                           <li class="ensembleActive">
+                             <a href=".rgraph" data-toggle="tab"><span class="numbering">2</span>
+                             <span>Data Visualization</span></a>
+                           </li>
+              </ul>
+        </div>
+
+                       <div class="tab-content" style="background: white">
+                        <div class="tab-pane datavisul fade in active">
+                            <div class="row" style="padding-top:10px;">
+                                <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                                  <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Created At</th>
+                                                <th>Text</th>
+                                                <th>Model</th>
+                                                <th>Sentiment</th>
+                                                <th>Feedback</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                         <tr ng-repeat="data in resultDataVisualList">
+                                             <td>{$data.id$}</td>
+                                             <td>{$data.createdAt$}</td>
+                                             <td>{$data.text$}</td>
+                                             <td>{$data.model$}</td>
+                                             <td>{$data.sentiment$}</td>
+                                             <td>{$data.fbSentiment$}</td>
+                                             <td>
+                                                 <div class="btn-group flex-btn-group-container">
+                                                    <button type="submit"	ui-sref="feedback({id:data.id})"
+                                                        class="btn btn-primary btn-sm">
+                                                        <span class="glyphicon glyphicon-pencil"></span> <span
+                                                            class="hidden-sm-down"></span>
+                                                    </button>
+						                          </div>
+                                             </td>
+                                         </tr>
+                                        </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane rgraph fade ">
+                            <div class="row" style="padding-top: 12px;">
+                                 <div class="col-sm-12 col-md-12 col-lg-12 " style="font-size: 18px;">
+                                    <label class="feedblabel">Date range</label>
+                                    <span class="inlinedate feedbackleftpadding"><input type="date" value="2018-09-01" ng-model="fromdate" class="form-control"></span>
+                                    <span class="inlinedate"><input type="date"  value="2018-09-30" ng-model="todate" class="form-control"></span>
+                                    <span class="form-inline feedbackleftpadding">
+                                        <label class="feedblabel" for="model">Model</label>
+                                        <select id="model"    ng-model="selectmodel" class="form-control" >
+                                                <option value="std-model">std-model</option>
+                                                <option value="xpms-model">xpms-model</option>
+                                        </select>
+                                    </span>
+                                    <a  class="inlinedate feedbackleftpadding">
+                                    <span style="top: 5px;"class="glyphicon glyphicon-refresh" 	ng-click="refreshSentiment_Data()"></span>
+                                    </a>
+                                    <a ui-sref="feedback" style="float: right;">
+                                    <button class="btn btn-default">Review</button></a>
+                                    </div>
+
+                                </div>
+                                <div class="row" style="padding-top: 25px">
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <header>
+                                            <span class="feedbackheaderalign">By Segment (Bar Chart)</span>
+                                        </header>
+                                        <div id="barchart"></div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <header>
+                                            <span class="feedbackheaderalign">By Segment (Pie Chart)</span>
+                                        </header>
+                                        <div id="piechart"></div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-12" style="padding-top: 40px" ng-show="showgraph">
+                                    <header>
+                                        <span class="feedbackheaderalign">By Segment (Line Chart)</span>
+                                    </header>
+                                    <div id="linechart"></div>
+                                </div>
+                        </div>
+                       </div>
+                </div>
+              </div>
+        </div>
+            <div class="tab-pane fade  resultv2">
+                   <div class="row createEnsembleClass">
+                   <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 no-padding">
+                     <div class="model-header-labels">
+                        <ul class="nav nav-pills nav-pills-custom nav-justified">
+                           <li class="active ensembleActive" >
+                               <a href=".datavisul" data-toggle="tab"><span class="numbering">1</span>
+                              <span>Feedback</span></a>
+                           </li>
+                           <li class="ensembleActive">
+                             <a href=".rgraph" data-toggle="tab"><span class="numbering">2</span>
+                             <span>Data Visualization</span></a>
+                           </li>
+              </ul>
+        </div>
+
+                       <div class="tab-content" style="background: white">
+                        <div class="tab-pane datavisul fade in active">
+                            <div class="row" style="padding-top:10px;">
+                                <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                                  <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Created At</th>
+                                                <th>Text</th>
+                                                <th>Model</th>
+                                                <th>Sentiment</th>
+                                                <th>Feedback</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                         <tr ng-repeat="data in resultDataVisualList">
+                                             <td>{$data.id$}</td>
+                                             <td>{$data.createdAt$}</td>
+                                             <td>{$data.text$}</td>
+                                             <td>{$data.model$}</td>
+                                             <td><span ng-if="data.sentiment == -1" style="color:red">Negative</span><span ng-if="data.sentiment == 1" style="color:green">Positive</span><span ng-if="data.sentiment == 0" style="color:orange">Neutral</span></td>
+
+                                             <td>{$data.fbSentiment$}</td>
+                                             <td>
+                                                 <div class="btn-group flex-btn-group-container">
+                                                    <button type="submit"	ui-sref="feedback({id:data.id})"
+                                                        class="btn btn-primary btn-sm">
+                                                        <span class="glyphicon glyphicon-pencil"></span> <span
+                                                            class="hidden-sm-down"></span>
+                                                    </button>
+						                          </div>
+                                             </td>
+                                         </tr>
+                                        </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane rgraph fade ">
+                            <div class="row" style="padding-top: 12px;">
+                                 <div class="col-sm-12 col-md-12 col-lg-12 " style="font-size: 12px;">
+                                    <label class="feedblabel">Date range</label>
+                                    <span class="inlinedate feedbackleftpadding"><input type="date" value="2018-09-01" ng-model="fromdate" class="form-control"></span>
+                                    <span class="inlinedate"><input type="date"  value="2018-09-30" ng-model="todate" class="form-control"></span>
+                                    <span class="form-inline feedbackleftpadding">
+                                        <label class="feedblabel" for="model">Model</label>
+                                        <select id="model"    ng-model="selectmodel" class="form-control" >
+                                                <option value="std-model">std-model</option>
+                                                <option value="xpms-model">xpms-model</option>
+                                        </select>
+                                    </span>
+                                      <a  class="inlinedate feedbackleftpadding">
+                                       <span style="top:5px" class="glyphicon glyphicon-refresh" 	ng-click="refreshResult_V2()"></span>
+                                     </a>
+                                     <div style="padding-top:5px">
+                                         <label class="feedblabel" for="model" style="width: 70px;">Filter </label>
+                                    <span class="inlinedate feedbackleftpadding">
+                                        <select id="model1"    ng-model="ngflitertype"  class="form-control " ng-change="filter_type()">
+                                                    <option ng-repeat="fill in filter.filtertype" value="{$fill$}">{$ fill $}</option>
+                                            </select></span>
+                                    <span class="inlinedate">
+									 <select id="model11"    ng-model="ngflitertype1" class="form-control selectboxwidth" >
+                                                    <option ng-repeat="producttype in filterproductkey" value="{$producttype$}" >{$producttype$}</option>
+                                            </select>
+									</span>
+                                     </div>
+
+
+                                    </div>
+
+                                </div>
+                                <div class="row" style="padding-top: 25px">
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <header>
+                                            <span class="feedbackheaderalign">By Segment (Bar Chart)</span>
+                                        </header>
+                                        <div id="barchart1"></div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <header>
+                                            <span class="feedbackheaderalign">By Segment (Pie Chart)</span>
+                                        </header>
+                                        <div id="piechart1"></div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-12" style="padding-top: 40px" ng-show="showgraph">
+                                    <header>
+                                        <span class="feedbackheaderalign">By Segment (Line Chart)</span>
+                                    </header>
+                                    <div id="linechart1"></div>
+                                </div>
+                        </div>
+                       </div>
+                </div>
+              </div>
+        </div>
+      </div>
+</div>

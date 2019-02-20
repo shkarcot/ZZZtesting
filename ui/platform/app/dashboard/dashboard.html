@@ -1,0 +1,447 @@
+
+<!--<div class="well" style="border: none;box-shadow: none;">-->
+    <!--<div class="row">-->
+      <!--<div class="col-lg-12 col-md-12 col-sm-12">-->
+        <!--<h3>Welcome to Solution Engineer Dashboard</h3>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="row" style="margin-bottom:11px;">-->
+      <!--<div class="col-lg-6 col-md-6 col-sm-6">-->
+
+        <!--<div class="panel panel-default panel-dashboard dashboard-widget">-->
+          <!--<div class="panel-heading">-->
+            <!--<b>Solution Setup</b>-->
+          <!--</div>-->
+          <!--<div class="panel-body" style="">-->
+            <!--<div class="row db-setup-box" ui-sref="app.resourcelibrary" >-->
+              <!--<div class="col-sm-1 col-md-1 col-lg-1 col-xs-1" style="padding:0">-->
+                <!--&lt;!&ndash;<span class="numberStyle">1</span>&ndash;&gt;-->
+                <!--<img ng-src="{$ config.base_url $}/app/images/resourceLibrary1.png" class="db-widget-icon"/>-->
+              <!--</div>-->
+              <!--<div class="col-sm-10 col-md-10 col-lg-10 col-xs-10" style="padding-left: 5px;">-->
+                <!--<span class="dashFont"><span>Load Resources</span></span><br>-->
+                <!--<span class="solSetupFont">Upload files to be used for entity creation and training.</span>-->
+              <!--</div>-->
+              <!--<div class="col-sm-1 col-md-1 col-lg-1 col-xs-1 db-ra-div">-->
+                <!--<i class="fa fa-chevron-right db-right-arrow" ui-sref="app.resourcelibrary" aria-hidden="true"></i>-->
+                <!--&lt;!&ndash;<i class="fa fa-check-circle" ng-show="dicList.length>0" style="color:#169ee0;margin-top: 15px;font-size:16px;font-size: 19px;" aria-hidden="true"></i>&ndash;&gt;-->
+                <!--<div class="count">{$ dicList.length $}</div>-->
+                <!--&lt;!&ndash;<div ng-show="dicList.length>0" class="count">{$dicList.length$}</div>&ndash;&gt;-->
+              <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="row db-setup-box" ui-sref="app.entities" >-->
+              <!--<div class="col-sm-1 col-md-1 col-lg-1 col-xs-1" style="padding:0">-->
+                <!--&lt;!&ndash;<span class="numberStyle">2</span>&ndash;&gt;-->
+                <!--<img ng-src="{$ config.base_url $}/app/images/1-entity.png" class="db-widget-icon"/>-->
+              <!--</div>-->
+              <!--<div class="col-sm-10 col-md-10 col-lg-10 col-xs-10" style="padding-left: 5px;">-->
+                <!--<span class="dashFont"><span>Create Domain Objects</span></span><br>-->
+                <!--<span class="solSetupFont">Define the real-world objects your solution will work with.</span>-->
+              <!--</div>-->
+              <!--<div class="col-sm-1 col-md-1 col-lg-1 col-xs-1 db-ra-div">-->
+                <!--<i class="fa fa-chevron-right db-right-arrow" ui-sref="app.entities" aria-hidden="true"></i>-->
+                <!--&lt;!&ndash;<div ng-show="entities.length>0" class="count">{$entities.length$}</div>&ndash;&gt;-->
+                <!--<div class="count">{$ entities.length $}</div>-->
+              <!--</div>-->
+            <!--</div>-->
+
+            <!--&lt;!&ndash;<div class="row db-setup-box" ui-sref="app.engines" >-->
+              <!--<div class="col-sm-1 col-md-1 col-lg-1 col-xs-1" style="padding:0">-->
+                <!--&lt;!&ndash;<span class="numberStyle">3</span>&ndash;&gt;-->
+                <!--<img ng-src="{$ config.base_url $}/app/images/2-engine.png" class="db-widget-icon"/>-->
+              <!--</div>-->
+              <!--<div class="col-sm-10 col-md-10 col-lg-10 col-xs-10" style="padding-left: 5px;">-->
+                <!--<span class="dashFont"><span>Configure Engines</span></span><br>-->
+                <!--<span class="solSetupFont">Customize your solution’s behavior and algorithms.</span>-->
+              <!--</div>-->
+              <!--<div class="col-sm-1 col-md-1 col-lg-1 col-xs-1 db-ra-div">-->
+                <!--<i class="fa fa-chevron-right db-right-arrow" aria-hidden="true"></i>-->
+                <!--&lt;!&ndash;<i class="fa fa-check-circle" style="color:#169ee0;margin-top: 15px;font-size:16px;font-size: 19px;" aria-hidden="true"></i>&ndash;&gt;-->
+              <!--</div>-->
+            <!--</div>&ndash;&gt;-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="col-lg-6 col-md-6 col-sm-6">-->
+
+        <!--<div class="panel panel-default panel-dashboard dashboard-widget">-->
+          <!--<div class="panel-heading">-->
+            <!--<b>Entity Graph</b>-->
+          <!--</div>-->
+
+          <!--<div class="panel-body">-->
+          <!--&lt;!&ndash;  <div id="neo" class="row" data-toggle="modal" data-target="#myModal" ng-click="updateSvg()">-->
+              <!--<div id="tree" ></div>-->
+            <!--</div>&ndash;&gt;-->
+             <!--<div id="neo1" class="row" data-toggle="modal" data-target="#myModalForEntity" data-backdrop="static" ng-click="updateSvg1()">-->
+                <!--<div id="entityGraph"></div>-->
+             <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+
+      <!--</div>-->
+    <!--</div>-->
+
+    <!--&lt;!&ndash;<div class="row" style="margin-bottom:40px;">-->
+      <!--<div class="col-lg-6 col-md-6 col-sm-6">-->
+        <!--<div class="panel panel-default panel-dashboard dashboard-widget">-->
+          <!--<div class="dashboard-body" style="border:0">-->
+              <!--<div class="row panel-heading">-->
+                <!--<div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">-->
+                  <!--<b>Rules Count</b>-->
+                <!--</div>-->
+               <!--<div class="col-sm-2 col-md-2 col-lg-2 col-xs-2" style="text-align:right">-->
+                  <!--<label>Filter</label>-->
+                <!--</div>-->
+                <!--<div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">-->
+                  <!--<select>-->
+                    <!--<option>Last 30 days</option>-->
+                  <!--</select>-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<div class="dash-heading">-->
+                <!--<div id="chart"></div>-->
+              <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="col-lg-6 col-md-6 col-sm-6">-->
+        <!--<div class="panel panel-default panel-dashboard dashboard-widget">-->
+          <!--<div class="dashboard-body" style="border:0">-->
+              <!--<div class="row panel-heading">-->
+                <!--<div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">-->
+                  <!--<b>Insights Generated</b>-->
+                <!--</div>-->
+                <!--<div class="col-sm-2 col-md-2 col-lg-2 col-xs-2" style="text-align:right">-->
+                  <!--<label>Filter</label>-->
+                <!--</div>-->
+                <!--<div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">-->
+                  <!--<select>-->
+                    <!--<option>Last 30 days</option>-->
+                  <!--</select>-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<div class="dash-heading">-->
+                <!--<div id="linechart"></div>-->
+              <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>&ndash;&gt;-->
+    <!--<br>-->
+
+<!--</div>-->
+<!--<div id="myModal" class="modal fade" role="dialog">-->
+  <!--<div class="modal-dialog modal-lg">-->
+    <!--<div class="modal-content">-->
+      <!--<div class="modal-header">-->
+        <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+        <!--<h4 class="modal-title">Entity Graph</h4>-->
+      <!--</div>-->
+      <!--<div class="modal-body">-->
+        <!--<div id="tree1" style="overflow:auto"></div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+
+<!--<div id="myModalForEntity" class="modal fade" role="dialog">-->
+  <!--<div class="modal-dialog modal-sm  modal-md modal-lg">-->
+    <!--<div class="modal-content">-->
+      <!--<div class="modal-header">-->
+        <!--<button type="button" class="close" data-dismiss="modal" ng-click="closeDialog()">&times;</button>-->
+        <!--<h4 class="modal-title">Entity Graph</h4>-->
+      <!--</div>-->
+      <!--<div class="modal-body">-->
+        <!--<div class="row rowWidth">-->
+          <!--<div class="col-sm-2">-->
+            <!--&lt;!&ndash;<p style="font-weight:bold;margin-bottom:0px">Entities :</p>&ndash;&gt;-->
+            <!--&lt;!&ndash;<hr style="margin-top:5px;">&ndash;&gt;-->
+            <!--&lt;!&ndash;<div ng-repeat="entity in entityCopy">&ndash;&gt;-->
+              <!--&lt;!&ndash;<label class="checkbox-inline"><input type="checkbox" ng-model="checkValue[$index]" ng-init="checkValue[$index]=true" ng-change="checkEntity(checkValue[$index],entity.entity_name, $index)">{$ entity.entity_name $}</label>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--<div><label>Search for entity</label></div>-->
+            <!--<div class="dashboard-row mass-autocompletediv" mass-autocomplete>-->
+              <!--<input type="text" ng-model="objEntity" mass-autocomplete-item="autocomplete_entitiy" class="form-control" placeholder="Enter Entity"  />-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="col-sm-10" id="modalGraphwidth">-->
+            <!--<div id="graphChartForEntity" style="overflow:auto"></div>-->
+          <!--</div>-->
+        <!--</div><br>-->
+        <!--&lt;!&ndash;<div class="row rowStyle">&ndash;&gt;-->
+          <!--&lt;!&ndash;<div class="col-sm-1">&ndash;&gt;-->
+
+          <!--&lt;!&ndash;</div>&ndash;&gt;-->
+          <!--&lt;!&ndash;<div class="col-sm-10">&ndash;&gt;-->
+            <!--&lt;!&ndash;<div id="slider-range"></div>&ndash;&gt;-->
+          <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div><br>&ndash;&gt;-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+
+<!--<div id="forceGraph">-->
+<!--</div>-->
+
+
+<nav class="navbar navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header" style="width:90%">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" ui-sref="dashboard">
+        <div class="header-image"></div>
+      </a>
+       <div class="sol-title">
+          <div class="left"><img src="./app/images/Automation-02.png" style="width:30px;"/></div>
+          <div class="left sol-div">
+            <span class="sol-name" alt="{$ solution_name $}" title="{$ solution_name $}">{$ solution_name $}</span><br>
+            <span ui-sref="solution" class="view-all">View All Solutions</span>
+          </div>
+          <div class="clear"></div>
+        </div>
+      <!--<label class="navbar-brand viewSolutions" class="bottomPosition" style="cursor:auto;">
+       <div class="row row-eq-height" style="padding-top:10px;">
+         <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 no-padding">
+           <img src="./app/images/Automation-02.png" style="width:30px;"/>
+         </div>
+         <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 no-padding">
+           <span style="font-size: 20px;color:white;padding: 5px;margin-top: 15px;">{$ solution_name $}</span><br>
+           <span   ui-sref="solution" style="padding-left:5px;cursor:pointer;color:#5eb5eb;">View All Solutions</span>
+         </div>
+       </div>
+     </label>-->
+    </div>
+
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <!--<li>-->
+          <!--<a class="navbar-brand viewSolutions" class="bottomPosition" ui-sref="solution" style="color:white !important;font-weight:bold !important">-->
+            <!--View All Solutions-->
+          <!--</a>-->
+        <!--</li>-->
+        <li class="dropdown">
+          <a class="dropdown-toggle customLogout" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <img src="/app/images/avatar.png" alt="Avatar" class="rounded-image">
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a>
+                <img src="/app/images/avatar.png" alt="Avatar" class="rounded-image">
+                {$ loginData.username $}
+              </a>
+            </li>
+            <li>
+              <a ng-click="logout()">
+                <img src="/app/images/logout.png" class="logout-image"/>
+                Logout
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="well customWell">
+  <div class="row">
+    <div class="col-lg-4 col-sm-4 col-md-4 col-xs-12">
+      <div class="row">
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
+          <div class="panel panel-navigation configureNavigation">
+            <div class="panel-heading panel-navigationHeading">
+              <div class="row">
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                    <img class="navigationImage" src="/app/images/Configure-01.png"/>
+                    <span>Configure</span>
+                </div>
+                <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2">
+                    <div class="pull-right navigationCount">1</div>
+                </div>
+              </div>
+            </div>
+            <div class="panel-body panel-navigationBody">
+              <ul>
+                <li>
+                  <a class="navigationLink" ui-sref="app.domainDashboard">
+                    <img src="/app/images/Domain.png"/>
+                    <span>Domain</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="navigationLink" ui-sref="app.modelDashboard">
+                    <img src="/app/images/model.png"/>
+                    <span>SA-Models</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="navigationLink" ui-sref="app.customModelDashboard">
+                    <img src="/app/images/model.png"/>
+                    <span>Models</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="navigationLink" ui-sref="app.function">
+                    <img src="/app/images/functionIcon.png"/>
+                    <span>Functions</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="navigationLink" ui-sref="app.services">
+                    <img src="/app/images/Services-01.png"/>
+                    <span>Services</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="navigationLink" ui-sref="app.pipeline">
+                    <img src="/app/images/pipeline.png"/>
+                    <span>Pipeline</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="navigationLink" ui-sref="app.sourceConfiguration">
+                    <img src="/app/images/sources.png"/>
+                    <span>Sources</span>
+                  </a>
+                </li>
+                <!--<li>-->
+                  <!--<a class="navigationLink" ui-sref="app.source">-->
+                    <!--<img src="/app/images/sources.png"/>-->
+                    <!--<span>New Sources</span>-->
+                  <!--</a>-->
+                <!--</li>-->
+              </ul>
+            </div>
+          </div>
+          <div class="panel panel-navigation operateNavigation">
+            <div class="panel-heading panel-navigationHeading">
+              <div class="row">
+                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                    <div class="right navigationCount">2</div>
+                </div>
+              </div>
+            </div>
+            <div class="panel-body panel-navigationBody" ng-click="goTologging();">
+              <div class="row navigationBottom">
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 no-padding">
+                  <img src="/app/images/Operate-02.png" class="navigationImage"/>
+                </div>
+                <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10">
+                  <span class="navigationLabel">Operate</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-navigation adaptNavigation">
+            <div class="panel-heading panel-navigationHeading">
+              <div class="row">
+                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                    <div class="right navigationCount">3</div>
+                </div>
+              </div>
+            </div>
+            <div class="panel-body panel-navigationBody"  ng-click="goToAdapt();">
+              <div class="row navigationBottom">
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 no-padding">
+                  <img src="/app/images/Adapt-01.png" class="navigationImage"/>
+                </div>
+                <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10">
+                  <span class="navigationAdaptLabel">Adapt</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 navigationHeight" >
+      <div class="jumbotron panel-navigation" ng-show="entities.length == 0">
+        <div class="row">
+          <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+            <label class="userWelcome">Hi {$ dc.username $}</label>
+            <br>
+            <label class="userWelcome">Welcome !</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4"></div>
+          <div class="col-lg-8 col-sm-8 col-xs-8 col-md-8">
+            <h3 class="getStarted">Get Started</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+            <img src="/app/images/dashboardImage.png"/>
+          </div>
+          <div class="col-lg-8 col-sm-8 col-md-8 col-xs-8">
+            <label class="description">
+              There is something about parenthood that gives us a sense of history and a deeply rooted desire to send on into the next generation the great things we have discovered about life. And part of that is the desire to instill in our children the love of science, of learning and particularly the love of nature.
+            </label>
+            <br>
+            <div class="row">
+              <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                <button class="btn btn-default btn-navigate">
+                  <img class="subButtons" src="/app/images/tutorial.png"/>
+                  <div class="subButtonText">Tutorial</div>
+                </button>
+              </div>
+              <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                <button class="btn btn-default btn-navigate">
+                  <img class="subButtons" src="/app/images/example.png"/>
+                  <div class="subButtonText">Examples</div>
+                </button>
+              </div>
+              <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                <button class="btn btn-default btn-navigate">
+                  <img class="subButtons" src="/app/images/video.png"/>
+                  <div class="subButtonText">Videos</div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+            <!--<div id="entityGraph"></div>-->
+            <iframe width="100%" height="315" src="https://www.youtube.com/embed/Gq3_G3_wylo" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+      <div class="row panel-navigation" ng-show="showGraph">
+        <div class="row graphValueBck">
+          <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+            <div class="col-lg-4 col-md-4 col-sm-4 valueDashboard">
+              <label style="font-weight: 400;">Services Configured</label>
+              <h3  style="color:black;">12</h3>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 valueDashboard">
+              <label style="font-weight: 400;">Services Delivered</label>
+              <h3 style="color:black;">9</h3>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 valueDashboard">
+              <label style="font-weight: 400;">Total Data Sources</label>
+              <h3 style="color:black;">8</h3>
+            </div>
+          </div>
+        </div>
+        <label class="graphHeadingValue">Entity Relation Hierarchy</label>
+        <div class="row">
+          <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
+            <div ng-show="dbSpinner" class="apiCallSpinner text-center"><i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom" aria-hidden="true"></i></div>
+            <div id="entityGraph" style="min-height: 29em;background-color: white;"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

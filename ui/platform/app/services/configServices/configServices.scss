@@ -1,0 +1,21 @@
+.clear{clear:both;}
+.breadcrumb .firstlevel{
+    color: #25aae1;
+    cursor:pointer;
+ }
+#configServices-tabs{
+    margin-top: 0px;
+
+    #engine-tabs .nav-tabs > li:first-child > a {
+      width:180px;
+    }
+    #engine-tabs .nav-tabs > li:nth-child(4) > a {
+      width:130px;
+    }
+    #engine-tabs .tab-content > .tab-pane{
+        min-height:400px;
+    }
+    .config-message{
+        padding: 45px 25px 25px 15px;
+    }
+}

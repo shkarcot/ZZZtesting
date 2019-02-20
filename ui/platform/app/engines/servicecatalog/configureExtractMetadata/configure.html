@@ -1,0 +1,63 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+
+<div class="row" id="configure-container">
+    <div class="col-lg-12 col-md-12 col-sm-12 parentdiv">
+       <!-- <table class="table" style="margin-bottom:40px" ng-show="showCongfig">
+          <tbody>
+            <tr>
+                <td><span>Label1</span></td>
+                <td><input type="text" /></td>
+            </tr>
+            <tr>
+                <td><span>Label2</span></td>
+                <td><input type="text" /></td>
+            </tr>
+            <tr>
+                <td><span>Label3</span></td>
+                <td><input type="text" /></td>
+            </tr>
+            <tr>
+                <td><span>Label4</span></td>
+                <td><input type="text" /></td>
+            </tr>
+            <tr>
+                <td><span>Label5</span></td>
+                <td><input type="text" /></td>
+            </tr>
+          </tbody>
+        </table >
+
+        <div class="clear"></div>-->
+
+
+        <!--<div class="col-lg-12 col-md-12 col-sm-12 btn-pos" ng-show="showCongfig">
+           &lt;!&ndash;<button class="btn button-primary" ng-click="tic.configureMetadata()" ng-disabled="tic.isDisabled">Configure</button>&ndash;&gt;
+            <button class="btn button-primary" ng-click="configureMetadata()">Configure</button>
+            <div class="msg-color">{$msg$}</div>
+        </div>-->
+
+        <div class="col-lg-12 col-md-12 col-sm-12 btn-pos" ng-show="!showCongfig">
+            <button class="btn button-primary" ng-show="enableCongfig" ng-click="enableConfigureMetadata('enable')">Enable</button>
+            <button class="btn button-primary" ng-show="!enableCongfig" ng-click="enableConfigureMetadata('disable')">Disable</button>
+            <div class="msg-color" ng-bind="ccs.msg"></div>
+        </div>
+
+
+
+    </div>
+
+
+</div>
+</div>

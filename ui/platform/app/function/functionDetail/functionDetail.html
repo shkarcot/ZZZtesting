@@ -1,0 +1,162 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ popUpText $} </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+
+<div class="row overlay adaptContainer" id="logsPanel">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12"  style="margin-bottom:70px;">
+        <h4 class="push-left">
+          <span>Logs</span>
+          <span class="pull-right closeRule closebtn" ng-click="cancelLogs()">&times;</span>
+        </h4>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <pre>
+                    {$ testResult.result $}
+                </pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row minPadding" ng-show="!jupiterNotebook">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+        <p class="zeroMargin">
+            <span ui-sref="app.function" style="cursor:pointer;text-decoration:underline">Functions </span><span> > </span> <span style="font-weight: 600;"> {$ fdc.functionName $} </span>
+        </p>
+    </div>
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+        <button class="btn btn-add pull-right" ui-sref="app.createFunction">
+            <img src="/app/images/plus-default.png" style="width:10px;">
+            <span>Create New Function</span>
+        </button>
+    </div>
+</div>
+
+<div class="row minPadding" ng-show="jupiterNotebook">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+        <p class="zeroMargin">
+            <span style="font-weight: 600;color:#4c4c4c;font-size:16px;"> {$ fdc.functionName $} </span>
+        </p>
+    </div>
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+        <a class="publishClassCss">TEST</a>
+    </div>
+</div>
+
+<div class="row functionDetailCss" ng-show="!jupiterNotebook">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-body" style="padding-top:15px !important;padding-bottom:15px !important;">
+                <div class="row">
+                    <div class="col-sm-4 col-lg-4 col-xs-4 col-md-4">
+                        <p class="functDetailHead">{$ fdc.functionName $}</p>
+                        <p class="functDetailDes">{$ fdc.functionDetail.function_des $}</p>
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-12 col-lg-12 col-xs-12 col-md-12">
+                        <div>
+                            Versions
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td style="width:20%">Name</td>
+                                        <td style="width:20%">Is Active?</td>
+                                        <td style="width:30%">Last Modified</td>
+                                        <td style="width:30%">Actions</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="list in fdc.allVersions">
+                                        <td style="width:20%">{$ list.version $}</td>
+                                        <td style="width:20%">
+                                            <label class="switch">
+                                                <input type="checkbox" ng-model="list.is_active" ng-change="fdc.setActiveToVersion(list)">
+                                                <span class="slider round"></span>
+                                                <div class="toggleText"></div>
+                                            </label>
+                                        </td>
+                                        <td style="width:30%">{$ list.updated_ts $}</td>
+                                        <td style="width:30%">
+                                            <span>
+                                                <span ng-show="seeLogsShow[$index]"><span style="color:red;margin-right:5px;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Test Failed</span> <a class="seeLogsClass" ng-click="fdc.checkForLogs(list)">See Logs</a></span>
+                                                <span ng-show="successShow[$index]"><span style="color:green;margin-right:5px;"><i class="fa fa-check-circle" aria-hidden="true" style="margin-right:4px;"></i>Test Passed</span> <a class="seeLogsClass" ng-click="fdc.checkForLogs(list)">See Logs</a></span>
+                                                <span ng-show="enableTestSpin[$index]"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i></span>
+                                                <a class="testClassCss" ng-click="fdc.testVersion(list,$index)" ng-class="enableTestSpin[$index] ? 'disabledTest' : ''">TEST</a>
+                                                <a class="testClassCss" ng-click="fdc.publishVersionFunct(list)">PUBLISH</a>
+                                                <i class="fa fa-pencil iconColor" title="Edit" style="margin-right: 15px;" ng-click="fdc.editVersionFunct(list)"></i>
+                                                <i class="fa fa-code-fork iconColor" title="Fork" style="margin-right: 15px;" ng-click="fdc.editVersionFunct(list,'fork')" aria-hidden="true"></i>
+                                                <i class="fa fa-archive iconColor" aria-hidden="true" title="Delete" ng-click="fdc.deleteVersionFunct(list)" ng-hide="fdc.allVersions.length==1"></i>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row functionDetailCss" ng-show="jupiterNotebook">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+        <div id="loadImg" class="loaderCls"></div>
+        <iframe ng-src="{$ jupiterUrl $}"
+        style="margin-top: 1px;width:100%;height:480px;" onload="document.getElementById('loadImg').style.display='none';"></iframe>
+    </div>
+    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+        <button class="btn btn-custom" ng-click="fdc.saveFunctionVersion()" ng-disabled="enableJupiterLoader">
+            Save
+        </button>
+        <a class="backStyle" ng-click="fdc.backClick()">Back</a>
+        <div class="loading-spiner-holder" ng-show="enableJupiterLoader">
+            <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving function ...</i></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row overlay adaptContainer" id="testVersionDiv">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12"  style="margin-bottom:70px;">
+        <h4 class="push-left">
+          <span ng-bind="ImportDataset"></span>
+          <span class="pull-right closeRule closebtn" ng-click="cancelTest()">&times;</span>
+        </h4>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <form ng-submit="fdc.sendTestVersion()">
+                    <div class="form-group">
+                        <label>Params</label>
+                        <textarea type="text" ng-model="fdc.testParams" rows="5" class="form-control custom-formControl"></textarea>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <button class="btn btn-custom" type="submit">
+                            <i class="fa fa-floppy-o"></i>
+                            Test
+                        </button>
+                        <div style="color: red;">{$ errMsgJsonValidator $}</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

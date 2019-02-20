@@ -1,0 +1,281 @@
+<script type="text/ng-template" id="confirmBox-bpmn">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12" >
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+<div style="height:1px;border-bottom:1px solid #ccc;"></div>
+<div class="row minPadding bpmn-page-header" style="display:none;">
+    <div class="col-lg-8 col-sm-8 col-md-8 col-xs-8" >
+        <!--<div class="col-lg-2 col-sm-2 col-md-2 col-xs-2" style="padding-right:0">-->
+            <!--<div class="zeroMargin">-->
+              <!--<div class="dropdown">-->
+                  <!--<a data-toggle="dropdown" class="noDecoration configureHeading"> domain <b class="caret"></b></a>-->
+                  <!--<ul class="customdropdown-menu dropdown-menu">-->
+                      <!--<li>-->
+                        <!--<a ui-sref="app.domainDashboard" class="noDecoration">-->
+                          <!--<img src="/app/images/Domain.png"/>-->
+                          <!--<span>Domain Configuration</span>-->
+                        <!--</a>-->
+                      <!--</li>-->
+                      <!--<li>-->
+                          <!--<a ui-sref="app.services" class="noDecoration">-->
+                              <!--<img src="/app/images/Services-01.png"/>-->
+                              <!--<span>Service Configuration</span>-->
+                          <!--</a>-->
+                      <!--</li>-->
+                      <!--<li>-->
+                          <!--<a ui-sref="app.pipeline" class="noDecoration">-->
+                              <!--<img src="/app/images/pipeline.png"/>-->
+                              <!--<span>Pipeline Configuration</span>-->
+                          <!--</a>-->
+                      <!--</li>-->
+                      <!--<li>-->
+                          <!--<a ui-sref="app.sourceConfiguration" class="noDecoration">-->
+                              <!--<img src="/app/images/sources.png"/>-->
+                              <!--<span>Sources</span>-->
+                          <!--</a>-->
+                      <!--</li>-->
+                  <!--</ul>-->
+              <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-lg-10 col-sm-10 col-md-10 col-xs-10" style="padding-left:0">-->
+            <!--<div class="zeroMargin">-->
+                <!--<div class="dropdown">-->
+                    <!--<span style="margin-left: 10px;">|</span>-->
+                    <!--<a data-toggle="dropdown" style="text-decoration: none;">-->
+                        <!--<span style="margin-left: 10px;text-decoration: none;" data-ng-bind="bpmnCtrl.currentBpmnName"> </span>-->
+                        <!--<b class="caret"></b>-->
+                    <!--</a>-->
+                   <!--&lt;!&ndash; <span class="pull-right"ng-show="bpmnCtrl.bpmnStatus.show">Status: <span style="color:#2c97cb" data-ng-bind="bpmnCtrl.bpmnStatus.state"></span></span>&ndash;&gt;-->
+                    <!--<ul class="customdropdown-menu dropdown-menu">-->
+                        <!--<li ng-repeat="obj in bpmnCtrl.listOfBpmnFiles" ng-click="bpmnCtrl.selectedDiagram(obj)"><a class="noDecoration"><span>{$ obj.name $}</span></a></li>-->
+                    <!--</ul>-->
+                <!--&lt;!&ndash;<select class="form-control" ng-model="bpmnCtrl.selectedBpmn" ng-change="bpmnCtrl.selectedDiagram(bpmnCtrl.selectedBpmn)">-->
+                    <!--<option value="">Select</option>-->
+                    <!--<option ng-repeat="obj in bpmnCtrl.listOfBpmnFiles" value="{$ obj $}">{$ obj.name $}</option>-->
+                <!--</select>&ndash;&gt;-->
+                <!--</div>-->
+
+            <!--</div>-->
+
+        <!--</div>-->
+    </div>
+    <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+        <!--<button class="btn btn-add pull-right" alt="Back" title="Back" ui-sref="app.domainDashboard">
+             <i class="fa fa-arrow-left"></i> Back</button>-->
+        <!--<button class="btn btn-add pull-right" alt="Create new work flow"  title="Create new work flow" style="margin-right:12px;"
+                ng-click="bpmnCtrl.addNewWorkflow()" ng-show="showNewWorkflow">
+            <img src="/app/images/plus-default.png" class="create-new-plus"/>New  Work Flow</button>
+-->
+        <!--<div class="pull-right" style="margin-right:12px;margin-top:6px;">Status: <span data-ng-bind="bpmnCtrl.bpmnStatus"></span></div>-->
+
+    </div>
+</div>
+
+<div class="row">
+
+  <div class="col-lg-12 col-md-12 col-sm-12" id="custom-bpmnjs" style="padding:0;margin-top:0   px;height:600px;">
+
+    <div class="content" id="js-drop-zone">
+       <!-- <div class="error"></div>-->
+        <div class="canvas" id="js-canvas" style="height:100%;"></div>
+        <div class="properties-panel-parent" id="js-properties-panel" style="background-color: #f8f8f8;"></div>
+
+        <ul class="buttons">
+             <li ng-show="bpmnCtrl.isExistBpmn.delete">
+                <button class="btn btn-add" ng-click="bpmnCtrl.deleteWorkflow()"
+                        alt="Delete work flow"  title="Delete work flow">
+                    <i class="fa fa-trash"></i> Delete</button>
+              </li>
+
+              <li ng-show="bpmnCtrl.isExistBpmn.publish">
+                  <button type="button" ng-click="bpmnCtrl.saveDiagram('publish')" alt="Publish"  title="Publish"
+                          class="btn btn-go btn-custom pull-right" ng-disabled="megc.isDisable">
+                              <i class="fa fa-floppy-o"></i> Publish</button>
+              </li>
+              <li ng-show="bpmnCtrl.isExistBpmn.draft">
+                  <button type="button" ng-click="bpmnCtrl.saveDiagram('draft')" alt="Draft"  title="Draft"
+                          class="btn btn-go btn-custom pull-right" ng-disabled="megc.isDisable" style="margin-right: 10px;">
+                              <i class="fa fa-floppy-o"></i> Save as Draft</button>
+              </li>
+              <li>
+                  <label ng-show="isDrafted" class="bpmn-lbl-published" style="margin-top: 4px;border: 1px solid #ccc;padding: 3px;color: gray;">
+                      <i class="fa fa-newspaper-o" style="font-size: 15px;"></i> Drafted</label>
+                  <label ng-show="isPublished" class="bpmn-lbl-published" style="margin-top: 4px; border: 1px solid #ccc;padding: 3px;">
+                      <i class="fa fa-newspaper-o" style="font-size: 15px;"></i> Published </label>
+              </li>
+
+            </ul>
+        <div class="bpmn-threshold">
+            <div class="thresholds-aapplicable">
+                <label class="pull-right">
+                    Not applicable <input type="checkbox" ng-model="bpmnCtrl.thresholdsApplicable[bpmnCtrl.currentServiceTaskId]"
+                                                          ng-checked="bpmnCtrl.thresholdsApplicable[bpmnCtrl.currentServiceTaskId]"
+                                                          ng-change="bpmnCtrl.setNotApplicable(bpmnCtrl.thresholdsApplicable[bpmnCtrl.currentServiceTaskId],bpmnCtrl.currentServiceTaskId)"
+
+                                    />
+                </label>
+            </div>
+            <div ng-hide="bpmnCtrl.thresholdsApplicable[bpmnCtrl.currentServiceTaskId]">
+                <div class="spin-icon" ng-show="!thresholdExist"><i class="fa fa-gear fa-spin" style="transform-origin: center;"></i></div>
+                <div class="tasklevelthreshold-tablediv">
+                    <table class="table tasklevelthreshold">
+                    <tbody data-ng-repeat="existingVariable in  bpmnCtrl.existingVariables track by $index">
+                        <tr>
+                            <td colspan="2" class="onetd">
+                                <label data-ng-bind="existingVariable.alias"></label>
+                           </td>
+                        </tr>
+                        <tr class="bb">
+                            <td class="twotd1">
+                                <rzslider rz-slider-model="bpmnCtrl.thresholdsData[bpmnCtrl.currentServiceTaskId][existingVariable.variable_id]"
+                                  rz-slider-hide-limit-labels="true"
+                                  rz-slider-always-show-bar="true"
+                                  rz-slider-disabled="bpmnCtrl.thresholdsApplicable[bpmnCtrl.currentServiceTaskId]"
+                                  rz-slider-options="slider.options"></rzslider>
+                            </td>
+                            <td class="twotd2"> <input type="number"  min="0" max="100"
+                                                       ng-disabled="bpmnCtrl.thresholdsApplicable[bpmnCtrl.currentServiceTaskId]"
+                                                       data-ng-model="bpmnCtrl.thresholdsData[bpmnCtrl.currentServiceTaskId][existingVariable.variable_id]"
+                                                       class="form-control  input-slider-value">
+                            <span>%</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+                <div style="margin: 10px 10px 63px 10px;">
+                    <button type="button" ng-click="bpmnCtrl.saveThresholds()" alt="Save thresholds"  title="Save thresholds"
+                            ng-disabled="bpmnCtrl.thresholdsApplicable[bpmnCtrl.currentServiceTaskId]"
+                              class="btn btn-go btn-custom pull-right">
+                                  <i class="fa fa-floppy-o"></i> Save</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+  </div>
+
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<header data-ng-include="'app/components/header/headerView.html'"></header>-->
+<!--    <section class="flex-item-grow flex-container" ui-view="maincontent"></section>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-41556333-4', 'auto');
+    </script>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<div class="container-fluid">
+   <div>bpmn</div>
+ <div id="canvas" style="width: 100%;height: 650px;border: 1px solid #666;"></div>
+</div>-->
+
+<!--
+<div class="content1" id="js-drop-zone">
+
+    <div class="message intro">
+      <div class="note">
+        xxxDrop BPMN diagram from your desktop or <a id="js-create-diagram" href>create a new diagram</a> to get started.
+      </div>
+    </div>
+
+    <div class="message error">
+      <div class="note">
+        <p>Ooops, we could not display the BPMN 2.0 diagram.</p>
+
+        <div class="details">
+          <span>cause of the problem</span>
+          <pre></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="canvas" id="js-canvas"></div>
+    <div class="properties-panel-parent" id="js-properties-panel"></div>
+  </div>
+
+  <ul class="buttons">
+    <li>
+      download
+    </li>
+    <li>
+      <a id="js-download-diagram" href title="download BPMN diagram">
+        BPMN diagram
+      </a>
+    </li>
+    <li>
+      <a id="js-download-svg" href title="download as SVG image">
+        SVG image
+      </a>
+    </li>
+  </ul>-->

@@ -1,0 +1,29 @@
+.body-header-bg{
+    background-color:#fff;
+    line-height: 42px;
+    .solution-name{
+        font-size:22px;
+        color: #6a6c6f;
+        margin-left: 17px;
+    }
+    .headerLogo{
+        content: url(/app/layout/bodycontent/images/xpms_small.png);
+    }
+    .header-image{
+        float:right;
+        width: 47px;
+    }
+}
+
+
+.body-content{
+    margin-top:65px;
+    height: calc(100% - 55px);
+}
+.content {
+    background-color:#eee;
+    transition: all 0.3s;
+    width:100%;
+    margin-left:250px;
+}
+

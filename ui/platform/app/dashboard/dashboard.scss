@@ -1,0 +1,171 @@
+.panel-navigation{
+    box-shadow: 0 0 4px 0 rgba(180, 180, 180, 0.5) !important;
+    .panel-navigationHeading{
+        padding: 10px 10px 0px 10px;
+    }
+    .panel-navigationHeading span{
+        font-size: 24px;
+        font-weight: 300;
+        color: #17d164;
+        text-transform: uppercase;
+    }
+
+    .panel-navigationBody{
+        padding: 0px 30px 0px 30px;
+        border-top: 0px;
+        cursor:pointer;
+    }
+    .panel-navigationBody ul{
+        line-height: 60px;
+        list-style: none;
+        padding-left:40px;
+    }
+    .panel-navigationBody ul li{
+        border-bottom: 1px solid #eee;
+    }
+    .panel-navigationBody ul li:nth-child(4){
+        border-bottom: none;
+    }
+    .panel-navigationBody ul li img{
+        width:24px;
+    }
+    .panel-navigationBody ul li span{
+        font-size: 18px;
+        color: #3e3f3e;
+    }
+
+}
+.configureNavigation{
+    border-left: 3px solid #17d164 !important;
+}
+.operateNavigation{
+    border-left: 3px solid  #81b5ff !important;
+}
+.adaptNavigation{
+    border-left: 3px solid  #e481ff !important;
+}
+.navigationLabel{
+    font-size: 24px;
+	color: #81b5ff;
+}
+.navigationAdaptLabel{
+    font-size: 24px;
+    color:#e481ff;
+}
+.jumbotron{
+    text-align:justify !important;
+    background: linear-gradient(to left top, white 0%, #c0fbfb 100%);
+    box-shadow: 0 0 4px 0 rgba(180, 180, 180, 0.5) !important;
+    overflow-y:scroll;
+}
+
+.jumbotron .btn {
+    font-size: 21px;
+    width: 75%;
+}
+
+.userWelcome{
+    font-size: 20px;
+	text-align: left;
+	color: #4b4646
+}
+.navigationImage{
+    width: 40px;
+}
+.getStarted {
+    color: #030303;
+    font-weight:500;
+}
+.description{
+    line-height:28px;
+    margin-bottom:40px;
+}
+.subButtons{
+    width:25px;
+}
+.subButtonText{
+    font-size: 14px;
+    color: #656666;
+}
+
+.navigationCount{
+    opacity: 0.3;
+    font-size: 30px;
+    font-weight: 500;
+    color: #4b4646;
+}
+.btn-navigate{
+    border-radius: 6px !important;
+    padding: 10px !important;
+}
+.navigationLink{
+    text-decoration:none;
+}
+
+.customWell{
+    margin-top: 70px;
+    border: none;
+    box-shadow: none;
+}
+
+.customLogout{
+    padding:0px !important;
+}
+.fadeOut{
+    opacity:0.4;
+    cursor:not-allowed;
+}
+.customHeight{
+    height:80%;
+    overflow-y:scroll;
+}
+
+.navigationBottom{
+    margin-bottom: 40px;
+}
+
+svg {
+    border:none !important;
+    background-color:white;
+}
+.graphValueBck{
+    background-color:white;
+}
+.valueDashboard{
+    margin-top: 45px;
+    text-align: right;
+    border-bottom: 1px solid #eee;
+    border-right: 1px solid #eee;
+}
+
+.graphHeadingValue{
+    margin-bottom: 0px;
+    width: 100%;
+    padding: 20px;
+    font-size: 23px;
+    background-color:white;
+
+}
+
+.left{float:left;}
+.right{float:right;}
+.clear{clear:both;}
+.sol-title{
+    cursor:auto;
+    padding: 5px;
+    font-weight: 300;
+    .sol-name{
+        font-size: 20px;color:white;padding: 5px;margin-top: 15px;
+    }
+    .view-all{
+        padding-left:5px;cursor:pointer;color:#5eb5eb;
+    }
+    .sol-div{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 70%;
+        color: #fff;
+    }
+
+}

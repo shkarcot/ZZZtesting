@@ -1,0 +1,372 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+<div class="row modelTypeBorder">
+
+        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12" style="padding-top:0;padding-left:0;padding-right:0;">
+          <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12" style="padding:0;">
+              <div class="panel-tools modelTypePanel-tools" id="importJsonLink">
+                 <span class="modelType">Intent</span>
+                <span tooltip="Import" style="margin-right:10px;position:relative;float:right;cursor:pointer;"><label style="padding: 5px;padding-right: 10px;padding-left: 10px;margin-top: 1px;" alt="import" title="import"> <i class="fa fa-download" aria-hidden="true"></i> Import</label>
+                  <ng-csv-import class="import" content="csv.content" header="csv.header" separator="csv.separator" result="csv.result" confirm-action = "parseToJson()"></ng-csv-import>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-bottom:40px;padding: 0 10px;">
+            <div ng-repeat="sen in sentenceArray" style="margin-bottom:15px">
+              <table class="table table-bordered table-striped" style="margin-bottom:5px">
+                <tr>
+                  <td style="width: 7%;">
+                    <button class="btn btn-success" ng-click="addSentence($index)" ng-show="$index==sentenceArray.length-1" style="padding:6px 12px"><span class="glyphicon glyphicon-plus"></span></button>
+                  </td>
+                  <td>
+                    <form>
+                        <div class="input-group">
+                          <input type="text" class="form-control" ng-model="sentenceArray[$index].sentence" placeholder="Enter the Sentence" >
+                          <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" ng-click= "sendsentenceData(sentenceArray[$index].sentence,$index)" class="btn btn-primary">Submit</button>
+                          </span>
+                        </div>
+                    </form>
+                    <div class="loading-spiner-holder" ng-show="loadVerbs[$index]" ><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Fetching verbs...</i></span></div></div>
+                  </td>
+                </tr>
+              </table>
+              <div class="row" ng-repeat="arr in sen.verb_deps">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-4">
+                  {$ sentenceArray[$parent.$index].verb_deps[$index].verb $}
+                </div>
+                <div class="col-sm-4">
+                  <input type="checkbox" ng-model="sentenceArray[$parent.$index].verb_deps[$index].is_intent_verb"/>
+                </div>
+              </div>
+            </div>
+            <p class="error" ng-show="sentenceArray[sentenceArray.length-1].sentence==''">{$ errorMsg $}</p><br>
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 pull-right">
+                <button class="btn btn-primary pull-right" ng-click="export()" >Export</button>
+                <button class="btn btn-default pull-right" ng-click="clearSentenceImport()" style="margin-right:10px;">Clear</button>
+                <span class="pull-right" style="color:green">{$ msg $}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+<br>
+   <div class="row modelTypeBorder">
+        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12" style="padding-top:0;padding-left:0;padding-right:0;">
+          <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12" style="padding:0;">
+              <div class="panel-tools modelTypePanel-tools" >
+                <span class="modelType">Action</span>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-bottom:40px;padding: 0 10px;">
+            <div style="margin-bottom:15px">
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div class="panel-heading" data-toggle="collapse" href="#collapse1">
+                    <h4 class="panel-title">
+                      <a>Get Entity</a>
+                    </h4>
+                  </div>
+                  <div id="collapse1" class="panel-collapse collapse">
+                    <table class="table table-bordered">
+                      <tr>
+                        <td>
+                          <form>
+                              <div class="input-group">
+                                <input type="text" class="form-control" ng-model="action.getEntityVerb" placeholder="Enter the Verb" >
+                                <span class="input-group-btn">
+                                  <button class="btn btn-default" type="button" ng-disabled="action.getEntityVerb==''" ng-click="getMeanings('get_entity')">Submit</button>
+                                </span>
+                              </div>
+                          </form>
+                          <div class="error">{$ getEntityError $}</div>
+                          <div class="loading-spiner-holder" ng-show="loadMeanings['get_entity']" ><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Fetching meanings...</i></span></div></div>
+                        </td>
+                      </tr>
+                      <tr ng-repeat="obj in actionObj.get_entity track by $index">
+                        <td>
+                          <div class="row">
+                            <div class="col-sm-3">
+                              <p>
+                                {$ obj.word $}
+                              </p>
+                            </div>
+                            <div class="col-sm-7">
+                              <div ng-repeat="dat in obj.meanings track by $index"><input type="checkbox" ng-model="actionObj.get_entity[$parent.$index].meanings[$index].is_selected" /> {$ dat.definition $} </div>
+                            </div>
+                            <div class="col-sm-2">
+                              <i class="fa fa-trash-o pull-right" ng-click="deleteVerb($index,'get_entity')"></i>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-bottom:15px">
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div class="panel-heading" data-toggle="collapse" href="#collapse2">
+                    <h4 class="panel-title">
+                      <a>Create Entity</a>
+                    </h4>
+                  </div>
+                  <div id="collapse2" class="panel-collapse collapse">
+                    <table class="table table-bordered">
+                      <tr>
+                        <td>
+                          <form>
+                              <div class="input-group">
+                                <input type="text" class="form-control" ng-model="action.createEntityVerb" placeholder="Enter the Verb"  >
+                                <span class="input-group-btn">
+                                  <button class="btn btn-default" type="button" ng-disabled="action.createEntityVerb==''" ng-click="getMeanings('create_entity')">Submit</button>
+                                </span>
+                              </div>
+                          </form>
+                          <div class="error">{$ createEntityError $}</div>
+                          <div class="loading-spiner-holder" ng-show="loadMeanings['create_entity']" ><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Fetching meanings...</i></span></div></div>
+                        </td>
+                      </tr>
+                      <tr ng-repeat="obj in actionObj.create_entity  track by $index">
+                        <td>
+                          <div class="row" >
+                            <div class="col-sm-3" >
+                              <p>
+                                {$ obj.word $}
+                              </p>
+                            </div>
+                            <div class="col-sm-7">
+                              <div ng-repeat="dat in obj.meanings track by $index"><input type="checkbox" ng-model="actionObj.create_entity[$parent.$index].meanings[$index].is_selected"  /> {$ dat.definition $} </div>
+                            </div>
+                            <div class="col-sm-2">
+                              <i class="fa fa-trash-o  pull-right" ng-click="deleteVerb($index,'create_entity')"></i>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-bottom:15px">
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div class="panel-heading" data-toggle="collapse" href="#collapse3">
+                    <h4 class="panel-title">
+                      <a>Update Entity</a>
+                    </h4>
+                  </div>
+                  <div id="collapse3" class="panel-collapse collapse">
+                    <table class="table table-bordered" >
+                      <tr>
+                        <td>
+                          <form>
+                              <div class="input-group">
+                                <input type="text" class="form-control" ng-model="action.updateEntityVerb" placeholder="Enter the Verb"  >
+                                <span class="input-group-btn">
+                                  <button class="btn btn-default" type="button" ng-disabled="action.updateEntityVerb==''" ng-click="getMeanings('update_entity')">Submit</button>
+                                </span>
+                              </div>
+                          </form>
+                          <div class="error">{$ updateEntityError $}</div>
+                          <div class="loading-spiner-holder" ng-show="loadMeanings['update_entity']" ><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Fetching meanings...</i></span></div></div>
+                        </td>
+                      </tr>
+                      <tr ng-repeat="obj in actionObj.update_entity  track by $index">
+                        <td>
+                          <div class="row" >
+                            <div class="col-sm-3" >
+                              <p >
+                                {$ obj.word $}
+                              </p>
+                            </div>
+                            <div class="col-sm-7">
+                              <div ng-repeat="dat in obj.meanings track by $index"><input type="checkbox" ng-model="actionObj.update_entity[$parent.$index].meanings[$index].is_selected"  /> {$ dat.definition $} </div>
+                            </div>
+                            <div class="col-sm-2">
+                              <i class="fa fa-trash-o  pull-right" ng-click="deleteVerb($index,'update_entity')"></i>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-bottom:15px">
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div class="panel-heading" data-toggle="collapse" href="#collapse4">
+                    <h4 class="panel-title">
+                      <a>Delete Entity</a>
+                    </h4>
+                  </div>
+                  <div id="collapse4" class="panel-collapse collapse ">
+                    <table class="table table-bordered">
+                      <tr>
+                        <td>
+                          <form>
+                              <div class="input-group">
+                                <input type="text" class="form-control" ng-model="action.deleteEntityVerb" placeholder="Enter the Verb">
+                                <span class="input-group-btn">
+                                  <button class="btn btn-default" type="button" ng-disabled="action.deleteEntityVerb==''" ng-click="getMeanings('delete_entity')">Submit</button>
+                                </span>
+                              </div>
+                          </form>
+                          <div class="error">{$ deleteEntityError $}</div>
+                          <div class="loading-spiner-holder" ng-show="loadMeanings['delete_entity']" ><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Fetching meanings...</i></span></div></div>
+                        </td>
+                      </tr>
+                      <tr ng-repeat="obj in actionObj.delete_entity  track by $index">
+                        <td>
+                          <div class="row" >
+                            <div class="col-sm-3" >
+                              <p>
+                                {$ obj.word $}
+                              </p>
+                            </div>
+                            <div class="col-sm-7">
+                              <div ng-repeat="dat in obj.meanings track by $index"><input type="checkbox" ng-model="actionObj.delete_entity[$parent.$index].meanings[$index].is_selected"  /> {$ dat.definition $} </div>
+                            </div>
+                            <div class="col-sm-2">
+                              <i class="fa fa-trash-o  pull-right" ng-click="deleteVerb($index,'delete_entity')"></i>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-bottom:15px">
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div class="panel-heading" data-toggle="collapse" href="#collapse5">
+                    <h4 class="panel-title">
+                      <a>Set Value</a>
+                    </h4>
+                  </div>
+                  <div id="collapse5" class="panel-collapse collapse">
+                    <table class="table table-bordered">
+                      <tr>
+                        <td>
+                          <form>
+                              <div class="input-group">
+                                <input type="text" class="form-control" ng-model="action.setValueVerb" placeholder="Enter the Verb">
+                                <span class="input-group-btn">
+                                  <button class="btn btn-default" type="button" ng-disabled="action.setValueVerb==''" ng-click="getMeanings('set_value')">Submit</button>
+                                </span>
+                              </div>
+                          </form>
+                          <div class="error">{$ setValueError $}</div>
+                          <div class="loading-spiner-holder" ng-show="loadMeanings['set_value']" ><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Fetching meanings...</i></span></div></div>
+                        </td>
+                      </tr>
+                      <tr ng-repeat="obj in actionObj.set_value  track by $index">
+                        <td>
+                          <div class="row" >
+                            <div class="col-sm-3" >
+                              <p >
+                                {$ obj.word $}
+                              </p>
+                            </div>
+                            <div class="col-sm-7">
+                              <div ng-repeat="dat in obj.meanings track by $index"><input type="checkbox" ng-model="actionObj.set_value[$parent.$index].meanings[$index].is_selected" /> {$ dat.definition $} </div>
+                            </div>
+                            <div class="col-sm-2">
+                              <i class="fa fa-trash-o  pull-right" ng-click="deleteVerb($index,'set_value')"></i>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-bottom:15px">
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div class="panel-heading" data-toggle="collapse" href="#collapse6">
+                    <h4 class="panel-title">
+                      <a>Send Message</a>
+                    </h4>
+                  </div>
+                  <div id="collapse6" class="panel-collapse collapse">
+                    <table class="table table-bordered">
+                      <tr>
+                        <td>
+                          <form>
+                              <div class="input-group">
+                                <input type="text" class="form-control" ng-model="action.sendMessageVerb" placeholder="Enter the Verb" >
+                                <span class="input-group-btn">
+                                  <button class="btn btn-default" type="button" ng-disabled="action.sendMessageVerb==''" ng-click="getMeanings('send_message')">Submit</button>
+                                </span>
+                              </div>
+                          </form>
+                          <div class="error">{$ sendMessageError $}</div>
+                          <div class="loading-spiner-holder" ng-show="loadMeanings['send_message']" ><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Fetching meanings...</i></span></div></div>
+                        </td>
+                      </tr>
+                      <tr ng-repeat="obj in actionObj.send_message  track by $index">
+                        <td>
+                          <div class="row" >
+                            <div class="col-sm-3" >
+                              <p>
+                                {$ obj.word $}
+                              </p>
+                            </div>
+                            <div class="col-sm-7">
+                              <div ng-repeat="dat in obj.meanings track by $index"><input type="checkbox" ng-model="actionObj.send_message[$parent.$index].meanings[$index].is_selected"  /> {$ dat.definition $} </div>
+                            </div>
+                            <div class="col-sm-2">
+                              <i class="fa fa-trash-o  pull-right" ng-click="deleteVerb($index,'send_message')"></i>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 pull-right">
+                <button class="btn btn-primary pull-right" ng-click="exportAction()">Export</button>
+                <button class="btn btn-default pull-right" ng-click="clearAction()" style="margin-right:10px;">Clear</button>
+                <span class="pull-right" style="color:green">{$ msg $}</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                <div class="loading-spiner-holder pull-right" ng-show="showLoaderIcon" ><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Exporting ...</i></span></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+<div id="container" style="display:none">
+
+</div>

@@ -1,0 +1,41 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+
+
+<div class="row" id="insights-tabs">
+  <div class="col-lg-12 col-md-12 col-sm-12">
+
+ <tabs id="engine-tabs">
+    <pane title="Define Insights">
+      <div data-ui-view="defineinsights" class="insightdata-div"></div>
+    </pane>
+    <pane title="Test Insights">
+      <div data-ui-view="testinsights" class="insightdata-div"></div>
+    </pane>
+    <!--<pane title="Rules">
+      <div>This is the content of t he Rules(context).</div>
+    </pane>-->
+    <!--<pane title="Testing">
+      <div>This is the content of the Testing(insights).</div>
+    </pane>
+    <pane title="Training">
+      <div>This is the content of the Training(insights).</div>
+    </pane>-->
+  </tabs>
+
+
+
+    </div>
+  </div>
+</div>

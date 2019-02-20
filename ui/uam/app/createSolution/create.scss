@@ -1,0 +1,43 @@
+.btn-save{
+    background-color:black;
+    border-radius:25px;
+    color:white;
+}
+.btn-cancel{
+    background-color:transparent;
+}
+
+.heading{
+    font-weight:300;
+}
+.textHeading{
+    font-weight:300;
+}
+
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+.sideContainer{
+    background-color: #0a222e;
+    color: #cacaca;
+    position: fixed;
+    right: 0;
+    height:100%;
+}
+.SolutionList{
+    color: #32a9e1;
+    line-height:40px;
+}
+.sidemenuText{
+    margin-top:30px;
+    margin-bottom:30px;
+}
+
+.textLimit{
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+}

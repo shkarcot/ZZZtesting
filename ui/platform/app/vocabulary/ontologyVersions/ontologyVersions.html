@@ -1,0 +1,176 @@
+<div class="row overlay" id="infoOpen">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h4 class="push-left">
+			<span>Meta Info</span>
+			<span class="pull-right closeRule closebtn" ng-click="cancelInfo()">&times;</span>
+		</h4>
+		<br>
+        <div class="row metaInfoCls">
+            <div class="col-lg-6 col-sm-6 col-xs-6 col-sm-6 ">
+                <span class="keyCls">File Name</span>
+            </div>
+             <div class="col-lg-6 col-sm-6 col-xs-6 col-sm-6 ">
+                 <span class="valCls">{$ ovc.ontologyData.file_name $}</span>
+            </div>
+        </div>
+        <div class="row metaInfoCls">
+            <div class="col-lg-6 col-sm-6 col-xs-6 col-sm-6 ">
+                <span class="keyCls">Version</span>
+            </div>
+             <div class="col-lg-6 col-sm-6 col-xs-6 col-sm-6 ">
+                 <span class="valCls">{$ ovc.versionData.version $}</span>
+            </div>
+        </div>
+        <div class="row metaInfoCls">
+            <div class="col-lg-6 col-sm-6 col-xs-6 col-sm-6 ">
+                <span class="keyCls">Last Modified</span>
+            </div>
+             <div class="col-lg-6 col-sm-6 col-xs-6 col-sm-6 ">
+                 <span class="valCls">{$ formatDateInList(ovc.versionData.modified_ts) $}</span>
+            </div>
+        </div>
+        <div class="row metaInfoClsForLast">
+            <div class="col-lg-6 col-sm-6 col-xs-6 col-sm-6 ">
+                <span class="keyCls">Uploaded By</span>
+            </div>
+             <div class="col-lg-6 col-sm-6 col-xs-6 col-sm-6 ">
+                 <span class="valCls">{$ ovc.versionData.created_by $}</span>
+            </div>
+        </div>
+	</div>
+</div>
+
+
+<div class="row minPadding">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+        <h3 class="zeroMargin">
+              <div class="dropdown">
+                  <a data-toggle="dropdown" class="noDecoration configureHeading">Sources <b class="caret"></b></a>
+                  <ul class="customdropdown-menu dropdown-menu">
+                      <li>
+                        <a ui-sref="app.domainDashboard" class="noDecoration">
+                          <img src="/app/images/Domain.png"/>
+                          <span>Domain Configuration</span>
+                        </a>
+                      </li>
+                      <li>
+                          <a ui-sref="app.services" class="noDecoration">
+                              <img src="/app/images/Services-01.png"/>
+                              <span>Service Configuration</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a ui-sref="app.pipeline" class="noDecoration">
+                              <img src="/app/images/pipeline.png"/>
+                              <span>Pipeline Configuration</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a ui-sref="app.sourceConfiguration" class="noDecoration">
+                              <img src="/app/images/sources.png"/>
+                              <span>Sources</span>
+                          </a>
+                      </li>
+                  </ul>
+                  <span style="margin-left: 10px;font-size: 13px;">|</span>
+                  <span style="margin-left: 10px;font-size: 13px;cursor:pointer;text-decoration:underline;" ng-click="changeState()"> Vocabulary Management	</span>
+                  <span style="margin-left: 10px;font-size: 13px;"> > </span>
+                  <span style="margin-left: 10px;font-size: 13px;"> {$ ovc.ontologyData.file_name $}</span>
+              </div>
+        </h3>
+    </div>
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 alignRight">
+        <img class="helpImages" src="/app/images/comment-01.png"/>
+        <img class="helpImages" src="/app/images/help-01.png"/>
+    </div>
+</div>
+<div class="row" style="height:80vh;">
+    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+        <div class="versionPage dictionary">
+            <div class="row">
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                    <div class="row row-eq-height">
+                    <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6 no-padding">
+                        <div class="form-group has-feedback has-search">
+                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                            <input type="text" class="form-control" placeholder="Search" ng-model="ovc.searchFile">
+                          </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6 text-right">
+
+                        <button class="btn btn-upload col-lg-6 col-md-6 col-xs-6 col-sm-6 pull-right" style="width:40%;margin-right: -12px;">
+                            <input class="hide_file" ngf-select="uploadOntologies($files)" accept="application/rdf+xml" multiple="multiple" type="file" style="font-size:13px;" />
+                            <img src="/app/images/plus-default.png"/>
+                            <span>Upload New Version</span>
+                        </button>
+                    </div>
+                </div>
+                <br>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <td>Versions</td>
+                                <td>is Active ?</td>
+                                <td>Created On</td>
+                                <td>Triple Count</td>
+                                <td>Created By</td>
+                                <td>Actions</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat ="files in ovc.listOfFiles | filter:ovc.searchFile track by $index">
+                               <td colspan="2" style="background-color:#e0f0fa;border-right:2px solid #e0f0fa">{$ files.file_name $}</td>
+                               <td></td><td></td><td></td>
+                               <td> <span style="color:#2196F3" ng-if="files.status!='Failed'">{$ files.status $}</span> <span style="color:red" ng-if="files.status=='Failed'">{$ files.status $}</span> </td>
+                           </tr>
+                            <tr ng-repeat="version in ovc.versionsInfo | filter:ovc.searchFile track by $index">
+                                <td>{$ version.version $}</td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" ng-model="version.is_active" ng-change="ovc.changeVersion(version)">
+                                        <span class="slider round"></span>
+                                        <div class="toggleText"></div>
+                                    </label>
+                                </td>
+                                <td>
+                                   {$ formatDateInList(version.created_ts) $}
+                                </td>
+                                <td>
+                                    {$ version.no_of_concepts $}
+                                </td>
+                                <td>
+                                    {$ version.created_by $}
+                                </td>
+                                <td style="width:19%;">
+                                    <div class="row">
+                                        <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">-->
+                                            <!--<img src="/app/images/versionedit.png"/>-->
+                                        <!--</div>-->
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                            <a ng-click="download(version)">
+                                                <img src="/app/images/versiondownload.png" class="img1"/>
+                                            </a>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                            <img src="/app/images/versioninfo.png"  class="img2" ng-click="openInfo(version);"/>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="editVersion">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

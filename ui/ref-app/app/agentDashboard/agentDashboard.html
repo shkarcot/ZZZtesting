@@ -1,0 +1,120 @@
+    <div class="agentDashboard-style">
+    <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div data-toggle="collapse" data-target=".top-menu" class="pull-right" style="cursor:pointer;">
+                <img src="/app/images/compress.png" ng-click="showImage = true" ng-show="!showImage">
+                <span ng-show="showImage" ng-click="showImage = false">
+                    <img src="/app/images/fullExpand.png"  >
+                    Expand Metrics
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row row-eq-height collapse in customDashboardStyle top-menu">
+        <div class="col-lg-8 col-sm-8 col-md-8 col-xs-8 dashboard-border">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <label>Your Open Cases</label>
+                    <div class="dashboard-reports">{$ adbc.dashboardStats.overall_new_count $}</div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <label>Avg Cases Processed/day</label>
+                    <div class="dashboard-reports">-
+                        <img class="image-styles" src="/app/images/arrow_up.png"/>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <label>Pages Processed/day</label>
+                    <div class="dashboard-reports">- </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <label>Case Past Due</label>
+                    <div class="dashboard-reports">
+                        <img class="image-styles"  src="/app/images/exclamation_red.png"/> -
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                <label>Cases Closed Today</label>
+                <div class="dashboard-reports">{$ adbc.dashboardStats.overall_closed_count $}</div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                <label>Cases Closed Month</label>
+                <div class="dashboard-reports">- </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                <label>Closed This Year</label>
+                <div class="dashboard-reports">-</div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                <label>Case At Risk</label>
+                <div class="dashboard-reports">
+                    <img class="image-styles"  src="/app/images/exclamation_yellow.png"/> -
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-ms-4 col-md-4 col-xs-4">
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  no-padding">
+                    <label>Average Processing Time Per Case</label>
+                    <div class="dashboard-reports">65 min</div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding">
+                    <div class="customBadge">
+                        <div class="rank">
+                            <div>Your Rank</div>
+                            <div class="rank2">2</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container agent-container">
+    <div class="row row-eq-height">
+        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-padding">
+            <h4 class="heading">QUEUES</h4>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  no-padding text-right">
+            <div class="row row-eq-height">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <span class="filterStyle">Filters</span>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">
+                    <select class="form-control">
+                        <options>All Queues</options>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td class="agent-table">Queue Name</td>
+                    <td class="agent-table">New Unassigned</td>
+                    <td class="agent-table">Assign To Me</td>
+                    <td class="agent-table">In-progress Assigned To Me</td>
+                    <td class="agent-table">Case Past Due</td>
+                    <td class="agent-table">Case At Risk</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="list in adbc.allQueues" ng-click="adbc.goToQueueCases(list)">
+                    <td>{$ list.name $} <span ng-if="list.workflow_id !=undefined">(</span><span>{$ list.workflow_id $}</span><span ng-if="list.workflow_id !=undefined">)</span></td>
+                    <td>{$ list.unassigned_count $}</td>
+                    <td>{$ list.assigned_count $}</td>
+                    <td>{$ list.inprogress_count $}</td>
+                    <td></td>
+                    <td>
+                        <img src="/app/images/exclamation_yellow.png"/>
+                        <span>-</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

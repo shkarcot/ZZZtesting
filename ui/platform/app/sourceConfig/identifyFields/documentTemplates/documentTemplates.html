@@ -1,0 +1,566 @@
+<div class="row overlay adaptContainer" id="createTemplate">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" >
+        <div class="row">
+            <div class="col-lg-8 col-sm-8 col-md-8 col-xs-8">
+                <h4>Upload Document Template</h4>
+            </div>
+            <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4 dashboard-row text-right">
+                <span class="closeRule closebtn" ng-click="cancelTemplate()">&times;</span>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <form class="form-horizontal"  ng-submit="dtc.sendDic()">
+                    <div class="upload-div" style="height:480px;">
+                        <div class="row" style="padding:20px;">
+                            <div class="col-lg-12 col-sm-12 col-md-12 uploadCorpus" ngf-select ng-model="dtc.dicFile" name="file"
+                                       ngf-change="dtc.uploadDic(dtc.dicFile)" type="file">
+                                <img src="/app/images/Upload-01.png" style="width:30px;"/>
+                                <span>Browse the File</span>
+                            </div>
+                            <br>
+                            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                                <span>{$ dtc.browseName $}</span>
+                            </div>
+                            <div ng-show="dtc.browseFileError" class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="color:red"><span>File Required</span>
+                            </div>
+                        </div>
+                        <br>
+                        <!--<div class="row">-->
+                            <!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">-->
+                                <!--<p ng-show="dtc.browseName!=''" style="margin-top: 8px;">File: {$ dtc.browseName-->
+                                    <!--$} </p>-->
+                                <!--<p ng-show="dtc.browseName==''" style="margin-top: 8px;">File: Browse to select </p>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                <label class="text-heading">Name</label>
+                                <input type="text" class="form-control bottomLineInput" placeholder="Name" ng-model="dtc.fileName"
+                                   required style="border-radius:0px;margin-bottom:0px;">
+                                <div ng-show="dtc.showdupMess" style="color:red">{$ dtc.dupNameMessage $}</div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <button class="btn btn-custom" type="submit" ng-disabled="dtc.isDisable">
+                                    Upload
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="confirmBox">
+    <div class="popup-header">
+        <h3 class="text-primary"> Confirm Action </h3>
+        <hr class="popup-hr"/>
+        <p class="text-info" style="padding:10px"> {$ activePopupText $} </p>
+        <br/>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+                <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm</button>
+            </div>
+        </div>
+    </div>
+</script>
+<div class="row minPadding">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+        <h3 class="zeroMargin">
+            <div class="dropdown">
+                <a data-toggle="dropdown" class="noDecoration configureHeading"> domain <b class="caret"></b></a>
+                <ul class="customdropdown-menu dropdown-menu">
+                    <li>
+                        <a ui-sref="app.domainDashboard" class="noDecoration">
+                            <img src="/app/images/Domain.png"/>
+                            <span>Domain Configuration</span>
+                        </a>
+                    </li>
+                    <li>
+                      <a class="noDecoration" ui-sref="app.modelDashboard">
+                            <img src="/app/images/model.png"/>
+                            <span>Models</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="noDecoration" ui-sref="app.function">
+                        <img src="/app/images/functionIcon.png"/>
+                        <span>Functions</span>
+                      </a>
+                    </li>
+                    <li>
+                        <a ui-sref="app.services" class="noDecoration">
+                            <img src="/app/images/Services-01.png"/>
+                            <span>Service Configuration</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a ui-sref="app.pipeline" class="noDecoration">
+                            <img src="/app/images/pipeline.png"/>
+                            <span>Pipeline Configuration</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a ui-sref="app.sourceConfiguration" class="noDecoration">
+                            <img src="/app/images/sources.png"/>
+                            <span>Sources</span>
+                        </a>
+                    </li>
+                </ul>
+                <span style="margin-left: 10px;font-size: 13px;">|</span>
+                <span style="margin-left: 10px;font-size: 13px;color: #3babe1;"> Document Template</span>
+            </div>
+        </h3>
+    </div>
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 alignRight">
+        <button class="btn btn-add" ng-click="addTemplate();">
+            <img src="/app/images/plus-default.png" style="width:10px;">
+            <span>Create Template</span>
+        </button>
+        <!--<img class="helpImages" src="/app/images/comment-01.png"/>-->
+        <!--<img class="helpImages" src="/app/images/help-01.png"/>-->
+    </div>
+</div>
+<!--<br>-->
+
+
+<div class="well" style="box-shadow: none;border: none;background: white;margin: 0px 20px 20px 20px;">
+   <!--<div class="row">-->
+      <!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">-->
+         <!--<form class="form-horizontal" validate-form>-->
+            <!--<div class="row">-->
+               <!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">-->
+                  <!--<div class="input-group">-->
+                     <!--<input type="text" class="form-control bottomLineInput" placeholder="Name" ng-model="dtc.fileName" required>-->
+                     <!--<span class="input-group-btn">-->
+                     <!--<button class="btn btn-secondary ng-click-active" ng-show="!dtc.display" type="button" ng-click="dtc.openModal('modal')">Browse</button>-->
+                     <!--</span>-->
+                  <!--</div>-->
+                  <!--<div ng-show="dtc.showdupMess" style="color:red">{$ dtc.dupNameMessage $}</div>-->
+                  <!--<p ng-show="dtc.browseName!=''" style="margin-top: 8px;">File: {$ dtc.browseName $} </p>-->
+                  <!--<p ng-show="dtc.browseName==''" style="margin-top: 8px;">File: Browse to select </p>-->
+               <!--</div>-->
+            <!--</div>-->
+         <!--</form>-->
+      <!--</div>-->
+   <!--</div>-->
+   <!--<br>-->
+   <!--<div class="row cstRow">-->
+      <!--<div ngf-select ng-model="dtc.dicFile" name="file" ngf-change="dtc.uploadDic(dtc.dicFile)">-->
+         <!--<div class="col-lg-4 col-sm-4 col-md-4 col-xs-12 customUpload" style="height: {$ uploadHeight $}px"></div>-->
+      <!--</div>-->
+      <!--<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12" style="height: {$ uploadHeight $}px;">-->
+         <!--<div class="imageView">-->
+            <!--<ul class="list-inline">-->
+            <!--</ul>-->
+         <!--</div>-->
+      <!--</div>-->
+   <!--</div>-->
+   <!--<br>-->
+   <!--<div class="row" ng-show="dtc.display">-->
+      <!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">-->
+         <!--<button class="btn btn-custom ng-click-active" type="submit" ng-click="dtc.openModal('submit')" ng-disabled="dtc.isDisable" >Save</button>-->
+         <!--<button class="btn btn-cancel btn-change ng-click-active" type="button" ng-click="dtc.openModal('modal')">Change</button>-->
+      <!--</div>-->
+   <!--</div>-->
+    <!--<tr >-->
+                    <!--<td>-->
+                        <!--<span ng-click="dtc.goTo(data)"-->
+                              <!--ng-class="data.doc_state!='ready'?'disabledTemplate':'enabledTemplate'">{$ data.template_name $}</span>-->
+                        <!--<span ng-show="data.is_draft" class="draftClass">Draft</span>-->
+                    <!--</td>-->
+                    <!--<td>{$ data.created_ts $}</td>-->
+                    <!--<td>{$ data.updated_ts $}</td>-->
+                    <!--<td>{$ data.doc_state $}</td>-->
+                    <!--<td class="clicklink " ng-click="dtc.deleteRecord(data)"><i class="fa fa-trash"></i></td>-->
+                <!--</tr>-->
+   <div class="row">
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" dir-paginate="data in dtc.documentsList |itemsPerPage:filter_obj.no_of_recs"
+                    total-items="filter_obj.totalRecords" current-page="filter_obj.page_no"
+                    pagination-id="branchPagination">
+         <div class="panel documentPanel" ng-click="dtc.goTo(data)">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 dashboard-row">
+                            <span ng-show="data.is_draft" class="draftClass">Draft</span>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 dashboard-row text-right">
+                        <i class="fa fa-check-circle-o success" style="font-size:13px;" ng-show="data.doc_state=='ready'" ></i>
+                        <i class="fa fa-times-circle-o error" style="font-size:13px;" ng-show="data.doc_state!='ready'"></i>
+                        <span style="font-size:12px;text-transform: capitalize;" ng-class="data.doc_state=='ready'?'success':'error'">{$ data.doc_state $}</span>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body" style="border:none;">
+               <div class="templateHeading">
+                  <img src="/app/images/cleanImage.png" style="width:30px;"/>
+                  <label ng-class="data.doc_state!='ready'?'disabledTemplate':'enabledTemplate'">{$ data.template_name $}</label>
+                   <span style="float:right;color: #b3b2b2;" ng-click="dtc.deleteRecord(data);$event.stopPropagation()">
+                       <i class="fa fa-trash"></i>
+                   </span>
+               </div>
+               <div class="templateBody">
+                  <div class="row bodyTop">
+                     <div class="col-lg-6 col-sm-6 col-md-6">
+                        <label class="templateLabel">Created On</label>
+                        <div class="textSubLabel">{$ formatDateInList(data.created_ts) $}</div>
+                     </div>
+                     <div class="col-lg-6 col-sm-6 col-md-6">
+                        <label class="templateLabel">Modified On</label>
+                        <div class="textSubLabel">{$ formatDateInList(data.updated_ts) $}</div>
+                     </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                     <div class="col-lg-6 col-sm-6 col-md-6">
+                        <label class="templateLabel">Total Documents</label>
+                        <div  class="textSubLabel">-</div>
+                     </div>
+                     <div class="col-lg-6 col-sm-6 col-md-6">
+                        <label class="templateLabel">Most Recent</label>
+                        <div class="textSubLabel">-</div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+    <div class="right">
+        <dir-pagination-controls max-size=filter_obj.no_of_recs direction-links="true"
+                                 pagination-id="branchPagination" boundary-links="true"
+                                 on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+    </div>
+    <br>
+    <br>
+</div>
+
+
+<!--<div class="row">-->
+    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:35px;">-->
+        <!--<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">-->
+            <!--<div class="panel" style="box-shadow:none;">-->
+                <!--<div class="panel-heading" role="tab" id="headingOne"-->
+                     <!--style="background-color: #e8f7fd;padding:15px;border-bottom:1px solid #dddddd;">-->
+                    <!--<div class="panel-title">-->
+                        <!--<a role="button" class="titleColor" ng-click="showTemplate=true;ruleListShow=true;"-->
+                           <!--data-toggle="collapse" data-parent="#accordion" href=".collapseOne" aria-expanded="true"-->
+                           <!--aria-controls="collapseOne"-->
+                           <!--style="padding-left: 10px;color: #00a3e0;font-size: 15px;text-decoration:none;">-->
+                            <!--<i class="more-less fa fa-plus-square-o" style="float: right;margin-top: 5px;"></i>-->
+                            <!--Add Template-->
+                        <!--</a>-->
+                        <!--&lt;!&ndash;<a role="button" class="titleColor btn-theam" ng-click="showTemplate=false" data-toggle="collapse" data-parent="#accordion" href=".collapseTwo" aria-expanded="true" aria-controls="collapseTwo" style="padding-left: 10px;font-size: 15px;text-decoration:none;" ng-show="dtc.documentsList.length>0">&ndash;&gt;-->
+                        <!--&lt;!&ndash;Add Table&ndash;&gt;-->
+                        <!--&lt;!&ndash;</a>&ndash;&gt;-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="panel-collapse collapse collapseOne in" role="tabpanel" aria-labelledby="headingOne">-->
+                    <!--<div class="panel-body" style="border-bottom:1px solid #ddd;border-top:none;">-->
+                        <!--<form class="form-horizontal" validate-form>-->
+                            <!--<div class="row">-->
+                                <!--<div class="col-lg-5 col-sm-5 col-md-5">-->
+                                    <!--<input type="text" class="form-control" placeholder="Name" ng-model="dtc.fileName"-->
+                                           <!--required>-->
+                                    <!--<div ng-show="dtc.showdupMess" style="color:red">{$ dtc.dupNameMessage $}</div>-->
+                                <!--</div>-->
+                                <!--<div class="col-lg-3 col-sm-3 col-md-3">-->
+                                    <!--<p ng-show="dtc.browseName!=''" style="margin-top: 8px;">File: {$ dtc.browseName-->
+                                        <!--$} </p>-->
+                                    <!--<p ng-show="dtc.browseName==''" style="margin-top: 8px;">File: Browse to select </p>-->
+                                <!--</div>-->
+                                <!--<div class="col-lg-4 col-sm-4 col-md-4 right1" ng-show="!dtc.display">-->
+                                    <!--&lt;!&ndash;<button class="btn" ngf-select ng-model="dicFile" name="file" ngf-change="uploadDic(dicFile)" type="button" style="display:inline;background-color:#ededed;color:#5d5d5d;">Browse</button>&ndash;&gt;-->
+
+                                    <!--<button class="btn button-primary ng-click-active" type="button"-->
+                                            <!--ng-click="dtc.openModal('modal')">Browse-->
+                                    <!--</button>-->
+                                <!--</div>-->
+                                <!--<div class="col-lg-4 col-sm-4 col-md-4 right1" ng-show="dtc.display">-->
+                                    <!--&lt;!&ndash;<button class="btn" ngf-select ng-model="dicFile" name="file" ngf-change="uploadDic(dicFile)" type="button" style="display:inline;background-color:#ededed;color:#5d5d5d;">Browse</button>&ndash;&gt;-->
+                                    <!--<button class="btn btn-default pull-right ng-click-active" type="button"-->
+                                            <!--ng-click="dtc.openModal('modal')">Change-->
+                                    <!--</button>-->
+                                    <!--<button class="btn button-primary ng-click-active" type="submit"-->
+                                            <!--ng-click="dtc.openModal('submit')" ng-disabled="dtc.isDisable">Save-->
+                                    <!--</button>-->
+
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</form>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="panel-collapse collapse collapseTwo" role="tabpanel" aria-labelledby="headingTwo">-->
+                    <!--<div class="panel-body" style="border-bottom:1px solid #ddd;border-top:none;">-->
+                        <!--<div class="row" ng-show="ruleListShow">-->
+                            <!--<div class="col-sm-12">-->
+                                <!--&lt;!&ndash;<div style="padding-left:1em">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<div style="padding-left:1em">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<div class="rulzAddCard">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<i class="fa fa-ellipsis-v ellipsisFont" aria-hidden="true"></i>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<i class="fa fa-ellipsis-v ellipsisFont" aria-hidden="true"></i>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<span class="newRuleClass">Create New Rule</span>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                <!--<ol type="1" style="padding-left:1em">-->
+                                    <!--<li style="padding-left:1em" ng-repeat="data in dtc.documentsList">-->
+                                        <!--<div class="rulzCard" ng-click="documentSelect($index)">-->
+                                            <!--<i class="fa fa-ellipsis-v ellipsisFont" aria-hidden="true"></i>-->
+                                            <!--<i class="fa fa-ellipsis-v ellipsisFont" aria-hidden="true"></i>-->
+                                            <!--<span style="padding-left:10px;font-size:16px;">{$ data.template_name $}</span>-->
+                                            <!--<i class="fa fa-pencil-square-o ellipsisFont pull-right"-->
+                                               <!--aria-hidden="true"></i>-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                <!--</ol>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog"-->
+                             <!--aria-labelledby="myModalLabel" aria-hidden="true">-->
+                            <!--<div class="modal-dialog modal-lg">-->
+                                <!--<div class="modal-content contentHeight">-->
+                                    <!--<div class="modal-body">-->
+                                        <!--<button type="button" class="close" data-dismiss="modal"><span-->
+                                                <!--aria-hidden="true">&times;</span><span class="sr-only">Close</span>-->
+                                        <!--</button>-->
+                                        <!--<img src="{$ selectedImageUrl $}" class="imagepreview" style="width: 100%;">-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div id="configure-table" ng-show="!ruleListShow">-->
+                            <!--<div class="row" style="padding-top:10px">-->
+                                <!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">-->
+                                    <!--<div class="row">-->
+                                        <!--<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 dashboard-row">-->
+                                            <!--<div class="row">-->
+                                                <!--<div class="col-lg-12 col-sm-12 col-sm-121 col-xs-12 dashboard-row">-->
+                                                    <!--<input type="text" ng-model="tableName" class="bottomLineInput1"-->
+                                                           <!--placeholder="Table Name"/>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                        <!--<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right">-->
+                                            <!--<a class="btnAddcol" ng-click="addTable()"><i class="fa fa-plus"></i><span>Add table</span></a>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <!--<div class="row">-->
+                                <!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">-->
+
+                                    <!--<div id="accordion1" role="tablist">-->
+                                        <!--<div class="card" ng-repeat="datum in dtc.data track by $index">-->
+                                            <!--<div class="card-header heading{$ $index $}" role="tab"-->
+                                                 <!--id="heading{$ $index $}">-->
+                                                <!--<h5 class="mb-0">-->
+                                                    <!--<a class="accordion-title pull-left" data-toggle="collapse"-->
+                                                       <!--href=".tableCollapse{$ $index $}" aria-expanded="true"-->
+                                                       <!--aria-controls="tableCollapse{$ $index $}">-->
+                                                        <!--&lt;!&ndash;<span><i class="fa fa-plus" ></i></span>&ndash;&gt;{$-->
+                                                        <!--datum.table_name $}-->
+                                                    <!--</a>-->
+                                                    <!--<a class="btnAddcol pull-left"-->
+                                                       <!--ng-click="deleteTable($index, datum.table_name)"><i-->
+                                                            <!--class="fa fa-trash"></i></a>-->
+                                                <!--</h5>-->
+
+                                            <!--</div>-->
+
+                                            <!--<div id="collapse{$ $index $}" class="collapse in tableCollapse{$ $index $}"-->
+                                                 <!--role="tabpanel" aria-labelledby="heading{$ $index $}"-->
+                                                 <!--data-parent="#accordion1">-->
+                                                <!--<div class="card-body" style="position: relative; padding:10px;">-->
+
+                                                    <!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">-->
+                                                        <!--<div class="headerdiv">-->
+                                                            <!--&lt;!&ndash;<input tags="text" data-role="tagsinput"  ng-model="datum.top_keys[0]" class="bottomLineInput1"  placeholder="Header" />&ndash;&gt;-->
+                                                            <!--<tags-input ng-model="datum.top_keys"></tags-input>-->
+                                                        <!--</div>-->
+                                                    <!--</div>-->
+
+                                                    <!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">-->
+                                                        <!--&lt;!&ndash;<button class="btn btn-primary right" value="+Col" ng-click="addColumn($index)">Add Column</button>&ndash;&gt;-->
+                                                        <!--<div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 dashboard-row">-->
+                                                            <!--<div class="container">-->
+                                                                <!--<div class="table-wrapper">-->
+                                                                    <!--<table class="table table-responsive table-bordered">-->
+                                                                        <!--<thead>-->
+                                                                        <!--<tr>-->
+                                                                            <!--<th ng-repeat="field in datum.headings  track by $index"-->
+                                                                                <!--class="column-th">-->
+                                                                                <!--<input type="text"-->
+                                                                                       <!--class="bottomLineInput1"-->
+                                                                                       <!--placeholder="Column header"-->
+                                                                                       <!--ng-model="datum.headings[$index]"/>-->
+                                                                                <!--<div class="column-th-del"-->
+                                                                                     <!--ng-click="removeColumn($parent.$index,$index)">-->
+                                                                                    <!--<i class="fa fa-close"></i></div>-->
+                                                                            <!--</th>-->
+                                                                        <!--</tr>-->
+                                                                        <!--</thead>-->
+                                                                        <!--<tbody>-->
+                                                                        <!--<tr>-->
+                                                                            <!--<td colspan="24"></td>-->
+                                                                        <!--</tr>-->
+                                                                        <!--</tbody>-->
+                                                                    <!--</table>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                        <!--<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">-->
+                                                            <!--<a class="btnAddcol" ng-click="addColumn($index)">-->
+                                                                <!--<i class="fa fa-plus" title="Add column"-->
+                                                                   <!--alt="Add column"></i><span></span></a>-->
+                                                        <!--</div>-->
+                                                    <!--</div>-->
+
+                                                    <!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">-->
+                                                        <!--<div class="footerdiv">-->
+                                                            <!--&lt;!&ndash;<input type="text" class="bottomLineInput1" ng-model="datum.bottom_keys[0]" placeholder="Footer"  />&ndash;&gt;-->
+                                                            <!--<tags-input ng-model="datum.bottom_keys"></tags-input>-->
+                                                        <!--</div>-->
+                                                    <!--</div>-->
+
+                                                    <!--<div class="clear"></div>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+
+                                    <!--</div>-->
+
+
+                                    <!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12" ng-show="dtc.data.length>0">-->
+                                        <!--<div ng-show="showSpinner" class="loading-spiner-holder ralign-spinner">-->
+                                            <!--<div class="loading-spiner"><i-->
+                                                    <!--class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span-->
+                                                    <!--class=""><i></i></span></div>-->
+                                        <!--</div>-->
+                                        <!--<button type="button" class="btn btn-primary right"-->
+                                                <!--ng-click="dtc.saveIdentifyTables()">Save-->
+                                        <!--</button>-->
+                                    <!--</div>-->
+
+                                <!--</div>-->
+                            <!--</div>-->
+
+
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div id="myModal" class="modal fade " role="dialog">-->
+                    <!--<div class="modal-dialog cst-modal-dialog">-->
+                        <!--&lt;!&ndash; Modal content&ndash;&gt;-->
+                        <!--<div class="modal-content">-->
+                            <!--<div class="modal-header">-->
+                                <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+                            <!--</div>-->
+                            <!--<div class="modal-body">-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-lg-4 col-md-4 col-sm-4">-->
+                                        <!--<div class="row">-->
+                                            <!--<h3>Upload a new file:</h3>-->
+                                            <!--<div class="btn"-->
+                                                 <!--style="background-color:transparent;border:1px solid #ddd;">-->
+                                                <!--<input class="hide_file" ngf-select ng-model="dtc.dicFile" name="file"-->
+                                                       <!--ngf-change="dtc.uploadDic(dtc.dicFile)" type="file">-->
+                                                <!--<span>Choose a file form your computer</span>-->
+                                                <!--<p>&nbsp;</p>-->
+                                                <!--<i class="fa fa-plus" style="font-size:35px;"></i>-->
+                                                <!--<p>&nbsp;</p>-->
+                                                <!--</input>-->
+                                            <!--</div>-->
+
+                                            <!--<div ng-show="dtc.browseFileError" style="color:red">It accepts only-->
+                                                <!--jpeg,jpg,png,pdf-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="col-lg-8 col-sm-8 col-md-8"-->
+                                         <!--style="background-color:#efefef;overflow-x:scroll;"-->
+                                         <!--ng-show="dtc.heldDocuments.length>0">-->
+                                        <!--<h3 ng-if="dtc.heldDocuments.length>=20">Latest 20 held documents</h3>-->
+                                        <!--<h3 ng-if="dtc.heldDocuments.length<20">Available {$dtc.heldDocuments.length$}-->
+                                            <!--held document<span ng-if="dtc.heldDocuments.length>1">s</span></h3>-->
+
+                                        <!--<div class="DocumentList">-->
+                                            <!--<ul class="list-inline">-->
+                                                <!--<li class="DocumentItem" ng-repeat="held in dtc.heldDocuments">-->
+                                                    <!--<div style="position: relative;"-->
+                                                         <!--ng-click="dtc.removeHeldDocument(held)">-->
+                                                        <!--<i class="fa fa-trash"-->
+                                                           <!--style="padding-top: 3px;position: absolute;right: -5px;top: -10px;cursor: pointer;"></i>-->
+                                                    <!--</div>-->
+                                                    <!--<img src="/static{$ held.url $}" class="disp"-->
+                                                         <!--ng-click="dtc.sendDocument(held)">-->
+                                                <!--</li>-->
+
+                                            <!--</ul>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!--<div class="row" ng-show="showTemplate">-->
+    <!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 ">-->
+        <!--<div class="row">-->
+            <!--<table class="table table-bordered table-scroll">-->
+                <!--<thead class="tableHeading">-->
+                <!--<tr>-->
+                    <!--<th ng-repeat="(i,th) in head" ng-class="selectedCls(i)" ng-click="changeSorting(i)">{$th$}</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+                <!--<tbody ng-show="dtc.documentsList.length==0">-->
+                <!--<tr>-->
+                    <!--<td colspan="5" class="DocumentBody">-->
+                        <!--<div class="alert alert-danger custom-alert">-->
+                            <!--No Documents-->
+                        <!--</div>-->
+                    <!--</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+                <!--<tbody>-->
+                <!--<tr dir-paginate="data in dtc.documentsList |itemsPerPage:filter_obj.no_of_recs"-->
+                    <!--total-items="filter_obj.totalRecords" current-page="filter_obj.page_no"-->
+                    <!--pagination-id="branchPagination">-->
+                    <!--<td>-->
+                        <!--<span ng-click="dtc.goTo(data)"-->
+                              <!--ng-class="data.doc_state!='ready'?'disabledTemplate':'enabledTemplate'">{$ data.template_name $}</span>-->
+                        <!--<span ng-show="data.is_draft" class="draftClass">Draft</span>-->
+                    <!--</td>-->
+                    <!--<td>{$ data.created_ts $}</td>-->
+                    <!--<td>{$ data.updated_ts $}</td>-->
+                    <!--<td>{$ data.doc_state $}</td>-->
+                    <!--<td class="clicklink " ng-click="dtc.deleteRecord(data)"><i class="fa fa-trash"></i></td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+            <!--<div style="float:right;">-->
+                <!--&lt;!&ndash;total-items="40"&ndash;&gt;-->
+                <!--<div>-->
+                    <!--<dir-pagination-controls max-size=filter_obj.no_of_recs direction-links="true"-->
+                                             <!--pagination-id="branchPagination" boundary-links="true"-->
+                                             <!--on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+<!--</div>-->

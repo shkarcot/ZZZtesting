@@ -1,0 +1,334 @@
+.form-line.bottom,
+.form-shadow,
+.form-shadow .center.bottom {
+    bottom: 0
+}
+.form-user-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none
+}
+.form-image {
+    position: relative;
+    margin: auto
+}
+.form-image>div,
+.form-image>img,
+.form-shadow {
+    top: 0;
+    left: 0;
+    position: absolute
+}
+.form-image>div[form-image-selector] {
+    z-index: 100;
+    cursor: crosshair
+}
+.form-image>div[form-image-drawer] {
+    z-index: 200;
+    cursor: crosshair
+}
+.form-image>img {
+    z-index: 100;
+    border: 1px solid #333
+}
+.form-workspace {
+    cursor: crosshair
+}
+.form-shadow {
+    display: none;
+    z-index: 400;
+    right: 0
+}
+.form-shadow .center,
+.form-shadow .left,
+.form-shadow .right,
+.form-shadow .top {
+    display: block;
+    background: rgba(1, 1, 1, .6)
+}
+.form-shadow .left,
+.form-shadow .right {
+    top: 0;
+    bottom: 0
+}
+.form-shadow .left {
+    left: 0
+}
+.form-shadow .right {
+    right: 0
+}
+.form-shadow .center.top {
+    top: 0
+}
+.form-box {
+    position: absolute;
+    display: none;
+    z-index: 500;
+    cursor: move;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box
+}
+.form-drag-handle,
+.form-drag-line,
+.form-line {
+    position: absolute;
+    display: block
+}
+.form-line {
+    opacity: .4;
+    background: url(data:image/gif;base64,R0lGODlhCAAIAJEAAKqqqv///wAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQJCgAAACwAAAAACAAIAAACDZQFCadrzVRMB9FZ5SwAIfkECQoAAAAsAAAAAAgACAAAAg+ELqCYaudeW9ChyOyltQAAIfkECQoAAAAsAAAAAAgACAAAAg8EhGKXm+rQYtC0WGl9oAAAIfkECQoAAAAsAAAAAAgACAAAAg+EhWKQernaYmjCWLF7qAAAIfkECQoAAAAsAAAAAAgACAAAAg2EISmna81UTAfRWeUsACH5BAkKAAAALAAAAAAIAAgAAAIPFA6imGrnXlvQocjspbUAACH5BAkKAAAALAAAAAAIAAgAAAIPlIBgl5vq0GLQtFhpfaIAACH5BAUKAAAALAAAAAAIAAgAAAIPlIFgknq52mJowlixe6gAADs=)#FFF
+}
+.form-line.left,
+.form-line.right {
+    width: 2px;
+    height: 100%;
+    cursor: e-resize
+}
+.form-line.left {
+    left: 0
+}
+.form-line.right {
+    right: 0
+}
+.form-line.bottom,
+.form-line.top {
+    height: 2px;
+    width: 100%;
+    cursor: n-resize
+}
+.form-line.top {
+    top: 0
+}
+.form-drag-line.n,
+.form-drag-line.s {
+    height: 7px;
+    width: 100%
+}
+.form-drag-line.n {
+    cursor: n-resize;
+    top: 0;
+    margin-top: -4px
+}
+.form-drag-line.s {
+    cursor: s-resize;
+    bottom: 0;
+    margin-bottom: -4px
+}
+.form-drag-handle.s,
+.form-drag-handle.se,
+.form-drag-handle.sw {
+    bottom: 0;
+    margin-bottom: -5px
+}
+.form-drag-line.e,
+.form-drag-line.w {
+    width: 7px;
+    height: 100%
+}
+.form-drag-line.e {
+    cursor: e-resize;
+    right: 0;
+    margin-right: -4px
+}
+.form-drag-line.w {
+    cursor: w-resize;
+    left: 0;
+    margin-left: -4px
+}
+.form-drag-handle {
+    z-index: 510;
+    opacity: .5;
+    background-color: #333;
+    border: 1px solid #EEE;
+    height: 10px;
+    width: 10px
+}
+.form-drag-handle.n {
+    cursor: n-resize;
+    left: 50%;
+    top: 0;
+    margin-left: -5px;
+    margin-top: -5px
+}
+.form-drag-handle.nw,
+.form-drag-handle.w {
+    margin-left: -5px;
+    left: 0;
+    margin-top: -5px
+}
+.form-drag-handle.ne {
+    cursor: ne-resize;
+    right: 0;
+    top: 0;
+    margin-right: -5px;
+    margin-top: -5px
+}
+.form-drag-handle.nw {
+    cursor: nw-resize;
+    top: 0
+}
+.form-drag-handle.e {
+    cursor: e-resize;
+    right: 0;
+    top: 50%;
+    margin-right: -5px;
+    margin-top: -5px
+}
+.form-drag-handle.w {
+    cursor: w-resize;
+    top: 50%
+}
+.form-drag-handle.s {
+    cursor: s-resize;
+    left: 50%;
+    margin-left: -5px
+}
+.form-drag-handle.se {
+    cursor: se-resize;
+    right: 0;
+    margin-right: -5px
+}
+.form-drag-handle.sw {
+    cursor: sw-resize;
+    left: 0;
+    margin-left: -5px
+}
+
+.DocumentBody{
+  padding:0px !important;
+}
+.btn-go {
+    background-color: white;
+    color: #00A3E0;
+    font-size: 13px;
+    border: 1px solid #00A3E0;
+    border-radius: 20px;
+}
+.btn-go1{
+    background-color: White;
+    border: 1px solid #00A3E0;
+    color: #00A3E0;
+    font-size: 13px;
+}
+
+.hide_file {
+    position: absolute;
+    z-index: 1000;
+    opacity: 0;
+    cursor: pointer;
+    right: 0;
+    top: 0;
+    height: 100%;
+    font-size: 24px;
+    width: 100%;
+}
+.DocumentList {
+    overflow-x:scroll;
+    overflow-y:hidden;
+    width:100%;
+    padding: 0 15px;
+}
+.disp{
+  width:300px;
+}
+
+.zoomSize{
+    zoom: 0.3;
+    -moz-transform: scale(0.3);
+    -moz-transform-origin: 0 0;
+    -o-transform: scale(0.3);
+    -o-transform-origin: 0 0;
+}
+.zoomSize1{
+    zoom: 0;
+    -o-transform: scale(0);
+    -o-transform-origin: 0 0;
+}
+.image-style{
+  padding:0px;
+  border:1px solid #e0e0e0;
+  overflow-y:scroll;
+  background-color:white;
+}
+.imageBlurDisplay{
+  background: #000000;
+    opacity: 0.7;
+}
+.disabledCls{
+    color : darkGray !important;
+    pointer-events: none;
+    cursor:not-allowed;
+}
+#marker-from .nav-tabs>li>a {
+  text-decoration:none;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  line-height: 20px;
+  -webkit-border-radius: 4px 4px 0 0;
+  -moz-border-radius: 4px 4px 0 0;
+  border-radius: 4px 4px 0 0;
+  background-color: transparent;
+  width:100px;
+}
+#marker-from .nav-tabs > li.active > a,
+#marker-from .nav-tabs > li.active > a:hover,
+#marker-from .nav-tabs > li.active > a:focus{
+    color:black !important;
+    border: 1px solid #ddd;
+    border-bottom: none;
+        background-color: #cbeefe;
+    -webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+}
+#marker-from .tab-content  {
+  background-color:#cbeefe !important;
+  padding: 13px !important;
+}
+.cst-tab{
+  margin-left:15px;
+}
+#marker-from .nav-tabs > li > a{
+  color:#00A3E0 !important;
+}
+/******Tags with auto complete *****/
+.tags {
+   margin-bottom: 5px;
+}
+.tags .tag {
+    display: inline-block;
+    margin-right: 5px;
+    font-size: 13px;
+    padding: 3px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: rgb(250, 247, 247);
+    box-shadow: 1px 1px 1px #ddd;
+}
+.tag .close {
+   font-size: 14px;
+   margin-left: 5px;
+   margin-top: 2px;
+}
+.dashed-line{
+  border-style:dashed;
+}
+.highlightClass {
+    background-color: rgba(239, 239, 239, 0.87) !important;
+}
+.clicklink span{
+  color:#25aae1;
+}
+.ui-widget-content {
+    background: #fff;
+    color: #666;
+    list-style: none;
+    padding: 2px 12px;
+    font-size: 1em;
+}
+.ui-widget.ui-widget-content{
+  width: 318px !important;
+}

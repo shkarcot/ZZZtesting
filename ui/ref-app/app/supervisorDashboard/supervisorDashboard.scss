@@ -1,0 +1,115 @@
+.supervisorDashboard-style{
+
+        background-color: #f2fbff;
+        box-shadow: 0 2px 4px 0 rgba(202, 202, 202, 0.5);
+        padding: 10px 20px 10px 20px;
+
+    .customDashboardStyle {
+        overflow-x: auto;
+        white-space: nowrap;
+
+            .customColumn{
+                  display: inline-block;
+                  float: none;
+            }
+    }
+    label{
+        font-size: 12px;
+        font-weight: 500;
+        color: #383838;
+        opacity: 0.61;
+    }
+    .dashboard-reports{
+        font-size: 36px;
+        font-weight: 300;
+        color: #575959;
+    }
+    img{
+        width:25px;
+        margin-right:10px;
+    }
+    .dashboard-border{
+        border-right:1px solid #979797;
+    }
+    .customBadge{
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+        text-align: center;
+        background-image: linear-gradient(to bottom, #94dfff, #32a9db);
+        color:white;
+    }
+    .rank{
+        padding-top: 20%;
+    }
+    .rank2{
+        padding-top:10%;
+        font-size:30px;
+    }
+    .heading{
+        font-weight: 600;
+        color: #7b7b7b;
+    }
+}
+
+.dues{
+     color:#ff0000;
+}
+.risk{
+    color:#ff9f00;
+}
+
+
+.supervisor-container2{
+    padding-top:15px;
+
+    h4{
+        color: #7b7b7b;
+    }
+    .table-bordered{
+        border:none;
+    }
+
+    .table-bordered > thead > tr > td {
+        border:none ;
+        color: #7b7b7b;
+        font-size:12px;
+    }
+    .table{
+        background-color:white;
+        box-shadow: 0 0 4px 0 rgba(175, 175, 175, 0.5);
+    }
+    .table > thead > tr > td{
+        background-color:#f5f5f5 !important;
+    }
+    .table-bordered > tbody > tr {
+        border-bottom:1px solid #e5e5e5;
+    }
+    .table>tbody>tr:hover {
+        background-color:#4a90e2;
+        color:white;
+        cursor:pointer;
+    }
+    .table>tbody>tr:hover >td {
+        color:white;
+    }
+    .table-bordered > tbody > tr > td {
+        border:none ;
+        color: #7b7b7b;
+        font-size:12px;
+    }
+    img{
+        width:18px;
+    }
+    .filterStyle{
+        color:#555;
+        font-size:13px;
+    }
+    .form-group {
+        margin-bottom: 0px;
+    }
+    .form-control-feedback{
+        color:#555;
+    }
+
+}

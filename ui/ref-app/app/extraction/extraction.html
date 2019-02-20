@@ -1,0 +1,1384 @@
+<script type="text/ng-template" id="tree1.html">
+    {$data.name$}
+
+    <ul class="tree">
+        <li ng-repeat="data in data.nodes" ng-include="'tree1.html'"></li>
+    </ul>
+</script>
+<script type="text/ng-template" id="confirmEntityBox">
+    <div class="popup-header">
+        <label class="text-primary"> Confirm Action </label>
+        <hr class="popup-hr"/>
+    </div>
+    <div class="popup-body">
+        <div class="text-info" style="padding:10px;font-size:16px;"> {$ activePopupText $} </div>
+        <br>
+        <label class="custom-checkbox" style="margin-left:9px;">
+            <span>Do not show this message again ?</span>
+          <input type="checkbox" ng-model="ec.showPopup.popup"/>
+          <span class="checkmark" style="top:3px;"></span>
+        </label>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+                <button class="btn btn-primary right" ng-click="onConfirmActivation(ec.showPopup.popup)"> Confirm</button>
+            </div>
+        </div>
+    </div>
+</script>
+<!--<div class="row custom-header">-->
+<!--<div class="col-lg-12 col-md-12 col-sm-12 text-right" style="margin-top:15px;" ng-show="showNavigation">-->
+<!--<span>{$ no_of_records $}</span> / {$ total_records $}<span></span>-->
+<!--<a style="text-decoration:none;" ng-click="ec.navigatePage('prev')" ng-class="no_of_records==1?'prevCursor':''">< Previous</a>-->
+<!--<a style="margin-left:25px;text-decoration:none;" ng-click="ec.navigatePage('next')" ng-class="no_of_records==total_records?'nextCursor':''">Next ></a>-->
+<!--</div>-->
+<!--</div>-->
+<div class="row custom-header" style="padding-left:10px;">
+    <div class="col-lg-3 col-md-3 col-sm-3 no-padding extraction-title-container review-breadcrumb">
+        <!-- <ol class="breadcrumb">
+                <li><a ui-sref="app.agentDashboard">Queues</a></li>
+                <li class="breadcrumb-item ">
+                        <a class="breadcrumb-heading" ng-click="goToCaseDashboard()">{ $currentQueueName $}</a>
+                </li>
+                <li class="breadcrumb-item active" >
+                        <div class="extraction-title" title="{$ recordData.properties.filename $}"><img src="./app/images/cleanImage.png" style="width:15px;"/>
+                              {$ recordData.properties.filename $}</div>
+                </li>
+        </ol> -->
+
+        <ol class="breadcrumb">
+            <li>
+                <a ui-sref="app.agentDashboard">
+                        <span class="ext-title">
+                                Queues
+                            </span>
+                </a> 
+                <span class="ext-title" style="width: 10px;color:#555"> > </span>
+            </li>
+            <li class="breadcrumb-item ">
+                <a ng-click="goToCaseDashboard()">
+                    <span class="ext-title">
+                        {$ currentQueueName $}
+                    </span>
+                    <span class="ext-title" style="width: 10px;color:#555;"> > </span>
+                </a>
+            </li>
+            <li class="breadcrumb-item " ng-if="parentfilename">
+                   
+                        <span class="ext-title">
+                            {$ parentfilename $}
+                        </span>
+                        <span class="ext-title" style="width: 10px;color:#555;"> > </span>
+                   
+                </li>
+            <li class="breadcrumb-item active">
+                <span class="ext-title">
+                    {$ recordData.properties.filename $}</span>
+                <span class="breadcrumbhover">
+                    <img ng-if="recordData.properties.filename" src="./app/images/breadcrumb-1.png" class="breadcrumbimg" />
+                    <div id="breadcrumbdiv" class="hoverbreadcrumb">
+                        <ol class="breadcrumb">
+                            <li>Queues</li>
+                            <li class="breadcrumb-item ">
+                                {$ currentQueueName $}
+                            </li>
+                            <li class="breadcrumb-item" ng-if="parentfilename">
+                                {$ parentfilename $}
+                            </li>
+                            <li class="breadcrumb-item active">
+                                <span class="ext-title">
+                                    {$ recordData.properties.filename $}</span>
+                            </li>
+                        </ol>
+                    </div>
+                </span>
+            </li>
+        </ol>
+    </div>
+
+    <div class="col-lg-9 col-md-9 col-sm-9 text-right no-padding">
+        <div class="row" style="display:flex;align-items:center;margin-top: 3px;float:right">
+            <div style="width: 140px;float: left;display: inline-block;">
+                <span class="scoresHeading">Confidence Score:</span>
+                <span class="label-style">{$ extractedData.data.document_confidence_score | number:2 $}%</span>
+            </div>
+            <div style="width: 130px;float: left;display: inline-block;">
+                <span class="scoresHeading">Attributes Extracted:</span>
+                <span class="label-style">{$extractedData.data.attributes_extracted $}</span>
+            </div>
+            <div style="width:50px;display: inline-block;float: left;text-align: center;color:#9e9e9e;">
+                |
+            </div>
+            <div class="filter-cls">
+                <label class="custom-checkbox">
+                    <span class="accepted"></span>
+                    <label style="font-weight: 400;margin-bottom:0px;">Accepted [{$extractedData.data.accept_count $}]</label>
+                    <input type="checkbox" ng-model="checkObj.accept" ng-change="ec.changeIntaraction('accept',checkObj.accept)">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+
+            <div class="filter-cls">
+                <label class="custom-checkbox">
+                    <span class="corrected"></span>
+                    <label style="font-weight: 400;margin-bottom:0px;">Corrected [{$extractedData.data.correct_count
+                        $}]</label>
+                    <input type="checkbox" ng-model="checkObj.correct" ng-change="ec.changeIntaraction('correct',checkObj.correct)" />
+                    <span class="checkmark"></span>
+                </label>
+
+            </div>
+            <div class="filter-cls">
+                <label class="custom-checkbox">
+                    <span class="reviewed"></span>
+                    <label style="font-weight: 400;margin-bottom:0px;">Needs Review
+                        <span class="reviewValue">[{$extractedData.data.review_required $}]</span>
+                    </label>
+                    <input type="checkbox" ng-model="checkObj.review" ng-change="ec.changeIntaraction('review',checkObj.review)" />
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div style="width: 35px;float: left;display: inline-block;text-align:center;" ng-click="ec.completeFedBack()">
+                <i class="fa fa-floppy-o" style="font-size:24px;color: #42aae1;"></i>
+            </div>
+            <div style="width: 90px;float: left;display: inline-block;padding-left: 15px;">
+                <select class="form-control headerSelectBox" ng-model="ec.changedState" ng-change="ec.saveStateChange()"
+                    style="border: 1px solid #50b6e7;">
+                    <option value="">Move To </option>
+                    <option ng-repeat="(key,value) in reviewStatesList" value="{$ value.doc_state $}" ng-disabled="!value.active">{$
+                        key $}</option>
+                </select>
+            </div>
+            <div style="width: 90px;float: left;display: inline-block;margin-left:15px;">
+                <button class="btn btn-custom btn-subheader" ng-click="ec.completeReview()">DONE</button>
+
+            </div>
+        </div>
+    </div>
+
+    <!--key-->
+</div>
+
+
+
+<div class="row row-eq-height reviewPage extraction" ng-show="(ec.documentType != 'digital' && ec.documentType != 'email')"
+    style="height:{$ height $}px;overflow-y:auto;">
+
+    <div class="col-sm-6 col-md-6 col-xs-12 col-lg-6 custom-rightPanel no-padding" id="actual">
+        <div class="row" ng-if="showUnknown && recordData.doc_type!='excel'">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 text-right">
+                <div class="btn-group text-center">
+                    <button type="button" class="btn btn-default btn-zoom" ng-click="ec.zoomOut()"><i class="fa fa-minus-circle"
+                            aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-default btn-zoom btn-magnifier" ng-click="ec.zoomReset()"><img
+                            src="/app/images/zoomIcon.png" style="width: 18px;" />
+                    </button>
+                    <button type="button" class="btn btn-default btn-zoom" ng-click="ec.zoomIn()"><i class="fa fa-plus-circle"
+                            aria-hidden="true"></i>
+                    </button>
+
+
+                </div>
+                <button type="button" class="btn btn-default btn-zoom" ng-click="ec.disableSelector()">
+                    Reset
+                </button>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right">
+                <div ng-if="showUnknown" style="display: inline-block;">
+                    <!--<div class="pagination" ng-show="no_of_pages>1">-->
+                    <!--<a ng-repeat="(key,value) in pagesInfo" ng-click="ec.changeDocumentInfo(value.page_no)" ng-class="current_page==value.page_no?'active':''">{$ value.page_no $}</a>-->
+                    <!--</div>-->
+                    <div ng-show="no_of_pages>1">
+                        <span>
+                            <button class="btn pagination-button" ng-disabled="current_page==1" ng-click="ec.changePageNumUnknown('prev')"><i
+                                    class="fa fa-chevron-left" style="color:white;font-size:12px;"></i></button>
+                        </span>
+                        <span class="pagination-textBox">
+                            <input type="number" class="pagination-text" ng-model="current_page" ng-keyup="ec.keyEnterUnknown($event)" />
+                        </span>
+                        <span>
+                            <button class="btn pagination-button" ng-disabled="current_page==no_of_pages" ng-click="ec.changePageNumUnknown('next')"><i
+                                    class="fa fa-chevron-right" style="color:white;font-size:12px;"></i></button>
+                        </span>
+                        <span> of {$ no_of_pages $}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row pdf-extraction-new" id="scrollImage">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <!--<div id="ImageLocation">-->
+                <!--&lt;!&ndash;<div  ng-if="showUnknown">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div ng-repeat='path in imagePaths track by $index' id='page_{$ path.page_no $}' ng-class="(path.is_bad!=undefined && path.is_bad) ? 'errorImage' : ''" name="{$ path.page_no $}" class='post'>&ndash;&gt;-->
+                <!--&lt;!&ndash;{$ path.page_no $}&ndash;&gt;-->
+                <!--&lt;!&ndash;&lt;!&ndash;<div class="alert alert-danger" ng-hide="false" id="badImage{$ $index $}">&ndash;&gt;&ndash;&gt;-->
+                <!--&lt;!&ndash;&lt;!&ndash;<p><i class="fa fa-exclamation-triangle"></i> Looks like a low quality page found.Unable to extract elements</p>&ndash;&gt;&ndash;&gt;-->
+                <!--&lt;!&ndash;&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class='panel panel-default' mr-image mr-src='path.file_path' mr-max width='auto' mr-selector='selector[$index+1]' mr-drawer='drawer[$index+1]'></div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--</div>-->
+                <div class="toolbar" style="display:none;">
+                    <button class="cursor" type="button" title="Cursor" data-tooltype="cursor">➚</button>
+
+                    <div class="spacer"></div>
+
+                    <button class="rectangle" type="button" title="Rectangle" data-tooltype="area">&nbsp;</button>
+                    <button class="highlight" type="button" title="Highlight" data-tooltype="highlight">&nbsp;</button>
+                    <button class="strikeout" type="button" title="Strikeout" data-tooltype="strikeout">&nbsp;</button>
+
+                    <div class="spacer"></div>
+
+                    <button class="text" type="button" title="Text Tool" data-tooltype="text"></button>
+                    <select class="text-size"></select>
+                    <div class="text-color"></div>
+
+                    <div class="spacer"></div>
+
+                    <button class="pen" type="button" title="Pen Tool" data-tooltype="draw">✎</button>
+                    <select class="pen-size"></select>
+                    <div class="pen-color"></div>
+
+                    <div class="spacer"></div>
+
+                    <button class="comment" type="button" title="Comment" data-tooltype="point">🗨</button>
+
+                    <div class="spacer"></div>
+
+                    <select class="scale">
+                        <option value=".17">17%</option>
+                        <option value=".25">25%</option>
+                        <option value=".33">33%</option>
+                        <option value=".5">50%</option>
+                        <option value="1">100%</option>
+                        <option value="1.33">133%</option>
+                        <option value="1.5">150%</option>
+                        <option value="2">200%</option>
+                    </select>
+
+                    <a href="javascript://" class="rotate-ccw" title="Rotate Counter Clockwise">⟲</a>
+                    <a href="javascript://" class="rotate-cw" title="Rotate Clockwise">⟳</a>
+
+                    <div class="spacer"></div>
+
+                    <a href="javascript://" class="clear" title="Clear">×</a>
+                </div>
+                <div id="loadingpdf" class="loadingdoc">Please wait document is loading...
+                    <br />
+                    <center><i class="fa fa-cog fa-spin fa-2x fa-fw margin-bottom"></i></center>
+                </div>
+                <div id="content-wrapper" style="height:{$ pdfHeight $}px;overflow-y:scroll;">
+                    <div id="viewer" class="pdfViewer"></div>
+                </div>
+                <div id="comment-wrapper" style="display:none;">
+                    <h4>Comments</h4>
+                    <div class="comment-list">
+                        <div class="comment-list-container">
+                            <div class="comment-list-item">No comments</div>
+                        </div>
+                        <form class="comment-list-form" style="display:none;">
+                            <input type="text" placeholder="Add a Comment" />
+                        </form>
+                    </div>
+                </div>
+                <div id="annotationdiv" class="annotation-wrapper">
+
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12" ng-if="recordData.doc_type=='excel'">
+                <div ng-bind-html="ec.renderHTMLData()"></div>
+                <div class="row" ng-if="recordData.doc_type=='excel'">
+                    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 excel-footer" style="background-color:aliceblue;text-align:left;">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-sheet excel-btn" ng-class="excelBtnArr[$index]" style="
+            border-right: 1px solid black;"
+                                ng-repeat="data in  pagesInfo" ng-click="getSheetData($index)">Sheet {$ $index+1 $}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12 image-style domainHierarchyDiv customColumnPadding" id="scrollDiv2"
+        style="background: #f4f4f4;">
+
+        <script type="text/ng-template" id="nodes_renderer2.html">
+                              <div ui-tree-handle class="tree-node tree-node-content"
+                                   data-nodrag style="padding:0px;margin-top:10px;">
+                                    <div class="hoveredRow  {$ rowHighlight[node.temp_id] $}"  ng-if="node.node_type=='field'" ng-click="ec.getCurrentValue(node)">
+                                        <i class="fa fa-trash hideOnHover"  ng-click="deleteField(node);$event.stopPropagation();" style="cursor:pointer;"></i>
+                                        <div class="row" ng-show="template_type=='unknown'">
+                                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding">
+                                                 <img src="/app/images/key.png" class="img-icons"/>
+                                                 <span class="ExtractedHeading">Key :</span>
+                                             </div>
+                                             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-padding">
+                                                <div class="show-image">
+                                                    <div class="hover-div">
+                                                         <div class="row">
+                                                             <div class="col-lg-6 col-md-6 col-ms-6 no-padding">
+                                                                    <span  ng-click="ec.getEXtractedValue(node,'field');$event.stopPropagation();">
+                                                                        <img src="/app/images/rotateLeft.png"  class="editImagesWidth"/>
+                                                                    </span>
+                                                             </div>
+                                                             <div class="col-lg-6 col-md-6 col-ms-6 no-padding">
+                                                                    <span>
+                                                                        <img src="/app/images/Crop.png"  ng-show="!coordinatesDisplay[node.temp_id]" class="editImagesWidth" ng-click="ec.editLabelCoordinates(node);$event.stopPropagation();"/>
+                                                                        <img src="/app/images/checked.png"  class="editImagesWidth" ng-show="coordinatesDisplay[node.temp_id]" ng-click="ec.acceptCoordinates(node);$event.stopPropagation();"/>
+                                                                    </span>
+
+                                                             </div>
+                                                         </div>
+                                                     </div>
+                                                    <span>
+                                                        <input type="text" class="textboxStyle" ng-model="node.key.text" ng-blur="ec.changedValue(node,'field','label')"/>
+                                                    </span>
+                                                    <span ng-class="fieldCriteria(node)" >{$ node.key.confidence | number:0 $}%</span>
+                                                </div>
+                                             </div>
+                                        </div>
+                                        <div class="row" ng-show="template_type!='unknown'">
+                                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding">
+                                                 <img src="/app/images/key.png" class="img-icons"/>
+                                                 <span class="ExtractedHeading">Key :</span>
+                                             </div>
+                                             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-padding">
+                                                <div>
+                                                    <span>
+                                                        <span class="textboxStyle">{$ node.key.name $} </span>
+                                                        <span ng-class="fieldCriteria(node)" >{$ node.key.confidence | number:0 $}%</span>
+
+                                                    </span>
+                                                </div>
+                                             </div>
+                                        </div>
+                                        <div class="row" style="margin-top:10px;">
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding">
+                                                <img src="/app/images/value.png" class="img-icons"/>
+                                                <span class="ExtractedHeading">Value :</span>
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-padding">
+                                                <div class="show-image">
+                                                     <div class="hover-div">
+                                                         <div class="row">
+                                                             <div class="col-lg-6 col-md-6 col-sm-6 no-padding">
+                                                                    <span  ng-click="ec.getEXtractedValue(node);$event.stopPropagation();">
+                                                                        <img src="/app/images/rotateLeft.png"  class="editImagesWidth"/>
+                                                                    </span>
+                                                             </div>
+                                                             <div class="col-lg-6 col-md-6 col-ms-6 no-padding">
+                                                                    <span>
+                                                                        <img src="/app/images/Crop.png"  ng-show="!coordinatesDisplay[node.temp_id]" class="editImagesWidth" ng-click="ec.editCoordinates(node);$event.stopPropagation();"/>
+                                                                        <img src="/app/images/checked.png"  class="editImagesWidth" ng-show="coordinatesDisplay[node.temp_id]" ng-click="ec.acceptCoordinates(node);$event.stopPropagation();"/>
+                                                                    </span>
+
+                                                             </div>
+                                                         </div>
+                                                     </div>
+                                                    <input class="textboxStyle" type="text" ng-model="node.value.text" ng-blur="ec.changedValue(node,'field','value')"/>
+                                                    <span ng-class="fieldCriteria(node)" >{$ node.value.confidence | number:0 $}%</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hoveredRow  {$ rowHighlight[node.temp_id] $} test{$ node.temp_id $}" ng-if="node.node_type=='table'" style="padding:0px;">
+                                        <form name="myForm">
+                                            <div class="row">
+
+                                                     <div style="padding:10px;display: flex;justify-content: space-between;">
+                                                         <div>
+                                                         <img src="/app/images/table.png" style="width:15px">
+                                                         <sapn class="ExtractedHeading"> Table </sapn>
+                                                             </div>
+                                                         <i class="fa fa-trash table-hover-i"  ng-click="deleteField(node,'table');$event.stopPropagation();"></i>
+                                                     </div>
+                                                     <div class="center content{$ node.temp_id $}">
+                                                            <div class="internal "  ng-class="ec.getHeader(heading)" ng-repeat="heading in node.headings_reconstructed track by $index" style="padding:10px;">
+                                                                  <input type="text" class="textboxStyle" ng-model="heading[0]" placeholder="column name" ng-blur="ec.tableValueChange(node)">
+                                                                  <div class="dropdown" style="width: max-content !important;">
+                                                                      <button class="btn btn-pagination dropdown-toggle"  type="button" data-toggle="dropdown">
+                                                                          <img src="/app/images/Table_menu.png" style="width:20px;"/>
+                                                                      </button>
+
+                                                                      <ul class="dropdown-menu" ng-class="(($index+1)%headersDisplayLength)==0?'rightDropdown':''">
+                                                                        <li>
+                                                                            <a ng-click="ec.insertColumn($index,node,'above',$event)">Insert Column left</a>
+                                                                        </li>
+                                                                          <li>
+                                                                            <a ng-click="ec.insertColumn($index,node,'below',$event)">Insert Column Right</a>
+                                                                        </li>
+                                                                          <li>
+                                                                            <a ng-click="ec.deleteColumn($index,node,$event)">Delete Column</a>
+                                                                        </li>
+
+                                                                      </ul>
+                                                                    </div>
+                                                            </div>
+                                                            <div class="scroll">
+                                                                 <div  ng-repeat="data in node.cells_reconstructed track by $index" ng-class="node.cells_reconstructed.length-1 == $index ? 'sampleBottom' : ''" style="line-height: 5px;" ng-init="outerIndex = $index">
+                                                                      <div class="internal" ng-class="ec.getColoumn(data[$index])" ng-repeat="heading in node.headings_reconstructed track by $index" class="{$ tableRow[data[$index].insight_id] $}" ng-init="innerIndex = $index">
+
+                                                                          <div class="dropdown2">
+                                                                              <button class="btn btn-pagination dropdown-toggle"  type="button" data-toggle="dropdown" ng-show="$index==0 || ($index%headersDisplayLength==0)">
+                                                                                  <img src="/app/images/Table_menu.png" style="width:20px;"/>
+                                                                              </button>
+
+                                                                              <ul class="dropdown-menu">
+                                                                                <li>
+                                                                                    <a ng-click="ec.insertRow($parent.$index,node,'above')">Insert Row Above</a>
+                                                                                </li>
+                                                                                  <li>
+                                                                                    <a ng-click="ec.insertRow($parent.$index,node,'below')">Insert Row below</a>
+                                                                                </li>
+                                                                                  <li>
+                                                                                    <a ng-click="ec.deleteRow($parent.$index,node)">Delete Row</a>
+                                                                                </li>
+
+                                                                              </ul>
+                                                                          </div>
+                                                                          <div class="row {$ data[$index].temp_id $}" style="padding:21px;" ng-click="ec.getCurrentValue(data[$index]);$event.stopPropagation();">
+                                                                              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                                                <div class="show-image">
+                                                                                       <div class="hover-div" style="width: 70%;left:25%;">
+                                                                                         <div class="row">
+                                                                                             <div class="col-lg-6 col-md-6 col-sm-6" style="padding:0">
+                                                                                                    <span ng-click="ec.getEXtractedValue(data[$index],'table',node);$event.stopPropagation();">
+                                                                                                        <img src="/app/images/rotateLeft.png" class="editImagesWidth" style="width:60%;"/>
+                                                                                                    </span>
+                                                                                             </div>
+                                                                                             <div class="col-lg-6 col-md-6 col-ms-6"  style="padding:0">
+                                                                                                    <span>
+                                                                                                        <img src="/app/images/Crop.png"  ng-show="!coordinatesDisplay[data[$index].temp_id]" class="editImagesWidth" ng-click="ec.editTableCoordinates(data[$index],node,outerIndex,innerIndex,false);$event.stopPropagation();"  style="width:60%;"/>
+                                                                                                        <img src="/app/images/checked.png"  class="editImagesWidth" ng-show="coordinatesDisplay[data[$index].temp_id]" ng-click="ec.acceptCoordinates(data[$index],'table',node,outerIndex,innerIndex,true);$event.stopPropagation();"  style="width:60%;"/>
+                                                                                                    </span>
+                                                                                             </div>
+                                                                                         </div>
+                                                                                       </div>
+                                                                                       <span ng-if="data[$index].text!=undefined" ng-hide="ec.hideElement(data[$index])" class="{$ data[$index].temp_id $}">
+                                                                                           <input type="text" class="textboxStyle {$ rowHighlight[data[$index].temp_id] $}" ng-model="data[$index].text" ng-blur="ec.tableValueChange(node)"/>
+                                                                                           <span ng-class="fieldCriteria(data[$index])">{$ data[$index].confidence | number:0 $}
+                                                                                              <span ng-show="data[$index].confidence!=undefined">%</span>
+                                                                                          </span>
+                                                                                       </span>
+                                                                                </div>
+                                                                              </div>
+                                                                          </div>
+                                                                      </div>
+                                                                 </div>
+                                                             </div>
+                                                     </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                                                            <!--<div ng-click="clickRow(node,data[$index],$parent.$index,heading[0])">
+                                                                <span ng-show="data[$index].insight_id!=tableEleId" >{$ data[$index].text $}</span>
+                                                                <input type="text" ng-model="data[$index].text" ng-show="data[$index].insight_id==tableEleId" >
+                                                            </div> -->
+                                                            <div>
+                                                                <!--<a  ng-click="ec.AddNewRow(node)">-->
+                                                                    <!--<i class="fa fa-plus"></i>-->
+                                                                    <!--Add New Row-->
+                                                                <!--</a>-->
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right" ng-show="node.headings_copy.length>headersDisplayLength">
+                                                            <span>
+                                                                showing {$ node.columnStart $} - {$ node.columnEnd $} of {$ node.headings_copy.length $} columns
+                                                            </span>
+                                                            <button class="btn btn-pagination" ng-click="ec.jumpLeft(node,node)" ng-disabled="node.columnStart==1">
+                                                                <img src="/app/images/left.png"/>
+                                                            </button>
+                                                            <button class="btn btn-pagination" ng-click="ec.jumpRight(node,node)" ng-disabled="node.columnEnd==node.headings_copy.length">
+                                                               <img src="/app/images/right.png"/>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+
+                                    <div class="hoveredRow  {$ rowHighlight[node.temp_id] $}" ng-if="node.node_type=='list'" ng-click="ec.getCurrentValue(node)">
+                                        <div class="row">
+                                            <i class="fa fa-trash hideOnHover2" ng-click="deleteField(node); $event.stopPropagation();" style="cursor:pointer;"></i>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding">
+                                                <img src="/app/images/lists.png" class="img-icons"/>
+                                                <span class="ExtractedHeading">List</span>
+                                            </div>
+                                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                                                <ul class="list-group">
+                                                   <li class="list-group-item customListGroup  {$ data.temp_id $}" ng-repeat="data in node.children" ng-click="ec.getCurrentValue(data);$event.stopPropagation()" ng-hide="ec.hideElement(data)" >
+                                                       <div class="show-image">
+                                                           <div class="hover-div" style="width:17%;left: 63%;">
+                                                             <div class="row">
+                                                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">
+                                                                        <span ng-click="ec.getEXtractedValue(data,'list');$event.stopPropagation();">
+                                                                            <img src="/app/images/rotateLeft.png" class="editImagesWidth"/>
+                                                                        </span>
+                                                                 </div>
+                                                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">
+                                                                        <span>
+                                                                            <img src="/app/images/Crop.png"  ng-show="!coordinatesDisplay[data.temp_id]" class="editImagesWidth" ng-click="ec.editCoordinates(data);$event.stopPropagation();"/>
+                                                                        <img src="/app/images/checked.png"  class="editImagesWidth" ng-show="coordinatesDisplay[data.temp_id]" ng-click="ec.acceptCoordinates(data,'list',node);$event.stopPropagation();"/>
+                                                                        </span>
+                                                                 </div>
+
+                                                             </div>
+                                                         </div>
+                                                           <input class="textboxStyle {$ rowHighlight[data.temp_id] $}" type="text" ng-model="data.text" style="width:80%;"/>
+                                                            <span ng-class="fieldCriteria(data)">{$ data.confidence | number:0 $}%</span>
+                                                           <i class="fa fa-plus-circle" ng-click="ec.addNewExistingListItem(node,$index);$event.stopPropagation();"></i>
+                                                           <i class="fa fa-trash" ng-click="ec.deleteExistingListItem(node,$index);$event.stopPropagation();"></i>
+                                                       </div>
+                                                   </li>
+                                                </ul>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="hoveredRow  {$ rowHighlight[node.temp_id] $}" ng-if="node.node_type=='paragraph'" ng-click="ec.getCurrentValue(node)">
+                                        <i class="fa fa-trash hideOnHover2"  ng-click="deleteField(node);$event.stopPropagation();"></i>
+                                        <div class="row" style="display:flex;">
+                                            <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 no-padding">
+                                                <img src="/app/images/paragraph.png" class="img-icons"/>
+                                                <span class="ExtractedHeading">Paragraph :</span>
+                                            </div>
+                                            <div class="col-lg-9 col-sm-9 col-md-9 col-xs-9 no-padding">
+                                                <div class="show-image">
+                                                    <div class="hover-div"  style="width:17%;left: 80%;">
+                                                         <div class="row">
+                                                             <div class="col-lg-6 col-md-6 col-sm-6 no-padding">
+                                                                    <span  ng-click="ec.getEXtractedValue(node);$event.stopPropagation();">
+                                                                        <img src="/app/images/rotateLeft.png"  class="editImagesWidth"/>
+                                                                    </span>
+                                                             </div>
+                                                             <div class="col-lg-6 col-md-6 col-ms-6 no-padding">
+                                                                    <span>
+                                                                        <img src="/app/images/Crop.png"  ng-show="!coordinatesDisplay[node.temp_id]" class="editImagesWidth" ng-click="ec.editCoordinates(node);$event.stopPropagation();"/>
+                                                                        <img src="/app/images/checked.png"  class="editImagesWidth" ng-show="coordinatesDisplay[node.temp_id]" ng-click="ec.acceptCoordinates(node);$event.stopPropagation();"/>
+                                                                    </span>
+                                                             </div>
+
+                                                         </div>
+                                                     </div>
+                                                    <textarea cols="50" rows="4" class="textboxStyle" type="text" ng-model="node.text" style="width:100%;margin-bottom:0px;" ng-blur="ec.changedValue(node,'paragraph','value')"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1 no-padding">
+                                                <div style="bottom: 0;position: absolute;margin-bottom:12px;">
+                                                    <span ng-class="fieldCriteria(node)">{$ node.confidence | number:0 $}%</span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="hoveredRow {$ rowHighlight[node.temp_id] $}" ng-if="node.node_type=='sentence'" ng-click="ec.getCurrentValue(node)">
+                                        <i class="fa fa-trash hideOnHover2"  ng-click="deleteField(node);$event.stopPropagation();"></i>
+                                        <div class="row"  style="display:flex;">
+                                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding">
+                                                <img src="/app/images/sentence.jpg" class="img-icons"/>
+                                                <span  class="ExtractedHeading">Sentence</span>
+                                            </div>
+                                            <div class="col-lg-9 col-sm-9 col-md-9 col-xs-9 no-padding">
+                                                <div class="show-image">
+                                                    <div class="hover-div" style="width: 17%;left: 80%;">
+                                                         <div class="row">
+                                                             <div class="col-lg-6 col-md-6 col-sm-6 no-padding">
+                                                                    <span  ng-click="ec.getEXtractedValue(node);$event.stopPropagation();">
+                                                                        <img src="/app/images/rotateLeft.png"  class="editImagesWidth"/>
+                                                                    </span>
+                                                             </div>
+                                                             <div class="col-lg-6 col-md-6 col-ms-6 no-padding">
+                                                                    <span>
+                                                                        <img src="/app/images/Crop.png"  ng-show="!coordinatesDisplay[node.temp_id]" class="editImagesWidth" ng-click="ec.editCoordinates(node);$event.stopPropagation();"/>
+                                                                        <img src="/app/images/checked.png"  class="editImagesWidth" ng-show="coordinatesDisplay[node.temp_id]" ng-click="ec.acceptCoordinates(node);$event.stopPropagation();"/>
+                                                                    </span>
+                                                             </div>
+
+                                                         </div>
+                                                     </div>
+                                                    <textarea class="textboxStyle" row="2" cols="50" style="width:100%;margin-bottom:0px;" ng-model="node.text" ng-blur="ec.changedValue(node,'sentence','value')"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1 no-padding">
+                                                <div style="bottom: 0;position: absolute;margin-bottom:10px;">
+                                                    <span ng-class="fieldCriteria(node)">{$ node.confidence | number:0 $}%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="hoveredRow  {$ rowHighlight[node.temp_id] $}" ng-if="node.node_type=='heading'" ng-click="ec.getCurrentValue(node)">
+                                        <i class="fa fa-trash hideOnHover2"  ng-click="deleteField(node);$event.stopPropagation();"></i>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3 no-padding">
+                                                <img src="/app/images/key.png" class="img-icons"/>
+                                                <span class="ExtractedHeading">Heading:</span>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                                                <div class="show-image">
+                                                    <div class="hover-div">
+                                                         <div class="row">
+                                                             <div class="col-lg-6 col-md-6 col-sm-6 no-padding">
+                                                                    <span  ng-click="ec.getEXtractedValue(node);$event.stopPropagation();">
+                                                                        <img src="/app/images/rotateLeft.png"  class="editImagesWidth" style="width:65%;"/>
+                                                                    </span>
+                                                             </div>
+                                                             <div class="col-lg-6 col-md-6 col-ms-6 no-padding">
+                                                                    <span>
+                                                                        <img src="/app/images/Crop.png"  ng-show="!coordinatesDisplay[node.temp_id]" class="editImagesWidth" ng-click="ec.editCoordinates(node);$event.stopPropagation(); " />
+                                                                        <img src="/app/images/checked.png"  class="editImagesWidth" ng-show="coordinatesDisplay[node.temp_id]" ng-click="ec.acceptCoordinates(node);$event.stopPropagation();" />
+                                                                    </span>
+                                                             </div>
+                                                         </div>
+                                                     </div>
+                                                    <input class="textboxStyle" type="text" ng-model="node.text" ng-blur="ec.changedValue(node,'heading','value')"/>
+                                                <span ng-class="fieldCriteria(node)">{$ node.confidence | number:0 $}%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hoveredRow {$ rowHighlight[node.temp_id] $} omr"  ng-if="node.node_type=='omr_field'" ng-click="ec.getCurrentValue(node)">
+                                        <div class="row">
+                                            <div class="show-image2">
+                                                        <div class="hover-div2" style="width: 13%;left: 90%;">
+                                                             <div class="row">
+
+                                                                 <div class="col-lg-4 col-md-4 col-sm-4 no-padding">
+                                                                       <span  ng-click="ec.getEXtractedValue(node,'omr');$event.stopPropagation();">
+                                                                                        <img src="/app/images/rotateLeft.png"  class="editImagesWidth"/>
+                                                                                    </span>
+                                                                 </div>
+                                                                 <div class="col-lg-4 col-md-4 col-sm-4 no-padding">
+                                                                       <span>
+                                                                            <img src="/app/images/Crop.png"  ng-show="!coordinatesDisplay[node.temp_id]" class="editImagesWidth" ng-click="ec.editCoordinates(node);$event.stopPropagation(); "/>
+                                                                            <img src="/app/images/checked.png"  class="editImagesWidth" ng-show="coordinatesDisplay[node.temp_id]" ng-click="ec.acceptCoordinates(node);$event.stopPropagation();" />
+                                                                        </span>
+                                                                 </div>
+                                                                 <div class="col-lg-4 col-md-4 col-sm-4" style="padding-left:5px;">
+                                                                        <i class="fa fa-trash "  ng-click="deleteField(node);$event.stopPropagation();"></i>
+                                                                 </div>
+                                                             </div>
+                                                         </div>
+
+                                                        <div class="row" ng-show="template_type=='unknown'">
+                                                            <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3 no-padding">
+                                                                <img src="/app/images/key.png" class="img-icons"/>
+                                                                <span class="ExtractedHeading">Key</span>
+                                                            </div>
+                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                                                                <div>
+                                                                    <!--<div class="hover-div" style="width: 10%;left: 65%;">-->
+                                                                         <!--<div class="row">-->
+                                                                             <!--<div class="col-lg-12 col-md-12 col-sm-12 no-padding">-->
+                                                                                    <!--<span  ng-click="ec.getEXtractedValue(node,'omr');$event.stopPropagation();">-->
+                                                                                        <!--<img src="/app/images/rotateLeft.png"  class="editImagesWidth"/>-->
+                                                                                    <!--</span>-->
+                                                                             <!--</div>-->
+                                                                         <!--</div>-->
+                                                                     <!--</div>-->
+
+                                                                    <input class="textboxStyle" type="text"  ng-model="node.text"/>
+                                                                    <span ng-class="fieldCriteria(node)">{$ node.confidence | number:0 $}%</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" ng-show="template_type!='unknown'">
+                                                            <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3 no-padding">
+                                                                <img src="/app/images/key.png" class="img-icons"/>
+                                                                <span class="ExtractedHeading">Key</span>
+                                                            </div>
+                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                                                                <div>
+                                                                    <!--<div class="hover-div" style="width: 10%;left: 65%;">-->
+                                                                         <!--<div class="row">-->
+                                                                             <!--<div class="col-lg-12 col-md-12 col-sm-12 no-padding">-->
+                                                                                    <!--<span  ng-click="ec.getEXtractedValue(node,'omr');$event.stopPropagation();">-->
+                                                                                        <!--<img src="/app/images/rotateLeft.png"  class="editImagesWidth"/>-->
+                                                                                    <!--</span>-->
+                                                                             <!--</div>-->
+                                                                         <!--</div>-->
+                                                                     <!--</div>-->
+                                                                    <span class="textboxStyle"> {$ node.name $} </span>
+
+                                                                    <span ng-class="fieldCriteria(node)">{$ node.confidence | number:0 $}%</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3 no-padding">
+                                                                <img src="/app/images/value.png" class="img-icons"/>
+                                                                <span class="ExtractedHeading">Value</span>
+                                                            </div>
+                                                            <div class="col-lg-9 col-sm-9 col-md-9 col-xs-9 omrreviewlabel no-padding">
+
+                                                                <div class="row">
+                                                                    <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4 omrAlign" ng-repeat="options in node.fields"
+                                                                                     ng-if="node.is_multiselect">
+                                                                        <input type="checkbox"  ng-model="options.value.text"   style="margin-right: 5px;" ng-change="changeCheckBoX(node);$event.stopPropagation();"/>
+                                                                        <input class="textboxStyle" type="text" ng-model="options.key.text" ng-blur="ec.omrValueChange(node)">
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4 omrAlign" ng-repeat="options in node.fields"
+                                                                                     ng-if="!node.is_multiselect">
+                                                                        <input type="radio"  name="options + {$node.temp_id$}" ng-checked="options.value.text" ng-value="sample.select" ng-model="options.value.text" ng-click="changeRadio($index,options,node.fields,node);$event.stopPropagation();"  id="sample{$node.temp_id $}" style="margin-right: 5px;">
+                                                                        <input class="textboxStyle" type="text" ng-model="options.key.text" ng-blur="ec.omrValueChange(node)" >
+                                                                    </div>
+                                                                </div>
+
+
+                                                                 <!--<div ng-repeat="options in node.groups[0].options" ng-if="node.groups[0].is_multiOption">-->
+                                                                     <!--<span>-->
+                                                                         <!--<input type="checkbox"  ng-model="options.ischecked"  ng-show="node.temp_id==selectedEleId"/>-->
+                                                                     <!--</span>-->
+                                                                     <!--<span>-->
+                                                                        <!--<input class="textboxStyle" type="text" ng-model="options.label" ng-show="node.temp_id==selectedEleId"/>-->
+                                                                     <!--</span>-->
+
+                                                                 <!--</div>-->
+                                                                 <!--<div ng-repeat="options in node.groups[0].options" ng-show="!node.groups[0].is_multiOption">-->
+                                                                    <!--<span>-->
+                                                                            <!--<input type="radio"  name="optionsedit + {$node.temp_id$}" ng-checked="options.ischecked" ng-value="sample.select" ng-model="options.ischecked" ng-change="changeRadio($index,options,node.groups[0].options)" ng-show="node.temp_id==selectedEleId" id="{$node.temp_id $}">-->
+                                                                    <!--</span>-->
+                                                                     <!--<span>-->
+                                                                        <!--<input class="textboxStyle" type="text" ng-model="options.label" ng-show="node.temp_id==selectedEleId"/>-->
+                                                                     <!--</span>-->
+
+                                                                 <!--</div>-->
+                                                            </div>
+                                                        </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div ng-if="node.node_type=='section'">
+                                        <div ui-tree-handle class="tree-node tree-node-content"
+                                        data-nodrag ng-include="'nodes_renderer1.html'" style="padding:0px;">
+
+                                        </div>
+                                    </div>
+
+                              </div>
+                        </script>
+        <script type="text/ng-template" id="nodes_renderer1.html">
+                              <div ui-tree-handle class="tree-node tree-node-content"
+                              <div ui-tree-handle class="tree-node tree-node-content"
+                                   data-nodrag>
+                                  <div class="row row-eq-height" style="height:30px;">
+                                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">
+
+                                              <span ng-if="node.node_type!='attribute'" style="padding-top:5px;cursor:pointer;margin-bottom:0px;" ng-click="ec.getCurrentValue(node)" >
+                                                     {$ node.name $}
+                                              </span>
+                                      </div>
+                                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right no-padding">
+                                          <a ng-click="ec.addNewNode(node)" style="font-weight:600;color:#2aa8e8;font-size:10px;padding-right:10px;" ng-show="template_type=='unknown'">
+                                              <i class="fa fa-plus" style="font-size:10px !important;"></i>
+                                              Add Element
+                                          </a>
+                                          <a data-nodrag data-toggle="collapse" class="nodetoggle" ng-click="chnageIcon(ec.collapsed,node.temp_id)" data-target=".toggle{$ node.temp_id $}" style="padding:7px;border-left:1px solid #ddd;">
+                                              <span  ng-class="{'fa fa-caret-up': !ec.collapsed[node.temp_id],'fa fa-caret-down': ec.collapsed[node.temp_id]}"></span>
+                                          </a>
+                                      </div>
+                                  </div>
+                              </div>
+                              <ol ui-tree-nodes="" ng-model="node.children" class="listedStyle collapse in olStyle1 toggle{$ node.temp_id $} row" >
+                                  <li class="col-lg-12 col-md-12 col-sm-12 col-xs-12 " ng-show="newNode==node.insight_id" style="padding-left: 8px;padding-right: 8px;padding-top: 8px;">
+                                     <div style="border:1px solid #ececec;">
+                                      <div class="row" style="padding-top:10px;">
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                <div class="ExtractedHeading">Select Type</div>
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                <!--<div class="ExtractedHeading">Value</div>-->
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                            </div>
+                                      </div>
+                                     <div class="row row-eq-height" style="margin: 5px 0px 10px 0px;">
+                                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                                                <select class="newattributeSelect" style="width:100%;border:none;" ng-model="ec.newElement.node_type" ng-change="ec.changeNewElement(ec.newElement.node_type)">
+                                                    <option ng-repeat="(d,key) in ec.keyOptions" value="{$ d $}">{$ key $}
+											       </option>
+                                                </select>
+                                                <br>
+                                            </div>
+                                         <span ng-show="croppingError" style="color:red">{$ cropMsg $}</span>
+                                     </div>
+                                      <div ng-if="ec.newElement.node_type == 'field' || ec.newElement.node_type == 'heading' || ec.newElement.node_type == 'paragraph' || ec.newElement.node_type == 'sentence'">
+                                          <div class="row row-eq-height"  ng-show="ec.newElement.node_type == 'field'">
+                                              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                                  <div class="row row-eq-height">
+                                                      <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 no-padding">
+                                                          <img src="/app/images/key.png" class="img-icons"/>
+                                                            <span class="ExtractedHeading">Key :</span>
+                                                      </div>
+                                                      <div class="col-sm-8 col-md-8 col-xs-8 col-lg-8">
+                                                          <div class="show-image">
+                                                               <div class="hover-div" style="width:35%;left:65%;">
+                                                                 <div class="row">
+                                                                     <div class="col-lg-6 col-md-6 col-sm-6 no-padding">
+                                                                            <span ng-click="ec.getEXtractedValue(ec.newElement,'field');$event.stopPropagation();">
+                                                                                <img src="/app/images/rotateLeft.png" class="editImagesWidth"/>
+                                                                            </span>
+                                                                     </div>
+                                                                     <div class="col-lg-6 col-md-6 col-ms-6 no-padding">
+                                                                            <span>
+                                                                                <img src="/app/images/Crop.png" ng-click="ec.cropLabelText()" ng-show="!ec.showLabelCrop" style="width:20px;cursor:pointer;"/>
+                                                                                <img src="/app/images/checked.png"  class="editImagesWidth" ng-show="ec.showLabelCrop" ng-click="ec.doneLabelCrop()" style="width:20px;cursor:pointer;"/>
+
+                                                                            </span>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+                                                                <input class="newattributeSelect" type="text" placeholder="Type key Name" ng-model="ec.newElement.key.text" />
+                                                           </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <br>
+                                          <div class="row">
+                                              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                                  <div class="row row-eq-height">
+                                                      <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 no-padding">
+                                                          <img src="/app/images/value.png" class="img-icons"/>
+                                                            <span class="ExtractedHeading">Value :</span>
+                                                      </div>
+
+                                                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                                          <div class="show-image">
+                                                               <div class="hover-div" style="width:35%;left:65%;">
+                                                                 <div class="row">
+                                                                     <div class="col-lg-6 col-md-6 col-sm-6 no-padding">
+                                                                            <span ng-click="ec.getEXtractedValue(ec.newElement);$event.stopPropagation();">
+                                                                                <img src="/app/images/rotateLeft.png" class="editImagesWidth"/>
+                                                                            </span>
+                                                                     </div>
+                                                                     <div class="col-lg-6 col-md-6 col-ms-6 no-padding">
+                                                                            <span>
+                                                                                <img src="/app/images/Crop.png" ng-click="ec.cropText()" ng-show="!ec.showCrop"  style="width:20px;cursor:pointer;"/>
+                                                                                <img src="/app/images/checked.png"  class="editImagesWidth" ng-show="ec.showCrop" ng-click="ec.doneCrop()" style="width:20px;cursor:pointer;"/>
+                                                                            </span>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+                                                                <input class="newattributeSelect" ng-model="ec.newElement.value.text" type="text" placeholder="Type the Value" ng-show="ec.newElement.node_type=='field'"/>
+                                                               <input class="newattributeSelect" ng-model="ec.newElement.text" type="text" placeholder="Type the Value" ng-show="ec.newElement.node_type=='heading'"/>
+                                                                <textarea cols="50" rows="4" class="textboxStyle" type="text" ng-model="ec.newElement.text" style="width:100%;" placeholder="Type the Value" ng-show="ec.newElement.node_type=='paragraph' || ec.newElement.node_type=='sentence'"></textarea>
+                                                           </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <br>
+                                          <div class="row">
+                                                <div class="col-lg-12 colsm-12 col-md-12 col-xs-12 text-right">
+                                                    <button class="btn  btn-custom" ng-click="ec.saveNewnode(node)">
+                                                        <i class="fa fa-floppy-o" aria-hidden="true" style="margin-left:7px;"></i>
+                                                        Add
+                                                    </button>
+                                                    <button class="btn btn-cancel" ng-click="ec.cancelNewnode()" style="background-color: transparent;color: black;">
+                                                        <i class="fa fa-times-circle-o"></i>
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                          </div>
+                                      </div>
+                                      <div ng-if="ec.newElement.node_type == 'list'">
+                                          <div>
+                                             <div class="row row-eq-height">
+                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                                    <img src="/app/images/lists.png" class="img-icons"/>
+                                                    <span class="ExtractedHeading">List</span>
+                                                </div>
+                                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                                    <ul class="list-group">
+                                                       <li class="list-group-item customListGroup" ng-repeat="data in ec.newElement.children" ng-click="ec.getCurrentValue(data,'new');">
+                                                           <div class="show-image">
+                                                               <div class="hover-div" style="width:17%;left:63%;">
+                                                                 <div class="row">
+                                                                     <div class="col-lg-6 col-md-6 col-sm-6 no-padding">
+                                                                            <span ng-click="ec.getEXtractedValue(data,'list');$event.stopPropagation();">
+                                                                                <img src="/app/images/rotateLeft.png" class="editImagesWidth"/>
+                                                                            </span>
+                                                                     </div>
+                                                                     <div class="col-lg-6 col-md-6 col-ms-6 no-padding">
+                                                                            <span>
+                                                                                <img src="/app/images/Crop.png"  ng-show="!coordinatesDisplay[data.temp_id]" class="editImagesWidth" ng-click="ec.cropListText(data,$index);$event.stopPropagation();"$event.stopPropagation();"/>
+                                                                            <img src="/app/images/checked.png"  class="editImagesWidth" ng-show="coordinatesDisplay[data.temp_id]" ng-click="ec.acceptCoordinates(data,'list',node);$event.stopPropagation();"/>
+                                                                            </span>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+                                                               <input class="textboxStyle" type="text" ng-model="data.text" style="width:80%;height:20px;" />
+                                                                <i class="fa fa-plus-circle" style="font-size:18px;" ng-click="ec.addNewListItem(ec.newElement,$index)"></i>
+                                                                <i class="fa fa-trash" style="font-size:18px;margin-left:10px;" ng-click="ec.deleteNewListItem(ec.newElement,$index)"></i>
+                                                           </div>
+                                                       </li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                                <div class="col-lg-12 colsm-12 col-md-12 col-xs-12 text-right">
+                                                    <button class="btn  btn-custom" ng-click="ec.saveNewnode(node)">
+                                                        <i class="fa fa-floppy-o" aria-hidden="true" style="margin-left:7px;"></i>
+                                                        Add
+                                                    </button>
+                                                    <button class="btn btn-cancel" ng-click="ec.cancelNewnode()" style="background-color: transparent;color: black;">
+                                                        <i class="fa fa-times-circle-o"></i>
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                        </div>
+                                      </div>
+                                      <div ng-if="ec.newElement.node_type == 'table'" class="test{$ ec.newElement.temp_id $}">
+                                          <div class="row">
+
+                                                 <div class="center content{$ ec.newElement.temp_id $}">
+                                                          <div class="internal "  ng-class="ec.getHeader(heading)" ng-repeat="heading in ec.newElement.headings_reconstructed track by $index" style="padding:10px;" >
+                                                              <input type="text" class="textboxStyle" ng-model="heading[0] " placeholder="column name">
+                                                              <div class="dropdown" style="width: max-content !important;">
+                                                                  <button class="btn btn-pagination dropdown-toggle"  type="button" data-toggle="dropdown">
+                                                                      <i class="fa fa-ellipsis-v" ></i>
+                                                                  </button>
+
+                                                                  <ul class="dropdown-menu" ng-class="(($index+1)%headersDisplayLength)==0?'rightDropdown':'something'">
+                                                                    <li>
+                                                                        <a ng-click="ec.insertColumn($index,ec.newElement,'above',$event)">Insert Column left</a>
+                                                                    </li>
+                                                                      <li>
+                                                                        <a ng-click="ec.insertColumn($index,ec.newElement,'below',$event)">Insert Column Right</a>
+                                                                    </li>
+                                                                      <li>
+                                                                        <a ng-click="ec.deleteColumn($index,ec.newElement,$event)">Delete Column</a>
+                                                                    </li>
+
+                                                                  </ul>
+                                                                </div>
+                                                          </div>
+                                                        <div class="scroll">
+                                                             <div  ng-repeat="data in ec.newElement.cells_reconstructed track by $index" ng-class="ec.newElement.cells_reconstructed.length-1 == $index ? 'sampleBottom2' : ''" ng-init="outerIndex = $index">
+                                                                      <div class="internal" ng-class="ec.getColoumn(data[$index])" ng-repeat="heading in ec.newElement.headings_reconstructed track by $index" class="{$ tableRow[data[$index].insight_id] $}" ng-init="innerIndex = $index">
+
+                                                                          <div class="dropdown" style="float: left;left:10px;">
+                                                                  <button class="btn btn-pagination dropdown-toggle"  type="button" data-toggle="dropdown" ng-show="$index==0 || ($index%headersDisplayLength==0)">
+                                                                      <img src="/app/images/Table_menu.png" style="width:20px;"/>
+                                                                  </button>
+
+                                                                  <ul class="dropdown-menu" style="left:0px;">
+                                                                                <li>
+                                                                                    <a ng-click="ec.insertRow($parent.$index,ec.newElement,'above')">Insert Row Above</a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a ng-click="ec.insertRow($parent.$index,ec.newElement,'below')">Insert Row below</a>
+                                                                                </li>
+                                                                                  <li>
+                                                                                    <a ng-click="ec.deleteRow($parent.$index,ec.newElement)">Delete Row</a>
+                                                                                </li>
+
+                                                                  </ul>
+                                                                </div>
+                                                                          <div class="row" style="padding:16px;" ng-click="ec.getCurrentValue(data[$index],'new');">
+                                                                              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                                                                <div class="show-image">
+                                                                                       <div class="hover-div" style="width: 70%;left:25%;">
+                                                                                             <div class="row">
+                                                                                                 <div class="col-lg-6 col-md-6 col-sm-6" style="padding:0">
+                                                                                                        <span ng-click="ec.getEXtractedValue(data[$index],'table');$event.stopPropagation();">
+                                                                                                            <img src="/app/images/rotateLeft.png" class="editImagesWidth" style="width:60%;"/>
+                                                                                                        </span>
+                                                                                                 </div>
+                                                                                                 <div class="col-lg-6 col-md-6 col-ms-6"  style="padding:0">
+                                                                                                        <span>
+                                                                                                            <img src="/app/images/Crop.png"  ng-show="!coordinatesDisplay[data[$index].temp_id]" class="editImagesWidth" ng-click="ec.editTableCoordinates(data[$index],ec.newElement,outerIndex,innerIndex,true);$event.stopPropagation();"  style="width:60%;"/>
+                                                                                                            <img src="/app/images/checked.png"  class="editImagesWidth" ng-show="coordinatesDisplay[data[$index].temp_id]" ng-click="ec.acceptCoordinates(data[$index],'table');$event.stopPropagation();"  style="width:60%;"/>
+                                                                                                        </span>
+                                                                                                 </div>
+                                                                                             </div>
+                                                                                       </div>
+                                                                                       <span ng-if="data[$index].text!=undefined" ng-hide="ec.hideElement(data[$index])">
+                                                                                           <input type="text" class="textboxStyle" ng-model="data[$index].text"/>
+                                                                                           <span ng-class="fieldCriteria(data[$index])">{$ data[$index].confidence | number:0 $}
+                                                                                              <span ng-show="data[$index].confidence!=undefined">%</span>
+                                                                                          </span>
+                                                                                       </span>
+                                                                                </div>
+                                                                              </div>
+                                                                          </div>
+                                                                      </div>
+                                                             </div>
+                                                         </div>
+                                                 </div>
+                                                 <div class="row">
+                                                    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                                                        <!--<div ng-click="clickRow(node,data[$index],$parent.$index,heading[0])">
+                                                            <span ng-show="data[$index].insight_id!=tableEleId" >{$ data[$index].text $}</span>
+                                                            <input type="text" ng-model="data[$index].text" ng-show="data[$index].insight_id==tableEleId" >
+                                                        </div> -->
+                                                        <div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right" ng-show="ec.newElement.headings_copy.length>headersDisplayLength">
+                                                        <span>
+                                                            showing {$ ec.newElement.columnStart $} - {$ ec.newElement.columnEnd $} of {$ ec.newElement.headings_copy.length $} columns
+                                                        </span>
+                                                        <button class="btn btn-pagination" ng-click="ec.jumpLeft(ec.newElement,ec.newElement)" ng-disabled="ec.newElement.columnStart==1">
+                                                            <img src="/app/images/left.png"/>
+                                                        </button>
+                                                        <button class="btn btn-pagination" ng-click="ec.jumpRight(ec.newElement,ec.newElement)" ng-disabled="ec.newElement.columnEnd==ec.newElement.headings_copy.length">
+                                                           <img src="/app/images/right.png"/>
+                                                        </button>
+                                                    </div>
+                                                 </div>
+                                          </div>
+                                          <div class="row">
+                                                <div class="col-lg-12 colsm-12 col-md-12 col-xs-12 text-right">
+                                                    <button class="btn  btn-custom" ng-click="ec.saveNewnode(node)">
+                                                        <i class="fa fa-floppy-o" aria-hidden="true" style="margin-left:7px;"></i>
+                                                        Add
+                                                    </button>
+                                                    <button class="btn btn-cancel" ng-click="ec.cancelNewnode()" style="background-color: transparent;color: black;">
+                                                        <i class="fa fa-times-circle-o"></i>
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                          </div>
+                                      </div>
+                                      <br>
+                                     </div>
+                                  </li>
+                                  <li ng-repeat="node in node.children"  ng-class="ec.classLengths(node)" class="{$ node.temp_id $}" ui-tree-node ng-include="'nodes_renderer2.html'"  ng-hide="ec.hideElement(node)"></li>
+                              </ol>
+                        </script>
+        <div class="domainObjectBody" id="rightSideDiv">
+
+            <div class="row row-eq-height">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                    <div ui-tree id="tree-root1" data-empty-placeholder-enabled="false">
+                        <ol ui-tree-nodes class="olStyle" ng-model="extractOutput">
+                            <li ng-repeat="node in extractOutput" class="treeDomainObject sample{$ node.temp_id $}"
+                                collapsed="true" ng-class="{disabledStyle: isDisabled}" ui-tree-node ng-include="'nodes_renderer1.html'"></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="btn  btn-custom btn-block " ng-click="ec.completeReview()">-->
+        <!--Complete review-->
+        <!--</div>-->
+
+
+    </div>
+</div>
+
+<div class="row borderEmail" ng-if="ec.documentType == 'digital'">
+    <div class="col-sm-7 col-md-7 col-xs-7 col-lg-7 dashboard-row">
+        <div class="row image-style" style="height:{$ height $}px">
+            <div class="col-lg-12 col-md-12 col-sm-12" style="padding:5px;">
+                <div id="ImageLocation1">
+                    <ul class="nav nav-tabs custom-navTab">
+                        <li class="active"><a data-toggle="tab" href=".processed">Processed</a></li>
+                        <li><a data-toggle="tab" href=".original">Original</a></li>
+                    </ul>
+
+                    <div class="tab-content" style="background:white">
+                        <div class="tab-pane fade in active processed">
+                            <!--<table class="table table-striped">-->
+                            <!--<tbody class="emailTable">-->
+                            <!--<tr>-->
+                            <!--<td>From</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>{$ ec.emailDocumentData.attributes.header.from $}</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>Sent</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>{$ ec.emailDocumentData.attributes.header.sent $}</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>To</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>{$ ec.emailDocumentData.attributes.header.to $}</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>Subject</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>{$ ec.emailDocumentData.attributes.header.subject $}</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>Email Body</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>-->
+                            <!--<div ng-bind-html="emailBodyHtml()">-->
+
+                            <!--</div>-->
+                            <!--</td>-->
+                            <!--</tr>-->
+                            <!--</tbody>-->
+                            <!--</table>-->
+                            <div ng-repeat="att in ec.digitalDocumentData" ng-show="ec.digitalDocumentData.length!=0">
+                                <div>
+                                    <!--<div class="attachmentClass">-->
+                                    <!--<span>Attachment {$ $parent.$index+1 $} : </span><span style="color:black">{$ key $}.{$ value.extn $}</span>-->
+                                    <!--</div>-->
+                                    <div style="padding: 13px 7px 25px 7px;">
+                                        <div ng-bind-html="emailAttachments(att.html_data)"></div>
+                                    </div>
+                                    <!--<div style="padding: 13px 7px 25px 7px;" ng-show="value.extn=='pdf'">-->
+                                    <!--<object data="static{$ value.pdf_path $}" type="application/pdf" width="100%" height="300px">-->
+                                    <!--</object>-->
+                                    <!--</div>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade original" style="padding:10px">
+                            <!--<div ng-bind-html="emailOriginalHtml()" style="padding-top:10px;">-->
+                            <!--</div>-->
+                            <div>
+                                <span></span><span style="#a4a4a4;">click below to download</span>
+                            </div>
+                            <div ng-repeat="att in ec.digitalDocumentData">
+                                <div>
+                                    <div style="padding-top:10px;">
+                                        <span ng-click="downloadAttachment(att.file_path)" style="color: #00a3e0;cursor:pointer">{$
+                                            att.data[0].name $}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-5 col-md-5 col-xs-5 col-lg-5 no-margin " style="background-color:white;">
+        <ul class="nav nav-tabs nav-reviewTabs">
+            <li class="active"><a data-toggle="tab" href=".elements">Elements</a></li>
+            <li><a data-toggle="tab" href=".outcomes">Domain Objects</a></li>
+        </ul>
+        <div class="image-style1" style="height:{$ height $}px;overflow-y:scroll;background-color:white;">
+            <div class="tab-content">
+                <div class="tab-pane in active elements" style="position: relative;border:1px solid #eee;">
+                </div>
+                <div class="tab-pane outcomes" style="position: relative;border:1px solid #eee;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div ng-if="ec.documentType == 'email'">
+    <div class="row" id="markerForm-tabs">
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+            <ul class="nav nav-tabs custom-navTab">
+                <li class="active"><a data-toggle="tab" href=".review">Review Extraction</a></li>
+                <li><a data-toggle="tab" href=".recommend">Review Recommendations</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row row-eq-height" style="background-color: #ebf2f5;">
+        <div class="col-sm-7 col-md-7 col-xs-7 col-lg-7 no-padding" style="height:{$ height $}px;background:white">
+            <div class="tab-content">
+                <div class="tab-pane fade in active review emailTable">
+                    <div class="row">
+                        <div class="col-sm-12" style="overflow-y: scroll;max-height: 350px;">
+                            <table class="table table-striped">
+                                <tbody class="emailTable">
+                                    <tr>
+                                        <td>From</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{$ ec.docAttributes.from $}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sent</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{$ ec.docAttributes.sent $}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>To</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{$ ec.docAttributes.to $}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Subject</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{$ ec.docAttributes.subject $}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email Body</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div ng-bind-html="ec.renderEmailHTMLData(ec.docAttributes.body)">
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="attachments" style="padding-bottom: 15px;">
+
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="top: -10px;">
+                                <div>
+                                    <span style="font-size: 14px; background-color: #8399a5; padding: 0 10px;color:#fff;">
+                                        Attachments
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12 text-center" style="cursor:pointer;"
+                                ng-repeat="attachment in ec.emailAttachmentsArray" ng-click="ec.showEmailAttachment(attachment)">
+
+                                <img ng-if="attachment.mime_type == 'pdf'" src="./app/images/pdf.png" style="width:60px;" />
+                                <img ng-if="attachment.mime_type == 'excel-xlsx' || attachment.mime_type == 'excel-xls' || attachment.mime_type == 'xlsx'"
+                                    src="./app/images/excel.png" style="width:60px;" />
+                                <span style="color: #696161;font-size:12px;">
+                                    {$ attachment.file_name $}
+                                </span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5 col-md-5 col-xs-5 col-lg-5 no-padding">
+            <div class="tab-content">
+                <div class="tab-pane fade in active review emailTable">
+                    <div class="row borderEmail">
+                        <div class="col-sm-5 col-md-5 col-xs-5 col-lg-5 no-margin " style="background-color:white;">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade recommend emailTable">
+                    <div class="row borderEmail">
+                        <div style="height:{$ height $}px;overflow-y:scroll;">
+                            <fieldset class="right_content">
+                                <legend>Email Body</legend>
+                                <div class="row">
+                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
+                                        <div class="email_body">
+                                            <span ng-bind-html="ec.renderEmailHTMLData(ec.docAttributes.body)" style="font-size: 15px;">Email
+                                                Body here</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding emailPanel">
+                                        <span style="color: #373939;font-size:14px;">Intent recommendations</span>
+                                        <div class="panel panel-default" ng-repeat="emailEntitie in ec.emailEntities.fields[0].nlp">
+                                            <div class="panel-heading">
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                                                        <span data-ng-bind="emailEntitie.action" ng-show="!showActionInput">Action</span>
+                                                        <input type="text" class="form-control" ng-model="emailEntitie.action"
+                                                            ng-show="showActionInput" />
+                                                        <i class="fa fa-pencil" ng-click="showActionInput=true" ng-show="!showActionInput"></i>
+                                                        <i class="fa fa-check" ng-show="showActionInput" ng-click="ec.updateNlp(ec.emailEntities,'action');showActionInput=false"></i>
+                                                        <i class="fa fa-times" ng-click="showActionInput=false" ng-show="showActionInput"></i>
+                                                    </div>
+                                                    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                                                        <span data-ng-bind="emailEntitie.entity" ng-show="!showEntityInput">Provider</span>
+                                                        <select class="form-control" ng-model="emailEntitie.entity"
+                                                            ng-show="showEntityInput">
+                                                            <option ng-repeat="(key,value) in entitiesList" value="{$ key $}">{$
+                                                                key $}</option>
+                                                        </select>
+                                                        <i class="fa fa-pencil" ng-click="showEntityInput=true" ng-show="!showEntityInput"></i>
+                                                        <i class="fa fa-check" ng-show="showEntityInput" ng-click="ec.updateNlp(ec.emailEntities,'entity');showEntityInput=false"></i>
+                                                        <i class="fa fa-times" ng-click="showEntityInput=false" ng-show="showEntityInput"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="row" style="padding:10px;">
+                                                    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 no-padding">
+                                                        <span>Set</span>
+                                                    </div>
+                                                    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 no-padding text-right">
+                                                        <span style="color:#26aae2;cursor:pointer;" ng-click="ec.newAttribute(emailEntitie.attributes,emailEntitie.action);">
+                                                            <i class="fa fa-plus"></i>
+                                                            New Attribute
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <table class="table table-responsive" style="background-color: #fafafa;margin-bottom:0px;">
+                                                    <thead>
+                                                        <th>Attribute</th>
+                                                        <th>Value </th>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-show="ec.newAttributeShow">
+                                                            <td>
+                                                                <input type="text" class="form-control" placeholder="Enter attribute"
+                                                                    ng-model="ec.newAttributeObj.attribute" />
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control" placeholder="Enter value"
+                                                                    ng-model="ec.newAttributeObj.value" />
+                                                                <span style="color:red">{$ ec.newAttrErr $}</span>
+                                                                <span><i class="fa fa-check" ng-click="ec.saveNewAttribute()"></i></span>
+                                                                <span><i class="fa fa-times" ng-click="ec.newAttributeShow=false;ec.newAttrErr = ''"></i></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr data-ng-repeat="attr in emailEntitie.attributes">
+                                                            <td>
+                                                                <span data-ng-bind="attr.attribute">Phone Number</span>
+                                                                <span><i class="fa fa-pencil" style="color:#F3F5F6;"></i>
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <span data-ng-bind="attr.value" ng-show="!showValueInput">Value
+                                                                    Here</span>
+                                                                <input type="text" class="form-control" ng-model="attr.value"
+                                                                    ng-show="showValueInput" />
+                                                                <span><i class="fa fa-pencil" ng-click="showValueInput=true"
+                                                                        ng-show="!showValueInput"></i></span>
+                                                                <i class="fa fa-check" ng-show="showValueInput"
+                                                                    ng-click="ec.updateNlp(ec.emailEntities,'value');showValueInput=false"></i>
+                                                                <i class="fa fa-times" ng-click="showValueInput=false"
+                                                                    ng-show="showValueInput"></i>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

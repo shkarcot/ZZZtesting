@@ -1,0 +1,91 @@
+<nav class="navbar navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" style="border-right:none !important;">
+        <div class="header-image"></div>
+      </a>
+      <a class="navbar-brand viewSolutions" ng-show="$root.inSolution" class="bottomPosition" ui-sref="solution" >
+        <div class="text">View All Solutions</div>
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a class="dropdown-toggle customLogout" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <img src="/app/images/avatar.png" alt="Avatar" class="rounded-image">
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a>
+                <img src="/app/images/avatar.png" alt="Avatar" class="rounded-image">
+                {$ loginData.username $}
+              </a>
+            </li>
+            <li>
+              <a ng-click="logout()">
+                <img src="/app/images/logout.png" class="logout-image"/>
+                Logout
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+<div class="container customContainer">
+  <div class="row">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+      <h4> Solutions List</h4>
+    </div>
+  </div>
+  <br>
+  <div class="row services">
+    <div class="col-lg-4 col-sm-4 col-md-4 col-xs-6 solutionsList" ng-click="solutionSelection(listdata)" ng-mouseover="showDeleteSolution($index)" ng-mouseout="hideDeleteSolution($index)" ng-repeat="listdata in solutionsList track by $index" >
+      <div class="engine-box enable">
+        <div class="panel panel-custom">
+          <div class="panel-heading">
+            <p class="lbl-solution-name">{$ listdata.solution_name $}</p>
+            <i class="fa fa-trash-o pull-right sol-delete-icon" title="Delete" alt="Delete" ng-show="showDeleteIcon[$index]" ng-click="deleteSolution(listdata,$event)"></i>
+          </div>
+          <div class="panel-body panel-height" style="border-bottom:1px solid #ddd;">
+            <div class="lbl-solution-des textLimit" style="-webkit-box-orient:vertical;">{$ listdata.description $}</div>
+          </div>
+          <div class="panel-customFooter">
+            <div class="row">
+              <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
+                <span>Services active</span>
+                <p>-</p>
+              </div>
+              <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 no-padding">
+                <span>Documents Processed</span>
+                <p>-</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

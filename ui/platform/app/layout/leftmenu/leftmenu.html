@@ -1,0 +1,100 @@
+<div id="sidebar-wrapper">
+  <ul class="sidebar-nav" id="myGroup" ng-show="$root.inSolution">
+        <li ng-class="{'bg-nav':$root.currentState==='domainObjects' || $root.currentState==='resourcelibrary' || $root.currentState==='pipeline' || $root.currentState==='sourcetemplate' || $root.currentState==='documentTemplate' || $root.currentState==='services' || $root.currentState==='sourceConfiguration' || $root.currentState==='ingestFile'|| $root.currentState==='nlp' || $root.currentState==='domainDashboard' || $root.currentState==='emailConfig'|| $root.currentState==='bpmn' || $root.currentState==='unknownFormat' || $root.currentState==='newUnstructuredForm'  || $root.currentState==='terminology'}" ng-click="removeCollapse()" ng-class="activeClass">
+            <a href="" ui-sref="dashboard"   >
+                <img ng-src="{$ config.base_url $}/app/images/Configure-01.png" class="dashboard-image2">
+            </a>
+        </li>
+        <li ng-class="{'bg-nav':$root.currentState==='logging'}" ng-class="activeClass">
+            <a href="" ui-sref="app.logging">
+                <img ng-src="{$ config.base_url $}/app/images/Operate-02.png" class="dashboard-image2">
+            </a>
+        </li>
+        <li ng-class="{'bg-nav':$root.currentState==='adapt' || $root.currentState==='createmodel'}" ng-class="activeClass">
+            <a href="" ui-sref="app.adapt">
+                <img ng-src="{$ config.base_url $}/app/images/adapt.png" class="dashboard-image2">
+            </a>
+        </li>
+        <!--<li ng-class="{'bg-nav':$root.currentState==='resourcelibrary'}" ng-click="removeCollapse()">-->
+          <!--<a href="" ui-sref="app.resourcelibrary"   >-->
+              <!--<img ng-src="{$ config.base_url $}/app/images/resourceLibrary.png" class="dashboard-image">-->
+              <!--<span>Resource Library</span>-->
+          <!--</a>-->
+        <!--</li>-->
+        <!--<li  ng-click="removeCollapse()">-->
+            <!--<a href="" ui-sref="app.entities"   >-->
+                <!--<img ng-src="{$ config.base_url $}/app/images/01-entity.png" class="dashboard-image">-->
+                <!--<span>Domain Objects</span>-->
+            <!--</a>-->
+        <!--</li>-->
+        <!--<li ng-class="{'bg-nav':$root.currentState==='services'}" ng-click="removeCollapse()">-->
+            <!--<a href="" ui-sref="app.services"   >-->
+                <!--<img ng-src="{$ config.base_url $}/app/images/02-engine.png" class="dashboard-image">-->
+                <!--<span>Services</span>-->
+            <!--</a>-->
+        <!--</li>-->
+        <!--<li data-toggle="collapse" data-target="#sourcing"  ng-class="subMenuParentActive['sourcing']=='undefiend'" ng-click="changeIcon('sourcing');">-->
+          <!--<a href="" ng-class="subMenuParentActive['sourcing']">-->
+              <!--<img ng-src="{$ config.base_url $}/app/images/sourcing.png"  ng-hide="subMenuParentActive['sourcing']=='undefiend';" ng-mouseover="showHoverSubmenu('sourcing');" class="dashboard-image"/>-->
+              <!--<img ng-src="{$ config.base_url $}/app/images/sourcing1.png" ng-show="subMenuParentActive['sourcing']=='subMenuParentActive';"  ng-mouseover="showHoverSubmenu('sourcing');" class="dashboard-image"/>-->
+              <!--<span>Sourcing-->
+                <!--<i ng-show="iconshow[2]" class="fa fa-chevron-down sidemenu-downArrow"></i>-->
+                <!--<i ng-hide="iconshow[2]" class="fa fa-chevron-right sidemenu-downArrow"></i>-->
+              <!--</span>-->
+          <!--</a>-->
+        <!--</li>-->
+        <!--<ul id="sourcing"  class="collapse submenu-style" ng-class="activeClass1">-->
+            <!--<li ng-click="navSubMenu('pipeline','sourcing')" ng-class="{'bg-nav':$root.currentState==='pipeline'}"  ui-sref="app.pipeline">-->
+                <!--<a ng-class="subMenuStyle['pipeline']">-->
+                    <!--<img ng-src="{$ config.base_url $}/app/images/pipeline.png" class="dashboard-image2">-->
+                    <!--<span>Pipeline</span>-->
+                <!--</a>-->
+            <!--</li>-->
+            <!--<li ng-click="navSubMenu('sourceConfiguration','sourcing')" ng-class="{'bg-nav':$root.currentState==='sourceConfiguration'}" ui-sref="app.sourceConfiguration">-->
+                <!--<a ng-class="subMenuStyle['sourceConfiguration']">-->
+                    <!--<img ng-src="{$ config.base_url $}/app/images/sources.png" class="dashboard-image2">-->
+                    <!--<span>Source Configuration</span>-->
+                <!--</a>-->
+            <!--</li>-->
+            <!--<li ng-click="navSubMenu('documentTemplate','sourcing')" ng-class="{'bg-nav':$root.currentState==='documentTemplate'}" ui-sref="app.documentTemplate">-->
+                <!--<a ng-class="subMenuStyle['documentTemplate']">-->
+                    <!--<img ng-src="{$ config.base_url $}/app/images/dt.png" class="dashboard-image2">-->
+                    <!--<span>Document Templates</span>-->
+                <!--</a>-->
+            <!--</li>-->
+        <!--</ul>-->
+
+        <!--<li data-toggle="collapse" data-target="#monitoring" ng-class="subMenuParentActive['monitoring']=='undefiend';" ng-click="changeIcon('monitoring');">-->
+          <!--<a href=""    ng-class="subMenuParentActive['monitoring']">-->
+              <!--<img ng-src="{$ config.base_url $}/app/images/monitoring.png" ng-hide="subMenuParentActive['monitoring']=='undefiend';" ng-mouseover="showHoverSubmenu('monitoring');" class="dashboard-image"/>-->
+              <!--<img ng-src="{$ config.base_url $}/app/images/monitoring1.png" ng-show="subMenuParentActive['monitoring']=='subMenuParentActive';" ng-mouseover="showHoverSubmenu('monitoring');" class="dashboard-image"/>-->
+            <!--<span>Monitoring-->
+                <!--<i ng-show="iconshow[3]" class="fa fa-chevron-down sidemenu-downArrow"></i>-->
+                <!--<i ng-hide="iconshow[3]" class="fa fa-chevron-right sidemenu-downArrow"></i>-->
+            <!--</span>-->
+          <!--</a>-->
+        <!--</li>-->
+        <!--<ul id="monitoring"  class="collapse submenu-style" ng-class="activeClass1">-->
+            <!--<li ng-click="navSubMenu('performance','monitoring')" ng-class="{'bg-nav':$root.currentState==='performance'}"  ui-sref="app.performance">-->
+                <!--<a ng-class="subMenuStyle['performance']">-->
+                    <!--<img ng-src="{$ config.base_url $}/app/images/dt.png" class="dashboard-image2">-->
+                    <!--<span>Performance</span>-->
+                <!--</a>-->
+            <!--</li>-->
+            <!--<li ng-click="navSubMenu('logging','monitoring')" ng-class="{'bg-nav':$root.currentState==='logging'}" ui-sref="app.logging">-->
+                <!--<a ng-class="subMenuStyle['logging']">-->
+                    <!--<img ng-src="{$ config.base_url $}/app/images/logs.png" class="dashboard-image2">-->
+                    <!--<span>Logs</span>-->
+                <!--</a>-->
+            <!--</li>-->
+        <!--</ul>-->
+  </ul>
+  <!--<ul class="sidebar-nav" >-->
+      <!--<li ng-show="!$root.inSolution" ng-class="{'bg-nav':$root.currentState==='solution'}" >-->
+            <!--<a>-->
+                <!--<i class="glyphicon glyphicon-list-alt"></i>-->
+                <!--<span>View Solutions</span>-->
+            <!--</a>-->
+      <!--</li>-->
+  <!--</ul>-->
+</div>

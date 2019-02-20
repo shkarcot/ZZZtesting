@@ -1,0 +1,38 @@
+
+<nav class="navbar navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">
+        <div class="header-image"></div>
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <button class="btn btn-custom " ng-click="createSolution()" style="margin-top:10px;"><img src="/app/images/createsolution.png" class="createImage"/> Create Solution</button>
+        </li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <img src="/app/images/avatar.png" alt="Avatar" class="rounded-image">
+          </a>
+          <ul class="dropdown-menu">
+            <li><a><img src="/app/images/avatar.png" alt="Avatar" class="rounded-image">Admin</a></li>
+            <li>
+              <a ng-click="logout()">
+                <img src="/app/images/logout.png" class="logout-image"/>
+                Logout
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,85 @@
+<div class="row minPadding" ng-show="!jupiterNotebook">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+        <p class="zeroMargin">
+            <span ui-sref="app.function" style="cursor:pointer;text-decoration:underline">Functions </span><span> > </span> <span style="font-weight: 600;"> New Function</span>
+        </p>
+    </div>
+</div>
+
+<div class="row minPadding" ng-show="jupiterNotebook">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+        <p class="zeroMargin">
+            <span style="font-weight: 600;color:#4c4c4c;font-size:16px;"> {$ functCreateResp.function_name $} </span>
+        </p>
+    </div>
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+        <a class="publishClassCss">TEST</a>
+    </div>
+</div>  
+
+<div class="row functionCss" ng-show="!jupiterNotebook">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-body" style="padding-top:15px !important;padding-bottom:15px !important;">
+                <div class="row">
+                    <div class="col-sm-12 col-lg-12 col-xs-12 col-md-12">
+                        <form ng-submit="cfc.saveFunction()">
+                            <div class="form-group row">
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                    <label class="trainVersionLabel">Name</label>
+                                    <input type="text" class="form-control custom-formControl" ng-model="cfc.createFunctionObj.name" placeholder="Type Function Name" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                    <label class="trainVersionLabel">Description</label>
+                                    <textarea  rows="4" cols="50" class="form-control custom-formControl" ng-model="cfc.createFunctionObj.description" placeholder="Type Description"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                    <label class="trainVersionLabel">Type</label>
+                                    <select class="form-control custom-formControl" ng-model="cfc.createFunctionObj.type" required>
+                                        <option value="">Select Type</option>
+                                        <option value="nlp">NLP</option>
+                                        <option value="spacy">SPACY</option>
+                                        <option value="nifi">NIFI</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                                    <button class="btn btn-custom" type="submit" ng-disabled="enableFunctionLoader">
+                                        Next
+                                    </button>
+                                    <div class="loading-spiner-holder" ng-show="enableFunctionLoader">
+                                        <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving function ...</i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div><br>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row functionDetailCss" ng-show="jupiterNotebook">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+        <div id="loadImg" class="loaderCls"></div>
+        <iframe ng-src="{$ jupiterUrl $}"
+        style="margin-top: 1px;width:100%;height:480px;" onload="document.getElementById('loadImg').style.display='none';"></iframe>
+    </div>
+    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+        <button class="btn btn-custom" ng-click="cfc.saveJupiter()" ng-disabled="enableJupiterLoader">
+            Save
+        </button>
+        <div class="loading-spiner-holder" ng-show="enableJupiterLoader">
+            <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving function ...</i></span>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+html,
+body {
+    height: 100%;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.no-row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.auto-height {
+    height: inherit;
+}
+
+.page-container {
+    height: calc(100% - 55px);
+}
+
+.noMargin {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+.noPadding {
+    padding-left: 0px;
+    padding-right: 0px;
+}

@@ -1,0 +1,1388 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+
+<div class="row overlay" id="configureOnotlogy" style="background-color:white;">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="row row-eq-height" style="align-items:center;">
+            <div class="col-lg-7 col-sm-7 col-md-7 col-xs-7">
+                <label class="push-left headingStyle">Entity : {$ ec.domainObject.entity_name $} </label>
+            </div>
+            <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4 no-padding">
+                <div>
+                    <span ng-click="ec.deleteOntologyConfig()" style="color:#30a2d9;font-weight:700;text-decoration:none;cursor:pointer;">Delete Configuration</span>
+
+                </div>
+            </div>
+            <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1">
+                <span class="pull-right closeOntology" ng-click="configureOntologyCancel()">&times;</span>
+            </div>
+        </div>
+		<br>
+        <form validate-form ng-submit="ec.saveOntologyConfig()">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 col-xs-12 col-sm-12 no-padding">
+                    <div class="ontologyConf">
+                        <div class="row">
+
+                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                <label>Ontology</label>
+                                <select class="form-control" ng-model="ontologyObj.id" ng-change="ec.changeOntology(ontologyObj.id)" required>
+                                    <option value="">Select Ontology</option>
+                                    <option ng-repeat="ontology in ec.ontologiesList" value="{$ ontology.id $}">{$ ontology.name $}</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                 <label>Version</label>
+                                <select class="form-control" ng-model="ontologyObj.version" ng-change="ec.changeVersion(ontologyObj.version)" required>
+                                    <option value="">Select version</option>
+                                    <option ng-repeat="versions in ec.ontologyVersions" value="{$ versions.version $}">{$ versions.version $}</option>
+                                </select>
+                            </div>
+                             <div class="col-lg-4 col-sm-4 col-xs-4 col-md-4">
+                                <label>Object</label>
+                                <input type="text" class="form-control" ng-model="ontologyObj.object" placeholder="Enter value" required/>
+                            </div>
+                        </div>
+                        <br>
+                        <!--<div class="row">-->
+
+                             <!--<div class="col-lg-8 col-sm-8 col-xs-4 col-md-8">-->
+                                <!--<label>Nodes to Consider</label>-->
+                                <!--<form>-->
+                                    <!--<label class="radio-inline">-->
+                                      <!--<input type="radio" name="optradio" ng-model="ontologyObj.no_of_hopes"  value=1>1-->
+                                    <!--</label>-->
+                                    <!--<label class="radio-inline" style="width:25%;">-->
+                                      <!--<input type="radio" name="optradio" style="margin-top: 10px;" ng-model="ontologyObj.no_of_hopes" ng-value="">-->
+                                      <!--<input type="number" class="form-control" ng-model="ontologyObj.more_num"/>-->
+                                    <!--</label>-->
+                                    <!--<label class="radio-inline">-->
+                                      <!--<input type="radio" name="optradio" value="n" ng-model="ontologyObj.no_of_hopes">Infinity-->
+                                    <!--</label>-->
+                                <!--</form>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <br>
+
+
+                    </div>
+                    <br>
+                    <div class="buttons">
+                        <!--<button class="btn btn-and">AND</button>-->
+                        <!--<button class="btn btn-or" style="margin-left:20px;">OR</button>-->
+                        <!--<span>-->
+                            <!--<img src="/app/images/plus-default.png" style="width:30px;margin-left:20px;cursor:pointer;"/>-->
+                        <!--</span>-->
+                         <button type="submit" class="btn btn-custom" style="float:right;" >Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+	</div>
+</div>
+
+<div class="row minPadding">
+    <div class="col-lg-7 col-sm-7 col-md-7 col-xs-7">
+        <div class="row">
+            <div class="col-lg-5 col-md-5 col-sm-5">
+                <div class="zeroMargin">
+                      <div class="dropdown">
+                          <a data-toggle="dropdown" class="noDecoration configureHeading"> domain <b class="caret"></b></a>
+                          <ul class="customdropdown-menu dropdown-menu">
+                              <li>
+                                <a ui-sref="app.domainDashboard" class="noDecoration">
+                                  <img src="/app/images/Domain.png"/>
+                                  <span>Domain Configuration</span>
+                                </a>
+                              </li>
+                              <li>
+                                  <a class="noDecoration" ui-sref="app.modelDashboard">
+                                        <img src="/app/images/model.png"/>
+                                        <span>Models</span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a class="noDecoration" ui-sref="app.function">
+                                    <img src="/app/images/functionIcon.png"/>
+                                    <span>Functions</span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a ui-sref="app.services" class="noDecoration">
+                                      <img src="/app/images/Services-01.png"/>
+                                      <span>Service Configuration</span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a ui-sref="app.pipeline" class="noDecoration">
+                                      <img src="/app/images/pipeline.png"/>
+                                      <span>Pipeline Configuration</span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a ui-sref="app.sourceConfiguration" class="noDecoration">
+                                      <img src="/app/images/sources.png"/>
+                                      <span>Sources</span>
+                                  </a>
+                              </li>
+                          </ul>
+                      </div>
+                </div>
+            </div>
+            <div class="col-lg-7 col-sm-7 col-md-7 text-right">
+                <button class="btn btn-add" ng-click="ec.addDomainObject()" ng-disabled="isDisabled">
+                    <img src="/app/images/plus-default.png" style="width:10px;"/>
+                    New Domain Object
+                </button>
+                <button class="btn btn-add" ng-click="uploadDomainObj()">
+                    <img src="/app/images/import.png" style="width:10px;"/>
+                    Import
+                </button>
+                <button class="btn btn-add" ng-click="downloadDomainObj()">
+                    <img src="/app/images/export.png" style="width:10px;"/>
+                    Export
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5 col-sm-5 col-md-5 col-xs-5" >
+        <!--<img class="helpImages" src="/app/images/comment-01.png"/>-->
+        <div class="row">
+            <div class="col-sm-10 col-md-10 col-lg-10 col-xs-10" >
+                <div ng-show="ec.showJobStatusLink">
+                    <div class="panel panel-default" ng-show="ec.showStatusInProgress" style="margin-bottom:0px;position:fixed;z-index:1000;width:30%;">
+                        <div class="panel-body customStylePanel">
+                            <div class="loading-spiner-holder">
+                                <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i> Importing Domain Objects </i> <i class="fa fa-times pull-right" ng-click="cancelProgressStatus()"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default" ng-show="ec.showStatusSuccess" style="margin-bottom:0px;position:fixed;z-index:1000;">
+                        <div class="panel-body customStylePanelSuccess">
+                            <div class="loading-spiner-holder">
+                                <div class="loading-spiner"><i class="fa fa-check-circle fa-3x fa-fw margin-bottom"></i><span class=""> Domain Objects have been successfully imported <i class="fa fa-times pull-right" ng-click="cancelProgressStatus()"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default" ng-show="ec.showStatusFailure" style="margin-bottom:0px;position:fixed;z-index:1000;">
+                        <div class="panel-heading customStylePanelHead">
+                            <div class="loading-spiner-holder">
+                                <div class="loading-spiner"><i class="fa fa-exclamation-triangle fa-3x fa-fw margin-bottom" style="color:#fbc130;"></i><span class=""> Importing of Domain Objects has errors &nbsp;&nbsp;<a style="color:white" data-toggle="collapse" data-target=".details">See Details</a><i class="fa fa-times pull-right" ng-click="cancelProgressStatus()"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body collapse details" style="padding: 17px 10px 17px 10px !important;border: 1px solid #d2e4f8;">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12" ng-repeat="list in ec.failedEntities">
+                                    <div>
+                                        Entity Name: {$ list.entity_name $}
+                                    </div>
+                                    <div>
+                                        Message: {$ list.message $}
+                                    </div>
+                                    <hr style="color:#e5e5e5;" ng-if="$index != ec.failedEntities.length-1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2 col-xs-2">
+                <div class="alignRight">
+                    <img class="helpImages" src="/app/images/help-01.png"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <div class="row overlay" id="overlayDivForUpload">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <h4 class="push-left">
+      <span ng-bind="labelForUpload"></span>
+      <span class="pull-right closeRule closebtn" ng-click="cancelUpload()">&times;</span>
+    </h4>
+    <br>
+
+      <div class="col-sm-12 col-md-12 col-lg-12" style="padding-left:0">
+        <select class="form-control" ng-model="fileType" required ng-change="selectedFileType(fileType)">
+          <!--<option value="">Select Type</option>-->
+          <option ng-selected="true" value=".json">JSON Schema</option>
+          <option value=".xml">XML File</option>
+        </select>
+      </div>
+
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left:0;margin-top:25px;">
+        <form ng-show="showFileUploadform" class="form-horizontal" validate-form ng-submit="saveEntitiesSchema()">
+
+          <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="padding-left:0;margin-top:25px;">
+            <div id="importJsonLink">
+              <button ng-show="!showChangeBtn" class="btn left button-primary" alt="browse" title="browse"
+                      type="button" style="cursor:pointer;position:relative;display:inline;border-radius:0">
+                Browse
+                <ng-csv-import class="import" content="csv.content" header="csv.header" separator="csv.separator"
+                               result="csv.result" confirm-action="parseToJson()"></ng-csv-import>
+              </button>
+            </div>
+            <label class="entity-filepath" style="overflow: hidden;width:24em;">
+              <span style="display:inline;">{$ fileNameBrowsed $}</span>
+            </label>
+          </div>
+          <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="padding-left:0;margin-top:25px;">
+            <p class="error">{$ errorFileBrowse $}</p>
+          </div>
+
+          <div class="col-sm-12 col-md-12 col-lg-12" style="padding-left:0;margin-top:25px;">
+            <input type="text" ng-model="importDescription" class="bottomLineInput"
+                   placeholder="Description (optional)"/>
+          </div>
+
+          <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 text-right">
+            <button type="submit" alt="upload" title="upload" class="btn button-primary">Upload</button>
+          </div>
+          <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+            <div class="loading-spiner-holder pull-right" ng-show="isEntitySubmitAction">
+              <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span
+                      class=""><i>Saving ...</i></span>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <form ng-show="!showFileUploadform" class="form-horizontal" validate-form ng-submit="sendXml()">
+          <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="padding-left:0;margin-top:25px;">
+              <div class="btn btn-block" style="background-color:#3BABE1;color: #fff;width:100px;float: left;">Browse
+                <input class="hide_file" ngf-select ng-model="xmlFile" name="file"
+                       ngf-change="uploadXml(xmlFile)" type="file" style="font-size:13px;"/>
+              </div>
+              <div style="margin-left:20px;float: left;">
+                <span ng-show="browseFileError1">{$ browseXmlName $}</span>
+                <span ng-show="!browseFileError1">Please select the file</span>
+              </div>
+            </div>
+
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="padding-left:0;margin-top:25px;">
+              <div class="loading-spiner-holder" ng-show="showLoaderIcon">
+                <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Upload xmlfile ...</i></span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 text-right">
+              <button type="submit" class="btn button-primary pull-right" ng-disabled="isDisable">Upload</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="margin-top:20px">
+    <!--href="http://platformconsole.s3.amazonaws.com/Entity_Import_Json_Validation_Schema.json"-->
+    <a class="" style="margin-left: 15px;text-decoration: none;color: #3cabe1;display: block;margin-top: 15px;"
+       href="http://xpmsdevdata.s3.amazonaws.com/domain_object_json_schema.json"
+       target="_blank"
+       download="SchemaForDomainObject.json"
+       title="Domain object json schema"
+       alt="Domain object json schema">
+      <i class="fa fa-download iconColor" style="margin-right:9px;"></i><span style="cursor:pointer">Download Domain Object JSON Schema</span>
+    </a>
+    <br>
+    <a class="" style="display: block;margin-left:15px;text-decoration: none;color: #3cabe1;"
+       href="http://xpmsdevdata.s3.amazonaws.com/domain_object_xsd_schema.xml"
+       target="_blank"
+       download="SchemaForDomainObject.xsd"
+       title="Domain object xsd schema"
+       alt="Domain object xsd schema">
+      <i class="fa fa-download iconColor" style="margin-right: 9px;"></i><span style="cursor:pointer">Download Domain Object XSD Schema</span>
+    </a>
+    </div>
+  </div>
+
+<!--&lt;!&ndash; This is for download Domain Objects &ndash;&gt;-->
+
+  <div class="row overlay" id="overlayDivForDownload">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <h4 class="push-left">
+      <span ng-bind="labelForDownload"></span>
+      <span class="pull-right closeRule closebtn" ng-click="cancelDownload()">&times;</span>
+    </h4>
+    <br>
+
+    <div class="col-sm-12 col-md-12 col-lg-12" style="padding-left:0">
+        <select class="form-control" ng-model="ec.fileTypeForDownload" required>
+            <!--<option value="">Select Type</option>-->
+            <option ng-selected="true" value="json">JSON Schema</option>
+            <option value="xml">XML File</option>
+        </select>
+    </div>
+
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left:0;margin-top:25px;">
+          <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="padding-left:0;margin-top:25px;">
+              <div class="loading-spiner-holder" ng-show="showLoaderIcon">
+                <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Downloading ...</i></span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-9 col-sm-9 col-md-12 col-xs-9 text-left">
+              <p class="error" ng-bind="ec.messageForDownload"></p>
+            </div>
+            <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3 text-right">
+              <button  class="btn button-primary pull-right"
+                       ng-click="ec.downlodDomainObject()"
+                      ng-disabled="isDisable">Download</button>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+<!--</div>-->
+<br>
+
+<!-- Nested node template -->
+
+<script type="text/ng-template" id="nodes_renderer.html">
+  <div ui-tree-handle class="tree-node tree-node-content" ng-class="cls[this.$id]"
+       data-nodrag ng-click="ec.viewAndEditDomainObject(this)">
+        <label ng-if="node.entity_type=='domain_object' && node.entity_name != ''">
+            <span class="domainHeading">Domain Object</span>
+            <br>
+            <span>{$ node.entity_name $}</span>
+        </label>
+        <label ng-if="(node.entity_type=='entity') && node.entity_name != ''" style="margin-bottom: 0px;">
+            <div>
+                <label>
+                    <img src="/app/images/entity.png" style="width: 20px;vertical-align: super;1"/>
+                </label>
+                <label style="padding-left: 5px;">
+                    {$ node.entity_name $}
+                    <br>
+                    <span  class="domainHeading" >Entity</span>
+                </label>
+            </div>
+        </label>
+        <label style="padding-top: 10px;" ng-if="(node.entity_type=='entity') && node.entity_name == ''">
+            <img src="/app/images/entity.png" style="width: 20px;" ng-if="node.entity_type!='domain_object'"/>
+            < New Entity >
+        </label>
+        <label style="padding-top: 10px;" ng-if="(node.entity_type=='domain_object') && node.entity_name == ''">
+            <img src="/app/images/entity.png" style="width: 20px;" ng-if="node.entity_type!='domain_object'"/>
+            < New Domain Object >
+        </label>
+        <label style="margin-bottom:0px;"  ng-if="!(node.entity_type=='entity' || node.entity_type=='domain_object') && node.key_name != ''">
+            <div>
+                <label ng-show="node.type=='entity' || node.type=='related_entity'">
+                    <img src="/app/images/entity.png" style="width: 20px;vertical-align: super;"/>
+                </label>
+                <label ng-show="!(node.type=='entity' || node.type=='related_entity')">
+                    <img src="/app/images/attribute.png" style="width: 20px;vertical-align: super;"/>
+                </label>
+                <label style="padding-left: 5px;">
+                    {$ node.key_name $}
+                    <br ng-if="!(node.entity_type=='entity' || node.entity_type=='domain_object')">
+                    <span  class="domainHeading"  ng-if="!(node.entity_type=='entity' || node.entity_type=='domain_object')">{$ node.type $}</span>
+                </label>
+            </div>
+
+        </label>
+        <label style="padding-top: 10px;" ng-if="!(node.entity_type=='entity' || node.entity_type=='domain_object') && node.key_name == ''">
+            <img src="/app/images/attribute.png" style="width: 20px;"/> < New Attribute >
+        </label>
+        <a class="pull-right" ng-if="node.attributes && node.attributes.length > 0 && (node.entity_type=='entity' || node.entity_type=='domain_object' )" data-nodrag ng-click="toggle(this)" style="padding: 13px;
+    border-left: 1px solid #ddd;
+    background-color: aliceblue;">
+            <span  ng-class="{'sort_down': collapsed,'sort_up': !collapsed}"></span>
+        </a>
+        <a class="pull-right" data-nodrag ng-click="removeAttr(this,node.entity_type,$event)" ng-class="{disabledStyle: isDisabled}" style="margin-right: 8px;padding: 10px;">
+            <span class="fa fa-trash " style="font-size:14px;"></span>
+        </a>
+        <span ng-if="node.entity_name!=''">
+            <!--<a class="pull-right" data-nodrag ng-click="newSubItem(this,'entity',$event)" ng-class="{disabledStyle: isDisabled}" style="margin-right: 8px;padding: 10px;" ng-show="node.entity_type=='entity' || node.entity_type=='domain_object'">-->
+                <!--<span><i class="fa fa-plus"></i> New Entity</span>-->
+            <!--</a>-->
+            <a class="pull-right" data-nodrag ng-click="newSubItem(this,'attribute',$event)"
+               ng-class="{disabledStyle: isDisabled}"
+               style="margin-right: 8px;padding: 10px;"
+               ng-show="node.type=='entity' || node.entity_type=='entity' || node.entity_type=='domain_object'">
+                <span><i class="fa fa-plus"></i> New Attribute</span>
+            </a>
+        </span>
+        <span class="pull-right badge" title="Rules count" style="margin: 13px;background-color: white;border: 1px solid #ddd;color: #ababab;font-weight: 500;"
+              ng-if="!(node.type=='entity' || node.entity_type=='entity' || node.entity_type=='domain_object')">
+            {$ node.rule_id.length $}
+        </span>
+  </div>
+  <ol ui-tree-nodes="" ng-model="node.attributes" ng-class="{hidden: collapsed}" class="scrollingTree">
+      <li ng-repeat="node in node.attributes" id="{$ node.$$hashKey.replace(':', '') $}"  ui-tree-node ng-include="'nodes_renderer.html'">
+      </li>
+  </ol>
+</script>
+
+
+<div class="domainObjectBody">
+    <div class="row row-eq-height custom-row" >
+        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12" style="height: {$ popupHeight $}px;overflow-y:scroll;">
+            <div ui-tree id="tree-root" data-empty-placeholder-enabled="false">
+                <ol ui-tree-nodes ng-model="domainObjects" id="domainObjectsNodes" style="padding:0px;">
+                    <li ng-repeat="node in domainObjects" ng-click="parentNodeOfdomainObjects(node)"
+                        id="{$ node.$$hashKey.replace(':', '') $}"
+                        class="treeDomainObject" collapsed="{$ collapseKey $}"
+                        ng-class="{disabledStyle: isDisabled}" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding domainObjectDefinition" ng-if="!ec.attributeShow && ec.placeholder" style="height: {$ popupHeight $}px;overflow-y:scroll;">
+            <ul class="nav nav-tabs nav-custom-tabs">
+                <li class="active"><a data-toggle="tab" href=".properties">Properties</a></li>
+                <li><a data-toggle="tab" href=".enrichments">Enrichments</a></li>
+                <li><a data-toggle="tab" href=".entitytest">Test</a></li>
+            </ul>
+			<br>
+			<div class="tab-content">
+				<div class="tab-pane fade in active properties">
+					<ul class="list-group">
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col-lg-4 co-md-4 col-sm-4 col-xs-12">
+									<label class="keyText">Name</label>
+								</div>
+								<div class="col-lg-8 col-md-8 col-xs-12 col-sm-8">
+                                    <input type="text" class="form-control custom-form"
+                                           ng-blur="checkEntityIsEmpty(ec.domainObject, $event)"
+                                           ng-model="ec.domainObject.entity_name" placeholder="Entity Name" id="focusInput" resspechars/>
+								</div>
+							</div>
+						</li>
+						<!--<li class="list-group-item">-->
+							<!--<div class="row">-->
+								<!--<div class="col-lg-4 co-md-4 col-sm-4 col-xs-12">-->
+									<!--<label class="keyText">NER Type</label>-->
+								<!--</div>-->
+								<!--<div class="col-lg-8 col-md-8 col-xs-12 col-sm-8">-->
+                                    <!--<div mass-autocomplete class="mass-autocompleteAttributeDiv">-->
+                                        <!--<input ng-model="ec.domainObject.ner_type" class="form-control custom-form"-->
+                                               <!--mass-autocomplete-item="autocomplete_options" placeholder="Enter Ner Type">-->
+                                    <!--</div>-->
+									<!--&lt;!&ndash;<select class="form-control  custom-form" ng-model="ec.domainObject.ner_type">&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<option value="">Select Type</option>&ndash;&gt;-->
+										<!--&lt;!&ndash;<option data-ng-repeat="data in nerTypeList" value="{$ data $}">&ndash;&gt;-->
+											<!--&lt;!&ndash;{$  data $}&ndash;&gt;-->
+										<!--&lt;!&ndash;</option>&ndash;&gt;-->
+									<!--&lt;!&ndash;</select>&ndash;&gt;-->
+								<!--</div>-->
+							<!--</div>-->
+						<!--</li>-->
+                        <li class="list-group-item" ng-show="ec.domainObject.entity_type!='domain_object'">
+							<div class="row">
+								<div class="col-lg-4 co-md-4 col-sm-4 col-xs-12">
+									<label class="keyText">Ontology</label>
+								</div>
+								<div class="col-lg-8 col-md-8 col-xs-12 col-sm-8 text-right">
+                                    <!--<div mass-autocomplete class="mass-autocompleteAttributeDiv">-->
+                                        <!--<input ng-model="ec.domainObject.ner_type" class="form-control custom-form"-->
+                                               <!--mass-autocomplete-item="autocomplete_options" placeholder="Enter Ner Type">-->
+                                    <!--</div>-->
+									<!--<select class="form-control  custom-form" ng-model="ec.domainObject.ner_type">-->
+                                        <!--<option value="">Select Type</option>-->
+										<!--<option data-ng-repeat="data in nerTypeList" value="{$ data $}">-->
+											<!--{$  data $}-->
+										<!--</option>-->
+									<!--</select>-->
+                                    <label style="margin-top:8px;">
+                                        <a ng-click="configureOntology(ec.domainObject);" style="color:#30a2d9;font-weight:bold;text-decoration:none;">Configure</a>
+                                    </label>
+								</div>
+							</div>
+						</li>
+						<li class="list-group-item" ng-show="ec.domainObject.entity_type!='domain_object'">
+							<div class="row">
+								<div class="col-lg-4 co-md-4 col-sm-4 col-xs-12">
+									<label class="keyText">Cardinality </label>
+								</div>
+								<div class="col-lg-8 col-md-8 col-xs-12 col-sm-8">
+                                    <select class="form-control  custom-form" ng-model="ec.domainObject.entity_relation.cardinality"  style="padding:0;">
+                                        <option data-ng-repeat="data in cardinalityList"
+                                                ng-selected="ec.domainObject.entity_relation.cardinality==data.value"
+                                                value="{$ data.value $}">{$  data.name $}</option>
+									</select>
+
+								</div>
+							</div>
+						</li>
+					</ul>
+					<!--<div class="checkbox">-->
+						<!--<form class="customForm">-->
+							<!--<label class="checkbox-inline">-->
+								<!--<input type="checkbox" name="" value="">-->
+								<!--<i class="helper"></i>-->
+								<!--Make this as Head *-->
+							<!--</label>-->
+						<!--</form>-->
+					<!--</div>-->
+					<br>
+					<div>
+						<label class="SubHeading-text">Synonym</label>
+						<textarea placeholder="synonym" rows="5" class="form-control" ng-model="ec.domainObject.entity_synonym"></textarea>
+					</div>
+					<br>
+                    <div class="attribute" ng-show="!ec.newEntity">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 no-padding">
+                                <label class="SubHeading-text">Attributes</label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 no-padding">
+                                <span class="right">
+                                    <img src="/app/images/plus.png" ng-click="ec.newAttribute(ec.domainObject,'attribute')" style="width:15px;cursor:pointer;"/>
+                                </span>
+                            </div>
+                        </div>
+                        <div>
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-repeat="list in ec.domainObject.attributes" ng-if="list.entity_type!='entity'">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                            <label>{$ list.key_name $}</label>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                            <span  class="valueText">{$ list.type $}</span>
+                                        </div>
+                                        <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12 text-right">
+                                            <img src="/app/images/edit.png" ng-click="ec.autoSelectOnNewAttr(ec.domainObject,list)" style="width:15px;cursor:pointer;"/>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br>
+                    <p class="error">{$ validateAttribute $}</p>
+                    <div class="row">
+                      <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                        <button class="btn button-customSave btn-custom" ng-click="saveHierarchy()" ng-disabled="isDisabled"> <i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                        <!--<button class="btn button-customCancel" ng-click="cancelActions()">Cancel</button>-->
+                        <div class="loading-spiner-holder" ng-show="isDisabled" ><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving Entity...</i></span></div></div>
+                        <p class="error">{$ message $}</p>
+                      </div>
+                    </div>
+				</div>
+				<div class="tab-pane fade enrichments">
+					<div class="row domainObjectStyle" >
+                      <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                            <ul id="do-tabs" class="nav nav-tabs nav-custom-tabs">
+                                <li class="active"><a data-toggle="tab" href=".attributes">Attributes</a></li>
+                                <li ><a data-toggle="tab" href=".enrichment">Enrichments</a></li>
+                            </ul>
+                        </div>
+                      </div>
+
+                      <div class="tab-content">
+                        <div class="tab-pane fade in active attributes bckColor">
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <ul class="list-group">
+                                <li class="list-group-item custom-list-item" style="text-align:left !important"><span class="groupHead">Attributes</span> <a class="pull-right enableColor" ng-click="ec.enableAllAttributes()">Enable All</a></li>
+                                <li class="list-group-item custom-list-item" style="text-align:left !important" ng-repeat="item in ec.attributesList track by $index" ng-show="item!=''">
+                                    <div class="checkbox">
+                                        <form class="customForm">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" ng-checked="ec.selectedAttributes.indexOf(item) > -1" ng-click="ec.toggleAttribute(item)" value="{$ item $}">
+                                                <i class="helper"></i>
+                                                 {$ item $}
+                                            </label>
+                                        </form>
+                                    </div>
+
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="tab-pane fade enrichment bckColor">
+                          <div class="row">
+                              <div class="col-sm-12">
+                                  <ul class="list-group">
+                                    <li class="list-group-item custom-list-item" style="text-align:left !important"><span class="groupHead">Enrichments</span> <a class="pull-right enableColor" ng-click="ec.enableAllEnrichments()">Enable All</a></li>
+                                    <li class="list-group-item custom-list-item" style="text-align:left !important" ng-repeat="item in ec.enrichmentsList">
+                                        <div class="checkbox">
+                                            <form class="customForm">
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" value="{$ item $}" ng-checked="ec.selectedEnrichments.indexOf(item) > -1" ng-click="ec.toggleEnrichment(item)">
+                                                    <i class="helper"></i>
+                                                     {$ item $}
+                                                </label>
+                                            </form>
+                                        </div>
+                                    </li>
+                                      <li class="list-group-item custom-list-item" style="text-align:left !important" ng-show="loadingEnrichments">
+                                          <div class="loading-spiner-holder" style="margin-top:10px;">
+                                            <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span
+                                                    class=""><i>loading enrichments...</i></span></div>
+                                          </div>
+                                      </li>
+                                  </ul>
+                              </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10">
+                              <button class="btn button-customSave" ng-click="ec.saveEnrichment()" ng-disabled="isDisabled"> <i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                              <div class="loading-spiner-holder" ng-show="isDisabled" ><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving Enrichments...</i></span></div></div>
+                                <p class="error">{$ message $}</p>
+                                <p class="red">{$ ec.validateEnrichment $}</p>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+				</div>
+				<div class="tab-pane fade entitytest">
+					<div class="row">
+                        <div class="col-sm-12">
+                          <div class="panelCustom">
+                            <div class="panel-custom">
+                              <p class="headClass">Input</p>
+                            </div>
+                            <div class="panelBody-custom">
+                              <textarea rows="10" class="textAreaClass" ng-model="inputModel" placeholder="Type or Paste the input(JSON)"></textarea>
+                            </div>
+                            <div>
+                              <button class="btn btn-primary btn-block btn-test" ng-click="testInput(inputModel)">Test</button>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-12">
+                          <div class="panelCustom">
+                            <div class="panel-custom">
+                              <p class="headClass">Output</p>
+                            </div>
+                            <div class="panelBody-custom" style="overflow-y:scroll">
+                              <p class="outputText" ng-show="executeData==''">Output will be shown here</p>
+                              <!--<label>Patient</label>-->
+                              <!--<table class="table table-bordered table-rule">-->
+                                <!--<tr>-->
+                                  <!--<td>age</td>-->
+                                  <!--<td>50</td>-->
+                                <!--</tr>-->
+                              <!--</table>-->
+                              <!--<ul class="no-list">-->
+                                <!--<li>-->
+                                  <!--<span>Applied Rule</span>-->
+                                  <!--<span class="ruleApplied right"><i class="fa fa-check-circle"></i></span>-->
+                                <!--</li>-->
+                              <!--</ul>-->
+                              <div class="card" ng-show="executeData!=''" ng-repeat="card in executeRulesOutput">
+                                <div class="card-title" ng-class="card.EStatus" data-toggle="collapse" href=".outputCard{$ $index $}" aria-expanded="false" aria-controls="outputCard{$ $index $}">
+                                  <label>{$ card.domain_object $}</label>
+                                </div>
+                                <div class="collapse in outputCard{$ $index $}">
+                                  <div class="card-body" ng-repeat="attr in card.attributes">
+                                    <table class="table table-bordered table-rule">
+                                      <tr >
+                                        <td><label class="labelBold">Attribute Name:</label> {$ attr.attribute $}</td>
+                                        <td><label class="labelBold">Value:</label> {$ attr.value $}</td>
+                                      </tr>
+                                    </table>
+                                    <ul class="list-group list-group-flush" style="margin-bottom: 0px;" ng-repeat="rule in attr.rules track by $index">
+                                      <li class="list-group-item list-custom">
+                                        <span><label class="labelBold">Rule:</label> {$ rule.rule_name $}</span>
+                                        <span class="right"><i class="fa fa-check-circle ruleApplied" ng-show="rule.status"></i><i class="fa fa-times-circle red" ng-hide="rule.status"></i></span>
+                                      </li>
+                                    </ul>
+                                    <br ng-show="card.enrichEntities.length>0">
+                                    <div class="card" ng-show="card.enrichEntities.length>0">
+                                      <div class="card-title withEnrichment">
+                                        <label class="labelBold">Extract Entities</label>
+                                      </div>
+                                      <ul class="list-group list-group-flush" style="margin-bottom: 0px;" >
+                                        <li class="list-group-item list-custom" ng-repeat="value in card.enrichEntities">
+                                          <span><label class="labelBold">{$ value.entity_key[0] $}:</label> {$ value.text $}</span>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    <br ng-show="ec.checkObjectLength(card.enrichIntent)">
+                                    <div class="card" ng-show="ec.checkObjectLength(card.enrichIntent)">
+                                      <div class="card-title withEnrichment">
+                                        <label class="labelBold">Extract Intent</label>
+                                      </div>
+                                      <div ng-repeat="(key,value) in card.enrichIntent">
+                                        <table class="table table-bordered table-rule">
+                                          <tr>
+                                            <td><label class="labelBold">{$ key $}</label></td>
+                                          </tr>
+                                        </table>
+                                        <ul class="list-group list-group-flush" style="margin-bottom: 0px;">
+                                          <li class="list-group-item list-custom" ng-repeat="data in value.action_metadata">
+                                            <span><label class="labelBold">{$ data.entity_key $}:</label> {$ data.entity_value $}</span>
+                                          </li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+				</div>
+			</div>
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding domainObjectDefinition" ng-if="ec.attributeShow && ec.placeholder" style="height: {$ popupHeight $}px;overflow-y:scroll;">
+            <ul class="nav nav-tabs nav-custom-tabs">
+                <li class="active"><a data-toggle="tab" href=".properties">Properties</a></li>
+            </ul>
+			<br>
+			<div class="tab-content">
+				<div class="tab-pane fade in active properties">
+					<ul class="list-group">
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col-lg-4 co-md-4 col-sm-4 col-xs-12">
+									<label class="keyText">Name</label>
+								</div>
+								<div class="col-lg-8 col-md-8 col-xs-12 col-sm-8">
+                                    <input type="text" class="form-control custom-form" id="attrFocus" ng-blur="checkAttributeIsEmpty(ec.attributeSelected, $event)"  ng-model="ec.attributeSelected.key_name" placeholder="Enter attribute" ng-disabled="ec.entityName!=undefined && ec.entityName!='' && ec.entityName!='create'" resspechars/>
+								</div>
+							</div>
+						</li>
+                        <li class="list-group-item">
+							<div class="row">
+								<div class="col-lg-4 co-md-4 col-sm-4 col-xs-12">
+									<label class="keyText">Data Type</label>
+								</div>
+								<div class="col-lg-8 col-md-8 col-xs-12 col-sm-8">
+									<select class="form-control  custom-form" ng-model="ec.attributeSelected.type" ng-change="ec.changeDataType(ec.attributeSelected.type)">
+                                        <option ng-repeat="(key,options) in typeList" value="{$ options $}" ng-selected="options == ec.attributeSelected.type">{$ key $}</option>
+									</select>
+								</div>
+							</div>
+						</li>
+                        <li class="list-group-item" ng-if="ec.attributeSelected.type=='related_entity'">
+							<div class="row">
+								<div class="col-lg-4 co-md-4 col-sm-4 col-xs-12">
+									<label class="keyText">Entity</label>
+								</div>
+								<div class="col-lg-8 col-md-8 col-xs-12 col-sm-8">
+									<select class="form-control  custom-form" ng-model="ec.entityName" ng-change="ec.changeEntity(ec.entityName)">
+                                        <option value="" ng-selected="true">Select Entity</option>
+                                        <option style="color:#35aae3;font-size:16px;" value="create"><a>Create Entity</a></option>
+                                        <option ng-repeat="options in entitiesList" value="{$ options $}">{$ options $}</option>
+									</select>
+								</div>
+							</div>
+						</li>
+						<li class="list-group-item" ng-if="!(ec.attributeSelected.type=='related_entity' || ec.attributeSelected.type=='entity')">
+							<div class="row">
+								<div class="col-lg-4 co-md-4 col-sm-4 col-xs-12">
+									<label class="keyText">NER Type</label>
+								</div>
+								<div class="col-lg-8 col-md-8 col-xs-12 col-sm-8">
+                                    <div mass-autocomplete class="mass-autocompleteAttributeDiv">
+                                        <input ng-model="ec.attributeSelected.ner_type" class="form-control custom-form"
+                                               mass-autocomplete-item="autocomplete_options" placeholder="Enter Ner Type">
+                                    </div>
+									<!--<select class="form-control  custom-form" ng-model="ec.attributeSelected.ner_type">-->
+                                        <!--<option value="">Select Ner Type</option>-->
+										<!--<option data-ng-repeat="data in nerTypeList" value="{$ data $}">-->
+											<!--{$  data $}-->
+										<!--</option>-->
+									<!--</select>-->
+								</div>
+							</div>
+						</li>
+                        <li class="list-group-item" ng-if="ec.attributeSelected.type=='related_entity' || ec.attributeSelected.type=='entity'">
+							<div class="row">
+								<div class="col-lg-4 co-md-4 col-sm-4 col-xs-12">
+									<label class="keyText">Ontology</label>
+								</div>
+								<div class="col-lg-8 col-md-8 col-xs-12 col-sm-8 text-right">
+                                    <!--<div mass-autocomplete class="mass-autocompleteAttributeDiv">-->
+                                        <!--<input ng-model="ec.domainObject.ner_type" class="form-control custom-form"-->
+                                               <!--mass-autocomplete-item="autocomplete_options" placeholder="Enter Ner Type">-->
+                                    <!--</div>-->
+									<!--<select class="form-control  custom-form" ng-model="ec.domainObject.ner_type">-->
+                                        <!--<option value="">Select Type</option>-->
+										<!--<option data-ng-repeat="data in nerTypeList" value="{$ data $}">-->
+											<!--{$  data $}-->
+										<!--</option>-->
+									<!--</select>-->
+                                    <label style="margin-top:8px;">
+                                        <a ng-click="configureOntology(ec.domainObject);" style="color:#30a2d9;font-weight:bold;text-decoration:none;">Configure</a>
+                                    </label>
+								</div>
+							</div>
+						</li>
+                        <li class="list-group-item" ng-if="ec.attributeSelected.type=='related_entity' || ec.attributeSelected.type=='entity'">
+							<div class="row">
+								<div class="col-lg-4 co-md-4 col-sm-4 col-xs-12">
+									<label class="keyText">Cardinality </label>
+								</div>
+								<div class="col-lg-8 col-md-8 col-xs-12 col-sm-8">
+									<!--<input type="text" class="form-control custom-form" ng-model="ec.domainObject.entity_relation.cardinality"/> -->
+                                    <select class="form-control  custom-form" ng-model="ec.attributeSelected.entity_relation.cardinality" style="padding:0;">
+                                        <option data-ng-repeat="data in cardinalityList"
+                                                ng-selected="ec.attributeSelected.entity_relation.cardinality==data.value"
+                                                value="{$ data.value $}">{$  data.name $}</option>
+									</select>
+
+								</div>
+							</div>
+						</li>
+					</ul>
+					<!--<div class="checkbox">-->
+						<!--<form class="customForm">-->
+							<!--<label class="checkbox-inline">-->
+								<!--<input type="checkbox" name="" value="">-->
+								<!--<i class="helper"></i>-->
+								<!--Make this as Head *-->
+							<!--</label>-->
+						<!--</form>-->
+					<!--</div>-->
+					<br>
+					<div>
+						<label class="SubHeading-text">Synonym</label>
+						<textarea placeholder="synonym" rows="5" class="form-control" ng-model="ec.attributeSelected.synonym"></textarea>
+					</div>
+					<br>
+                    <div class="rule" ng-hide="ec.attributeSelected.type=='related_entity'">
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
+                                <label>Rules</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                <div class="customCreateRules">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                            <a ng-click="addRuleForVariable()" style="text-decoration:none;color:#5eb5eb;">
+                                                <img src="./app/images/add.png" style="width:15px;"/>
+                                                Create Rule
+                                            </a>
+                                        </div>
+                                        <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2" style="color:#5eb5eb;font-weight:bold;">
+                                            OR
+                                        </div>
+                                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                                            <a ng-click="existingRulesdiv()" style="text-decoration:none;color:#5eb5eb;">
+                                                <img src="./app/images/existing.png" style="width:15px;"/>
+                                                Choose Existing Rule
+                                            </a>
+
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12" style="border-bottom:1px solid #eee;">
+                                            <label>Associated Rules</label>
+                                        </div>
+                                    </div>
+                                    <div class="row rulesPadding" ng-repeat="rule in ec.selectedRulesWithObj">
+                                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                                            {$ rule.rule_name $}
+                                        </div>
+                                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                            <img src="./app/images/edit.png" title="Edit rule" style="width:15px;cursor:pointer;" ng-click="ec.editRule(rule)"/>
+                                            <img src="./app/images/bin.png" title="delete rule" style="width:15px;cursor:pointer;margin-left:12px" ng-click="ec.removeRuleFromAttr($index)" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="error">{$ validateAttribute $}</p>
+                    <div class="row">
+                      <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                        <button class="btn button-customSave btn-custom" ng-click="saveEntities()" ng-disabled="isDisabled"> <i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                        <!--<button class="btn button-customCancel" ng-click="cancelActions()">Cancel</button>-->
+                        <div class="loading-spiner-holder" ng-show="isDisabled" ><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving Entity...</i></span></div></div>
+                        <p class="error">{$ message $}</p>
+                      </div>
+                    </div>
+				</div>
+			</div>
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding domainObjectDefinition" ng-if="!ec.placeholder" style="height: {$ popupHeight $}px;overflow-y:scroll;text-align:center">
+                <img src="/app/images/emptyDomain.png" style="margin-top:20%;"/>
+        </div>
+    </div>
+
+</div>
+
+<div class="row overlay" id="ruleOverlayDiv">
+
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 image-style1" style="overflow:auto">
+        <h4 class="push-left">
+            <span>&nbsp;</span>
+		  <span class="pull-right closeRule closebtn" ng-click="cancel()">&times;</span>
+		</h4>
+		<form ng-submit="ec.saveRule()">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <label style="color: #5eb5eb;font-weight: 400;cursor:pointer;font-size:12px;">
+                        <input type="radio" name="optradio" ng-model="ruleSelection" value="vrule"/>
+                        Validation rule
+                    </label>
+                </div>
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                    <label style="color: #5eb5eb;font-weight: 400;cursor:pointer;font-size:12px;">
+                        <input type="radio" name="optradio" ng-model="ruleSelection" value="srule"/>
+                        Standardisation Rule
+                    </label>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+					<label style="color: #5eb5eb;font-weight: 400;cursor:pointer;font-size:12px;" ng-click="errorMsg=''">
+						<input type="radio" name="optradio" ng-model="ruleSelection" value="cusCondition"/>
+						Custom Condition
+					</label>
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+					<label style="color: #5eb5eb;font-weight: 400;cursor:pointer;font-size:12px;"  ng-click="errorMsg=''">
+						<input type="radio" name="optradio" ng-model="ruleSelection" value="cusAction"/>
+						Custom Action
+					</label>
+				</div>
+            </div>
+            <div class="row" ng-show="ruleSelection == 'vrule' || ruleSelection == 'srule'">
+                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                    <label class="text-heading">Rule Name</label>
+                    <input type="text" class="form-control bottomLineInput"
+                           placeholder="Enter Rule Name" ng-model="ec.ruleObj.rule_name" style="background: white;" required />
+                </div>
+                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                    <label class="text-heading">Validation Message<span style="font-size: 10px;">( This message appears in Business User Interface when validation fails  )</span></label>
+                    <input type="text" class="form-control bottomLineInput"
+                           placeholder="Enter validation message" ng-model="ec.ruleObj.validation_message" style="background: white;" required />
+                </div>
+            </div>
+            <div class="row" ng-show="ruleSelection == 'vrule' || ruleSelection == 'srule'">
+                <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <label>IF</label>
+                    <div class="row" ng-repeat="ruleCond in ec.ruleObj.rule.conds" style="margin-bottom:10px;">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <select class="form-control" ng-model="ruleCond.fn">
+                                <option value="">Select function</option>
+                                <option ng-repeat="option in ec.functionsList" value="{$ option.fn $}">{$ option.display_name $}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <select class="form-control" ng-model="ruleCond.op" ng-change="ec.checkForOperator(ruleCond.op,ruleCond,$index)">
+                                <option value="">Select condition</option>
+                                <option ng-repeat="option in ec.operatorsList" value="{$ option.oper $}">{$ option.display_name $}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <select class="form-control" ng-model="ruleCond.rval" ng-if="ruleCond.op == 'lookup'">
+                                <option value="">Select Tag</option>
+                                <option ng-repeat="opt in ec.tagsArray" value="{$ opt $}">{$ opt $}</option>
+                            </select>
+                            <input type="text" class="form-control" ng-model="ruleCond.rval" ng-if="ruleCond.op != 'lookup'" placeholder="Enter value"/>
+                        </div>
+                        <div class="col-lg-1 col-md-1 col-sm-1">
+                            <a ng-click="ec.selectOperator('any')" ng-show="$index == 0">OR</a>
+                            <a ng-click="ec.addCondition()" ng-show="$index != 0"><span ng-show="ec.ruleObj.rule.run_type=='any'">OR</span><span ng-show="ec.ruleObj.rule.run_type=='all'">AND</span></a>
+                        </div>
+                        <div class="col-lg-1 col-md-1 col-sm-1">
+                            <a ng-click="ec.selectOperator('all')" ng-show="$index == 0">AND</a>
+                            <a ng-click="ec.delCond($index)" ng-show="$index != 0"><span class="fa fa-trash"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-show="ruleSelection == 'srule'">
+                <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <label>THEN</label>
+                    <div class="row" style="margin-bottom:10px;" ng-repeat="ruleAction in ec.ruleObj.rule.actions">
+                        <div class="col-lg-5 col-md-5 col-sm-5">
+                            <select class="form-control" ng-model="ruleAction.act" ng-change="ec.checkForAction(ruleAction.act,ruleAction,$index)">
+                                <option value="">Select condition</option>
+                                <option ng-repeat="option in ec.actionsList" value="{$ option.oper $}">{$ option.display_name $}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-5 col-md-5 col-sm-5">
+                            <input type="text" class="form-control" ng-model="ruleAction.attr.rval" placeholder="Enter value"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-show="ruleSelection == 'cusCondition'">
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6 " style="padding-left:0px;">
+                            <label class="text-heading">Custom Condition Name</label>
+					        <input type="text" class="form-control bottomLineInput"
+						        placeholder="Enter Condition Name" ng-model="customConditionName" style="background: white;" />
+                        </div>
+                        <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6 ">
+                            <label class="text-heading">Language</label>
+                            <select class="form-control" ng-model="lngForCondition" ng-change="conditionLng(lngForCondition)">
+                                <option value="javascript">Javascript</option>
+                                <option value="groovy">Groovy</option>
+                            </select>
+                        </div>
+                    </div>
+					<div id="aceEditorcusCondition" ui-ace="aceOptionsCon" ng-trim="true"></div><br>
+				</div>
+			</div>
+			<div class="row" ng-show="ruleSelection == 'cusAction'">
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6 " style="padding-left:0px;">
+                            <label class="text-heading">Custom Action Name</label>
+					        <input type="text" class="form-control bottomLineInput"
+						        placeholder="Enter Action Name" ng-model="customActionName" style="background: white;" />
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                            <label class="text-heading">Language</label>
+                            <select class="form-control" ng-model="lngForAction" ng-change="actionLng(lngForAction)">
+                                <option value="javascript">Javascript</option>
+                                <option value="groovy">Groovy</option>
+                            </select>
+                        </div>
+                    </div>
+					<div id="aceEditorcusAction" ui-ace="aceOptionsAct" ng-trim="true"></div><br>
+				</div>
+			</div>
+            <div class="alert alert-danger" ng-show="ec.conditionErr != ''">{$ ec.conditionErr $}</div>
+			<div class="row" ng-show="ruleSelection == 'vrule' || ruleSelection == 'srule'">
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+					<button type="submit" class="btn btn-custom">Save</button>
+					<div ng-show="showSpinnerRule" class="loading-spiner-holder ralign-spinner"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class="">Saving rule</span></div></div>
+					<div class="alert alert-danger" ng-show="ec.validateErr!=''">{$ ec.validateErr $}</div>
+				</div>
+			</div>
+            <div class="row" ng-show="ruleSelection == 'cusCondition' || ruleSelection == 'cusAction'">
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+					<button type="button" class="btn btn-custom" ng-click="ec.submitCustomRule(ruleSelection)">Save</button>
+                    <div class="error">{$ errorMsg $}</div>
+					<div ng-show="showSpinnerRule" class="loading-spiner-holder ralign-spinner"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class="">Saving condition</span></div></div>
+				</div>
+			</div>
+		</form>
+		<br>
+		<hr>
+		<br>
+		<form ng-submit="ec.testRule()" ng-show="ruleSelection == 'vrule' || ruleSelection == 'srule'">
+			<div class="row">
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+					<label class="text-heading">Source</label>
+					<input type="text" class="form-control bottomLineInput"
+						   placeholder="Enter Value" ng-model="ec.sourceValue" style="background: white;" required />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+					<button type="submit" class="btn btn-custom">Test</button>
+				</div>
+			</div><br>
+            <div class="row">
+                <div class="col-sm-12" ng-if="ec.ruleFailedmessage">
+                    <span style="color:black">Valid : </span>
+                    <span style="padding-left:10px;">
+                        <i class="fa fa-times-circle red"></i>
+                    </span>
+                </div>
+                <div class="col-sm-12" ng-if="ec.ruleSuccessmessage">
+                    <span style="color:black">Valid : </span>
+                    <span style="padding-left:10px;">
+                        <i class="fa fa-check-circle ruleApplied"></i>
+                    </span>
+                    <br>
+                    <span style="color:black" ng-show="ec.ruleResult != undefined">Result : </span><span>{$ ec.ruleResult $}</span>
+                </div>
+            </div>
+		</form>
+        <form ng-submit="ec.testCondition('cusCondition')" ng-show="ruleSelection == 'cusCondition'">
+			<div class="row">
+				<div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+					<input type="text" class="form-control bottomLineInput"
+						   placeholder="Enter Source Value" ng-model="ec.sourceConditionValue" style="background: white;" required />
+				</div>
+				<div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+					<input type="text" class="form-control bottomLineInput"
+						   placeholder="Enter Target Value" ng-model="ec.targetConditionValue" style="background: white;" required />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+					<button type="submit" class="btn btn-custom">Test</button>
+					<div ng-show="showSpinnertestCondition" class="loading-spiner-holder ralign-spinner"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class="">testing condition</span></div></div>
+				</div>
+			</div><br>
+			<div class="row">
+				<div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+					<span>Result : </span><span>{$ outputOfTestCondition $}</span>
+				</div>
+			</div>
+		</form>
+		<form ng-submit="ec.testCondition('cusAction')" ng-show="ruleSelection == 'cusAction'">
+			<div class="row">
+				<div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+					<input type="text" class="form-control bottomLineInput"
+						   placeholder="Enter Source Value" ng-model="ec.sourceActionValue" style="background: white;" required />
+				</div>
+                <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+					<input type="text" class="form-control bottomLineInput"
+						   placeholder="Enter Target Value" ng-model="ec.targetActionValue" style="background: white;" required />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+					<button type="submit" class="btn btn-custom">Test</button>
+					<div ng-show="showSpinnertestAction" class="loading-spiner-holder ralign-spinner"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class="">testing action</span></div></div>
+				</div>
+			</div><br>
+			<div class="row">
+				<div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+					<span>Result : </span><span>{$ outputOfTestAction $}</span>
+				</div>
+			</div>
+		</form>
+        <br>
+    </div>
+</div>
+
+<div class="row overlay" id="existingruleDiv">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<h4 class="push-left">
+		  <span>Choose From Existing</span>
+		  <span class="pull-right closeRule closebtn" ng-click="cancelExisting()">&times;</span>
+		</h4>
+
+
+        <br>
+		<form >
+            <div class="image-style3" style="overflow: auto;">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <label style="color: #5eb5eb;font-weight: 400;">
+                            <input type="radio" name="optradio" ng-model="ec.ruleListSelection" value="vlrule"/>
+                            Validation rule
+                        </label>
+                    </div>
+                    <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                        <label style="color: #5eb5eb;font-weight: 400;">
+                            <input type="radio" name="optradio" ng-model="ec.ruleListSelection" value="slrule"/>
+                            Standardisation Rule
+                        </label>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						<label style="color: #5eb5eb;font-weight: 400;cursor:pointer;font-size:12px;">
+							<input type="radio" name="optradio" ng-model="ec.ruleListSelection" value="cusCondition"/>
+							Custom Condition
+						</label>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						<label style="color: #5eb5eb;font-weight: 400;cursor:pointer;font-size:12px;">
+							<input type="radio" name="optradio" ng-model="ec.ruleListSelection" value="cusAction"/>
+							Custom Action
+						</label>
+					</div>
+                </div>
+                <div class="row ruleMode" ng-show="ec.ruleListSelection == 'slrule'">
+                    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                         <div class="panel-group" id="ruleAccordion{$ $index $}" ng-repeat="rule in ec.allRules" ng-show="rule.rule_type=='S'">
+                              <div class="panel panel-default">
+                                <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" ng-model="selectedRules[rule.rule_id]" value="{$ rule.rule_id $}">
+                                        <i class="helper" style="top: 6px;"></i>
+                                        {$ rule.rule_name $}
+                                    </label>
+                                      <!--<i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>-->
+                                      <i class="fa fa-trash pull-right" ng-click="ec.deleteRule(rule.rule_id)"></i>
+                                  </h4>
+                                </div>
+                                <!--<div class="panel-collapse collapse in standaradRule{$ $index $}">-->
+                                  <!--<div class="panel-body">-->
+                                    <!--{$ rule $}-->
+                                  <!--</div>-->
+                                <!--</div>-->
+                              </div>
+                         </div>
+                    </div>
+                </div>
+
+                <div class="row ruleMode" ng-show="ec.ruleListSelection == 'vlrule'">
+                    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                         <div class="panel-group" id="vruleAccordion" ng-repeat="rule in ec.allRules" ng-show="rule.rule_type=='V'">
+                              <div class="panel panel-default">
+                                <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" ng-model="selectedRules[rule.rule_id]" value="{$ rule.rule_id $}">
+                                        <i class="helper" style="top: 6px;"></i>
+                                        {$ rule.rule_name $}
+                                    </label>
+                                      <!--<i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>-->
+                                       <i class="fa fa-trash pull-right" ng-click="ec.deleteRule(rule.rule_id)"></i>
+                                  </h4>
+                                </div>
+                                <!--<div class="panel-collapse collapse in validateRule">-->
+                                  <!--<div class="panel-body">-->
+                                    <!--Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.-->
+                                  <!--</div>-->
+                                <!--</div>-->
+                              </div>
+                            </div>
+                    </div>
+                </div>
+                <div class="row ruleMode" ng-show="ec.ruleListSelection == 'cusCondition'">
+					<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+						 <div class="panel-group" ng-repeat="cond in ec.customConditionList" >
+							  <div class="panel panel-default">
+								<div class="panel-heading">
+								  <h4 class="panel-title">
+									<label class="checkbox-inline" style="cursor: default;">
+										{$ cond.name $}
+									</label>
+									  <i class="indicator glyphicon glyphicon-chevron-down  pull-right" style="margin-left: 12px;cursor:pointer;" ng-click="ec.clearAllScopes()" data-toggle="collapse" data-target=".conditionAccordion{$ $index $}"></i>
+									  <i class="fa fa-trash pull-right" ng-click="ec.actionAndConditionDelete('condition',cond)"></i>
+								  </h4>
+								</div>
+								<div class="panel-collapse collapse conditionAccordion{$ $index $}">
+								  <div class="panel-body">
+									  <div class="row" style="padding-top:12px;">
+										  <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                              <div class="row">
+                                                  <div class="col-sm-6 col-xs-6 col-lg-6 col-xs-6">
+                                                      <label class="text-heading">Custom Condition Name</label>
+                                                      <input type="text" class="form-control bottomLineInput"
+													         placeholder="Enter Condition Name" ng-model="cond.name" style="background: white;" />
+                                                  </div>
+                                                  <div class="col-sm-6 col-lg-6 col-xs-6 col-md-6">
+                                                      <label class="text-heading">Language</label>
+                                                      <select class="form-control" ng-model="cond.lang" disabled>
+                                                          <option value="js">Javascript</option>
+                                                          <option value="groovy">Groovy</option>
+                                                      </select>
+                                                  </div>
+                                              </div>
+											  <div id="aceEditorCondition{$ $index $}" ui-ace="aceOptionsCndEdt[$index]" ng-trim="true"></div><br>
+										  </div>
+									  </div>
+									  <div class="row">
+										  <div class="col-sm-12 col-lg-12 col-xs-12 col-md-12">
+											  <button class="btn btn-custom" ng-click="ec.editCustom(cond,$index)">Save</button>
+										  </div>
+									  </div><hr>
+                                      <div class="row">
+                                            <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                                <input type="text" class="form-control bottomLineInput"
+                                                       placeholder="Enter Source Value" ng-model="ec.sourceConditionValueInEdit" style="background: white;" required />
+                                            </div>
+                                            <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                                <input type="text" class="form-control bottomLineInput"
+                                                       placeholder="Enter Target Value" ng-model="ec.targetConditionValueInEdit" style="background: white;" required />
+                                            </div>
+                                      </div>
+                                      <div class="row">
+                                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                                <button type="submit" class="btn btn-custom" ng-click="ec.testConditionAndActionInEdit(cond,$index)">Test</button>
+                                            </div>
+                                      </div><br>
+                                      <div class="row">
+                                            <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                                                <span>Result : </span><span>{$ outputOfTestConditionInEdit $}</span>
+                                            </div>
+                                      </div>
+								  </div>
+								</div>
+							  </div>
+						 </div>
+					</div>
+				</div>
+				<div class="row ruleMode" ng-show="ec.ruleListSelection == 'cusAction'">
+					<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+						 <div class="panel-group" ng-repeat="cond in ec.customActionList" >
+							  <div class="panel panel-default">
+								<div class="panel-heading">
+								  <h4 class="panel-title">
+									<label class="checkbox-inline" style="cursor: default;">
+										{$ cond.name $}
+									</label>
+									  <i class="indicator glyphicon glyphicon-chevron-down  pull-right" style="margin-left: 12px;cursor:pointer" ng-click="ec.clearAllScopes()" data-toggle="collapse" data-target=".actionAccordion{$ $index $}"></i>
+									  <i class="fa fa-trash pull-right" ng-click="ec.actionAndConditionDelete('action',cond)"></i>
+								  </h4>
+								</div>
+								<div class="panel-collapse collapse actionAccordion{$ $index $}">
+								  <div class="panel-body">
+									  <div class="row" style="padding-top:12px;">
+										  <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                              <div class="row">
+                                                  <div class="col-sm-6 col-xs-6 col-lg-6 col-xs-6">
+                                                      <label class="text-heading">Custom Action Name</label>
+                                                      <input type="text" class="form-control bottomLineInput"
+													     placeholder="Enter Action Name" ng-model="cond.name" style="background: white;" />
+                                                  </div>
+                                                  <div class="col-sm-6 col-lg-6 col-xs-6 col-md-6">
+                                                      <label class="text-heading">Language</label>
+                                                      <select class="form-control" ng-model="cond.lang" disabled>
+                                                          <option value="js">Javascript</option>
+                                                          <option value="groovy">Groovy</option>
+                                                      </select>
+                                                  </div>
+                                              </div>
+											  <div id="aceEditorAction{$ $index $}" ui-ace="aceOptionsActEdt[$index]" ng-trim="true"></div><br>
+										  </div>
+									  </div>
+									  <div class="row">
+										  <div class="col-sm-12 col-lg-12 col-xs-12 col-md-12">
+											  <button class="btn btn-custom" ng-click="ec.editCustom(cond,$index)">Save</button>
+										  </div>
+									  </div><hr>
+                                      <div class="row">
+                                            <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                                <input type="text" class="form-control bottomLineInput"
+                                                       placeholder="Enter Source Value" ng-model="ec.sourceActionValueInEdit" style="background: white;" required />
+                                            </div>
+                                            <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                                <input type="text" class="form-control bottomLineInput"
+                                                       placeholder="Enter Target Value" ng-model="ec.targetActionValueInEdit" style="background: white;" required />
+                                            </div>
+                                      </div>
+                                      <div class="row">
+                                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                                <button type="submit" class="btn btn-custom" ng-click="ec.testConditionAndActionInEdit(cond,$index)">Test</button>
+                                            </div>
+                                      </div><br>
+                                      <div class="row">
+                                            <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                                                <span>Result : </span><span>{$ outputOfTestActionInEdit $}</span>
+                                            </div>
+                                      </div>
+								  </div>
+								</div>
+							  </div>
+						 </div>
+					</div>
+				</div>
+            </div><br>
+
+			<div class="row">
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12" ng-show="ec.ruleListSelection == 'vlrule' || ec.ruleListSelection == 'slrule'">
+					<button type="submit" class="btn btn-custom" ng-click="ec.fromExistingRules(selectedRules)">Save</button>
+				</div>
+			</div>
+		</form>
+
+    </div>
+</div>

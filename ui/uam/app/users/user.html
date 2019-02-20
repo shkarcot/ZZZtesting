@@ -1,0 +1,147 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+
+
+
+
+<div class="row overlay" id="createSolution" style="overflow:auto">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h4 class="push-left">
+          <span data-ng-bind="labelForUpload"></span>
+          <span class="pull-right closebtn" ng-click="closeSolutionDiv()">&times;</span>
+        </h4>
+        <hr class="customLine">
+        <form class="form-horizontal " ng-submit="create()">
+    <div class="form-group col-lg-12 col-md-12 col-sm-12">
+      <label class="col-sm-4 col-md-4 col-lg-4 control-label dashboard-row" style="padding-top:10px;">Username</label>
+      <div class="col-sm-8 col-lg-8 col-md-8">
+       <input type="text" class="form-control" ng-disabled="user_edit"  ng-model="config.username" placeholder="Username" ng-disabled="user_edit" required="">
+      </div>
+    </div>
+    <div class="form-group col-lg-12 col-md-12 col-sm-12">
+      <label class="col-sm-4 col-md-4 col-lg-4 control-label dashboard-row" style="padding-top:10px;">Password</label>
+      <div class="col-sm-8 col-lg-8 col-md-8">
+       <input type="password" ng-disabled="user_edit"  class="form-control ng-pristine ng-valid-email ng-valid ng-valid-required" ng-model="config.password" placeholder="password" required="">
+      </div>
+    </div>
+    <div class="form-group col-lg-12 col-md-12 col-sm-12">
+      <label class="col-sm-4 col-md-4 col-lg-4 control-label dashboard-row" style="padding-top:10px;">Confirm Password</label>
+      <div class="col-sm-8 col-lg-8 col-md-8">
+       <input type="password" ng-disabled="user_edit"  class="form-control ng-pristine ng-valid ng-valid-required" ng-model="config.confirmPassword" placeholder="confirm password" required="">
+      </div>
+    </div>
+    <div class="form-group col-lg-12 col-md-12 col-sm-12">
+      <label class="col-sm-4 col-md-4 col-lg-4 control-label dashboard-row" style="padding-top:10px;">Solution</label>
+      <div class="col-sm-8 col-lg-8 col-md-8">
+        <multiselect ng-model="config.solutions" class="multiSelect" options="solutionsList"  show-search="true" search-limit="100000" id-prop="solution_id" display-prop="solution_name">
+        </multiselect>
+      </div>
+    </div>
+    <div class="form-group col-lg-12 col-md-12 col-sm-12">
+      <label class="col-sm-4 col-md-4 col-lg-4 control-label dashboard-row" style="padding-top:10px;">Role</label>
+      <div class="col-sm-8 col-lg-8 col-md-8">
+       <select class="form-control ng-pristine ng-valid ng-valid-required" ng-model="config.role" required ng-disabled="user_edit" >
+         <option value="">Select role</option>
+         <option value="se">Solution Engineer</option>
+         <option value="bu">Business User</option>
+         <option value="sv">Supervisor User</option>
+       </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 text-right">
+        <button type="submit" class="btn btn-custom">Save</button>
+        <button class="btn btn-cancel" type="button" ng-click="config={}" ng-hide="user_edit">Clear</button>
+      </div>
+    </div>
+  </form>
+    </div>
+</div>
+<br>
+<div classs="row">
+    <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
+        <p class="solDashHeading" style="font-size:14px;">USERS</p>
+    </div>
+</div>
+<br>
+
+<br>
+<div class="row custom-dashboard">
+    <div class="table-scroll">
+        <div class="dashboard-inner">
+            <div class="row row-justify" style="margin-bottom:20px">
+                <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6 padding-15">
+                    <div class="inner-addon right-addon">
+                          <i class="glyphicon glyphicon-search"></i>
+                          <!--<input type="text" class="form-control" placeholder="Search" />-->
+                    </div>
+                </div>
+                <div class="col-lg-2 col-xs-6 col-md-2 col-sm-4 padding-15 text-right">
+                    <button class="btn btn-customQueue" ng-click="createUser();">
+                        <img src="./app/images/create.png" style="width:15px;"/>
+                      Create New User
+                    </button>
+                </div>
+            </div>
+            <table class="table table-responsive ">
+              <thead class="tableHeading">
+                  <tr>
+                    <td><span>Username</span></td>
+                    <td><span>Solution</span></td>
+                    <td><span>Role</span></td>
+                    <td><span>User groups</span></td>
+                    <td><span>Action</span></td>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="user in usersList">
+                  <td>{$ user.userName $}</td>
+                  <td>
+                    <div ng-repeat="list in user.solutions">
+                            <span ng-show="$index<3 && !showMore">{$ list.name $}</span>
+                            <span ng-show="user.solutions.length-1!=$index && $index<3 && !showMore">,</span>
+                            <span ng-show="showMore">{$ list.name $}</span>
+                            <span ng-show="user.solutions.length-1!=$index && showMore">,</span>
+                    </div>
+                    <a ng-show="user.solutions.length>3 && !showMore" ng-click="showMore=true">show more</a>
+                    <a ng-show="user.solutions.length>3 && showMore" ng-click="showMore = false">show less</a>
+                  </td>
+                  <td>
+                      <div ng-repeat="list in user.userRoles">
+                            <span ng-show="$index<3 && !showMore1">{$ list.name $}</span>
+                            <span ng-show="user.userRoles.length-1!=$index && $index<3 && !showMore1">,</span>
+                            <span ng-show="showMore1">{$ list.name $}</span>
+                            <span ng-show="user.userRoles.length-1!=$index && showMore1">,</span>
+                      </div>
+                      <a ng-show="user.userRoles.length>3 && !showMore1" ng-click="showMore1=true">show more</a>
+                      <a ng-show="user.userRoles.length>3 && showMore1" ng-click="showMore1 = false">show less</a>
+                  </td>
+                    <td>{$ user.role $}</td>
+                  <td>
+
+                    <span ng-click="editUser(user);" style="cursor:pointer;margin-right:10px;" ng-class="loginData._id==user.id ? 'disableClass' : ''">
+                       <img src="./app/images/edit.png" class="actionWidth"/>
+                    </span>
+                   <span ng-class="loginData._id==user.id ? 'disableClass' : ''">
+                     <img src="./app/images/delete.png"  class="actionWidth" ng-click="deleteUser(user)" style="cursor:pointer;padding-right: 5px;"/>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+
+            </table>
+        </div>
+    <br>
+  </div>
+</div>

@@ -1,0 +1,107 @@
+.navbar-primary {
+    position: fixed;
+    width: 250px;
+    height:100%;
+    overflow: hidden;
+    background-color:#071921;
+}
+
+.navbar-primary.collapsed {
+  width: 85px;
+}
+
+.navbar-primary.collapsed .glyphicon {
+  font-size: 22px;
+}
+
+.navbar-primary-menu li a span {
+    text-decoration: none;
+    display: block;
+    font-size: 10px;
+    line-height: 14px;
+    text-align: center;
+}
+.dashboard-image2 {
+    width: 35px;
+}
+.btn-expand-collapse {
+    font-size: 16px;
+    margin-top: 3px;
+    color: white;
+}
+
+.btn-expand-collapse:hover,
+.btn-expand-collapse:focus {
+    color: white;
+}
+
+.btn-expand-collapse:active {
+}
+
+.navbar-primary-menu,
+.navbar-primary-menu li {
+  margin:0; padding:0;
+  list-style: none;
+}
+
+.navbar-primary-menu li a {
+  display: block;
+  padding: 13px;
+    text-decoration: none;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.navbar-primary-menu li a:hover {
+  text-decoration: none;
+  color: white;
+}
+
+.nav-label{
+    font-size:13px;
+    color:white;
+}
+.navbar-primary-menu li a .glyphicon {
+  margin-right: 6px;
+}
+
+
+
+.sidenav-header{
+    padding:10px;
+    text-align:center;
+}
+
+.logout-solution {
+    position: absolute;
+    bottom: 0;
+    width: 252px;
+    background: #313131;
+}
+
+
+.logoutwidth{
+    width:15px;
+    margin-right: 10px;
+}
+
+
+.sidenav-logout {
+    position: absolute;
+    display: block;
+    left: 0px;
+    bottom:0;
+    width: 100%;
+    padding: 8px 0;
+    border-top:solid 1px #666;
+    color: grey;
+    font-size: 20px;
+    text-align: center;
+}
+.dashboard-image{
+    width:25px;
+}
+.bottomPosition{
+    position: fixed;
+    bottom: 50px;
+}

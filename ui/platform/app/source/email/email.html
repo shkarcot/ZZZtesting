@@ -1,0 +1,517 @@
+<div class="row overlay adaptContainer heightFull" id="emailrunDetails" style="background-color:#fafafa;">
+    <div class="row customPaddingBottom">
+        <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10">
+            <h4>Run Details</h4>
+        </div>
+        <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 dashboard-row text-right">
+            <span class="closeRule closebtn" ng-click="closeemailRundetails()">&times;</span>
+        </div>
+    </div>
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 sftpTable" style="margin-bottom: 70px;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>Run</td>
+                    <td>Started</td>
+                    <td>Completed</td>
+                    <td>Files Processed</td>
+                    <td>Completed</td>
+                    <td>Failed</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>18/01/2018 8:00 am</td>
+                    <td>18/01/2018 8:00 am</td>
+                    <td>13</td>
+                    <td>13</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>18/01/2018 8:00 am</td>
+                    <td>18/01/2018 8:00 am</td>
+                    <td>13</td>
+                    <td>13</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>18/01/2018 8:00 am</td>
+                    <td>18/01/2018 8:00 am</td>
+                    <td>13</td>
+                    <td>13</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>18/01/2018 8:00 am</td>
+                    <td>18/01/2018 8:00 am</td>
+                    <td>13</td>
+                    <td>13</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>18/01/2018 8:00 am</td>
+                    <td>18/01/2018 8:00 am</td>
+                    <td>13</td>
+                    <td>13</td>
+                    <td>0</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row overlay adaptContainer heightFull" id="ingestemail" style="background-color:#fafafa;">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="margin-bottom: 70px;">
+        <div class="row customPaddingBottom">
+            <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10" id="emailTabs">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href=".emailconfig">Email Configuration</a></li>
+                    <li><a data-toggle="tab" href=".emailschedule">Schedule</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 dashboard-row text-right">
+                <span class="closeRule closebtn" ng-click="cancelemail()">&times;</span>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <div class="tab-pane fade in active emailconfig">
+                <form>
+                    <div class="row  customPaddingBottom">
+                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 no-padding">
+                            <div class="form-group">
+                                <label for="email">Email Address <span class="mandatory">*</span> </label>
+                                <input type="text" ng-model="emc.emaildata.config.email" class=" form-control cst-formControl"
+                                    placeholder="Enter Email Address">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                            <div class="form-group">
+                                <label for="email">Password <span class="mandatory">*</span></label>
+                                <input type="text" ng-model="emc.emaildata.config.password" class=" form-control cst-formControl"
+                                    placeholder="Enter Password">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row customPaddingBottom">
+                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 no-padding">
+                            <div class="form-group">
+                                <label for="email">IMAP Address <span class="mandatory">*</span></label>
+                                <input type="text" ng-model="emc.emaildata.config.host" class=" form-control cst-formControl"
+                                    placeholder="Enter IMAP Address">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                            <div class="form-group">
+                                <label for="email">PORT Number <span class="mandatory">*</span></label>
+                                <input type="text" ng-model="emc.emaildata.config.port" class=" form-control cst-formControl"
+                                    placeholder="Enter PORT Number">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row customPaddingBottom">
+                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 no-padding">
+                            <button class="btn btn-customIngest" ng-click="testConfiguration(emc.emaildata.config)">
+                                Test This Configuration  <i ng-if="testloading" class="fa fa-spinner fa-spin" style="font-size:20px;color:#33aae3;"></i>
+                            </button>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6" ng-if="testConnection==1">
+                            <img  src="/app/images/checked.png" style="width: 15px;" />
+                            <span>Connection Successful</span>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6" ng-if="testConnection==2">
+                                <img  src="/app/images/errorUpload.png" style="width: 15px;" />
+                                <span>Connection failed</span>
+                        </div>
+                    </div>
+
+                    <div class="row customPaddingBottom">
+                        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
+                            <div class="form-group">
+                                <label for="email">Define Pattern</label>
+                                <textarea class=" form-control cst-formControl" placeholder="Eg: ^(?:[\w]\:|\\)(\\[a-z_\-\s0-9\.]+)+\.(txt|gif|pdf|doc|docx|xls|xlsx)$"
+                                    cols="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row customPaddingBottom">
+                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 no-padding">
+                            <div class="form-group">
+                                <label for="email">Destination Folder <span class="mandatory">*</span></label>
+                                <input type="text" ng-model="emc.emaildata.destination" class=" form-control cst-formControl"
+                                    placeholder="Document Queue">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                            <div class="form-group">
+                                <label for="email">Assign Workflow <span class="mandatory">*</span></label>
+                                <select ng-model="emc.emaildata.workflow"  class="form-control cst-formControl">
+                                    <option value="{$ workflow.workflow_id $}" ng-repeat="workflow in emc.workflowlist">{$
+                                        workflow.workflow_name $}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row fixedBottom">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <button class="btn btn-custom btn-upload">Proceed To Schedule</button>
+                            <button class="btn btn-customCancel">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="tab-pane fade emailschedule">
+                <div class="row customPaddingBottom">
+                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                        <div class="alert alert-info">
+                            Schedule the time to enable to system to auto check for the new files in the Email and
+                            store them in S3.
+                        </div>
+
+                    </div>
+                </div>
+                <div ng-repeat="pull in emc.emaildata.schedules">
+                    <div class="row customPaddingBottom">
+                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                            <label style="font-weight:500;font-size: 14px;">Pull Schedule</label>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                            <label class="customCheckBox">Daily
+                                <input type="radio" ng-change="setpulltype(pull.frequency_type,'pull')" ng-value="'Daily'"
+                                    ng-checked="pull.frequency_type=='Daily'" ng-model="pull.frequency_type" name="radio{$ pull.schedule_id $}">
+                                <span class="checkmark"></span>
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="customCheckBox">Set Interval
+                                <input type="radio" ng-change="setpulltype(pull.frequency_type,'pull')" ng-value="'Interval'"
+                                    ng-checked="pull.frequency_type=='Interval'" ng-model="pull.frequency_type" name="radio{$ pull.schedule_id $}">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row customPaddingBottom">
+                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 ">
+                            <div class="pullSchedule">
+                                <!-- for Daily box -->
+                                <div ng-if="pull.frequency_type=='Daily'">
+                                    <div class="row customPaddingBottom">
+                                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                                            <label>Time</label>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                                            <label>Zone</label>
+                                        </div>
+                                    </div>
+                                    <div class="row customPaddingBottom" ng-repeat="frequency in pull.frequency">
+                                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                                            <select ng-model="frequency.time" class="form-control cst-formControl">
+                                                <option value="1">1.00hrs</option>
+                                                <option value="2">2.00hrs</option>
+                                                <option value="3">3.00hrs</option>
+                                                <option value="4">4.00hrs</option>
+                                                <option value="5">5.00hrs</option>
+                                                <option value="6">6.00hrs</option>
+                                                <option value="7">7.00hrs</option>
+                                                <option value="8">8.00hrs</option>
+                                                <option value="9">9.00hrs</option>
+                                                <option value="10">10.00hrs</option>
+                                                <option value="11">11.00hrs</option>
+                                                <option value="12">12.00hrs</option>
+                                                <option value="13">13.00hrs</option>
+                                                <option value="14">14.00hrs</option>
+                                                <option value="15">15.00hrs</option>
+                                                <option value="16">16.00hrs</option>
+                                                <option value="17">17.00hrs</option>
+                                                <option value="18">18.00hrs</option>
+                                                <option value="19">19.00hrs</option>
+                                                <option value="20">20.00hrs</option>
+                                                <option value="21">21.00hrs</option>
+                                                <option value="22">22.00hrs</option>
+                                                <option value="23">23.00hrs</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                                            <select ng-model="frequency.time_zone" class="form-control cst-formControl">
+                                                <option value="IST">IST</option>
+                                                <option value="GMT">GMT</option>
+                                                <option value="PST">PST</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                            <img src="/app/images/cancelSchedule.png" ng-click="removefrequency($parent.$parent.$index ,$index,'pull')"
+                                                style="width:20px;cursor: pointer;" />
+                                            <img src="/app/images/addSchedule.png" ng-click="addNewfrequency($parent.$parent.$index,'pull')"
+                                                ng-if="pull.frequency.length==$index + 1" style="width:20px;cursor: pointer;" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- for interval box -->
+                                <div ng-if="pull.frequency_type=='Interval'">
+                                    <div class="row customPaddingBottom">
+                                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                            <label>Every </label>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                            <label>No of Hours</label>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                            <label>Minutes</label>
+                                        </div>
+                                    </div>
+                                    <div class="row customPaddingBottom" ng-repeat="frequency in pull.frequency">
+                                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                            <select ng-model="frequency.pull_type" class="form-control cst-formControl">
+                                                <option value="Hours" selected>Hours</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                            <input type="text" ng-model="frequency.hrs" class=" form-control cst-formControl"
+                                                placeholder="Hrs" style="width: 60%;display: inline-block;" />
+                                            <span>hrs</span>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                                            <input type="text" ng-model="frequency.mns" class=" form-control cst-formControl"
+                                                placeholder="Mins" style="width: 60%;display: inline-block;" />
+                                            <span>Mins</span>
+                                        </div>
+                                        <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 no-padding">
+                                            <img src="/app/images/cancelSchedule.png" ng-click="removefrequency($parent.$parent.$index ,$index,'pull')"
+                                                style="width:20px;cursor: pointer;" />
+                                            <img src="/app/images/addSchedule.png" ng-click="addNewfrequency($parent.$parent.$index,'pull')"
+                                                ng-if="pull.frequency.length==$index + 1" style="width:20px;cursor: pointer;" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span style="font-size: 10px;" ng-if="pull.frequency_type=='Daily'"><b>Summary</b>: Pull the files from EMAIL every day at 
+                                <span style="font-size: 10px;" ng-repeat="text in pull.frequency">
+                                    {$ text.time+ " "+ text.time_zone $} <span ng-hide="pull.frequency.length==$index+1"> and  </span>
+                                </span>
+                            </span>
+                            <span style="font-size: 10px;" ng-if="pull.frequency_type=='Interval'"><b>Summary</b>: Pull the files from EMAIL every 
+                                <span style="font-size: 10px;" ng-repeat="text in pull.frequency">
+                                    {$ text.hrs + " hr " +text.mns + " mns "  $} <span ng-hide="pull.frequency.length==$index+1"> and  </span>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div ng-repeat="trigger in emc.emaildata.triggers">
+                    <div class="row customPaddingBottom">
+                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                            <label style="font-weight:500;font-size: 14px;">Process Schedule</label>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                            <label class="customCheckBox">Daily
+                                <input type="radio" ng-change="setpulltype(trigger.frequency_type,'process')" ng-value="'Daily'"
+                                    ng-checked="trigger.frequency_type=='Daily'" ng-model="trigger.frequency_type" name="radio{$ trigger.schedule_id?trigger.schedule_id:100 $}">
+                                <span class="checkmark"></span>
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="customCheckBox">Set Interval
+                                <input type="radio" ng-change="setpulltype(trigger.frequency_type,'process')" ng-value="'Interval'"
+                                    ng-checked="trigger.frequency_type=='Interval'" ng-model="trigger.frequency_type"
+                                    name="radio{$ trigger.schedule_id?trigger.schedule_id:100 $}">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row customPaddingBottom">
+                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 ">
+                            <div class="pullSchedule">
+                                <!-- for Daily box -->
+                                <div ng-if="trigger.frequency_type=='Daily'">
+                                    <div class="row customPaddingBottom">
+                                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                                            <label>Time</label>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                                            <label>Zone</label>
+                                        </div>
+                                    </div>
+                                    <div class="row customPaddingBottom" ng-repeat="frequency in trigger.frequency">
+                                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                                            <select ng-model="frequency.time" class="form-control cst-formControl">
+                                                <option value="1">1.00hrs</option>
+                                                <option value="2">2.00hrs</option>
+                                                <option value="3">3.00hrs</option>
+                                                <option value="4">4.00hrs</option>
+                                                <option value="5">5.00hrs</option>
+                                                <option value="6">6.00hrs</option>
+                                                <option value="7">7.00hrs</option>
+                                                <option value="8">8.00hrs</option>
+                                                <option value="9">9.00hrs</option>
+                                                <option value="10">10.00hrs</option>
+                                                <option value="11">11.00hrs</option>
+                                                <option value="12">12.00hrs</option>
+                                                <option value="13">13.00hrs</option>
+                                                <option value="14">14.00hrs</option>
+                                                <option value="15">15.00hrs</option>
+                                                <option value="16">16.00hrs</option>
+                                                <option value="17">17.00hrs</option>
+                                                <option value="18">18.00hrs</option>
+                                                <option value="19">19.00hrs</option>
+                                                <option value="20">20.00hrs</option>
+                                                <option value="21">21.00hrs</option>
+                                                <option value="22">22.00hrs</option>
+                                                <option value="23">23.00hrs</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                                            <select ng-model="frequency.time_zone" class="form-control cst-formControl">
+                                                <option value="IST">IST</option>
+                                                <option value="GMT">GMT</option>
+                                                <option value="PST">PST</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                            <img src="/app/images/cancelSchedule.png" ng-click="removefrequency($parent.$parent.$index ,$index,'process')"
+                                                style="width:20px;cursor: pointer;" />
+                                            <img src="/app/images/addSchedule.png" ng-click="addNewfrequency($parent.$parent.$index,'process')"
+                                                ng-if="trigger.frequency.length==$index + 1" style="width:20px;cursor: pointer;" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- for interval box -->
+                                <div ng-if="trigger.frequency_type=='Interval'">
+                                    <div class="row customPaddingBottom">
+                                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                            <label>Every </label>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                            <label>No of Hours</label>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                            <label>Minutes</label>
+                                        </div>
+                                    </div>
+                                    <div class="row customPaddingBottom" ng-repeat="frequency in trigger.frequency">
+                                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                            <select ng-model="frequency.trigger_type" class="form-control cst-formControl">
+                                                <option value="Hours" ng-model="frequency.trigger_type" selected>Hours</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                            <input type="text" ng-model="frequency.hrs" class=" form-control cst-formControl"
+                                                placeholder="Hrs" style="width: 60%;display: inline-block;" />
+                                            <span>hrs</span>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                                            <input type="text" ng-model="frequency.mns" class=" form-control cst-formControl"
+                                                placeholder="Mins" style="width: 60%;display: inline-block;" />
+                                            <span>Mins</span>
+                                        </div>
+                                        <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 no-padding">
+                                            <img src="/app/images/cancelSchedule.png" ng-click="removefrequency($parent.$parent.$index ,$index,'process')"
+                                                style="width:20px;cursor: pointer;" />
+                                            <img src="/app/images/addSchedule.png" ng-click="addNewfrequency($parent.$parent.$index,'process')"
+                                                ng-if="trigger.frequency.length==$index + 1" style="width:20px;cursor: pointer;" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span style="font-size: 10px;" ng-if="pull.frequency_type=='Daily'"><b>Summary</b>: Process the files from EMAIL every day at 
+                                <span style="font-size: 10px;" ng-repeat="text in pull.trigggers">
+                                    {$ text.time+ " "+ text.time_zone $} <span ng-hide="pull.frequency.length==$index+1"> and  </span>
+                                </span>
+                            </span>
+                            <span style="font-size: 10px;" ng-if="pull.frequency_type=='Interval'"><b>Summary</b>: Process the files from EMAIL every 
+                                <span style="font-size: 10px;" ng-repeat="text in pull.triggers">
+                                    {$ text.hrs + " hr " +text.mns + " mns "  $} <span ng-hide="pull.frequency.length==$index+1"> and  </span>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <button class="btn btn-custom btn-upload" ng-click="saveconfiguration(emc.emaildata)">Done</button>
+                        <button class="btn btn-customCancel" ng-click="cancelemail()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sourceContainer full-height">
+    <div class="row full-height" ng-if="emc.emailList.length==0">
+        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 text-center full-height" style="padding-top:20%;">
+            <p>You can configure the Email system, where the platform can check for files in mail server on scheduled
+                intervals and process the pending documents</p>
+            <button class="btn btn-customIngest" ng-click="ingestemail({});">
+                <img src="/app/images/plus-default.png" style="width:15px;" />
+                Configure Email Source
+            </button>
+        </div>
+    </div>
+    <div class="row full-height" ng-if="emc.emailList.length > 0">
+        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 text-center full-height sftpTable">
+            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 text-center full-height">
+                <p class="email-text">You can configure the Email system, where the platform can check for files in
+                    mail server on scheduled intervals and process the pending documents</p>
+                <button class="btn btn-customIngest pull-right" ng-click="ingestemail({});">
+                    <img src="/app/images/plus-default.png" style="width:15px;" />
+                    Configure Email Source
+                </button>
+                <table class="table " ng-if="emc.emailList">
+                    <thead style="background-color:#e2e2e2;color:#7b7b7b;">
+                        <tr>
+                            <td>Name</td>
+                            <td>Last Upadte</td>
+                            <td>Pull Status</td>
+                            <td>Workflow</td>
+                            <td>Workflow Enable/Disable</td>
+                            <td>Actions</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="email in emc.emailList">
+                            <td class="text-left">
+                                <img src="/app/images/stp.png" />
+                                <span>{$ email.name $}</span>
+                            </td>
+                            <td class="text-center">
+                                <label>{$ formatDate(email.updated_ts) $}</label>
+                            </td>
+                            <td class="text-center">
+                                <label class="switch">
+                                    <input type="checkbox" ng-change="saveconfiguration(email)" ng-model="email.is_pause_pull">
+                                    <span class="slider round"></span>
+                                    <div class="toggleText">Paused</div>
+                                </label>
+                            </td>
+                            <td class="text-right">
+                                <select ng-model="email.workflow" ng-change="saveconfiguration(email)" class="form-control cst-formControl work-flow" style="width:80%;"
+                                    ng-if="emc.workflowlist">
+                                    <option value="{$ workflow.workflow_id $}" ng-repeat="workflow in emc.workflowlist">{$
+                                        workflow.workflow_name $}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <label class="switch">
+                                    <input type="checkbox" ng-model="email.is_enabled" ng-change="saveconfiguration(email)">
+                                    <span class="slider round"></span>
+                                    <div class="toggleText">{$ email.is_enabled? 'Enabled':'Disabled' $}</div>
+                                </label>
+                            </td>
+                            <td class="text-center">
+                                <img src="/app/images/editSFTP.png" style="width: 15px;cursor: pointer;" ng-click="openemailRundetails()" />
+                                <img src="/app/images/editSftp.png" style="width: 15px;cursor:pointer;" ng-click="ingestemail(email)" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>

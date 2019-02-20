@@ -1,0 +1,190 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+<div class="row overlay" id="createQueue" style="overflow:auto">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h4 class="push-left">
+          <span ng-bind="qc.labelForUpload"></span>
+          <span class="pull-right closebtn" ng-click="qc.cancelQueue()">&times;</span>
+        </h4>
+        <hr class="customLine">
+        <form ng-submit="qc.saveQueue()">
+            <div class="row cst-row">
+                <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10 no-padding">
+                    <span>Queue</span>
+                    <input type="text" class="form-control cst-textBox" ng-model="qc.createQueueObj.id" placeholder="Queue ID" disabled/>
+                </div>
+            </div>
+            <div class="row cst-row">
+                <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10 no-padding">
+                    <span>Queue Name</span>
+                    <input type="text" class="form-control cst-textBox"  ng-model="qc.createQueueObj.queue_name" placeholder="Queue Name" required/>
+                </div>
+            </div>
+            <div class="row cst-row">
+                <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10 no-padding">
+                    <span>Solution Associated</span>
+                    <select class="form-control" ng-model="qc.createQueueObj.solution" ng-change="qc.selectionComplete()" required>
+                        <option value="">Select Solution</option>
+                        <option ng-repeat="opt in qc.allSolutions" value="{$ opt $}">{$ opt $}</option>
+                    </select>
+                </div>
+            </div>
+            <div ng-if="!qc.showForEdit">
+                <div class="row cst-row">
+                    <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10 no-padding">
+                        <span>State of Processing</span>
+                        <multiselect ng-model="qc.createQueueObj.processing_state" class="multiSelect" options="qc.docStates" id-prop="value" show-search="true" search-limit="100000" display-prop="display">
+                        </multiselect>
+                    </div>
+                </div>
+                <div class="row cst-row">
+                    <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10 no-padding">
+                        <span>Document Types</span>
+                        <multiselect ng-model="qc.createQueueObj.document_type" class="multiSelect" options="qc.solutionTemplatesList" id-prop="displayNameInSelect" show-search="true" search-limit="100000" show-select-all="true" show-unselect-all="true" display-prop="displayNameInSelect">
+                        </multiselect>
+                    </div>
+                </div>
+                <div class="row cst-row">
+                    <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10 no-padding">
+                        <span>Supervisor</span>
+                        <multiselect ng-model="qc.createQueueObj.supervisor" class="multiSelect" options="qc.filteredSupervisor" show-search="true" search-limit="100000" show-select-all="true" show-unselect-all="true">
+                        </multiselect>
+                    </div>
+                </div>
+                <div class="row cst-row">
+                    <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10 no-padding">
+                        <span>Agents</span>
+                        <multiselect ng-model="qc.createQueueObj.agents" class="multiSelect" options="qc.allAgents" show-search="true" search-limit="100000" show-select-all="true" show-unselect-all="true">
+                        </multiselect>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="qc.showForEdit">
+                <div class="row cst-row">
+                    <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10 no-padding">
+                        <span>State of Processing</span>
+                        <multiselect ng-model="qc.createQueueObj.processing_state" class="multiSelect" options="qc.docStates" id-prop="value" show-search="true" search-limit="100000" display-prop="display">
+                        </multiselect>
+                    </div>
+                </div>
+                <div class="row cst-row">
+                    <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10 no-padding">
+                        <span>Document Types</span>
+                        <multiselect ng-model="qc.createQueueObj.document_type" class="multiSelect" options="qc.solutionTemplatesList" id-prop="displayNameInSelect" show-search="true" search-limit="100000" show-select-all="true" show-unselect-all="true" display-prop="displayNameInSelect">
+                        </multiselect>
+                    </div>
+                </div>
+                <div class="row cst-row">
+                    <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10 no-padding">
+                        <span>Supervisor</span>
+                        <multiselect ng-model="qc.createQueueObj.supervisor" class="multiSelect" options="qc.filteredSupervisor" show-search="true" search-limit="100000" show-select-all="true" show-unselect-all="true">
+                        </multiselect>
+                    </div>
+                </div>
+                <div class="row cst-row">
+                    <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10 no-padding">
+                        <span>Agents</span>
+                        <multiselect ng-model="qc.createQueueObj.agents" class="multiSelect" options="qc.allAgents" show-search="true" search-limit="100000" show-select-all="true" show-unselect-all="true">
+                        </multiselect>
+                    </div>
+                </div>
+            </div>
+            <div class="row cst-row">
+                <button class="btn btn-custom" type="submit">
+                   <i class="fa fa-floppy-o"></i>
+                    Save
+                </button>
+                <button class="btn btn-cancel" type="button" ng-click="qc.cancelQueue()">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="queueContainer">
+    <div class="row row-eq-height" style="padding-top:15px;">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <p class="solDashHeading" style="font-weight:500;font-size:22px;">Queue Management</p>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
+            <button class="btn btn-customQueue" ng-click="qc.createQueue();">
+                <i class="fa fa-plus-circle"></i>
+                Create New Queue
+            </button>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-queue">
+                    <thead>
+                        <tr>
+                            <td>Queue ID</td>
+                            <td>Queue Name</td>
+                            <td>Case Supervisor</td>
+                            <td>Solutions</td>
+                            <td>Case Agents</td>
+                            <td colspan="2" style="width:25%">Created On</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in qc.queue">
+                            <td>{$ data.queue_id $}</td>
+                            <td>{$ data.queue_name $}</td>
+                            <td>
+                                <div ng-repeat="arr in data.supervisor">
+                                    {$ arr $}<span ng-show="data.supervisor.length-1!=$index">,</span>
+                                </div>
+                            </td>
+                            <td>
+                                {$ data.solution $}
+                            </td>
+                            <td>
+                                <div ng-repeat="list in data.agents">
+                                    <span ng-show="$index<5 && !showMore">{$ list $}</span>
+                                    <span ng-show="data.agents.length-1!=$index && $index<5 && !showMore">,</span>
+                                    <span ng-show="showMore">{$ list $}</span>
+                                    <span ng-show="data.agents.length-1!=$index && showMore">,</span>
+                                </div>
+                                <a ng-show="data.agents.length>5 && !showMore" ng-click="showData();showMore=true">show more</a>
+                                <a ng-show="data.agents.length>5 && showMore" ng-click="showMore = false" style="color:white;">show less</a>
+                            </td>
+                            <td colspan="2" style="width:25%">
+                                <span>{$ data.created_ts $}</span>
+                                <span class="hiddenButton">
+                                    <span class="buttonStyle">
+                                        <span style="padding:10px;" ng-click="qc.editQueue(data)">
+                                            <i class="fa fa-pencil"></i>
+                                            Edit
+                                        </span>
+                                    </span>
+                                    <span style="padding-left:10px;cursor:pointer;color:white;" ng-click="qc.deleteQueue(data)">
+                                        <i class="fa fa-trash"></i>
+                                    </span>
+                                </span>
+                            </td>
+                            <!--<td>-->
+                                <!--&lt;!&ndash;<span class="textHidden">{$ data.CreatedOn $}</span>&ndash;&gt;-->
+
+
+                            <!--</td>-->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

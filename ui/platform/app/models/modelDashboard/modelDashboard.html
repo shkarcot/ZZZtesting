@@ -1,0 +1,327 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ popUpText $} </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+
+<div class="row minPadding">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+            <h3 class="zeroMargin">
+                  <div class="dropdown">
+                      <a data-toggle="dropdown" class="noDecoration configureHeading">SA-Models Configuration <b class="caret"></b></a>
+                      <breadcrumb-dropdown></breadcrumb-dropdown>
+                    </div>
+            </h3>
+    </div>
+</div>
+
+<div class="row overlay adaptContainer" id="datasetImport">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12"  style="margin-bottom:70px;">
+        <h4 class="push-left">
+          <span ng-bind="ImportDataset"></span>
+          <span class="pull-right closeRule closebtn" ng-click="canceldataSet()">&times;</span>
+        </h4>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <form ng-submit="mdc.sendDataSet()">
+                    <div class="form-group">
+                        <label>Data Set Name</label>
+                        <input type="text" ng-model="mdc.importDsObj.name" class="form-control custom-formControl" placeholder="Data Set Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea  rows="4" ng-model="mdc.importDsObj.description" cols="50" class="form-control custom-formControl" placeholder="Description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Data Format</label>
+                        <select class="form-control custom-formControl" ng-model="mdc.importDsObj.dataType">
+                            <option value="">Select data format</option>
+                            <option ng-repeat="option in mdc.datasetTypeList" value="{$ option $}">{$ option $}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Data Set</label>
+                        <br>
+                        <label><b>Choose From Local</b></label>
+                            <div>
+                              <button class="btn left button-primary" alt="browse" title="browse" type="button" style="cursor:pointer;position:relative;display:inline;border-radius:0">
+                                <input class="hide_file" ngf-select ng-model="fileInput" name="file"
+                                       ngf-change="uploadFile(fileInput)" type="file" style="font-size:13px;"/>
+                                  Browse
+                              </button>
+                            </div>
+                            <label class="entity-filepath" style="overflow: hidden;width: 80%;border: 1px solid #3babe1;height: 33px;">
+                                <span style="display:inline;" class="ng-binding" ng-show="browseFileName == undefined || browseFileName == ''">Please select the file</span>
+                                <span style="display:inline;" class="ng-binding" >{$ browseFileName $}</span>
+                            </label>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="form-group">
+                        <button class="btn btn-custom" type="submit">
+                            <i class="fa fa-floppy-o"></i>
+                            Save
+                        </button>
+                        <div class="loading-spiner-holder" ng-show="enabledatasetLoader">
+                            <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving dataset ...</i></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row overlay adaptContainer" id="binaryImport">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12"  style="margin-bottom:70px;">
+        <h4 class="push-left">
+          <span ng-bind="ImportDataset"></span>
+          <span class="pull-right closeRule closebtn" ng-click="cancelBinary()">&times;</span>
+        </h4>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <form ng-submit="mdc.sendBinary()">
+                    <div class="form-group">
+                        <label>Binary Name</label>
+                        <input type="text" ng-model="mdc.importBinaryObj.name" class="form-control custom-formControl" placeholder="Binary Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea  rows="4" ng-model="mdc.importBinaryObj.description" cols="50" class="form-control custom-formControl" placeholder="Description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Binary</label>
+                        <br>
+                        <label><b>Choose From Local</b></label>
+                            <div>
+                              <button class="btn left button-primary" alt="browse" title="browse" type="button" style="cursor:pointer;position:relative;display:inline;border-radius:0">
+                                <input class="hide_file" ngf-select ng-model="fileInputBinary" name="file"
+                                       ngf-change="uploadFileBinary(fileInputBinary)" type="file" style="font-size:13px;"/>
+                                  Browse
+                              </button>
+                            </div>
+                            <label class="entity-filepath" style="overflow: hidden;width: 80%;border: 1px solid #3babe1;height: 33px;">
+                                <span style="display:inline;" class="ng-binding" ng-show="browseFileName1 == undefined || browseFileName1 == ''">Please select the file</span>
+                                <span style="display:inline;" class="ng-binding" >{$ browseFileName1 $}</span>
+                            </label>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="form-group">
+                        <button class="btn btn-custom" type="submit">
+                            <i class="fa fa-floppy-o"></i>
+                            Save
+                        </button>
+                        <div class="loading-spiner-holder" ng-show="enablebinaryLoader">
+                            <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving binary ...</i></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row adaptContainer">
+    <div>
+        <ul class="nav nav-tabs nav-custom-tabs">
+            <li class="active" ng-click="mdc.closeUploadSideBar()"><a data-toggle="tab" href=".models" aria-expanded="false">MODELS</a></li>
+            <li ng-click="mdc.closeUploadSideBar()"><a data-toggle="tab" href=".datasets" aria-expanded="true">DATASETS</a></li>
+            <li ng-click="mdc.closeUploadSideBar()"><a data-toggle="tab" href=".binaries" aria-expanded="true">BINARIES</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade in active models modelContentStyle">
+                <div class="row">
+                    <div class="col-sm-10 col-md-10 col-lg-10 col-xs-10">
+                        <form class="pull-right">
+                            <div>
+                                <label class="radioFilterStyle"><input type="radio" ng-model="mdc.ensembleFilter" ng-change="mdc.getAllModels()" value="all" name="filterModel"> <span class="filterLabelPad">All</span></label>
+                                <label class="radioFilterStyle"><input type="radio" ng-model="mdc.ensembleFilter" ng-change="mdc.getAllModels()" value="integrated" name="filterModel"><span class="filterLabelPad">Integrated</span></label>
+                                <label class="radioFilterStyle"><input type="radio" ng-model="mdc.ensembleFilter" ng-change="mdc.getAllModels()" value="independent" name="filterModel"><span class="filterLabelPad">Independent</span></label>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm-2 col-md-2 col-lg-2 col-xs-2">
+                        <button class="btn btn-add pull-right" ui-sref="app.createEnsemble">
+                            <img src="/app/images/plus-default.png" style="width:10px;">
+                            <span>Create New Ensemble</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                        <hr style="border-top: 2px solid #dfe0e3;">
+                    </div>
+                </div>
+                <div class="well" style="box-shadow: none;border: none;">
+                   <div class="row">
+                      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" dir-paginate="data in mdc.modelsArray | itemsPerPage:filter_obj.no_of_recs" ng-click="mdc.goToModelDetails(data.model_id,data.name)"
+                      total-items="filter_obj.totalRecords" current-page="filter_obj.page_no"
+                        pagination-id="branchPagination">
+                         <div class="panel documentPanel" style="cursor:pointer">
+                            <div class="modelCardBody">
+                               <div class="modelHeading row" ng-if="!data.is_integrated">
+                                   <div class="col-sm-8 col-xs-8 col-lg-8 col-md-8 no-padding">
+                                       <label class="modelHeadStyle" title="{$ data.name $}">{$ data.name $}</label>
+                                   </div>
+                                   <div class="col-sm-4 col-xs-4 col-lg-4 col-md-4 no-padding" style="padding-left:5px;">
+                                       <span class="algoTypeStyle">Independent</span>
+                                   </div>
+                               </div>
+                                <div class="modelHeading row" ng-if="data.is_integrated">
+                                   <div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 no-padding">
+                                       <label class="modelHeadStyle" title="{$ data.name $}">{$ data.name $}</label>
+                                   </div>
+                               </div>
+                                <div class="algoTypeStyle">{$ data.model_type $}
+                                    <span class="pull-right" ng-show="data.status=='failed'" style="color:red" title="Last model failed"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+                                    <span class="pull-right" ng-show="data.status=='processing'" style="color: #e8e80a;" title="No model initialized"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+                                </div>
+                               <div class="templateBody">
+                                  <div class="row modelTopBody">
+                                     <div class="col-lg-3 col-sm-3 col-md-4 no-padding" ng-repeat="(key,value) in data.model_score">
+                                        <label class="modelLabel">{$ key $}</label>
+                                        <div class="textSubLabel">{$ value | number:4 $}</div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                    <div class="right">
+                        <dir-pagination-controls max-size=filter_obj.no_of_recs direction-links="true"
+                                                 pagination-id="branchPagination" boundary-links="true"
+                                                 on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+            </div>
+            <div class="tab-pane fade datasets">
+                <div class="row">
+                    <div class="col-lg-9 col-sm-9 col-xs-9 col-md-9">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td >Name</td>
+                                        <td >Description</td>
+                                        <td >Created on</td>
+                                        <td >Type</td>
+                                        <td >Size</td>
+                                        <td style="width:10%"></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dir-paginate="data in mdc.listOfDataSets | itemsPerPage:filter_obj_dataset.filter_obj.no_of_recs" ng-mouseover="showIcons($index)" ng-mouseout="hideIcons($index)"
+                                    total-items="filter_obj_dataset.filter_obj.totalRecords" current-page="filter_obj_dataset.filter_obj.page_no"
+                                    pagination-id="branchPagination1">
+                                        <td>{$ data.name $}</td>
+                                        <td>{$ data.description $}</td>
+                                        <td ng-bind="mdc.formatDate(data.ts)"></td>
+                                        <td>{$ data.dataset_type $}</td>
+                                        <td>{$ data.size $}</td>
+                                        <td>
+                                          <span ng-show="showEditIcons[$index]">
+                                            <i class="fa fa-download iconColor" title="Download" ng-click="mdc.downloadFile(data.path)" style="margin-right: 10px;"></i>
+                                              <i class="fa fa-archive iconColor" ng-click="mdc.archiveDataset(data)" aria-hidden="true" title="Archive"></i>
+                                          </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="right">
+                            <dir-pagination-controls max-size=filter_obj_dataset.filter_obj.no_of_recs direction-links="true"
+                                                     pagination-id="branchPagination1" boundary-links="true"
+                                                     on-page-change="pageChangedDataset(newPageNumber)"></dir-pagination-controls>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-3 col-xs-3 col-md-3 uploadDiv">
+                        <div class="row">
+                            <div class="pull-right">
+                                <button class="btn btn-add" ng-click="uploadDataset();">
+                                    <img src="/app/images/import.png" style="width:10px;">
+                                    <span>Import Data Set</span>
+                                </button>
+                            </div>
+                        </div><br>
+                        <div class="uploadHeadStyle">Upload files to sftp and use them.</div>
+                        <div>
+                            <label class="uploadLabel">SFTP Details</label>
+                        </div>
+                        <hr style="margin-top:4px;">
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade binaries">
+                <div class="row">
+                    <div class="col-lg-9 col-sm-9 col-xs-9 col-md-9">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td >Name</td>
+                                        <td >Uploaded On</td>
+                                        <td >Size</td>
+                                        <td style="width:10%"></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dir-paginate="data in mdc.listOfBinaries | itemsPerPage:filter_obj_binary.filter_obj.no_of_recs"
+                                    total-items="filter_obj_binary.filter_obj.totalRecords" current-page="filter_obj_binary.filter_obj.page_no"
+                                    pagination-id="branchPagination2" ng-mouseover="showIconsBinary($index)" ng-mouseout="hideIconsBinary($index)">
+                                        <td>{$ data.name $}</td>
+                                        <td ng-bind="mdc.formatDate(data.created_ts)"></td>
+                                        <td>{$ data.size $}</td>
+                                        <td>
+                                          <span ng-show="showEditIconsBinary[$index]">
+                                            <i class="fa fa-download iconColor" title="Download" ng-click="mdc.downloadFileBinary(data.path)" style="margin-right: 10px;"></i>
+                                              <i class="fa fa-archive iconColor" ng-click="mdc.archiveBinary(data)" aria-hidden="true" title="Archive"></i>
+                                          </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="right">
+                            <dir-pagination-controls max-size=filter_obj_binary.filter_obj.no_of_recs direction-links="true"
+                                                     pagination-id="branchPagination2" boundary-links="true"
+                                                     on-page-change="pageChangedBinary(newPageNumber)"></dir-pagination-controls>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-3 col-xs-3 col-md-3 uploadDiv">
+                        <div class="row">
+                            <div class="pull-right">
+                                <button class="btn btn-add" ng-click="uploadBinary();">
+                                    <img src="/app/images/import.png" style="width:10px;">
+                                    <span>Import Binary</span>
+                                </button>
+                            </div>
+                        </div><br>
+                        <div class="uploadHeadStyle">Upload files to sftp and use them.</div>
+                        <div>
+                            <label class="uploadLabel">SFTP Details</label>
+                        </div>
+                        <hr style="margin-top:4px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

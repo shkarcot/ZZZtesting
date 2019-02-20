@@ -1,0 +1,159 @@
+<script type="text/ng-template" id="deleteDicBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+<div class="row minPadding">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+        <h3 class="zeroMargin">
+              <div class="dropdown">
+                  <a data-toggle="dropdown" class="noDecoration configureHeading">configure domain <b class="caret"></b></a>
+                  <ul class="customdropdown-menu dropdown-menu">
+                      <li>
+                        <a ui-sref="app.domainDashboard" class="noDecoration">
+                          <img src="/app/images/Domain.png"/>
+                          <span>Domain Configuration</span>
+                        </a>
+                      </li>
+                      <li>
+                          <a class="noDecoration" ui-sref="app.modelDashboard">
+                                <img src="/app/images/model.png"/>
+                                <span>Models</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a class="noDecoration" ui-sref="app.function">
+                            <img src="/app/images/functionIcon.png"/>
+                            <span>Functions</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a ui-sref="app.services" class="noDecoration">
+                              <img src="/app/images/Services-01.png"/>
+                              <span>Service Configuration</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a ui-sref="app.pipeline" class="noDecoration">
+                              <img src="/app/images/pipeline.png"/>
+                              <span>Pipeline Configuration</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a ui-sref="app.sourceConfiguration" class="noDecoration">
+                              <img src="/app/images/sources.png"/>
+                              <span>Sources</span>
+                          </a>
+                      </li>
+                  </ul>
+              </div>
+        </h3>
+    </div>
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 alignRight">
+        <img class="helpImages" src="/app/images/comment-01.png"/>
+        <img class="helpImages" src="/app/images/help-01.png"/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <label ng-click="goTodomainObjects();" class="backList"> CONFIGURE DOMAIN</label>
+      <label class="listActive"> Resource Library</label>
+    </div>
+</div>
+
+<div class="row">
+
+  <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default panel-entities">
+        <div class="panel-heading panel-headStyle" role="tab" id="headingOne" ng-click="expand()" data-toggle="collapse" data-parent="#accordion" href=".collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          <h4 class="panel-title">
+            <a role="button" class="titleColor">
+              Add Resource
+            </a>
+            <span class="right expand-icon">
+              <i class="fa" ng-class="hideAndCollapse" aria-hidden="true"></i>
+            </span>
+          </h4>
+        </div>
+        <div class="panel-collapse collapse collapseOne" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body panel-bodyStyle">
+            <form class="form-horizontal" validate-form ng-submit="sendDic()">
+              <div class="col-sm-2 col-md-2 col-lg-2" style="padding-left:0">
+                <select class="form-control" ng-model="fileType" required>
+                  <option value="" ng-selected ="true">Select Type</option>
+                  <option ng-repeat="(key,value) in TSFileType track by $index" value="{$ key $}">{$ value.label $}</option>
+                </select>
+              </div>
+
+              <div class="col-lg-5 col-sm-5 col-md-5 col-xs-5" style="padding-left:0">
+                <input type="text" class="form-control bottomLineInput" ng-model="inputModel" placeholder="Description" style="background-color:white;" />
+              </div>
+
+              <!--<label class="control-label col-sm-3 col-md-3 col-lg-3" style="text-align:left;">Select File</label>-->
+              <div class="col-sm-2 col-md-2 col-lg-2" style="padding-left:0;margin-top: 14px;">
+                <span style="display:inline">{$ browseName $}</span>
+                 <span ng-show="browseFileError" style="color:red">Please select the file</span>
+              </div>
+
+              <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3 text-right">
+                <button ng-show="showChangeBtn"  type="button" class="btn btn-default" data-dismiss="modal" alt="change" title="change" ng-click="clearBrowse()">Change</button>
+                <button ng-show="!showChangeBtn"class="btn btn-custom" ngf-select ng-model="dicFile" name="file" ngf-change="uploadDic(dicFile)"  alt="browse" title="browse" type="button" style="display:inline">Browse</button>
+                <button ng-show="showChangeBtn" type="submit" alt="upload" title="upload" class="btn button-primary">Upload</button>
+
+              <div class="loading-spiner-holder" ng-show="showLoaderIcon" ><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Adding the Resource ...</i></span></div></div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12 " ng-show="diclinkArray.length!=0;" style="margin-top:20px;padding-left:0px;padding-right:0px;border:none;">
+        <div class="panel panel-default" style="border-radius:5px;box-shadow:none;border-top:none;">
+          <table class="table table-bordered table-scroll" id="tblResource">
+           <thead class="tableHeading">
+            <tr>
+              <td width="15%">File Name </td>
+              <td width="15%">Resource Type</td>
+              <td width="20%">Description</td>
+              <td width="15%">Used By</td>
+              <td width="20%">Date Uploaded <!--<span class="sortorder" ng-show="propName === 'created_ts'" ng-class="{reverse: reverse}"></span>--></td>
+              <td width="15%"></td>
+            </tr>
+            </thead>
+            <tbody ng-repeat="arr in diclinkArray" ng-mouseover="showIcons($index)" ng-mouseout="hideIcons($index)">
+            <tr ng-class="blinkingRow[arr._id]">
+              <td>{$ arr.file_name $}</td>
+              <td>{$ arr.type $}</td>
+              <td><span ng-show="!showDescription[arr._id]">{$ arr.description $}</span>
+                <input type="text" ng-show="showDescription[arr._id]" ng-blur="updateDesc(arr._id,arr.file_name,$index)" style="width:100%" ng-model="arr.description" />
+              </td>
+              <td></td>
+              <td ng-bind="arr.created_ts | date: 'MMM d, y h:mm a' "></td>
+              <td class="text-center">
+                <span ng-show="showEditIcons[$index]">
+                   <a style="margin-right:15px;" ng-click="editDiscription($index,arr._id,arr.description)" title="edit" alt="edit">
+                    <i class="fa fa-pencil-square-o iconColor"></i></a>
+                  <a style="margin-right:15px;" ng-click="download(arr._id)" target="_blank" title="download" alt="download">
+                    <i class="fa fa-download iconColor"></i></a>
+                  <a  style="color:#a79d9d;" ng-click="dicDelete(arr._id,arr.file_name)" title="remove" alt="remove">
+                    <i class="fa fa-trash iconColor"></i></a>
+                  </span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+  </div>
+</div>
+

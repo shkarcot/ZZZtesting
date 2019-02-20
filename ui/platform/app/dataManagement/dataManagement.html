@@ -1,0 +1,361 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+<!-- Term Data View -->
+<div class="row overlay" id="showTermData">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 resourceStyle" style="overflow-y:auto;">
+		<div class="row" style="margin-top:15px;">
+			<div class="col-lg-10 col-sm-10 col-xs-10 col-md-10">
+				<div class="termdetailsKey">
+					{$ termDetailsSelected.key $}
+				</div>
+				<div>
+					<span>{$ termDetailsSelected.created_ts $}</span>
+					<span ng-if="termDetailsSelected.value != undefined" class="termDetailsType">Dictionary</span>
+					<span ng-if="termDetailsSelected.value == undefined" class="termDetailsType">Corpus</span>
+				</div>
+			</div>
+			<div class="col-sm-2 col-lg-2 col-xs-2 col-md-2">
+				<span class="pull-right closeRule closebtn" ng-click="cancelTermDetails()">&times;</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+				<hr>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+				<div class="form-group">
+					<label class="termdetailsLabel">Tag</label>
+					<input class="form-control" type="text" ng-model="termDetailsSelected.tag" disabled/>
+				</div><br>
+				<div class="form-group" style="margin-bottom:18px">
+					<label class="termdetailsLabel">Preferred label</label>
+					<div class="termdetailsVal">{$ termDetailsSelected.key $}</div>
+				</div>
+				<div class="form-group" ng-if="termDetailsSelected.value != undefined" style="margin-bottom:18px">
+					<label class="termdetailsLabel">Alternative Label</label>
+					<div class="termdetailsVal">{$ termDetailsSelected.value $}</div>
+				</div>
+				<div class="form-group" ng-if="termDetailsSelected.hierarchy != undefined">
+					<label class="termdetailsLabel">Class hierarchy</label>
+					<div><span class="termdetailsVal" ng-repeat="ele in termDetailsSelected.hierarchy">{$ ele $} <span style="padding-left:5px;padding-right:5px;" ng-show="termDetailsSelected.hierarchy.length-1 != $index"> > </span></span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Corpus Upload -->
+<div class="row overlay" id="uploadCorpus">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<h4 class="push-left">
+			<span>Upload {$ filetypes.data $}</span>
+			<span class="pull-right closeRule closebtn" ng-click="cancelmodel()">&times;</span>
+		</h4>
+		<br>
+		<div class="row">
+			<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+				<label class="text-heading">Name</label>
+				<input type="text" class="form-control bottomLineInput" ng-model="fileName" placeholder="Type Name" style="background: white;"/>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+				<label class="text-heading">Description</label>
+				<textarea class="form-control bottomLineInput" rows="4" ng-model="fileDescription" placeholder="Description here" style="background: white;"></textarea>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+		  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		  	<label class="text-heading">Choose File</label>
+			<div class="input-group">
+				<input type="text" ng-model="browseName" class="form-control bottomLineInput" placeholder="Choose File">
+			  <span class="input-group-btn">
+				  <button class="btn btn-default btn-upload" ngf-select ng-model="File" name="file" ngf-change="uploadFile(File)"  alt="browse" title="browse" type="button" style="display:inline">Browse</button>
+
+			  </span>
+			</div>
+		  </div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-lg-12 col-sm-12 col-md-12">
+				<button class="btn button-customSave btn-custom" ng-click="saveFile()">
+					<i class="fa fa-upload"></i>
+					Upload
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--<div class="row minPadding">-->
+    <!--<div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">-->
+        <!--<h3 class="zeroMargin">-->
+              <!--<div class="dropdown">-->
+                  <!--<a data-toggle="dropdown" class="noDecoration configureHeading"> domain <b class="caret"></b></a>-->
+                      <!--<ul class="customdropdown-menu dropdown-menu">-->
+                          <!--<li>-->
+                            <!--<a ui-sref="app.domainDashboard" class="noDecoration">-->
+                              <!--<img src="/app/images/Domain.png"/>-->
+                              <!--<span>Domain Configuration</span>-->
+                            <!--</a>-->
+                          <!--</li>-->
+						  <!--<li>-->
+							  <!--<a class="noDecoration" ui-sref="app.modelDashboard">-->
+									<!--<img src="/app/images/model.png"/>-->
+									<!--<span>Models</span>-->
+							  <!--</a>-->
+						  <!--</li>-->
+						  <!--<li>-->
+							  <!--<a class="noDecoration" ui-sref="app.function">-->
+								<!--<img src="/app/images/functionIcon.png"/>-->
+								<!--<span>Functions</span>-->
+							  <!--</a>-->
+						  <!--</li>-->
+                          <!--<li>-->
+                              <!--<a ui-sref="app.services" class="noDecoration">-->
+                                  <!--<img src="/app/images/Services-01.png"/>-->
+                                  <!--<span>Service Configuration</span>-->
+                              <!--</a>-->
+                          <!--</li>-->
+                          <!--<li>-->
+                              <!--<a ui-sref="app.pipeline" class="noDecoration">-->
+                                  <!--<img src="/app/images/pipeline.png"/>-->
+                                  <!--<span>Pipeline Configuration</span>-->
+                              <!--</a>-->
+                          <!--</li>-->
+                          <!--<li>-->
+                              <!--<a ui-sref="app.sourceConfiguration" class="noDecoration">-->
+                                  <!--<img src="/app/images/sources.png"/>-->
+                                  <!--<span>Sources</span>-->
+                              <!--</a>-->
+                          <!--</li>-->
+                      <!--</ul>-->
+                      <!--<span style="margin-left: 10px;font-size: 13px;">|</span>-->
+                      <!--<span style="margin-left: 10px;font-size: 13px;color: #3babe1;"> Vocabulary Management	</span>-->
+              <!--</div>-->
+        <!--</h3>-->
+    <!--</div>-->
+    <!--<div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 alignRight">-->
+        <!--<img class="helpImages" src="/app/images/comment-01.png"/>-->
+        <!--<img class="helpImages" src="/app/images/help-01.png"/>-->
+    <!--</div>-->
+
+<!--</div>-->
+
+<div class="well container-fluid dataManagement">
+
+	<div class="row">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+			<div class="row row-eq-height">
+				<div class="col-lg-7 col-sm-7 col-md-7 col-xs-7">
+					<div class="input-group">
+						  <input type="text" class="form-control" id="inputValidation" ng-model="search_term"placeholder="Search terms" ng-keyup="keyEnter($event)"/>
+						  <span class="input-group-btn">
+							<button class="btn btn-default custom-search" type="button">
+								<span class="glyphicon glyphicon-search " ng-click="searchTermFilter()" ng-show="!showFilter"></span>
+								<span class="glyphicon glyphicon-remove" ng-click="clearTerm()" ng-show="showFilter"></span>
+							</button>
+						  </span>
+					</div>
+					<div class="table-responsive scrollTermsDiv" style="overflow-y: scroll;">
+						<table class="termsTable table table-striped corpusUploads " >
+							<thead>
+							<tr>
+								<th>Term</th>
+								<th>Parent Class</th>
+								<th>Class</th>
+								<th></th>
+							</tr>
+							</thead>
+							<tbody class="" >
+								<tr class="corpusRow" ng-repeat="arr in UploadDetails" ng-click="showTermDetails(arr)" ng-mouseover="showDelIcon($index)">
+									<td style="word-wrap: break-word;">{$ arr.key $}</td>
+									<td>
+										<span ng-if="!(arr.hierarchy==undefined || arr.hierarchy.length==0)">{$ arr.hierarchy[0] $}</span>
+									</td>
+									<td>
+										<span ng-if="!(arr.hierarchy==undefined || arr.hierarchy.length<1)">{$ arr.hierarchy[arr.hierarchy.length-1] $}</span>
+									</td>
+									<td>
+										<i class="fa fa-trash" ng-show="delTermShow[$index]" ng-click="dmc.deleteTerm(arr,$event)"></i>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+							<div style="text-align:center;" ng-show="showSpinnerLoading" class="loading-spiner-holder ralign-spinner"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class="">Loading...</span></div></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-5 col-sm-5 col-md-5 col-xs-5 no-padding">
+					<div class="panel">
+						<div class="panel-heading" style="background: #f3f3f2;">
+							<ul class="nav nav-tabs">
+								<li><a data-toggle="tab" href=".suf" >Tags</a></li>
+							    <li class="active"><a data-toggle="tab" href=".uploadTerms">Add Terms</a></li>
+							</ul>
+						</div>
+						<div class="panel-body" style="padding: 0px !important;background:#f8f8f8;padding-top:10px !important;">
+							<div class="tab-content">
+								<div class="tab-pane fade in active uploadTerms">
+									<div class="row corpusUpload">
+										<form>
+											<div class="upload-div" style="height:480px;">
+												<div class="row" ng-if="fileUploadView == 'haveFile'">
+													<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+														<label>Select the type</label>
+														<form>
+															<div class="row">
+																<div class="col-sm-4 col-xs-4 col-lg-4 col-md-4" style="padding-left:0px;">
+																	<div class="custom-inline">
+																		<input type="radio" id="dic" ng-model="filetypes.data" name="gender" value="dictionary" checked>
+																		<label for="dic" style="margin-bottom:0px;cursor: pointer;">Dictionary</label>
+																	</div>
+																</div>
+																<div class="col-sm-4 col-xs-4 col-lg-4 col-md-4" style="padding-left:0px;">
+																	<div class="custom-inline">
+																		<input type="radio" id="cor" ng-model="filetypes.data" name="gender" value="corpus">
+																		<label for="cor" style="margin-bottom:0px;cursor: pointer;">Corpus</label>
+																	</div>
+																</div>
+																<!--<div class="col-sm-4 col-xs-4 col-lg-4 col-md-4" style="padding-left:0px; padding-right:0px;" >-->
+																	<!--<div class="custom-inline">-->
+																		<!--<input type="radio" id="ont" ng-model="filetypes.data" name="gender" value="ontology">-->
+																		<!--<label for="ont" style="margin-bottom:0px;cursor: pointer;">Ontology</label>-->
+																	<!--</div>-->
+																<!--</div>-->
+															</div>
+														</form>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12">
+														<hr>
+
+														<span style="color: #a4a4a4">Supported File Formats: </span><span>CSV, JSON</span>
+													</div>
+												</div>
+												<br>
+												<div class="row">
+													<div class="col-sm-8 col-xs-8 col-md-8 col-lg-8">
+														<div class="custom-inline">
+															<input type="radio" id="fileto" ng-model="fileUploadView" name="fileSelection" value="haveFile" checked>
+															<label for="fileto" style="margin-bottom:0px;cursor: pointer;">I've a file to upload</label>
+														</div>
+														<div class="custom-inline">
+															<input type="radio" id="nofile" ng-model="fileUploadView" name="fileSelection" value="noFile">
+															<label for="nofile" style="margin-bottom:0px;cursor: pointer;">I don't have a file to upload</label>
+														</div>
+													</div>
+												</div>
+												<div class="row" style="padding:20px;" ng-if="fileUploadView == 'haveFile'">
+													<div class="col-lg-8 col-sm-8 col-md-8 uploadCorpus" ngf-select ng-model="File" name="file" ngf-change="uploadFile(File)">
+														<img src="/app/images/Upload-01.png" style="width:30px;"/>
+														<span>Browse the File</span>
+													</div>
+													<br>
+													<div class="col-lg-8 col-sm-8 col-md-8 col-xs-8">
+														<span>{$ browseName $}</span>
+													</div>
+												</div>
+												<div class="row"  ng-if="fileUploadView == 'haveFile'">
+													<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+														<label class="text-heading">Tag</label>
+														<input type="text" class="form-control bottomLineInput" ng-model="dmc.tag" placeholder="Type Tag" style="background: white;" required/>
+													</div>
+												</div>
+												<div ng-if="fileUploadView == 'noFile'">
+													<div class="row">
+														<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+															<label class="text-heading">Tag</label>
+															<div mass-autocomplete class="mass-autocompleteAttributeDiv">
+																<input ng-model="dmc.addTermObj.tagInTerm" class="form-control custom-form"
+																	   mass-autocomplete-item="autocomplete_options" placeholder="Type Tag" style="background: white;" required>
+															</div>
+														</div>
+													</div><br>
+													<div class="row">
+														<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+															<label class="text-heading">Preferred Label</label>
+															<input type="text" class="form-control bottomLineInput" ng-model="dmc.addTermObj.preferredLabel" placeholder="Type Label" style="background: white;" required/>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+															<label class="text-heading">Alternative Label</label>
+															<input type="text" class="form-control bottomLineInput" ng-model="dmc.addTermObj.alternativeLabel" placeholder="Type Label" style="background: white;" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+															<label class="text-heading">Class Hierarchy</label>
+															<tags-input placeholder="Type Hierarchy" ng-model="dmc.addTermObj.hierarchyTags"
+																		replace-spaces-with-dashes="false"
+																		use-strings="true"
+																		add-on-comma="false"
+																		on-tag-added="nextLevel()"
+																		on-tag-removed="columnAdded()">
+																<auto-complete source="avlTags" min-length="1"></auto-complete>
+															</tags-input>
+														</div>
+													</div>
+												</div>
+												<br>
+												<div class="row" ng-if="fileUploadView == 'haveFile'">
+													<div class="col-lg-12 col-md-12 col-sm-12">
+														<button class="btn btn-custom" ng-click="saveFile()">
+															Upload
+														</button>
+													</div>
+												</div>
+												<div class="row" ng-if="fileUploadView == 'noFile'" >
+													<div class="col-lg-12 col-md-12 col-sm-12">
+														<button class="btn btn-custom" ng-click="dmc.saveNewTerm()">
+															Save
+														</button>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+								<div class="tab-pane fade suf resourceStyle" style="overflow-y:auto" >
+									<div class="form-group has-feedback">
+										<input type="text" class="form-control" ng-model="paramTagFilter" />
+										<span class="glyphicon glyphicon-search form-control-feedback"></span>
+									</div>
+									<div ng-if="tagNameFilter!=''">
+										<a style="color:#5b9ce5;text-decoration:underline;" ng-click="clearFilter()">Clear Filter</a>
+									</div>
+									<div class="row tagListStyle" ng-repeat="list in dmc.tagsList | filter:{tag: paramTagFilter}" ng-click="filterWithTag(list.tag)" ng-mouseover="showDelTagIcon($index)" ng-style="tagNameFilter == list.tag && {'background': '#d4e9ff'}">
+										<span>{$ list.tag $} <i class="fa fa-trash" ng-show="delTagShow[$index]" ng-click="dmc.deleteTag(list,$event)" style="float:right"></i></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>

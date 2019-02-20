@@ -1,0 +1,76 @@
+.work-flows{
+    background: url("./images/case-mngmnt-bg.png") no-repeat fixed center;
+    padding:10px;
+    min-height:642px;
+    background-color:#fff;
+
+    #table-desc {
+        border-collapse: collapse;
+        font-size: 12px;
+        margin: 0px;
+        text-align: left;
+        box-shadow: 0 0 4px 0 rgba(180, 180, 180, 0.5) !important;
+     }
+     #table-desc .table > tbody{
+         border-top: 1px solid #ddd;
+     }
+     #table-desc th {
+            background: none repeat scroll 0 0 #f2f2f2;
+            font-size: 12px;
+            border-color: #f2f2f2;
+            padding: 15px 10px 10px;
+            text-align: center;
+            color: #888888;
+            font-weight: normal;
+     }
+     #table-desc tbody tr td {
+            background: none repeat scroll 0 0 #fff;
+     }
+     #table-desc td {
+            color: #838383;
+            text-align: center;
+            vertical-align: middle;
+            padding: 10px;
+            font-size: 12px;
+     }
+     #table-desc tbody tr:hover td {
+            background: none repeat scroll 0 0 #4990e2;
+            color: #ffffff;
+     }
+     #table-desc tbody tr.selected td {
+            background: none repeat scroll 0 0 #4990e2;
+            color: #ffffff;
+     }
+     #table-desc tbody .iconColor{
+        color:#fff;
+     }
+
+    .classify-button {
+      padding: 8px 36px;
+      color: #229ad6;
+      background-color: #fff;
+      border: solid 2px #fff;
+      width: auto;
+      left:0;
+      font-weight: bold;
+      border-radius: 20px;
+      text-align: center;
+      opacity: 0;
+      transition: opacity .35s ease;
+    }
+
+    tr:hover .classify-button, tr:hover + .classify-button, .classify-button:hover {
+      opacity: 1;
+      background-color: #fff;
+      display: inline-block;
+    }
+
+    .pagination-button {
+        background-color: #33a9d8;
+        border-radius: 4px;
+    }
+}
+
+
+
+

@@ -1,0 +1,56 @@
+.createModel{
+
+    .panel-custom {
+        background-image: linear-gradient(to left, #ffffff, #ffffff);
+        box-shadow: 0 0 4px 0 rgba(195, 195, 195, 0.5);
+
+        .panel-body{
+          label{
+            font-size: 14px;
+            font-weight: 500;
+            color: #6f6f6f;
+          }
+        }
+    }
+    .custom-formControl {
+        border-radius: 0px !important;
+        border: solid 1px rgba(51, 170, 227, 0.32);
+        box-shadow: none;
+    }
+    ::placeholder {
+        color: #000000;
+        opacity: 0.26;
+    }
+    .radio-inline{
+      width:30%;
+    }
+    .transparenttexBox{
+      border: none;
+      box-shadow: none;
+    }
+
+    .loader {
+      border: 4px solid #c3bbbb;
+      border-radius: 50%;
+      border-top: 4px solid #6d6767;
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      left: 45%;
+      top: 20%;
+      background-color: white;
+      -webkit-animation: spin 1s linear infinite; /* Safari */
+      animation: spin 1s linear infinite;
+    }
+
+    /* Safari */
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+}

@@ -1,0 +1,272 @@
+<div class="dashboard-style">
+    <div class="row customDashboardStyle">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 customColumn" ng-repeat="arr in ndbc.tabData" ng-click="ndbc.documentDashboard(arr.state)" ng-class="$index==0 ? 'Header-Style1 no-padding':'Header-Style'" >
+           <div class="row">
+               <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                   <h4>{$ arr.display $}</h4>
+                   <span>{$ arr.description $}</span>
+               </div>
+           </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label class="labelHeading">Accuracy</label>
+                    <img src="/app/images/excellent.png"/>
+                    <span class="accuracy">Excellent</span>
+                    <span>{$ arr.Accuracy $}</span>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding text-center">
+                    <label class="labelHeading">Avg Time in Queue</label>
+                    <label style="font-size:20px;font-weight: 400;margin-top: 10px;color: #928282;">{$ arr.time_in_queue $} min</label>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label class="labelHeading">Docs in Queue</label>
+                    <span style="font-size: 35px;color: #928282;">{$ arr.queue $}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="carousel slide imageCarousel" data-ride="carousel">-->
+        <!--<div class="carousel-inner">-->
+           <!--<div class="item" ng-repeat="data in ndbc.individualData" ng-class="$index == 0 ? 'active': ''">-->
+             <!--<div class="row">-->
+               <!--<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" data-ng-repeat="arr in data" ng-click="ndbc.documentDashboard(arr.state)" ng-class="$index==0 ? 'Header-Style1 no-padding':'Header-Style'" >-->
+                    <!--<div class="row">-->
+                       <!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">-->
+                           <!--<h4>{$ arr.display $}</h4>-->
+                           <!--<span>{$ arr.description $}</span>-->
+                       <!--</div>-->
+                    <!--</div>-->
+                    <!--<br>-->
+                    <!--<div class="row">-->
+                        <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">-->
+                            <!--<label class="labelHeading">Accuracy</label>-->
+                            <!--<img src="/app/images/excellent.png"/>-->
+                            <!--<span class="accuracy">Excellent</span>-->
+                            <!--<span>{$ arr.Accuracy $}</span>-->
+                        <!--</div>-->
+                        <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding text-center">-->
+                            <!--<label class="labelHeading">Avg Time in Queue</label>-->
+                            <!--<label style="font-size:20px;font-weight: 400;margin-top: 10px;color: #928282;">{$ arr.time_in_queue $} min</label>-->
+                        <!--</div>-->
+                        <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">-->
+                            <!--<label class="labelHeading">Docs in Queue</label>-->
+                            <!--<span style="font-size: 35px;color: #928282;">{$ arr.queue $}</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+               <!--</div>-->
+             <!--</div>-->
+           <!--</div>-->
+        <!--</div>-->
+        <!--<a class="left carousel-control" href=".imageCarousel" role="button" data-slide="prev" >-->
+          <!--<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>-->
+          <!--<span class="sr-only">Previous</span>-->
+        <!--</a>-->
+        <!--<a class="right carousel-control" href=".imageCarousel" role="button" data-slide="next">-->
+          <!--<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>-->
+          <!--<span class="sr-only">Next</span>-->
+        <!--</a>-->
+    <!--</div>-->
+</div>
+<br>
+<div class="dashboard-data row">
+    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <h5>Document Summary</h5>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                      <div class="row">
+                          <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                              <span ng-class="activeDate[0]" ng-click="filterGraphWithDate('wtd',0)">WTD</span>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                              <span ng-class="activeDate[1]" ng-click="filterGraphWithDate('mtd',1)">MTD</span>
+                          </div>
+                          <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                              <span ng-class="activeDate[2]" ng-click="filterGraphWithDate('ytd',2)">YTD</span>
+                          </div>
+                          <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                                <form name="dateForm" class="form-horizontal">
+                                    <div class="form-group">
+                                        <input date-range-picker id="daterange1" name="daterange1" class="form-control date-picker" type="text"
+                                            ng-model="date" required ng-change="SimplePickerChange();"/>
+                                    </div>
+                                </form>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <div id="chart"></div>
+                    </div>
+                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5" style="margin-top:30px;">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" ng-repeat="data in ndbc.graphDataForStats" style="padding-bottom:20px;">
+                                <label class="adhocHeadings" style="margin-bottom: 0px;">{$ data.display $}</label>
+                                <p class="adhoc success" style="color:{$ ndbc.colorKeys[data.display] $}">{$ data.count $}</p>
+                                <span class="adhocfooter">{$ data.percentage $}%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding:0px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <h5>Fields Reviewed & Corrected</h5>
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                                <form name="dateForm" class="form-horizontal">
+                                    <div class="form-group">
+                                        <input date-range-picker id="daterange2" name="daterange1" class="form-control date-picker" type="text"
+                                            ng-model="date1" required ng-change="SimplePickerChange();"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div id="chart1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding: 0px 0px 0px 15px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <h5>Top 6 Fields Corrected</h5>
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                                <form name="dateForm" class="form-horizontal">
+                                    <div class="form-group">
+                                        <input date-range-picker id="daterange3" name="daterange1" class="form-control date-picker" type="text"
+                                            ng-model="date2" required ng-change="SimplePickerChange();"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div id="chart2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-lg-4 col-md-4 col-xs-4">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-7 col-md-7 col-lg-7 col-xs-12">
+                        <div style="text-align:center;padding: 30px 0px 0px 0px;">
+                            <span>Avg Processing Time Per Case</span><br>
+                            <span style="font-size:18px;">65 mins</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-5 col-lg-5 col-md-5 col-xs-12">
+                        <div class="circle">
+                          <div class="circle__inner">
+                            <div class="circle__wrapper">
+                              <div class="circle__content">
+                                  <span>Your Rank</span><br>
+                                  <span style="font-size:30px;font-weight:bold">2</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h4>Your Queue</h4>
+            <ul class="list-group">
+                <li class="list-group-item customList" >
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6">
+                            Document Name
+                        </div>
+                        <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6">
+                            Received
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item customList">
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6">
+                            <img src="/app/images/pdf.png" style="width:14px;"/>
+                            <span style="font-weight: 600;margin-left: 3px;">Stage_2.pdf</span>
+                        </div>
+                        <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6">
+                            <span>5:17 AM</span>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item customList">
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6">
+                            <img src="/app/images/pdf.png" style="width:14px;"/>
+                            <span style="font-weight: 600;margin-left: 3px;">Stage_2.pdf</span>
+                        </div>
+                        <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6">
+                            <span>5:17 AM</span>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item customList">
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6">
+                            <img src="/app/images/pdf.png" style="width:14px;"/>
+                            <span style="font-weight: 600;margin-left: 3px;">Stage_2.pdf</span>
+                        </div>
+                        <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6">
+                            <span>5:17 AM</span>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item customList">
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6">
+                            <img src="/app/images/pdf.png" style="width:14px;"/>
+                            <span style="font-weight: 600;margin-left: 3px;">Stage_2.pdf</span>
+                        </div>
+                        <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6">
+                            <span>5:17 AM</span>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item customList">
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6">
+                            <img src="/app/images/pdf.png" style="width:14px;"/>
+                            <span style="font-weight: 600;margin-left: 3px;">Stage_2.pdf</span>
+                        </div>
+                        <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6">
+                            <span>5:17 AM</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+

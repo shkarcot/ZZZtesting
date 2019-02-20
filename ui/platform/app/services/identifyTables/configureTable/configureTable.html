@@ -1,0 +1,103 @@
+<div id="configure-table" ng-show="!ruleListShow">
+    <div class="row" style="padding-top:10px">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+    <div class="row">
+      <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 dashboard-row">
+        <div class="row">
+          <div class="col-lg-12 col-sm-12 col-sm-121 col-xs-12 dashboard-row">
+            <input type="text" ng-model="tableName" class="bottomLineInput1" placeholder="Table Name"  />
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right">
+            <a class="btnAddcol" ng-click="addTable()"><i class="fa fa-plus"></i><span>Add table</span></a>
+      </div>
+    </div>
+    </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+
+          <div id="accordion" role="tablist">
+            <div class="card" ng-repeat="datum in ctc.data track by $index">
+                <div class="card-header heading{$ $index $}" role="tab" id="heading{$ $index $}">
+                  <h5 class="mb-0">
+                    <a class="accordion-title pull-left" data-toggle="collapse" href=".collapse{$ $index $}" aria-expanded="true" aria-controls="collapse{$ $index $}">
+                        <!--<span><i class="fa fa-plus" ></i></span>-->{$ datum.table_name $}
+                    </a>
+                    <a class="btnAddcol pull-left" ng-click="deleteTable($index, datum.table_name)"><i class="fa fa-trash"></i></a>
+                  </h5>
+
+                </div>
+
+                <div id="collapse{$ $index $}" class="collapse in collapse{$ $index $}" role="tabpanel" aria-labelledby="heading{$ $index $}" data-parent="#accordion">
+                     <div class="card-body" style="position: relative; padding:10px;">
+
+                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                             <div class="headerdiv">
+                                <!--<input tags="text" data-role="tagsinput"  ng-model="datum.top_keys[0]" class="bottomLineInput1"  placeholder="Header" />-->
+                                 <tags-input ng-model="datum.top_keys"></tags-input>
+                            </div>
+                        </div>
+
+                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                            <!--<button class="btn btn-primary right" value="+Col" ng-click="addColumn($index)">Add Column</button>-->
+                             <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 dashboard-row">
+                                 <div class="container">
+                                    <div class="table-wrapper">
+                                        <table class="table table-responsive table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th ng-repeat="field in datum.headings  track by $index" class="column-th">
+                                                        <input type="text" class="bottomLineInput1" placeholder="Column header" ng-model="datum.headings[$index]" />
+                                                        <div class="column-th-del" ng-click="removeColumn($parent.$index,$index)"><i class="fa fa-close" ></i></div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="24"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                  </div>
+                                </div>
+                            </div>
+                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                <a class="btnAddcol" ng-click="addColumn($index)">
+                                <i class="fa fa-plus" title="Add column" alt="Add column"></i><span></span></a>
+                            </div>
+                          </div>
+
+                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                            <div class="footerdiv">
+                                <!--<input type="text" class="bottomLineInput1" ng-model="datum.bottom_keys[0]" placeholder="Footer"  />-->
+                                <tags-input ng-model="datum.bottom_keys"></tags-input>
+                            </div>
+                         </div>
+
+                         <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12" ng-show="showSaveBtn">
+          <div ng-show="showSpinner" class="loading-spiner-holder ralign-spinner"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i></i></span></div></div>
+          <button type="button" class="btn btn-primary right" ng-click="ctc.saveIdentifyTables()">Save</button>
+        </div>
+
+      </div>
+     </div>
+
+
+
+
+
+
+</div>

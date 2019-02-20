@@ -1,0 +1,195 @@
+.custom-dashboard {
+    .cst-header{
+        padding: 0px 20px 5px 20px;
+        background: white;
+    }
+    .overviewHeading{
+        margin-left:15px;
+        color:#283163;
+        font-weight:300;
+        font-size:16px;
+    }
+    .widgetStyle{
+        background-color:#ecf8ff;
+        box-shadow: 2px 2px 12px 2px #ddd;
+    }
+    .statusBorder{
+        border-right:1px solid #ddd;
+    }
+    .Status-heading{
+      padding: 15px 0px 0px 0px;
+      font-size: 16px;
+      color: #afafaf;
+    }
+    .valueWidth{
+        width:25%;
+    }
+    .donutStyle{
+        height: 200px;
+        width:100px;
+    }
+    .chartWidget{
+        width:100%;
+        height:150px;
+    }
+    .processed-value{
+      font-size:35px;
+      color:#3dae2b ;
+    }
+    .reviewed-value{
+      font-size:35px;
+      color:#09abff ;
+    }
+    .error-value{
+      font-size:35px;
+      color:#ff6000 ;
+    }
+    .legendgreen-hr{
+        display: inline-block;
+        margin-bottom: 4px;
+        color: #3dae2b;
+        border-top: 2px solid;
+    }
+    .legendblue-hr{
+        display: inline-block;
+        margin-bottom: 4px;
+        border-top: 2px solid #09abff;
+    }
+    .highcharts-button-symbol{
+        display:none
+    }
+    .highcharts-title{
+      font-size:16px !important;
+      color:#007CB9 !important;
+      fill:#007CB9 !important;
+    }
+    .highcharts-credits{
+        display:none
+    }
+    .highcharts-button-box{
+      display:none;
+    }
+    .status-red{
+        color:red;
+    }
+    .status-green{
+        color:green;
+    }
+    .dashboard-subheading{
+        color: #afafaf;
+    }
+
+    .table-scroll{
+        box-shadow: none !important;
+        background:none !important;
+
+        .tableHeading {
+            background-color: #ffffff;
+            color: black;
+            font-size: 14px;
+        }
+        .capitalize {
+            text-transform: capitalize;
+            font-size: 15px;
+        }
+        .text-color{
+            color:#5EB5EB;
+        }
+    }
+    table > tbody >tr >td {
+        padding:10px ;
+        font-size: 12px;
+        font-weight: 500;
+    }
+    table > thead > tr > td{
+        color: #9c9c9c;
+    }
+    .actionWidth{
+        width:16px;
+    }
+
+    .disableClass{
+        pointer-events: none;
+        cursor: not-allowed;
+        opacity: 0.3;
+    }
+}
+.wellSolutionDash {
+    background: #fff;
+    padding-left: 3%!important;
+    padding-right: 3%!important;
+    padding-top: 1%!important;
+    box-shadow: none!important;
+    border: 1px solid #999;
+}
+.form-horizontal .control-label {
+    text-align: left !important;
+    margin-bottom: 0;
+    padding-top: 7px;
+}
+.btn-go{
+    background-color:#25aae1;
+    border-radius:25px;
+    line-height:20px;
+    font-size:14px;
+    color:white;
+}
+
+.multiSelect .glyphicon {
+    font-size: 11px;
+}
+
+.dropdown-menu {
+
+    margin-bottom:100px;
+}
+
+.btn-customQueue{
+    border: 1px solid #1ea4d7;
+    background-color: white;
+    font-size:12px;
+    border-radius: 0;
+    padding: 7px;
+}
+.inner-addon {
+  position: relative;
+  .form-control{
+    border-radius: 0;
+    border-color: #ddd;
+  }
+}
+.inner-addon .glyphicon {
+  position: absolute;
+  padding: 10px;
+  font-size: 14px;
+  color: #555555;
+  pointer-events: none;
+}
+.right-addon .glyphicon {
+    right: 0px;
+}
+.right-addon input {
+    padding-right: 30px;
+}
+.dashboard-inner{
+    padding: 20px 40px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+}
+.padding-15{
+    padding-left:0px;
+    padding-right:0px;
+}
+table>tbody{
+    background-color: #fbfbfb;
+}
+table,table>thead,table>tbody>tr{
+    border:1px solid #90999e;
+}
+.solDashHeading{
+    padding-left:25px;
+}
+.row-justify{
+    display: flex;
+    justify-content: flex-end
+}

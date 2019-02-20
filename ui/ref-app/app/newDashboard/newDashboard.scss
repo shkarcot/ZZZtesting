@@ -1,0 +1,139 @@
+
+.dashboard-style{
+        background-color: #182a38;
+        padding:20px;
+
+    .row{
+        white-space:normal;
+    }
+
+    .customDashboardStyle {
+        overflow-x: auto;
+        white-space: nowrap;
+
+            .customColumn{
+                  display: inline-block;
+                  float: none;
+            }
+    }
+
+    .Header-Style {
+        border:1px solid #000;
+        border-right:1px solid ;
+        background-color:#eefdf9;
+        height: 160px;
+        -webkit-clip-path:polygon(90% 0, 99% 45%, 90% 100%, 1% 100%, 9% 46%, 1% 0%);
+        clip-path:polygon(90% 0, 99% 45%, 90% 100%, 1% 100%, 9% 46%, 1% 0%);
+        cursor: pointer;
+    }
+    .Header-Style1 {
+        border:1px solid #000;
+        border-right:1px solid ;
+        background-color:#eefdf9;
+        height: 160px;
+        -webkit-clip-path: polygon(90% 0%, 100% 45%, 90% 100%, 0% 100%, 0% 45%, 0% 0%);
+        clip-path: polygon(90% 0%, 100% 45%, 90% 100%, 0% 100%, 0% 45%, 0% 0%);
+        cursor: pointer;
+    }
+    .accuracy{
+        font-size: 10px;
+        font-weight: bold;
+        color: #57aee1;
+    }
+    .labelHeading{
+        font-size: 10px;
+        color: #9a9797;
+        font-weight: 500;
+    }
+
+
+}
+.adhoc{
+    font-size: 40px;
+    font-weight: 200;
+    margin-bottom:0px;
+}
+.success{
+    color:green;
+}
+.info{
+    color:#69b8fd;
+}
+.warning{
+    color:#f5b118;
+}
+.danger{
+    color:red;
+}
+
+.adhocHeadings{
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a2652;
+}
+.adhocfooter{
+    font-weight: 500;
+    opacity: 0.5;
+    font-size: 13px;
+}
+.form-horizontal .control-label {
+    text-align: right;
+    margin-bottom: 0;
+    padding-top: 0px;
+}
+.custom-datepicker{
+    background: transparent;
+    border: transparent;
+    box-shadow: none;
+    padding-top: 0px;
+    height: 20px;
+}
+
+.circle {
+  position: relative;
+  display: block;
+  margin: 2em 0;
+  background-color: transparent;
+  color: white;
+  text-align: center;
+}
+
+.circle:after {
+  display: block;
+  padding-bottom: 100%;
+  width: 100%;
+  height: 0;
+  border-radius: 50%;
+  background-color: #59bee9;
+  content: "";
+}
+
+.circle__inner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.circle__wrapper {
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+
+.circle__content {
+  display: table-cell;
+  padding: 1em;
+  vertical-align: middle;
+}
+
+.customList{
+    border: 2px solid #eeeeef;
+    border-left: none;
+    border-right: none;
+}
+.activeDateCss{
+    border-bottom: 2px solid blue;
+}

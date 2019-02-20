@@ -1,0 +1,1204 @@
+<script type="text/ng-template" id="tree1.html">
+    {$data.name$}
+
+    <ul class="tree">
+        <li ng-repeat="data in data.nodes track by $index" ng-include="'tree1.html'"></li>
+    </ul>
+</script>
+<script type="text/ng-template" id="confirmBox1">
+    <div class="popup-header">
+        <h3 class="text-primary"> Confirm Action </h3>
+        <hr class="popup-hr"/>
+        <p class="text-info" style="padding:10px"> {$ activePopupText $} </p>
+        <br/>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+                <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm</button>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="confirmBox">
+    <div class="popup-header">
+        <h3 class="text-primary"> Complete Document Review? </h3>
+        <hr class="popup-hr"/>
+        <p class="modal-text"> {$ activePopupText $} </p>
+        <br/>
+    </div>
+    <div class="popup-footer">
+        <div class="row text-right">
+            <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+                <button class="btn bnt-cst-process" ng-click="onConfirmActivation()"> Complete Review</button>
+
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="confirmEntityBox">
+    <div class="popup-header">
+        <label class="text-primary"> Confirm Action </label>
+        <hr class="popup-hr"/>
+    </div>
+    <div class="popup-body">
+        <div class="text-info" style="padding:10px;font-size:16px;"> {$ activePopupText $} </div>
+        <br>
+        <label class="custom-checkbox" style="margin-left:9px;">
+            <span>Do not show this message again ?</span>
+          <input type="checkbox" ng-model="rc.showPopup.popup"/>
+          <span class="checkmark" style="top:3px;"></span>
+        </label>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+                <button class="btn btn-primary right" ng-click="onConfirmActivation(rc.showPopup.popup)"> Confirm</button>
+            </div>
+        </div>
+    </div>
+</script>
+<!--<div class="row custom-header">-->
+<!--<div class="col-lg-12 col-md-12 col-sm-12 text-right" style="margin-top:15px;" ng-show="showNavigation">-->
+<!--<span>{$ no_of_records $}</span> / {$ total_records $}<span></span>-->
+<!--<a style="text-decoration:none;" ng-click="rc.navigatePage('prev')" ng-class="no_of_records==1?'prevCursor':''">< Previous</a>-->
+<!--<a style="margin-left:25px;text-decoration:none;" ng-click="rc.navigatePage('next')" ng-class="no_of_records==total_records?'nextCursor':''">Next ></a>-->
+<!--</div>-->
+<!--</div>-->
+
+<div class="row custom-header" style="padding-left:10px;">
+    <div class="col-lg-3 col-md-3 col-sm-3 no-padding extraction-title-container review-breadcrumb">
+        <!-- <ol class="breadcrumb">
+            <li class="breadcrumb-item ">
+                <a class="breadcrumb-heading" ng-click="goToCaseDashboard()">Documents List</a>
+            </li>
+            <li class="breadcrumb-item active">
+                <div class="extraction-title" title="{$ recordData.properties.filename $}"><img src="./app/images/cleanImage.png"
+                        style="width:15px;" />
+                    {$ recordData.properties.filename $}</div>
+            </li>
+        </ol> -->
+        <ol class="breadcrumb">
+                <li>
+                    <a ui-sref="app.agentDashboard">
+                            <span class="ext-title">
+                                    Queues
+                                </span>
+                    </a> 
+                    <span class="ext-title" style="width: 10px;color:#555"> > </span>
+                </li>
+                <li class="breadcrumb-item ">
+                    <a ng-click="goToCaseDashboard()">
+                        <span class="ext-title">
+                            {$ currentQueueName $}
+                        </span>
+                        <span class="ext-title" style="width: 10px;color:#555;"> > </span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item " ng-if="parentfilename">
+                       
+                            <span class="ext-title">
+                                {$ parentfilename $}
+                            </span>
+                            <span class="ext-title" style="width: 10px;color:#555;"> > </span>
+                       
+                    </li>
+                <li class="breadcrumb-item active">
+                    <span class="ext-title">
+                        {$ recordData.properties.filename $}</span>
+                    <span class="breadcrumbhover">
+                        <img ng-if="recordData.properties.filename" src="./app/images/breadcrumb-1.png" class="breadcrumbimg" />
+                        <div id="breadcrumbdiv" class="hoverbreadcrumb">
+                            <ol class="breadcrumb">
+                                <li>Queues</li>
+                                <li class="breadcrumb-item ">
+                                    {$ currentQueueName $}
+                                </li>
+                                <li class="breadcrumb-item" ng-if="parentfilename">
+                                    {$ parentfilename $}
+                                </li>
+                                <li class="breadcrumb-item active">
+                                    <span class="ext-title">
+                                        {$ recordData.properties.filename $}</span>
+                                </li>
+                            </ol>
+                        </div>
+                    </span>
+                </li>
+            </ol> 
+    </div>
+
+    <div class="col-lg-9 col-md-9 col-sm-9 text-right">
+        <div class="row" style="display: flex;align-items: center;">
+            <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 no-padding">
+                <span class="scoresHeading">Confidence Score:</span>
+                <span class="label-style">{$ extractedData.data.document_confidence_score | number:2 $}%</span>
+            </div>
+            <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 no-padding text-center">
+                <span class="scoresHeading">Attributes Extracted:</span>
+                <span class="label-style">{$extractedData.data.attributes_extracted $}</span>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <label class="custom-checkbox">
+                    <span class="accepted"></span>
+                    <span style="font-weight: 400;">Accepted [{$ extractedData.data.accept_count $}]</span>
+                    <input type="checkbox" ng-model="checkObj.accept" ng-change="ec.changeIntaraction('accept',checkObj.accept)">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <label class="custom-checkbox">
+                    <span class="corrected"></span>
+                    <span style="font-weight: 400;">Corrected [{$ extractedData.data.correct_count $}]</span>
+                    <input type="checkbox" ng-model="checkObj.correct" ng-change="ec.changeIntaraction('correct',checkObj.correct)" />
+                    <span class="checkmark"></span>
+                </label>
+
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding">
+                <label class="custom-checkbox">
+                    <span class="reviewed"></span>
+                    <span style="font-weight: 400;">Needs Review <span class="reviewValue">[{$
+                            extractedData.data.need_review_count $}]</span></span>
+                    <input type="checkbox" ng-model="checkObj.review" ng-change="ec.changeIntaraction('review',checkObj.review)" />
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1 no-padding" style="margin-top: 5px;">
+                <select class="form-control headerSelectBox" ng-model="rc.changedState" ng-change="rc.saveStateChange()"
+                    ng-hide="documentState=='reviewed'" style="border: 1px solid #50b6e7;">
+                    <option value="">Move To </option>
+                    <option ng-repeat="(key,value) in reviewStatesList track by $index" value="{$ value.doc_state $}" ng-disabled="!value.active">{$
+                        key $}</option>
+                </select>
+            </div>
+            <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1">
+                <button class="btn btn-custom btn-subheader" ng-click="rc.completeReview()" ng-hide="documentState=='reviewed'">Done</button>
+
+            </div>
+        </div>
+    </div>
+
+    <!--key-->
+</div>
+
+<!--<div class="row retrainDiv">-->
+<!--<div class="col-lg-6 col-sm-6 col-xs-12 col-md-6">-->
+<!--<div class="btn-group" ng-show="displayZoom">-->
+<!--<button type="button" class="btn btn-default btn-zoom" ng-click="zoomOut()"><i-->
+<!--class="fa fa-minus-circle" aria-hidden="true"></i></button>-->
+<!--<button type="button" class="btn btn-default btn-zoom btn-magnifier" ng-disabled="true"><img src="/app/images/zoomIcon.png"-->
+<!--style="width: 18px;"/>-->
+<!--</button>-->
+<!--<button type="button" class="btn btn-default btn-zoom" ng-click="zoomIn()"><i class="fa fa-plus-circle"-->
+<!--aria-hidden="true"></i>-->
+<!--</button>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="col-lg-3 col-sm-3 col-xs-12 col-md-3" style="padding-left:0px">-->
+<!--<label class="checkbox-inline">-->
+<!--<input type="checkbox" ng-model="getDemo">Demo Mode-->
+<!--</label>-->
+<!--<button class="btn btn-info" ng-click="retrainData()" ng-show="getDemo"> Retrain</button>-->
+<!--</div>-->
+<!--<div class="col-lg-3 col-sm-3 col-xs-12 col-md-3"ng-click="download()" style="cursor:pointer;">-->
+<!--<div style="float:right">-->
+<!--<img ng-src="/app/images/download.png" style="width:25px;"/>-->
+<!--<span style="color:#1c7cb9;">Download JSON</span>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--</div>-->
+<div class="row row-eq-height" ng-show="(rc.documentType != 'digital' && rc.documentType != 'email')" style="height:{$ height $}px;overflow-y:auto;">
+
+    <div class="col-sm-6 col-md-6 col-xs-12 col-lg-6 custom-rightPanel" id="actual">
+        <div class="row" ng-if="showUnknown && recordData.doc_type!='excel'">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
+                <div class="btn-group text-center">
+                    <button type="button" class="btn btn-default btn-zoom" ng-click="rc.zoomOut()"><i class="fa fa-minus-circle"
+                            aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-default btn-zoom btn-magnifier" ng-disabled="true"><img src="/app/images/zoomIcon.png"
+                            style="width: 18px;" />
+                    </button>
+                    <button type="button" class="btn btn-default btn-zoom" ng-click="rc.zoomIn()"><i class="fa fa-plus-circle"
+                            aria-hidden="true"></i>
+                    </button>
+
+
+                </div>
+                <button type="button" class="btn btn-default btn-zoom" ng-click="rc.disableSelector()">
+                    Reset
+                </button>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding text-right">
+                <div ng-if="showUnknown" style="display: inline-block;">
+                    <!--<div class="pagination" ng-show="no_of_pages>1">-->
+                    <!--<a ng-repeat="(key,value) in pagesInfo" ng-click="rc.changeDocumentInfo(value.page_no)" ng-class="current_page==value.page_no?'active':''">{$ value.page_no $}</a>-->
+                    <!--</div>-->
+                    <div ng-show="no_of_pages>1">
+                        <span>
+                            <button class="btn pagination-button" ng-disabled="current_page==1" ng-click="rc.changePageNumUnknown('prev')"><i
+                                    class="fa fa-chevron-left" style="color:white;font-size:12px;"></i></button>
+                        </span>
+                        <span class="pagination-textBox">
+                            <input type="number" class="pagination-text" ng-model="current_page" ng-keyup="rc.keyEnterUnknown($event)" />
+                        </span>
+                        <span>
+                            <button class="btn pagination-button" ng-disabled="current_page==no_of_pages" ng-click="rc.changePageNumUnknown('next')"><i
+                                    class="fa fa-chevron-right" style="color:white;font-size:12px;"></i></button>
+                        </span>
+                        <span> of {$ no_of_pages $}</span>
+                    </div>
+                </div>
+                <div ng-if="showImage" style="display: inline-block;">
+                    <!--<div class="pagination" ng-show="no_of_pages>1">-->
+                    <!--<a ng-repeat="(key,value) in pagesInfo" ng-click="rc.changeDocumentInfo(value.page_no)" ng-class="current_page==value.page_no?'active':''">{$ value.page_no $}</a>-->
+                    <!--</div>-->
+                    <div ng-show="no_of_pages>1">
+                        <span>
+                            <button class="btn pagination-button" ng-disabled="current_page==1" ng-click="rc.changePageNum('prev')"><i
+                                    class="fa fa-chevron-left" style="color:white;font-size:12px;"></i></button>
+                        </span>
+                        <span class="pagination-textBox">
+                            <input type="number" class="pagination-text" ng-model="current_page" ng-keyup="rc.keyEnter($event)" />
+                        </span>
+                        <span>
+                            <button class="btn pagination-button" ng-disabled="current_page==no_of_pages" ng-click="rc.changePageNum('next')"><i
+                                    class="fa fa-chevron-right" style="color:white;font-size:12px;"></i></button>
+                        </span>
+                        <span> of {$ no_of_pages $}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row pdf-extraction-new" id="scrollImage">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="toolbar" style="display:none;">
+                    <button class="cursor" type="button" title="Cursor" data-tooltype="cursor">➚</button>
+
+                    <div class="spacer"></div>
+
+                    <button class="rectangle" type="button" title="Rectangle" data-tooltype="area">&nbsp;</button>
+                    <button class="highlight" type="button" title="Highlight" data-tooltype="highlight">&nbsp;</button>
+                    <button class="strikeout" type="button" title="Strikeout" data-tooltype="strikeout">&nbsp;</button>
+
+                    <div class="spacer"></div>
+
+                    <button class="text" type="button" title="Text Tool" data-tooltype="text"></button>
+                    <select class="text-size"></select>
+                    <div class="text-color"></div>
+
+                    <div class="spacer"></div>
+
+                    <button class="pen" type="button" title="Pen Tool" data-tooltype="draw">✎</button>
+                    <select class="pen-size"></select>
+                    <div class="pen-color"></div>
+
+                    <div class="spacer"></div>
+
+                    <button class="comment" type="button" title="Comment" data-tooltype="point">🗨</button>
+
+                    <div class="spacer"></div>
+
+                    <select class="scale">
+                        <option value=".17">17%</option>
+                        <option value=".25">25%</option>
+                        <option value=".33">33%</option>
+                        <option value=".5">50%</option>
+                        <option value="1">100%</option>
+                        <option value="1.33">133%</option>
+                        <option value="1.5">150%</option>
+                        <option value="2">200%</option>
+                    </select>
+
+                    <a href="javascript://" class="rotate-ccw" title="Rotate Counter Clockwise">⟲</a>
+                    <a href="javascript://" class="rotate-cw" title="Rotate Clockwise">⟳</a>
+
+                    <div class="spacer"></div>
+
+                    <a href="javascript://" class="clear" title="Clear">×</a>
+                </div>
+                <div id="loadingpdf" class="loadingdoc">Please wait document is loading...
+                    <br />
+                    <center><i class="fa fa-cog fa-spin fa-2x fa-fw margin-bottom"></i></center>
+                </div>
+                <div id="content-wrapper" style="height:{$ pdfHeight $}px;overflow-y:scroll;">
+                    <div id="viewer" class="pdfViewer"></div>
+                </div>
+                <div id="comment-wrapper" style="display:none;">
+                    <h4>Comments</h4>
+                    <div class="comment-list">
+                        <div class="comment-list-container">
+                            <div class="comment-list-item">No comments</div>
+                        </div>
+                        <form class="comment-list-form" style="display:none;">
+                            <input type="text" placeholder="Add a Comment" />
+                        </form>
+                    </div>
+                </div>
+                <div id="annotationdiv" class="annotation-wrapper">
+
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12" ng-if="recordData.doc_type=='excel'">
+                <div ng-bind-html="rc.renderHTMLData()"></div>
+
+                <div class="row" ng-if="recordData.doc_type=='excel'">
+                    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 excel-footer" style="background-color:aliceblue;text-align:left;">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-sheet excel-btn" ng-class="excelBtnArr[$index]" style="
+            border-right: 1px solid black;"
+                                ng-repeat="data in  pagesInfo track by $index" ng-click="getSheetData($index)">Sheet {$ $index+1 $}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-xs-12 col-lg-6" ng-if="showImage">
+        <ul class="nav nav-tabs nav-reviewTabs">
+            <li class="active"><a data-toggle="tab" href=".elements">Elements</a></li>
+            <li><a data-toggle="tab" href=".outcomes">Domain Objects</a></li>
+        </ul>
+        <div class="image-style1" id="scrollDiv" style="height:{$ elementHeight $}px;overflow-y:scroll;background-color:white;">
+            <div class="tab-content">
+                <div class="tab-pane in active elements" style="position: relative;border:1px solid #eee;">
+                    <div class="panel-group" style="padding:10px;" id="accordionGroupData" role="tablist"
+                        aria-multiselectable="true">
+                        <div class="panel panel-default" ng-repeat="(groupName,groupValue) in listOfData track by $index">
+                            <div class="panel-heading" role="tab">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionGroupData"
+                                        href=".group{$ groupName $}" aria-expanded="false" aria-controls="group{$ groupName $}">
+                                        {$ groupName $}
+                                    </a>
+                                </h4>
+                            </div>
+                            <div class="panel-collapse collapse group{$ groupName $}" role="tabpanel" aria-labelledby="group{$ groupName $}"
+                                ng-class="$index==0?'in':''">
+                                <div ng-repeat="list in groupValue track by $index">
+
+                                    <div ng-if="list.type=='field' ||  list.type=='paragraph' || list.type=='omr'"
+                                        ng-show="list.score<=$root.slider.value" style="border-bottom:1px solid #e0e0e0;"
+                                        tabindex="0" class="row {$ rowHighlight[list.groupName+''+$index] $} review-row "
+                                        id="inner{$ groupName $}{$ $index $}" ng-click="rowClick($index,list.drawerIndex,groupName)"
+                                        ng-focus="rowClick($index,list.drawerIndex,groupName)">
+                                        <div class="col-lg-7 col-md-7 col-sm-7 sub-row">
+                                            <div class="head row-style" ng-class="list.rule_status?'':'ruleValidation'">
+                                                <span>{$ getAttributeName(list.domain_mapping) $}</span>
+
+                                            </div>
+                                            <div class="small-font row-style" ng-hide="list.is_accept || list.is_update">Processed
+                                                Result
+                                                ({$list.score | number:2$}%)
+                                            </div>
+                                            <div class="small-font row-style" ng-show="list.is_accept">Final Value
+                                                (Accepted)
+                                            </div>
+                                            <div class="small-font row-style" ng-show="list.is_update">Final Value
+                                                (Corrected)
+                                            </div>
+                                            <div class="row-style valueStyle" ng-show="!hideObj.isEdit[$index]" ng-if="list.type=='field' ||  list.type=='paragraph' ">
+                                                <span>{$ list.text $}</span>
+                                                <i class="fa fa-exclamation-triangle" style="color:red" ng-show="!list.rule_status"
+                                                    title="{$ list.rule_validate_msg $}"></i>
+
+                                            </div>
+                                            <div ng-if="list.type=='omr'">
+                                                <ul>
+                                                    <li ng-repeat="options in list.groups[0].options track by $index" ng-if="options.ischecked">{$
+                                                        options.label $}
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div ng-show="hideObj.isEdit[$index]">
+
+                                                <input type="text" ng-model="editVal[$index]" class="form-control"
+                                                    autofocus ng-show="parentVal[$index].length<=30">
+                                                <textarea ng-model="editVal[$index]" class="form-control" rows="4" cols="50"
+                                                    autofocus ng-show="parentVal[$index].length>30"></textarea>
+                                                <span class="error" ng-show="showEditText[$index]">{$ showEditMsg $}</span>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 sub-row">
+                                            <span ng-show="list.score<$root.slider.value">
+                                                <!--<span ng-init="val[$index] = cpc.displayIndex"></span>-->
+                                            </span>
+
+                                            <div class="text-right row-style" ng-class="getSomeValue($index,list.score,$root.slider.value)"></div>
+                                            <!--<span ng-init="cpc.displayIndex = cpc.displayIndex+1">{$ cpc.displayIndex $}</span>-->
+                                            <div class="custom-actions" ng-show="!hideObj.isEdit[$index]">
+                                                <button class="btn btn-default btn-sm bnt-cst-process" title="Edit"
+                                                    ng-show="list.is_changed" ng-click="hideObj.isEdit[$index]=true;editVal[$index]=list.text;parentVal[$index]=list.text;">
+                                                    <i class="fa fa-pencil"></i>
+                                                </button>
+                                                <button class="btn btn-default btn-sm bnt-cst-process" title="Accept"
+                                                    ng-show="list.is_corrected" ng-click="isAccept($index,list.text,list);$event.stopPropagation()">
+                                                    <i class="fa fa-check"></i>
+                                                </button>
+                                            </div>
+                                            <div class="custom-saveAction" ng-show="hideObj.isEdit[$index]">
+                                                <button class="btn btn-default btn-sm bnt-cst-process" ng-click="isEditData($index,editVal[$index],list);$event.stopPropagation()">
+                                                    Save
+                                                </button>
+                                                <button class="btn btn-default btn-sm bnt-cst-process" ng-click="hideObj.isEdit[$index]=false;editVal[$index]='';showEditMsg='';clearEdit();$event.stopPropagation()">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div ng-show="list.is_nlp" class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <h5>Intent Recommendations</h5>
+                                                <div data-ng-repeat="intent in list.nlp track by $index" style="border: 1px solid #22a2d3;margin-bottom: 20px;">
+                                                    <div class="row" style="background-color:white;padding:10px 0px 10px 0px;    margin-bottom: 10px;">
+                                                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                                                            <span class="valueStyle">{$ intent.action $}</span>
+                                                            <!--<span class="nlpSummary"><i class="fa fa-pencil"></i></span>-->
+                                                        </div>
+                                                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                                                            <span class="valueStyle">{$ intent.entity $}</span>
+                                                            <!--<span class="nlpSummary"><i class="fa fa-pencil"></i></span>-->
+                                                        </div>
+                                                    </div>
+
+                                                    <table class="table table-responsive table-scroll table-font" style="margin-bottom:0px !important;">
+                                                        <thead>
+                                                            <th>Action</th>
+                                                            <th>Attribute</th>
+                                                            <th>Value</th>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="attributes in intent.attributes track by $index">
+                                                                <td>{$ attributes.action $}</td>
+                                                                <td>{$ attributes.attribute $}</td>
+                                                                <td>{$ attributes.value $}</td>
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div ng-if="list.type=='table'">
+
+                                        <div class="panel-group" id="TableAccordion" role="tablist"
+                                            aria-multiselectable="true" style="padding:15px;">
+                                            <div class="panel panel-default" ng-repeat="rowList in list.tables.table track by $index">
+
+                                                <div class="panel-heading table-panelHeading" role="tab" id="showRow{$ $index $}">
+                                                    <h4 class="panel-title">
+                                                        <a role="button" data-toggle="collapse" data-parent="#TableAccordion"
+                                                            href=".showRow{$ $index $}" aria-expanded="true"
+                                                            aria-controls="showRow{$ $index $}">
+                                                            Row {$ $index+1 $}
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div class="panel-collapse collapse showRow{$ $index $}" role="tabpanel"
+                                                    aria-labelledby="showRow{$ $index $}">
+                                                    <div class="panel-body">
+
+                                                        <div ng-repeat="(key,tableData) in rowList track by $index" ng-show="tableData.score<=$root.slider.value"
+                                                            tabindex="0" class="row {$ rowHighlightTable[tableData.groupName+''+tableData.indexObj.parentIndex+''+tableData.indexObj.childIndex+''+tableData.indexObj.superChildIndex] $} review-row "
+                                                            id="innerData{$ tableData.groupName $}{$ tableData.indexObj.parentIndex $}{$ tableData.indexObj.childIndex $}{$ tableData.indexObj.superChildIndex $}"
+                                                            ng-click="rowTableClick(tableData,tableData.drawerIndex,tableData.groupName)"
+                                                            style="border-bottom:1px solid #e0e0e0;">
+                                                            <div class="col-lg-7 col-md-7 col-sm-7 sub-row">
+                                                                <div class="head row-style" ng-class="tableData.rule_status?'':'ruleValidation'">
+                                                                    <span> {$
+                                                                        getAttributeName(tableData.domain_mapping) $}</span>
+
+                                                                </div>
+                                                                <div class="small-font row-style" ng-hide="tableData.is_accept || tableData.is_update">
+                                                                    Processed Result ({$ tableData.score | number:2$}%)
+                                                                </div>
+                                                                <div class="small-font row-style" ng-show="tableData.is_accept">Final
+                                                                    Value
+                                                                    (Accepted)
+                                                                </div>
+                                                                <div class="small-font row-style" ng-show="tableData.is_update">Final
+                                                                    Value
+                                                                    (Corrected)
+                                                                </div>
+                                                                <div class="row-style valueStyle" ng-class="checkVal(tableData.label,tableData.text)"
+                                                                    ng-show="!hideObj.isEdit[$index]">
+                                                                    <span> {$ tableData.text $}</span>
+                                                                    <i class="fa fa-exclamation-triangle" style="color:red"
+                                                                        title="{$ tableData.rule_validate_msg $}"
+                                                                        ng-show="!tableData.rule_status"></i>
+
+                                                                </div>
+                                                                <div ng-show="hideObj.isEdit[$index]">
+
+                                                                    <input type="text" ng-model="editVal[$index]" class="form-control"
+                                                                        autofocus ng-show="parentVal[$index].length<=30">
+                                                                    <textarea ng-model="editVal[$index]" class="form-control"
+                                                                        rows="4" cols="50" autofocus ng-show="parentVal[$index].length>30"></textarea>
+                                                                    <span class="error" ng-show="showEditText[$index]">{$
+                                                                        showEditMsg $}</span>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-5 col-md-5 col-sm-5 sub-row">
+                                                                <span ng-show="tableData.score<$root.slider.value">
+                                                                    <!--<span ng-init="val[$index] = cpc.displayIndex"></span>-->
+                                                                </span>
+
+                                                                <div class="text-right row-style" ng-class="getSomeValue($index,tableData.score,$root.slider.value)"></div>
+                                                                <!--<span ng-init="cpc.displayIndex = cpc.displayIndex+1">{$ cpc.displayIndex $}</span>-->
+                                                                <div class="custom-actions" ng-show="!hideObj.isEdit[$index]">
+                                                                    <button class="btn btn-default btn-sm bnt-cst-process"
+                                                                        title="Edit" ng-show="tableData.is_changed"
+                                                                        ng-click="hideObj.isEdit[$index]=true;editVal[$index]=tableData.text;parentVal[$index]=tableData.text;">
+                                                                        <i class="fa fa-pencil"></i>
+                                                                    </button>
+                                                                    <button class="btn btn-default btn-sm bnt-cst-process"
+                                                                        title="Accept" ng-show="tableData.is_corrected"
+                                                                        ng-click="isAccept($index,tableData.text,tableData);$event.stopPropagation()">
+                                                                        <i class="fa fa-check"></i>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="custom-saveAction" ng-show="hideObj.isEdit[$index]">
+                                                                    <button class="btn btn-default btn-sm bnt-cst-process"
+                                                                        ng-click="isEditData($index,editVal[$index],tableData);$event.stopPropagation()">
+                                                                        Save
+                                                                    </button>
+                                                                    <button class="btn btn-default btn-sm bnt-cst-process"
+                                                                        ng-click="hideObj.isEdit[$index]=false;editVal[$index]='';showEditMsg='';clearEdit();$event.stopPropagation()">
+                                                                        <i class="fa fa-times"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row completeReview">
+                        <button class="btn btn-custom btn-block" ng-click="completeReview()" ng-hide="documentState=='reviewed'">
+                            Complete Review
+                        </button>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-6 col-md-6">
+                                <span class="head">{$ fieldAccept $}</span>
+                                <span>Fields Accepted</span>
+                            </div>
+                            <div class="col-lg-6 col-sm-6 col-md-6">
+                                <span class="head">{$ fieldUpdate $}</span>
+                                <span>Fields Corrected</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane outcomes">
+                    <div class="card" style="min-height: 380px;padding: 18px;margin-bottom: 0;" ng-if="showDomainTab">
+                        <json-formatter class="jsonformatter" open="4" json="entitiesData"></json-formatter>
+                    </div>
+                    <div ng-if="!showDomainTab">
+                        <div class="alert alert-danger">
+                            <span>{$ entitiesData.message $}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12 image-style domainHierarchyDiv" ng-if="showUnknown" id="scrollDiv2"
+        style="position:relative;background: #f3f2f2;overflow-y:auto;">
+
+        <script type="text/ng-template" id="nodes_renderer2.html">
+
+                              <div ui-tree-handle class="tree-node tree-node-content mainNode" data-nodrag  style="padding:0px;" >
+                                    <div ng-if="node.type=='attribute'" class="customTree">
+
+
+                                            <div ng-repeat="nodeAttribute in node.attributes track by $index"   class="tree-node tree-node-content "
+                                                 style="border-bottom:1px solid #d2d2d2;" ng-hide="nodeAttribute.is_delete">
+
+                                                 <div class="row row-eq-height actionView">
+                                                      <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 no-padding">
+                                                            <span class="pull-left name-ellipsis" title="{$ nodeAttribute.name $}">{$ nodeAttribute.name $}</span>
+                                                      </div>
+                                                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-padding" style="padding:0px;border-left:1px solid #d2d2d2;">
+                                                          <div class="row">
+                                                              <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6"  ng-repeat="value in nodeAttribute.values track by $index" ng-click="rc.getCurrentValue(value)" ng-class="nodeAttribute.values.length >2 ? 'bottomPadding':''" ng-hide="rc.hideElement(value)">
+                                                                  <div class="show-image">
+                                                                     <!--<div class="hover-div">-->
+                                                                         <!--<div class="row">-->
+                                                                             <!--<div class="col-lg-4 col-md-4 col-sm-4 no-padding">-->
+                                                                                    <!--<span ng-click="rc.getEXtractedValue(value);$event.stopPropagation();">-->
+                                                                                        <!--<img src="/app/images/rotateLeft.png"  class="editImagesWidth"/>-->
+                                                                                    <!--</span>-->
+                                                                             <!--</div>-->
+                                                                             <!--&lt;!&ndash;<div class="col-lg-4 col-md-4 col-ms-4 no-padding">&ndash;&gt;-->
+                                                                                    <!--&lt;!&ndash;<span>&ndash;&gt;-->
+                                                                                        <!--&lt;!&ndash;<img src="/app/images/Crop.png"  ng-show="!coordinatesDisplay[value.temp_id]" class="editImagesWidth" ng-click="rc.editCoordinates(value);$event.stopPropagation();"/>&ndash;&gt;-->
+                                                                                        <!--&lt;!&ndash;<img src="/app/images/checked.png"  class="editImagesWidth" ng-show="coordinatesDisplay[value.temp_id]" ng-click="rc.acceptCoordinates(value);$event.stopPropagation();"/>&ndash;&gt;-->
+                                                                                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+
+                                                                             <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                                                             <!--&lt;!&ndash;<div class="col-lg-4 col-md-4 col-ms-4  no-padding">&ndash;&gt;-->
+                                                                                    <!--&lt;!&ndash;<span>&ndash;&gt;-->
+                                                                                        <!--&lt;!&ndash;<img src="/app/images/trash.png" class="editImagesWidth" style="width:12px;" ng-click="rc.deleteValue(value);$event.stopPropagation();"/>&ndash;&gt;-->
+                                                                                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+
+                                                                             <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                                                         <!--</div>-->
+                                                                     <!--</div>-->
+                                                                     <span class="cst-textBox ng-binding {$ rowHighlight[value.temp_id] $} {$ value.temp_id $}" title="{$ value.value $}"> {$ value.value $}</span>
+                                                                    <!-- <input type="text" class="form-control cst-textBox {$ rowHighlightAttr[value.temp_id] $}" placeholder="Value" ng-model="value.value" ng-blur="rc.saveAttributeEdit(value,nodeAttribute,node)" disabled/> -->
+                                                                    <img ng-if="rc.isRuleExist(value)" class="exclamation-img" title="{$ value.rules.validation_message $}" ng-src="./app/images/exclamation.png"> 
+                                                                   <span ng-class="fieldCriteria(value)"  style="width:17%;">{$ value.score | number:0 $}%</span>
+                                                                   <div ng-show="showExtractedValue">
+                                                                     <img ng-src="./app/images/extracted.png" style="width: 11px;margin: -2px 2px 0px 1px;" >
+                                                                     <span class="extracted-ellipsis" title="{$ value.extracted_value $}"> {$ value.extracted_value $}
+                                                                     </span>
+                                                                   </div>
+                                                                </div>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                      <!--<div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 no-padding">-->
+                                                          <!--<div class="viewActions">-->
+                                                              <!--<img class="imageWidth" src="/app/images/test.png"/>-->
+                                                              <!--<img class="imageWidth" src="/app/images/dictionarys.png"/>-->
+                                                              <!--<img class="imageWidth" src="/app/images/deleteFilled.png" style="width:12px;" ng-click="rc.deleteAttribute(nodeAttribute,node);$event.stopPropagation();"/>-->
+                                                          <!--</div>-->
+                                                      <!--</div>-->
+                                                 </div>
+
+
+                                                <div class="row" ng-if="node.nlp != undefined" style="margin-top:10px;">
+                                                      <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                                                          <div class="table-responsive">
+                                                              <table class="table table-bordered">
+                                                                  <thead>
+                                                                    <tr>
+                                                                        <td><span class="fontStyleForAttrHead">Action</span></td>
+                                                                        <td><span class="fontStyleForAttrHead">Attribute</span></td>
+                                                                        <td><span class="fontStyleForAttrHead">Value</span></td>
+                                                                    </tr>
+                                                                  </thead>
+                                                                  <tbody>
+                                                                    <tr ng-repeat="data in node.nlp[0].attributes track by $index">
+                                                                        <td>{$ data.action $}</td>
+                                                                        <td>{$ data.attribute $}</td>
+                                                                        <td>{$ data.value $}</td>
+                                                                    </tr>
+                                                                  </tbody>
+                                                              </table>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                            </div>
+                                            <div class="row row-eq-height ng-scope" style="margin: 5px 0px 10px 0px;" ng-show="listOfNewAttributes[node.insight_id]">
+                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding" style="border-right:1px solid #d2d2d2;">
+                                                            <div class="dropdown">
+                                                                    <button class="form-control dropdown-toggle main-dropdown-btn" type="button"
+                                                                    data-toggle="dropdown" style="display: flex;align-items: center;" ng-click="rc.showAttributesForNew(this)">
+                                                                        <span class="pull-left name-ellipsis" style="width: 80%;">{$ listOfNewAttributesObjs[node.insight_id].attributeName $}</span>
+                                                                        <span class="caret filter-caret"></span>
+                                                                    </button>
+                                                                    <ul class="dropdown-menu width220">
+                                                                         <li class="search-li">
+                                                                            <input type="text" class="more-input-search" placeholder="Search" ng-model="listOfNewAttributesObjs[node.insight_id].search">
+                                                                             <i class="fa fa-search search-icon" aria-hidden="true"></i>
+                                                                         </li>
+
+                                                                        <li ng-repeat="attr in rc.respectedAttributes | filter:listOfNewAttributesObjs[node.insight_id].search track by $index " class="disableDropDown" ng-disabled="attr===nodeAttribute.name" ng-click="rc.selectedAttributeForNew(attr,node)">
+                                                                          <span class="liItem">{$ attr $}</span>
+                                                                        </li>
+
+                                                                    </ul>
+                                                           </div>
+                                                        </div>
+                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                             <input class="form-control cst-textBox" type="text" placeholder="Type the Value" ng-model="listOfNewAttributesObjs[node.insight_id].attributeValue">
+                                                        </div>
+                                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                                                    <button class="btn btn-custom select-button" title="Click on the highlighted portion of the image where this new text for the attribute belongs" ng-click="rc.selectedElement()">Select Element</button>
+                                                                </div>
+                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-right">
+                                                            <div class="img-edit cancel" title="Cancel" ng-click="rc.cancelNewAttribute(node)"></div>
+                                                                <div class="customSave ng-scope" title="Save" ng-click="rc.saveNewNodeAttribute(node,this)">
+                                                                    <i class="fa fa-floppy-o" style="font-size:18px;"></i>
+                                                                </div>
+                                                        </div>
+                                                     <span ng-show="croppingError" style="color:red" class="ng-binding ng-hide"></span>
+                                            </div>
+                                    </div>
+                                    <div ng-if="node.type=='grouped_entity' || node.type=='entity'">
+
+                                        <div ui-tree-handle class="tree-node tree-node-content"
+                                        data-nodrag ng-include="'nodes_renderer1.html'" style="padding:0px;">
+
+                                        </div>
+                                    </div>
+                                 </div>
+                              </div>
+                        </script>
+        <script type="text/ng-template" id="nodes_renderer1.html">
+                              <div ui-tree-handle class="tree-node tree-node-content childNode"
+                                   data-nodrag ng-class="node.type=='domain' ? 'domainBg' : ''">
+                                    <a ng-if="((node.attributes && node.attributes.length > 0) || (node.groups && node.groups.length > 0))" data-nodrag data-toggle="collapse" data-target=".{$ node.temp_id $}" class="nodetoggle" ng-click="chnageIcon(rc.collapsed,node.temp_id)">
+                                        <i  ng-class="{'fa fa-minus-circle': !rc.collapsed[node.temp_id],'fa fa-plus-circle': rc.collapsed[node.temp_id]}" style="padding-right:5px;"></i>
+                                    </a>
+                                  <label ng-if="node.type=='grouped_entity' || node.type=='entity'" style="padding-top:5px;margin-bottom:5px;" class="treeFont">
+                                        {$ node.name $}
+                                  </label>
+                                  <label ng-if="node.type=='domain'" style="padding-top:5px;margin-bottom:5px;color:white;">
+                                            {$ node.name $}
+                                  </label>
+                                    <!--<a class="pull-right treeFont"  ng-click="rc.deleteEntity(node)" style="padding:4px;" ng-hide="node.type=='domain'" ng-class="node.type=='domain' ? '' : 'smallAdd'">-->
+                                        <!--<span class="fa fa-trash" style="font-size: 10px;"></span> Delete Entity-->
+                                    <!--</a>-->
+                                    <!--<a class="pull-right treeFont"  ng-click="rc.addNewAttribute(node)" style="padding:4px;" ng-hide="node.type=='domain'" ng-class="node.type=='domain' ? '' : 'smallAdd'">-->
+                                        <!--<span class="fa fa-plus" style="font-size: 10px;"></span> Add Attribute-->
+                                    <!--</a>-->
+                                    <!--<a class="pull-right treeFont"  ng-click="rc.addNewEntity(node)" style="padding:4px;" ng-show="node.type=='domain'" ng-class="node.type=='domain' ? '' : 'smallAdd'">-->
+                                        <!--<span class="fa fa-plus"  style="font-size: 10px;"></span> Add Entity-->
+                                    <!--</a>-->
+
+
+                                        <!--<i class="fa fa-trash pull-right" style="font-size: 16px;padding: 10px;"></i>-->
+                                        <!--<i class="fa fa-pencil pull-right" style="font-size: 16px;padding: 10px;"></i>-->
+                              </div>
+
+                              <ol ng-if="node.type=='domain'" ui-tree-nodes="" ng-model="node.attributes" class="listedStyle collapse in olStyle1 {$ node.temp_id $}" >
+                                    <li style="margin-bottom:10px;background-color:white;padding-bottom:5px;" ng-show="displayNewEntity">
+                                      <div class="childNode" style="padding: 5px 0px 5px 10px;">Entity</div>
+                                      <div class="row row-eq-height ng-scope" style="margin: 5px 0px 10px 0px;">
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                                <div class="dropdown">
+                                                        <button class="form-control dropdown-toggle main-dropdown-btn" type="button"
+                                                        data-toggle="dropdown" style="display: flex;align-items: center;" ng-click="rc.showNewEntities(node)">
+                                                            <span class="pull-left" style="width: 80%;">{$ newEntityObj.name $}</span>
+                                                            <span class="caret filter-caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu width220">
+                                                                     <li class="search-li">
+                                                                        <input type="text" class="more-input-search" ng-model="moreSearch" placeholder="Search">
+                                                                         <i class="fa fa-search search-icon" aria-hidden="true"></i>
+                                                                     </li>
+
+                                                                    <li ng-repeat="attr in rc.respectedEntities | filter:moreSearch track by $index " class="disableDropDown" ng-disabled="attr===node.name" ng-click="rc.selectedNewEntityAttribute(attr,node)">
+                                                                      <span class="liItem">{$ attr $}</span>
+                                                                    </li>
+
+                                                        </ul>
+                                               </div>
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right">
+                                                <div class="img-edit cancel" title="Cancel" ng-click="rc.cancelNewEntity()"></div>
+                                                <div class="customSave" title="Save" ng-click="rc.saveNewEntity()">
+                                                    <i class="fa fa-chevron-circle-right" aria-hidden="true" style="font-size: 18px;"></i>
+                                                </div>
+                                            </div><!-- end ngIf: !attrEditShow -->
+                                     </div>
+                                      <div class="row row-eq-height ng-scope" style="margin: 5px 0px 10px 0px;" ng-show="displayNewAttribute">
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                                <div class="dropdown">
+                                                        <button class="form-control dropdown-toggle main-dropdown-btn" type="button"
+                                                        data-toggle="dropdown" style="display: flex;align-items: center;" ng-click="rc.showAttributes(newEntityObj)">
+                                                            <span class="pull-left" style="width: 80%;">{$ rc.attributeKey $}</span>
+                                                            <span class="caret filter-caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu width220">
+                                                                     <li class="search-li">
+                                                                        <input type="text" class="more-input-search" ng-model="moreSearch" placeholder="Search">
+                                                                         <i class="fa fa-search search-icon" aria-hidden="true"></i>
+                                                                     </li>
+
+                                                                    <li ng-repeat="attr in rc.respectedAttributes | filter:moreSearch track by $index " class="disableDropDown"  ng-click="rc.selectedNewEntityAttributeValue(attr)">
+                                                                      <span class="liItem">{$ attr $}</span>
+                                                                    </li>
+
+                                                        </ul>
+                                               </div>
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                  <input class="form-control cst-textBox" type="text" placeholder="Type the Value" ng-model="rc.attributeValue">
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                                        <button class="btn btn-custom select-button" title="Click on the highlighted portion of the image where this new text for the attribute belongs" ng-click="rc.selectedElement()">Select Element</button>
+                                                    </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-right">
+                                                <!--<div class="img-edit cancel" title="Cancel"></div>-->
+                                                <div class="customSave ng-scope" title="Save" ng-click="rc.saveNewEntityWithAttribute(node)">
+                                                    <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                                                </div>
+                                            </div>
+                                         <span ng-show="croppingError" style="color:red" class="ng-binding ng-hide"></span>
+                                     </div>
+                                  </li>
+                                  <li ng-repeat="node in node.attributes track by $index"  ui-tree-node ng-include="'nodes_renderer2.html'" style="margin-bottom:5px;" ng-hide="node.is_delete"></li>
+                              </ol>
+                              <ol ng-if="node.type=='grouped_entity'" ui-tree-nodes="" ng-model="node.groups" class="listedStyle collapse in olStyle1 {$ node.temp_id $}" >
+
+                                  <li ng-repeat="node in node.groups track by $index"  ui-tree-node ng-include="'nodes_renderer2.html'" style="margin-bottom:5px;background-color:white;"></li>
+                              </ol>
+                              <ol ng-if="node.type=='entity'" ui-tree-nodes="" ng-model="node.attributes" class="listedStyle collapse in olStyle1 {$ node.temp_id $}" >
+                                  <li ng-repeat="node in node.attributes track by $index"  ui-tree-node ng-include="'nodes_renderer2.html'" style="margin-bottom:5px;" ng-hide="node.is_delete"></li>
+                              </ol>
+
+                        </script>
+        <div class="domainObjectBody">
+
+            <div class="row row-eq-height">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <label class="custom-checkbox">
+                                <img ng-src="./app/images/extracted.png" style="width: 11px;margin: -2px 2px 0px 1px;">
+                                <span style="font-weight: 400;">Show Extracted Values</span>
+                                <input type="checkbox" ng-model="showExtractedValue">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div style="float:right;cursor:pointer;" ng-click="download()">
+                                <img ng-src="./app/images/download.png" style="width:15px;" src="/static/ref-app/app/images/download.png">
+                                <span style="color:#1c7cb9;font-size: 10px;">Download JSON</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div ui-tree id="tree-root1" data-empty-placeholder-enabled="false">
+                        <ol ui-tree-nodes class="olStyle" ng-model="extractOutput">
+                            <li ng-repeat="node in extractOutput track by $index" class="treeDomainObject" collapsed="true"
+                                ng-class="{disabledStyle: isDisabled}" ui-tree-node ng-include="'nodes_renderer1.html'"></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="btn  btn-custom btn-block " ng-click="rc.completeReview()" ng-hide="documentState=='reviewed'">-->
+        <!--Complete review-->
+        <!--</div>-->
+
+    </div>
+</div>
+</div>
+
+<div class="row borderEmail" ng-if="rc.documentType == 'digital'">
+    <div class="col-sm-7 col-md-7 col-xs-7 col-lg-7 dashboard-row">
+        <div class="row image-style" style="height:{$ height $}px">
+            <div class="col-lg-12 col-md-12 col-sm-12" style="padding:5px;">
+                <div id="ImageLocation1">
+                    <ul class="nav nav-tabs custom-navTab">
+                        <li class="active"><a data-toggle="tab" href=".processed">Processed</a></li>
+                        <li><a data-toggle="tab" href=".original">Original</a></li>
+                    </ul>
+
+                    <div class="tab-content" style="background:white">
+                        <div class="tab-pane fade in active processed">
+                            <!--<table class="table table-striped">-->
+                            <!--<tbody class="emailTable">-->
+                            <!--<tr>-->
+                            <!--<td>From</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>{$ rc.emailDocumentData.attributes.header.from $}</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>Sent</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>{$ rc.emailDocumentData.attributes.header.sent $}</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>To</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>{$ rc.emailDocumentData.attributes.header.to $}</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>Subject</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>{$ rc.emailDocumentData.attributes.header.subject $}</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>Email Body</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<td>-->
+                            <!--<div ng-bind-html="emailBodyHtml()">-->
+
+                            <!--</div>-->
+                            <!--</td>-->
+                            <!--</tr>-->
+                            <!--</tbody>-->
+                            <!--</table>-->
+                            <div ng-repeat="att in rc.digitalDocumentData" ng-show="rc.digitalDocumentData.length!=0">
+                                <div>
+                                    <!--<div class="attachmentClass">-->
+                                    <!--<span>Attachment {$ $parent.$index+1 $} : </span><span style="color:black">{$ key $}.{$ value.extn $}</span>-->
+                                    <!--</div>-->
+                                    <div style="padding: 13px 7px 25px 7px;">
+                                        <div ng-bind-html="emailAttachments(att.html_data)"></div>
+                                    </div>
+                                    <!--<div style="padding: 13px 7px 25px 7px;" ng-show="value.extn=='pdf'">-->
+                                    <!--<object data="static{$ value.pdf_path $}" type="application/pdf" width="100%" height="300px">-->
+                                    <!--</object>-->
+                                    <!--</div>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade original" style="padding:10px">
+                            <!--<div ng-bind-html="emailOriginalHtml()" style="padding-top:10px;">-->
+                            <!--</div>-->
+                            <div>
+                                <span></span><span style="#a4a4a4;">click below to download</span>
+                            </div>
+                            <div ng-repeat="att in rc.digitalDocumentData">
+                                <div>
+                                    <div style="padding-top:10px;">
+                                        <span ng-click="downloadAttachment(att.file_path)" style="color: #00a3e0;cursor:pointer">{$
+                                            att.data[0].name $}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-5 col-md-5 col-xs-5 col-lg-5 no-margin " style="background-color:white;">
+        <ul class="nav nav-tabs nav-reviewTabs">
+            <li class="active"><a data-toggle="tab" href=".elements">Elements</a></li>
+            <li><a data-toggle="tab" href=".outcomes">Domain Objects</a></li>
+        </ul>
+        <div class="image-style1" style="height:{$ height $}px;overflow-y:scroll;background-color:white;">
+            <div class="tab-content">
+                <div class="tab-pane in active elements" style="position: relative;border:1px solid #eee;">
+                </div>
+                <div class="tab-pane outcomes" style="position: relative;border:1px solid #eee;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div ng-if="rc.documentType == 'email'">
+    <div class="row" id="markerForm-tabs">
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+            <ul class="nav nav-tabs custom-navTab">
+                <li class="active"><a data-toggle="tab" href=".review">Review Extraction</a></li>
+                <li><a data-toggle="tab" href=".recommend">Review Recommendations</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row row-eq-height" style="background-color: #ebf2f5;">
+        <div class="col-sm-7 col-md-7 col-xs-7 col-lg-7 no-padding" style="height:{$ height $}px;background:white">
+            <div class="tab-content">
+                <div class="tab-pane fade in active review emailTable">
+                    <div class="row">
+                        <div class="col-sm-12" style="overflow-y: scroll;max-height: 350px;">
+                            <table class="table table-striped">
+                                <tbody class="emailTable">
+                                    <tr>
+                                        <td>From</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{$ rc.docAttributes.from $}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sent</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{$ rc.docAttributes.sent $}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>To</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{$ rc.docAttributes.to $}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Subject</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{$ rc.docAttributes.subject $}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email Body</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div ng-bind-html="rc.renderEmailHTMLData(rc.docAttributes.body)">
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="attachments" style="padding-bottom: 15px;">
+
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="top: -10px;">
+                                <div>
+                                    <span style="font-size: 14px; background-color: #8399a5; padding: 0 10px;color:#fff;">
+                                        Attachments
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12 text-center" style="cursor:pointer;"
+                                ng-repeat="attachment in rc.emailAttachmentsArray" ng-click="rc.showEmailAttachment(attachment)">
+
+                                <img ng-if="attachment.mime_type == 'pdf'" src="./app/images/pdf.png" style="width:60px;" />
+                                <img ng-if="attachment.mime_type == 'excel-xlsx' || attachment.mime_type == 'excel-xls' || attachment.mime_type == 'xlsx'"
+                                    src="./app/images/excrc.png" style="width:60px;" />
+                                <span style="color: #696161;font-size:12px;">
+                                    {$ attachment.file_name $}
+                                </span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5 col-md-5 col-xs-5 col-lg-5 no-padding">
+            <div class="tab-content">
+                <div class="tab-pane fade in active review emailTable">
+                    <div class="row borderEmail">
+                        <div class="col-sm-5 col-md-5 col-xs-5 col-lg-5 no-margin " style="background-color:white;">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade recommend emailTable">
+                    <div class="row borderEmail">
+                        <div style="height:{$ height $}px;overflow-y:scroll;">
+                            <fieldset class="right_content">
+                                <legend>Email Body</legend>
+                                <div class="row">
+                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
+                                        <div class="email_body">
+                                            <span ng-bind-html="rc.renderEmailHTMLData(rc.docAttributes.body)" style="font-size: 15px;">Email
+                                                Body here</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding emailPanel">
+                                        <span style="color: #373939;font-size:14px;">Intent recommendations</span>
+                                        <div class="panel panel-default" ng-repeat="emailEntitie in rc.emailEntities.fields[0].nlp">
+                                            <div class="panel-heading">
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                                                        <span data-ng-bind="emailEntitie.action" ng-show="!showActionInput">Action</span>
+                                                        <input type="text" class="form-control" ng-model="emailEntitie.action"
+                                                            ng-show="showActionInput" />
+                                                        <i class="fa fa-pencil" ng-click="showActionInput=true" ng-show="!showActionInput"></i>
+                                                        <i class="fa fa-check" ng-show="showActionInput" ng-click="rc.updateNlp(rc.emailEntities,'action');showActionInput=false"></i>
+                                                        <i class="fa fa-times" ng-click="showActionInput=false" ng-show="showActionInput"></i>
+                                                    </div>
+                                                    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                                                        <span data-ng-bind="emailEntitie.entity" ng-show="!showEntityInput">Provider</span>
+                                                        <select class="form-control" ng-model="emailEntitie.entity"
+                                                            ng-show="showEntityInput">
+                                                            <option ng-repeat="(key,value) in entitiesList" value="{$ key $}">{$
+                                                                key $}</option>
+                                                        </select>
+                                                        <i class="fa fa-pencil" ng-click="showEntityInput=true" ng-show="!showEntityInput"></i>
+                                                        <i class="fa fa-check" ng-show="showEntityInput" ng-click="rc.updateNlp(rc.emailEntities,'entity');showEntityInput=false"></i>
+                                                        <i class="fa fa-times" ng-click="showEntityInput=false" ng-show="showEntityInput"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="row" style="padding:10px;">
+                                                    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 no-padding">
+                                                        <span>Set</span>
+                                                    </div>
+                                                    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 no-padding text-right">
+                                                        <span style="color:#26aae2;cursor:pointer;" ng-click="rc.newAttribute(emailEntitie.attributes,emailEntitie.action);">
+                                                            <i class="fa fa-plus"></i>
+                                                            New Attribute
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <table class="table table-responsive" style="background-color: #fafafa;margin-bottom:0px;">
+                                                    <thead>
+                                                        <th>Attribute</th>
+                                                        <th>Value </th>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-show="rc.newAttributeShow">
+                                                            <td>
+                                                                <input type="text" class="form-control" placeholder="Enter attribute"
+                                                                    ng-model="rc.newAttributeObj.attribute" />
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control" placeholder="Enter value"
+                                                                    ng-model="rc.newAttributeObj.value" />
+                                                                <span style="color:red">{$ rc.newAttrErr $}</span>
+                                                                <span><i class="fa fa-check" ng-click="rc.saveNewAttribute()"></i></span>
+                                                                <span><i class="fa fa-times" ng-click="rc.newAttributeShow=false;rc.newAttrErr = ''"></i></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr data-ng-repeat="attr in emailEntitie.attributes">
+                                                            <td>
+                                                                <span data-ng-bind="attr.attribute">Phone Number</span>
+                                                                <span><i class="fa fa-pencil" style="color:#F3F5F6;"></i>
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <span data-ng-bind="attr.value" ng-show="!showValueInput">Value
+                                                                    Here</span>
+                                                                <input type="text" class="form-control" ng-model="attr.value"
+                                                                    ng-show="showValueInput" />
+                                                                <span><i class="fa fa-pencil" ng-click="showValueInput=true"
+                                                                        ng-show="!showValueInput"></i></span>
+                                                                <i class="fa fa-check" ng-show="showValueInput"
+                                                                    ng-click="rc.updateNlp(rc.emailEntities,'value');showValueInput=false"></i>
+                                                                <i class="fa fa-times" ng-click="showValueInput=false"
+                                                                    ng-show="showValueInput"></i>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <div class="btn btn-customReview btn-custom btn-block " ng-hide="documentState=='reviewed'">
+                                Complete review
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

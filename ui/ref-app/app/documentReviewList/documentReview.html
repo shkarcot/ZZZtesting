@@ -1,0 +1,119 @@
+
+<div class="custom-header">
+    <div class="row">
+      <div class="col-lg-8 col-sm-8 col-md-8">
+        <div class="btn-group">
+          <!--<span class="documentsList-Text">Type</span>-->
+          <!--<select class="select-style form-control" ng-model="selectedObj.val"  ng-change="changeReview(selectedObj.val)">-->
+              <!--<option value="processed" ng-selected="true">All Documents</option>-->
+
+            <!--</select>-->
+            <ul class="nav nav-tabs nav-reviewTabs" style="padding-top:10px;">
+                <li ng-class="filter_obj.doc_state=='processed'?'active':''"><a data-toggle="tab" href=".processed" ng-click="changeDocState('processed')">Processed</a></li>
+                <li ng-class="filter_obj.doc_state=='reviewed'?'active':''"><a data-toggle="tab" href=".reviewed" ng-click="changeDocState('reviewed')">Reviewed</a></li>
+
+              </ul>
+        </div>
+
+        <div class="btn-group header-Style">
+          <p class="dashboard-Text">Filter by</p>
+           <select class="select-smallStyle form-control" ng-model="filter_obj.template_name" ng-change="getDocumentsList()">
+            <option ng-repeat="(key,value) in listOfDocumentTypes track by $index" ng-selected="documentType.val == value.template_name" value="{$  value.template_name $}">{$  value.template_name $}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-lg-4 col--sm-4 col-md-4">
+        <div class="input-group topSpace">
+          <input type="search" ng-model="filter_obj.search_string"  class="newcustom-form form-control" placeholder="Search by" ng-keyup="keyEnter($event)">
+            <span class="glyphicon glyphicon-remove-circle searchclear" ng-click="clearSearch()"></span>
+            <!--ng-keypress="keyEnter($event)"-->
+          <span class="input-group-btn">
+            <button class="btn btn-newStyle" ng-click="getDocumentsList()" type="button"><i class="fa fa-search"></i></button>
+          </span>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="tab-content">
+    <div class="tab-pane fade  processed" ng-class="filter_obj.doc_state=='processed'?'in active':''">
+        <div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+        <div class="table-scroll" ng-show="showlist" style="margin-top:15px;">
+            <table class="table table-responsive table-hovered">
+                <thead class="tableHeading">
+                <th ng-repeat="heading in processListData.config" ng-click="changeSorting(heading.key)">{$ heading.value $} <div class="alignSort" ng-class="selectedCls(heading.key)"></div></th>
+                </thead>
+                <tbody dir-paginate="row in processListDataList |itemsPerPage:filter_obj.no_of_recs " total-items="filter_obj.totalRecords" current-page="filter_obj.page_no" pagination-id="branchPagination"  style="cursor:pointer">
+                    <tr ng-click="getProcessListDetails(row,'parent',$index)">
+                        <td ng-repeat="heading in processListData.config" >
+                          <span ng-show="row.child_documents.length>0 && $index==0">
+                            <i ng-show="row.isExpanded" class="fa fa-chevron-down" ng-click="getProcessListDetailsForEmail(row,'parent',$index,$event)"></i>
+                            <i ng-show="!row.isExpanded" class="fa fa-chevron-right" ng-click="getProcessListDetailsForEmail(row,'parent',$index,$event)"></i>
+                          </span>
+                            <span>{$ row[heading.key] $}</span>
+                          <span ng-show="row.child_documents.length>0 && $index==0">
+                            <i class="fa fa-cog fa-spin  fa-fw margin-bottom" ng-show="row.spinner"aria-hidden="true"></i>
+
+                          </span>
+                        </td>
+                    </tr>
+
+                        <tr ng-repeat="dummy in row.child_documents" ng-show="row.isExpanded && row.child_documents.length>0 " ng-click="getProcessListDetails(dummy,'child',$parent.$index)" style="    border: 1px solid black;
+    background-color: #ebedef;">
+                            <td ng-repeat="heading in processListData.config" >
+                                <span>{$ dummy[heading.key] $}</span>
+                            </td>
+
+                        </tr>
+
+                </tbody>
+            </table>
+            <div class="right">
+                <dir-pagination-controls max-size=filter_obj.no_of_recs direction-links="true" pagination-id="branchPagination" boundary-links="true" on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+    <div class="tab-pane fade reviewed" ng-class="filter_obj.doc_state=='reviewed'?'in active':''">
+         <div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+        <div class="table-scroll" ng-show="showlist" style="margin-top:15px;">
+            <table class="table table-responsive table-hovered">
+                <thead class="tableHeading">
+                <th ng-repeat="heading in processListData.config" ng-click="changeSorting(heading.key)">{$ heading.value $} <div class="alignSort" ng-class="selectedCls(heading.key)"></div></th>
+                </thead>
+                <tbody dir-paginate="row in processListDataList |itemsPerPage:filter_obj.no_of_recs | filter:searchValue" total-items="filter_obj.totalRecords" current-page="filter_obj.page_no" pagination-id="branchPagination"  style="cursor:pointer">
+                    <tr ng-click="getProcessListDetails(row,'parent',$index)">
+                        <td ng-repeat="heading in processListData.config" >
+                          <span ng-show="row.child_documents.length>0 && $index==0">
+                            <i ng-show="row.isExpanded" class="fa fa-chevron-down" ng-click="getProcessListDetailsForEmail(row,'parent',$index,$event)"></i>
+                            <i ng-show="!row.isExpanded" class="fa fa-chevron-right" ng-click="getProcessListDetailsForEmail(row,'parent',$index,$event)"></i>
+                          </span>
+                            <span>{$ row[heading.key] $}</span>
+                          <span ng-show="row.child_documents.length>0 && $index==0">
+                            <i class="fa fa-cog fa-spin  fa-fw margin-bottom" ng-show="row.spinner"aria-hidden="true"></i>
+
+                          </span>
+                        </td>
+                    </tr>
+
+                        <tr ng-repeat="dummy in row.child_documents" ng-show="row.isExpanded && row.child_documents.length>0 " ng-click="getProcessListDetails(dummy,'child',$parent.$index)" style="    border: 1px solid black;
+    background-color: #ebedef;">
+                            <td ng-repeat="heading in processListData.config" >
+                                <span>{$ dummy[heading.key] $}</span>
+                            </td>
+
+                        </tr>
+
+                </tbody>
+            </table>
+            <div class="right">
+                <dir-pagination-controls max-size=filter_obj.no_of_recs direction-links="true" pagination-id="branchPagination" boundary-links="true" on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+
+</div>

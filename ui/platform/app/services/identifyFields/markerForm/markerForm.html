@@ -1,0 +1,336 @@
+<style>
+  .active{
+     background-color: transparent;
+  }
+  .bread-crumb{
+     display:none;
+  }
+</style>
+<div class="row " style="background: #f5f6f6;">
+  <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12 dashboard-row">
+      <div class="row" style="padding-top:10px;padding-bottom:8px;">
+           <div class="col-lg-6 col-md-6 col-sm-6">
+             <ol class="breadcrumb" style="padding:0px;background:transparent">
+                <li class="breadcrumb-item"><a ng-click="goToDocumentTemplate()" style="color: #00a3e0;text-decoration:none;"> Document Templates</a></li>
+                <li class="breadcrumb-item active">{$ mf.documentDetails.form_type$}</li>
+              </ol>
+           </div>
+           <div class="col-lg-6 col-md-6 col-sm-6 text-right">
+             <div class="row">
+               <div class="col-lg-6 col-sm-6 col-md-6">
+                 <span>Created</span><br>
+                 <p>{$ mf.documentDetails.created_ts $}</p>
+               </div>
+               <div class="col-lg-6 col-sm-6 col-md-6">
+                 <span>Modified</span><br>
+                 <p>{$ mf.documentDetails.modified_ts $}</p>
+               </div>
+             </div>
+           </div>
+       </div>
+    <div class="row">
+        <div class="col-sm-8 col-md-8 col-xs-12 col-lg-8 dashboard-row ">
+                  <button class="btn-go-add pull-right" ng-click="mf.createRect()" ng-show="!mf.isView"><img src="./app/images/add.png" style="width:40px;"/></button>
+                  <button class="btn-go-add pull-right" ng-click="mf.viewList()" ng-show="mf.isView"><img src="./app/images/removeimage.png" style="width:40px;"/></button>
+        </div>
+    </div>
+
+    <!--<button ng-click="mf.createRect()" ng-show="!mf.isView">Add</button>-->
+    <!--<button ng-click="mf.viewList()" ng-show="mf.isView">Back</button>-->
+      <div class="row row-eq-height">
+        <div class="col-sm-8 col-md-8 col-xs-12 col-lg-8 dashboard-row">
+          <div class="row image-style" >
+              <!--<div class="pull-right">-->
+                  <!---->
+              <!--</div>-->
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <div id="ImageLocation" ng-class="zoomDisplay" style="position:relative;">
+                  <!--<div class='panel panel-default' form-image form-src="image.src" form-max width="image.maxWidth" form-selector="selector" form-drawer="drawer"></div>-->
+                </div>
+              </div>
+          </div>
+        </div>
+
+        <div class="col-sm-4 col-md-4 col-xs-12 col-lg-4 no-margin" style="background-color:white;border-top: 1px solid #ddd;">
+          <div class="row image-style1">
+            <div class="row">
+              <div class="col-lg-6 col-sm-6 col-md-6">
+                <span>{$ mf.documentDetails.form_type$}</span><br>
+
+              </div>
+              <div class="col-lg-6 col-sm-6 col-md-6 text-right">
+                <i class="fa fa-pencil-square-o"></i>
+              </div>
+            </div>
+            <div class="row " id="marker-from">
+              <ul class="nav nav-tabs cst-tab">
+                <!--<li class="active"><a data-toggle="tab" href=".classifier">Classifier</a></li>-->
+                <li class="active"><a data-toggle="tab" href=".editzone"><span ng-if="!mf.isEditConfig">Add Zone</span><span ng-if="mf.isEditConfig">Edit Zone</span></a></li>
+                <li><a data-toggle="tab" href=".sortfield">Sort Filed</a></li>
+              </ul>
+              <div class="tab-content image-style2" style="overflow-y:scroll">
+                <div class="tab-pane fade classifier">
+
+                  <!--<div class="row">-->
+                    <!--<div class="col-md-12">-->
+                      <!--<tag-manager tags="tags" autocomplete="allTags"></tag-manager>-->
+                      <!--<hr>-->
+                      <!--<h3>Current Tags</h3>-->
+                      <!--<ul class="list-unstyled">-->
+                        <!--<li ng-repeat="tag in tags">{$ tag  $}</li>-->
+                      <!--</ul>-->
+                    <!--</div>-->
+                  <!--</div>-->
+                    <!--<div class="panel panel-danger">-->
+                        <!--<div class="panel-heading">-->
+                            <!--<i class="glyphicon glyphicon-th-list"></i> Account Manager - [direct-search = true] <a href="#" data-toggle="modal" data-target="#AccountManagerTreeModal"><i class="pull-right glyphicon glyphicon-plus" style="color:black;"></i></a>-->
+                        <!--</div>-->
+                        <!--<multiselect-searchtree data-input-model="data" multi-select="true"-->
+                                                <!--data-output-model="selectedItem2" data-callback="CustomCallback(item, selectedItems)"-->
+                                                <!--data-select-only-leafs="true" direct-search="true">-->
+                        <!--</multiselect-searchtree>-->
+                    <!--</div>-->
+                  <h4>Add Keywords for Classifier</h4>
+                  <div class="row ">
+                    <div class="col-lg-10 col-md-10">
+                      <input type="text" class="form-control" placeholder="Enter Keyword"/>
+                    </div>
+                    <div class="col-lg-2 col-md-2">
+                      <button class="btn btn-primary btn-xs"><i class="fa fa-plus"></i></button>
+                    </div>
+                  </div>
+                  <div class="row" style="position:absolute;bottom:0;width:100%;margin-top: 33px;position:absolute;">
+                    <button class="btn btn-custom btn-block" style="background-color:#00A3E0;color:white;">
+                      Save
+                    </button>
+                  </div>
+                </div>
+                <div class="tab-pane fade in active editzone">
+                  <!--<div class="row" ng-if="mf.isEditConfig">-->
+                    <!--<div class="col-lg-6 col-md-6 col-sm-6" ng-if="drawer.length>=1">-->
+                      <!--<span>Zone {$ mf.currentIndex $} of {$ drawer.length $}</span>-->
+                    <!--</div>-->
+                    <!--<div class="col-lg-6 col-md-6 col-sm-6 text-right" ng-if="mf.isEditConfig && drawer.length>1">-->
+                       <!--<a style="color:#00A3E0;text-decoration:none;" ng-class="mf.prevClass" ng-click="mf.pageData('prev')">< Previous</a>-->
+                       <!--<a style="margin-left:25px;color:#00A3E0;text-decoration:none;" ng-class="mf.nextClass" ng-click="mf.pageData('next')">Next ></a>-->
+                    <!--</div>-->
+                  <!--</div><br>-->
+                  <!--<h4 ng-if="mf.isEditConfig" class="main-heading text-center">{$mf.dataObj.field_type $} FIELD</h4>-->
+                  <br>
+                      <div class="alert alert-danger" ng-if="croppingError">
+                        <span>{$ cropMsg $}</span>
+                      </div>
+                      <form validate-form ng-submit="addRect()">
+                        <div class="form-group">
+                          <span>Label</span>
+                          <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Name" ng-model="mf.dataObj.name" required>
+                            <span class="input-group-addon" ng-show="lockShow" ng-click="mf.saveParentCoords()"><i class="fa fa-lock"></i></span>
+                            <span class="input-group-addon" ng-show="!lockShow" ng-click="mf.saveParentCoords()"><i class="fa fa-plus"></i></span>
+                          </div>
+                        </div>
+                        <!--<div class="form-group" ng-if="mf.dataObj.field_type=='marker'">-->
+                          <!--<span>Key</span>-->
+                          <!--<input type="text" class="form-control" placeholder="Key" ng-model="mf.dataObj.key" required>-->
+                        <!--</div>-->
+                        <!--<div class="form-group" ng-if="!mf.isEditConfig">-->
+                            <!--<span>-->
+                              <!--<input type="radio" ng-model="mf.dataObj.field_type" value="data"/>-->
+                              <!--<span>Data</span>-->
+                            <!--</span>-->
+                            <!--<span style="margin-left:10px;">-->
+                                <!--<input type="radio" ng-model="mf.dataObj.field_type" value="marker"/>-->
+                                <!--<span>Marker</span>-->
+                            <!--</span>-->
+                        <!--</div>-->
+                        <hr class="dashed-line">
+                        <!--<div ng-if="mf.dataObj.field_type=='data'">-->
+                          <!--<div class="form-group">-->
+                            <!--<span>Component Type</span>-->
+                            <!--<select class="form-control" ng-model="mf.dataObj.type">-->
+                              <!--<option value="txt">Text</option>-->
+                              <!--<option value="omr">Checkbox</option>-->
+                              <!--<option value="txt1">Textarea</option>-->
+
+                            <!--</select>-->
+                          <!--</div>-->
+                          <!--<div class="form-group">-->
+                            <!--<span>Field Range</span>-->
+                            <!--<select class="form-control" ng-model="mf.dataObj.field_range">-->
+                              <!--<option value="fixed">Fixed</option>-->
+                              <!--<option value="variable">Variable</option>-->
+
+
+                            <!--</select>-->
+                          <!--</div>-->
+                          <!--<div class="form-group">-->
+                            <!--<span>Data Type</span>-->
+                            <!--<select class="form-control" ng-model="mf.dataObj.data_type.type" ng-change="changeDatatype(mf.dataObj.data_type.type)">-->
+                              <!--<option value="txt">Structured Text</option>-->
+                              <!--<option value="number">Number</option>-->
+                              <!--<option value="date">Date</option>-->
+                              <!--<option value="name">Name</option>-->
+                              <!--<option value="address">Address</option>-->
+                              <!--<option value="boolean">Yes/No</option>-->
+                              <!--<option value="list">List</option>-->
+                              <!--<option value="currency">Currency</option>-->
+                              <!--<option value="unstructured">Unstructured text</option>-->
+                            <!--</select>-->
+                          <!--</div>-->
+                          <!--<div class="form-group" ng-if="mf.dataObj.data_type.type=='txt'">-->
+                            <!--<span>Validation</span>-->
+                            <!--<select class="form-control" ng-model="mf.dataObj.data_type.validation">-->
+                              <!--<option value="All">Any character (UTF-8)</option>-->
+                              <!--<option value="A">Letters only</option>-->
+                              <!--<option value="AN">Letters and Numbers</option>-->
+                            <!--</select>-->
+                            <!--<div class="checkbox" ng-if="mf.dataObj.data_type.validation=='A' || mf.dataObj.data_type.validation=='AN'">-->
+                              <!--<label>-->
+                                <!--<input type="checkbox" ng-model = "mf.dataObj.data_type.isAllowed"> Allow additional special characters-->
+                              <!--</label>-->
+                            <!--</div>-->
+                            <!--<div class="form-group" ng-if="mf.dataObj.data_type.isAllowed">-->
+                              <!--<input type="text" class="form-control" ng-model="mf.dataObj.data_type.allowed_values" value="data"/>-->
+                            <!--</div>-->
+
+                          <!--</div>-->
+                          <!--<div class="form-group" ng-show="mf.dataObj.data_type.type == 'number'">-->
+                            <!--<span>Validation</span>-->
+                            <!--<select class="form-control" ng-model="mf.dataObj.data_type.validation">-->
+                              <!--<option value="N">Integer</option>-->
+                              <!--<option value="D">Decimal</option>-->
+                            <!--</select>-->
+                            <!--<div ng-if="mf.dataObj.data_type.validation =='D'">-->
+                              <!--# of decimal places-->
+                              <!--<div class="form-group">-->
+                                 <!--<input type="text" class="form-control" ng-model="mf.dataObj.data_type.points" value="data"/>-->
+                              <!--</div>-->
+                            <!--</div>-->
+
+                          <!--</div>-->
+                          <!--<div class="form-group" ng-show="mf.dataObj.data_type.type =='date'">-->
+                            <!--<span>Validation</span>-->
+                            <!--<select class="form-control" ng-model="mf.dataObj.data_type.validation">-->
+                              <!--<option value="detect">Detect date</option>-->
+                              <!--<option value="specific_format">Use specific date format</option>-->
+                            <!--</select>-->
+                            <!--<div class="form-group" ng-if="mf.dataObj.data_type.validation=='specific_format'">-->
+                              <!--<span>Format</span>-->
+                              <!--<input type="text" ng-model="mf.dataObj.data_type.format"class="form-control" placeholder="MM/DD/YYYY"/>-->
+                            <!--</div>-->
+                          <!--</div>-->
+                          <!--<div class="form-group" ng-show="mf.dataObj.data_type.type == 'name'">-->
+                            <!--<span>Validation</span>-->
+                            <!--<select class="form-control" ng-model="mf.dataObj.data_type.validation">-->
+                              <!--<option value="All">Any Character (UTF-8)</option>-->
+                              <!--<option value="A">Letters Only</option>-->
+                            <!--</select>-->
+                            <!--<div class="checkbox" ng-if="mf.dataObj.data_type.validation=='A'">-->
+                              <!--<label>-->
+                                <!--<input type="checkbox" ng-model = "mf.dataObj.data_type.isAllowed"> Allow additional special characters-->
+                              <!--</label>-->
+                            <!--</div>-->
+                            <!--<div class="form-group" ng-if="mf.dataObj.data_type.isAllowed">-->
+                              <!--<input type="text" class="form-control" ng-model="mf.dataObj.data_type.allowed_values" value="data"/>-->
+                            <!--</div>-->
+                          <!--</div>-->
+                          <!--<div class="form-group" ng-show="mf.dataObj.data_type.type == 'address'">-->
+                            <!--<span>Validation</span>-->
+                            <!--<select class="form-control" ng-model="mf.dataObj.data_type.validation">-->
+                              <!--<option value="All">Any Character (UTF-8)</option>-->
+                              <!--<option value="AN">Letters And Numbers</option>-->
+                            <!--</select>-->
+                            <!--<div class="checkbox" ng-if="mf.dataObj.data_type.validation=='AN'">-->
+                              <!--<label>-->
+                                <!--<input type="checkbox" ng-model = "mf.dataObj.data_type.isAllowed"> Allow additional special characters-->
+                              <!--</label>-->
+                            <!--</div>-->
+                            <!--<div class="form-group" ng-if="mf.dataObj.data_type.isAllowed">-->
+                              <!--<input type="text" class="form-control" ng-model="mf.dataObj.data_type.allowed_values" value="data"/>-->
+                            <!--</div>-->
+                          <!--</div>-->
+
+
+                          <!--<div class="form-group" ng-show="mf.dataObj.data_type.type=='list'">-->
+                            <!--<span>Validation</span>-->
+                            <!--<select class="form-control" ng-model="mf.dataObj.data_type.validation">-->
+                              <!--<option value="multiple_selection">Allow mutiple selections</option>-->
+                              <!--<option value="one_selection">Allow only one selection</option>-->
+                            <!--</select>-->
+                          <!--</div>-->
+                          <!--<hr class="dashed-line">-->
+                          <!--<div class="form-group">-->
+                              <!--<tag-manager tags="tags" autocomplete="markerList"></tag-manager>-->
+                          <!--</div>-->
+                          <!--<hr class="dashed-line">-->
+                        <!--</div>-->
+                        <!--<div class="row row-eq-height" ng-show="mf.dataObj.entity_attribute!=undefined" style="margin-bottom:10px">-->
+                          <!--<div class="col-lg-10 col-md-10 col-sm-10">-->
+                            <!--<input type="text" class="form-control" ng-model="mf.dataObj.entity_attribute"/>-->
+                          <!--</div>-->
+                          <!--<div class="col-lg-2 col-md-2 col-sm-2">-->
+                            <!--<i class="fa fa-trash"  style="color:#00a3e0;margin-top: 8px;"  ng-click="deleteSelectedAttribute()"></i>-->
+                          <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="row">-->
+                            <!--<div class="col-lg-6 col-md-6 dashboard-row" ng-if="mf.dataObj.field_type=='data'">-->
+                              <!--<img src="images/select.png" style="color:#00a3e0;width:20px;" ng-if="!mf.isEditConfig"/> <span ng-if="!mf.isEditConfig" style="color:#00a3e0;font-size:14px;cursor:pointer;">Select Attribute</span>-->
+                              <!--<i  class="fa fa-pencil" style="color:#00a3e0;" ng-if="mf.isEditConfig"> Edit Attribute</i>-->
+                            <!--</div>-->
+                            <!--<div class="col-lg-6 col-md-6 dashboard-row">-->
+                              <!--<i class="fa fa-trash" style="color:#00a3e0;" ng-if="mf.isEditConfig" ng-click="mf.removeZone()"> Delete Zone</i>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="form-group">
+                            <span>Entity</span>
+                            <select class="form-control" ng-model="mf.dataObj.entity" ng-change="getAttribute(mf.dataObj.entity)">
+                              <option value="" ng-selected="true">Select Entity</option>
+                              <option ng-repeat="d in entitiesList">{$ d.entity_name $}</option>
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <span>Attribute</span>{$ mf.dataObj.attribute $}
+                            <select class="form-control" ng-model="mf.dataObj.attribute">
+                              <option value="" ng-selected="true">Select Attribute</option>
+                              <option ng-repeat="d in listOfAttributes">{$ d.key_name $}</option>
+
+                            </select>
+                        </div>
+                        <div class="row" style="width:100%;margin-top: 33px;">
+                          <button type="submit" class="btn btn-custom btn-block" style="background-color:#00A3E0;color:white;border-radius:0px;">
+                            Save
+                          </button>
+                        </div>
+                        <!--<div class="modal fade attributeModal" role="dialog">-->
+                          <!--<div class="modal-dialog">-->
+                            <!--<div class="modal-content">-->
+                              <!--<div class="modal-header">-->
+                                <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+                                <!--<h4 class="modal-title">Add Attribute</h4>-->
+                              <!--</div>-->
+                              <!--<div class="modal-body">-->
+                                <!--&lt;!&ndash;<multiselect-searchtree data-input-model="data" multi-select="false"&ndash;&gt;-->
+                                                <!--&lt;!&ndash;data-output-model="selectedItem2" data-callback="CustomCallback(item, selectedItems)"&ndash;&gt;-->
+                                                <!--&lt;!&ndash;data-select-only-leafs="true" direct-search="true">&ndash;&gt;-->
+                                <!--&lt;!&ndash;</multiselect-searchtree>&ndash;&gt;-->
+                              <!--</div>-->
+                              <!--<div class="modal-footer">-->
+                                <!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="getAttributesSelectedList();">Close</button>-->
+                              <!--</div>-->
+                            <!--</div>-->
+
+                         <!--</div>-->
+                        <!--</div>-->
+                      </form>
+                </div>
+                <div class="tab-pane fade sortfield">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+

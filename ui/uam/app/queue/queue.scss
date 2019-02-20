@@ -1,0 +1,103 @@
+.overlay {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index:100 !important;
+    right:0px;
+    background-color: #fafafa;
+    overflow-x: hidden;
+    transition: 0.5s;
+    border-left: 1px solid #ddd;
+}
+
+.overlay .closebtn {
+    margin-right: 30px;
+    text-decoration: none;
+    cursor:pointer;
+}
+.customLine{
+    margin-top:10px;
+    margin-bottom:10px;
+}
+.cst-row {
+    margin-bottom:15px;
+}
+.cst-textBox{
+    border:1px solid #1fa4d7;
+    border-radius:2px;
+    margin-top:5px;
+    height:40px;
+}
+.queueContainer{
+
+    .btn-customQueue{
+        border: 1px solid #1ea4d7;
+        background-color: white;
+        font-size:12px;
+    }
+
+    .addImage{
+        width:15px;
+    }
+
+    .table-hover > tbody > tr:hover {
+        background-color: #1a89dc !important;
+
+        .hiddenButton{
+            float: right;
+            display: inline-block;
+            visibility:visible;
+        }
+        .textHidden{
+            display:none;
+        }
+
+    }
+
+    .table-bordered >thead>tr {
+        background-color:#eee;
+    }
+
+    .table-bordered >thead>tr>td{
+        border:none;
+    }
+
+    .table-bordered >tbody>tr {
+        border-bottom:1px solid #ddd;
+    }
+
+    .table-bordered >tbody>tr>td{
+        border:none;
+        padding: 12px;
+        font-size: 11px;
+    }
+
+    .row-eq-height{
+        align-items: center !important;
+    }
+    .hiddenButton{
+        display:none;
+        visibility:visible;
+        float: right;
+    }
+    .textHidden{
+        display:block;
+    }
+
+    .btn-queue{
+        padding: 5px;
+        font-size: 11px;
+        border: 1px solid white;
+        background-color: transparent;
+        color: white;
+    }
+    .buttonStyle{
+        border:1px solid white;
+        background-color:transparent;
+        border-radius:2px;
+        color:white;
+        cursor:pointer;
+    }
+
+
+}

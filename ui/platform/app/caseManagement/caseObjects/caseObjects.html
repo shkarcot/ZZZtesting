@@ -1,0 +1,261 @@
+<div class="row minPadding">
+    <div class="col-lg-7 col-sm-7 col-md-7 col-xs-7">
+        <div class="zeroMargin">
+              <div class="dropdown">
+                  <a data-toggle="dropdown" class="noDecoration configureHeading"> domain <b class="caret"></b></a>
+                  <ul class="customdropdown-menu dropdown-menu">
+                      <li>
+                        <a ui-sref="app.domainDashboard"   class="noDecoration">
+                          <img src="/app/images/Domain.png"/>
+                          <span>Domain Configuration</span>
+                        </a>
+                      </li>
+                      <li>
+                      <a class="noDecoration" ui-sref="app.modelDashboard">
+                            <img src="/app/images/model.png"/>
+                            <span>Models</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="noDecoration" ui-sref="app.function">
+                        <img src="/app/images/functionIcon.png"/>
+                        <span>Functions</span>
+                      </a>
+                    </li>
+                      <li>
+                          <a ui-sref="app.services" class="noDecoration">
+                              <img src="/app/images/Services-01.png"/>
+                              <span>Service Configuration</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a ui-sref="app.pipeline" class="noDecoration">
+                              <img src="/app/images/pipeline.png"/>
+                              <span>Pipeline Configuration</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a ui-sref="app.sourceConfiguration" class="noDecoration">
+                              <img src="/app/images/sources.png"/>
+                              <span>Sources</span>
+                          </a>
+                      </li>
+                  </ul>
+                  <span style="margin-left: 10px;font-size: 13px;"> > </span>
+                  <span style="margin-left: 10px;font-size: 13px;cursor:pointer;text-decoration:underline;" ui-sref="app.caseManagement"> Case Management</span>
+                  <span style="margin-left: 10px;font-size: 13px;"> > </span>
+                  <span style="margin-left: 10px;font-size: 13px;color: #3babe1;" ng-if="$root.unknown_template_name==''"> New Template</span>
+                  <span style="margin-left: 10px;font-size: 13px;color: #3babe1;" ng-if="$root.unknown_template_name!=''"> {$ $root.seleted_workflow_name $}</span>
+
+              </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row newUnstructuredForm">
+      <div class="well container-fluid">
+          <ul class="nav nav-tabs nav-custom-tabs">
+              <li class="active"><a data-toggle="tab" href=".caseobjects">Case Object</a></li>
+              <li><a ng-class="$root.state_id=='new'?'disabledTest':''" data-toggle="tab" href=".caseworkflow" ng-click="$root.refreshSlider(); $root.getAllTaskLevelVariables();">Workflow</a></li>
+              <li><a ng-class="$root.state_id=='new'?'disabledTest':''" data-toggle="tab" href=".casequeues" ng-click="$root.getTestList()">Queues</a></li>
+          </ul>
+          <div class="tab-content">
+               <div class="tab-pane fade in active caseobjects" style="min-height: 400px;">
+                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6" style="padding-left:0;padding-right:0;">
+
+                            <!---**************************************************---->
+                                <div id="tbl-wraper" class="objects-div">
+                                  <div class="header-area">
+                                    <label>Additional Variables for Case Object</label>
+                                    <input type="text" class="search-var" placeholder="Search Variables" ng-model="searchVariable"/>
+                                  </div>
+
+                                  <table class="table-nested">
+                                    <thead>
+                                      <tr style="line-height: 29px;">
+                                        <!--<th class="cell-input">
+                                          <input ng-checked="(list | selected).length == list.length" ng-click="toggleAllCheckboxes($event)" type="checkbox" />
+                                        </th>-->
+                                        <th style="padding-left: 7px;">Variable name </th>
+                                        <th class="cell-members" style="text-align: right;">  Datatype  </th>
+                                        <th style="text-align: right;padding-right: 7px;">   Dimension    </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody ng-class="{opened: item.opened}" ng-include="&#39;table_tree.html&#39;" ng-repeat="item in caseQueuesDate | orderBy:['dimension','name'] | filter : searchVariable track by $index "></tbody>
+                                  </table>
+                                  <script id="table_tree.html" type="text/ng-template">
+                                      {$ item $}
+                                    <tr ng-hide="isallcheck[item.path_mapping]" id="{$ item.path_mapping $}" ng-class="taggedFlagArr[item.variable_id]?'selected-row':''" ng-init="parentScope = $parent.$parent; initCheckbox(item, parentScope.item);level = level+1">
+                                      <!--<td class="cell-input">
+                                       <input ng-change="toggleCheckbox(item, parentScope)" ng-model="item.selected" type="checkbox" />
+                                      </td>-->
+                                      <td class="cell-name">
+                                        <div class="indent" style="padding-left: {$ 15*(level-1) $}px;" ng-class=" item.attributes.length===0 ? 'indent-width' : 'indent-no-width'"></div>
+                                          <span ng-click="item.opened = !item.opened" ng-show="item.opened && item.attributes.length>0"><i class="fa fa-minus-square-o"></i></span>
+                                          <span ng-click="item.opened = !item.opened" ng-show="!item.opened && item.attributes.length>0"><i class="fa fa-plus-square-o"></i></span>
+                                        <!--<input ng-change="toggleCheckbox(item, parentScope)" ng-model="item.selected" type="checkbox" />-->
+                                        <input ng-model="taggedFlagArr[item.variable_id]" ng-change="selectCaseObject(item, taggedFlagArr[item.variable_id])"  type="checkbox" />
+                                          {$ item.name  $}
+                                      </td>
+                                      <td class="cell-members" style="text-align: right;">
+                                        {$ item.type $}
+                                      </td>
+                                      <td style="text-align: right;padding-right: 4px;">
+                                        {$ item.dimension $}
+                                      </td>
+                                    </tr>
+                                    <tr  class="children" ng-if="item.attributes &amp;&amp; item.attributes.length &gt; 0">
+                                      <td colspan="3">
+                                        <table>
+                                          <tbody  ng-class="{opened: item.opened}" ng-include="&#39;table_tree.html&#39;" ng-init="level = level + 1" ng-repeat="item in item.attributes"></tbody>
+                                        </table>
+                                      </td>
+                                    </tr>
+                                  </script>
+
+
+                                </div>
+
+                            <!---**************************************************---->
+                            <!--<div class="objects-div">
+                                <div class="header-area">
+                                    <label>Additional Variables for Case Objects</label>
+                                    <input type="text" class="search-var" placeholder="Search Variables" ng-model="searchVariable"/>
+                                </div>
+                                <div class="tablediv">
+
+                                <table class="table variables-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Variable name</th>
+                                            <th style="text-align: right;">Datatype</th>
+                                            <th style="text-align: right;">Dimension</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-ng-repeat="caseQueuesObj in caseQueuesDate | filter : searchVariable track by $index ">
+
+                                        <tr ng-class=" taggedFlagArr[$index]?'selected-row':''"
+                                            ng-style="{ 'border-bottom' : (caseQueuesObj.dimension!='Domain Object') ? '1px solid #ddd' : '0px solid #ddd' }">
+                                            <td>
+                                                <label class="custom-checkbox">
+                                                  <input type="checkbox" id="$index" name="$index" checked="checked"
+                                                  ng-model="taggedFlagArr[$index]" ng-change="coc.selectCaseObject(caseQueuesObj, taggedFlagArr[$index])">
+                                                  <span class="checkmark"></span>
+                                                </label>
+                                                <span class="left-space-24">{$ caseQueuesObj.name $}</span>
+
+                                                &lt;!&ndash;<label for="$index">
+                                                    <input type="checkbox" id="$index" name="$index"
+                                                           ng-model="taggedFlag" ng-change="coc.selectCaseObject(caseQueuesObj, taggedFlag)"
+                                                           class="ng-valid ng-dirty ng-valid-parse ng-touched"> {$ caseQueuesObj.name $}
+                                                </label>&ndash;&gt;
+                                            </td>
+                                            <td ng-bind="caseQueuesObj.type" style="text-align: right;"></td>
+                                            <td ng-bind="caseQueuesObj.dimension" style="text-align: right;"></td>
+                                        </tr>
+                                        <tr ng-if="caseQueuesObj.dimension=='Domain Object'" style="border-bottom:1px solid #ddd">
+                                            <td colspan="3">
+                                            &lt;!&ndash;{$ caseQueuesObj.attributes | json$}&ndash;&gt;
+                                            <json-formatter class="jsonformatter" open="1" json="caseQueuesObj.attributes" ng-if="caseQueuesObj.attributes!=undefined"></json-formatter>
+                                        </td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            </div>-->
+                        </div>
+
+                        <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1 arrow-btn-div">
+                            <button ng-disabled="coc.readyToMoveCaseVariable.length==0" ng-click="leftToRight()" class="btn btn-custom btn-arrow" type="button"> >>  </button>
+                            <button ng-disabled="coc.readyToMoveCaseVariableFromLeftPannel.length==0" ng-click="rightToLeft()" class="btn btn-custom btn-arrow" type="button"> <<  </button>
+
+                        </div>
+
+                        <div class="col-lg-5 col-sm-5 col-md-5 col-xs-5" style="padding-left:0;padding-right:0;">
+                            <div class="co-wf-objects-div">
+                                <div class="co-wf-header-area">
+                                    <label>Case Object for <span ng-bind="$root.seleted_workflow_name"></span></label>
+                                </div>
+                                <div class="tablediv">
+                                <table class="table variables-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:50%">Variable name</th>
+                                             <th style="text-align: right;">Datatype</th>
+                                            <th style="text-align: right;">Dimension</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-ng-repeat="selectdCaseVariableObj in selectdCaseVariables | orderBy:['dimension','name'] track by $index ">
+                                        <tr ng-class=" (taggedFlagArr1[$index] && !selectdCaseVariableObj.is_default)?'selected-row':''"
+                                            ng-style="{ 'border-bottom' : (selectdCaseVariableObj.dimension!='Domain') ? '1px solid #ddd' : '0px solid #ddd' }">
+                                            <td class="alias-td" ng-init="showAliasTextBox[selectdCaseVariableObj.variable_id]=false">
+                                                <label class="custom-checkbox">
+                                                  <input type="checkbox" id="$index" name="$index" checked="checked"
+                                                  ng-model="taggedFlagArr1[$index]" ng-change="selectCaseObjectRtoL(selectdCaseVariableObj, taggedFlagArr1[$index])" ng-disabled="selectdCaseVariableObj.is_default" >
+                                                  <span class="checkmark" ng-class="selectdCaseVariableObj.is_default?'disabledVariable':''"></span>
+                                                </label>
+                                               <!-- <span class="left-space-24" ng-if="selectdCaseVariableObj.is_default"
+                                                      ng-mouseover="showAliasTextBox[selectdCaseVariableObj.variable_id]=true">{$ selectdCaseVariableObj.name $}</span>-->
+
+                                                <div title="{$ selectdCaseVariableObj.alias $}" class="left-space-24" ng-hide="showAliasTextBox[selectdCaseVariableObj.variable_id] && !selectdCaseVariableObj.is_default" ng-mouseover="showAliasTextBox[selectdCaseVariableObj.variable_id]=true">{$ selectdCaseVariableObj.alias $}</div>
+
+
+
+                                                <span ng-show="showJsonPathToolTip[selectdCaseVariableObj.variable_id]"
+                                                      class="jsonPathTooltip">
+                                                  <ul>
+                                                      <li style="margin-left: {$ ($index*8) $}px;" ng-repeat="path in getPath(selectdCaseVariableObj.path_mapping) track by $index">
+                                                          {$ path $}
+                                                      </li>
+                                                  </ul>
+                                                </span>
+
+                                                <input type="text" placeholder="type alias name" class="txt_alias"
+                                                       ng-mouseleave="showAliasTextBox[selectdCaseVariableObj.variable_id]=false"
+                                                       ng-show="showAliasTextBox[selectdCaseVariableObj.variable_id] && !selectdCaseVariableObj.is_default"
+                                                       data-ng-model="selectdCaseVariableObj.alias" disallow-spaces/>
+
+                                                       <span ng-mouseover="showJsonPathToolTip[selectdCaseVariableObj.variable_id]=true"
+                                                       ng-mouseleave="showJsonPathToolTip[selectdCaseVariableObj.variable_id]=false" class="variablePathIcon">
+                                                     <i class="fa fa-sitemap"></i></span>
+                                               <!-- <label for="$index">
+                                                    <input type="checkbox" id="$index" name="$index"
+                                                           ng-model="taggedFlag1" ng-change="coc.selectCaseObjectRtoL(selectdCaseVariableObj, taggedFlag1)"
+                                                           class="ng-valid ng-dirty ng-valid-parse ng-touched"> {$ selectdCaseVariableObj.name $}
+                                                </label>-->
+                                            </td>
+                                            <td ng-bind="selectdCaseVariableObj.type" style="text-align: right;"></td>
+                                            <td ng-bind="selectdCaseVariableObj.dimension" style="text-align: right;"></td>
+                                        </tr>
+                                        <!--<tr ng-if="selectdCaseVariableObj.dimension=='Domain Object'" style="border-bottom:1px solid #ddd">
+                                            <td colspan="3">
+                                            &lt;!&ndash;{$ caseQueuesObj.attributes | json$}&ndash;&gt;
+                                            <json-formatter class="jsonformatter" open="1" json="selectdCaseVariableObj.attributes" ng-if="selectdCaseVariableObj.attributes!=undefined"></json-formatter>
+                                        </td></tr>-->
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="margin-top:20px;margin-bottom:20px;">
+                         <button type="button" alt="Save Variables"  title="Save Case Object"
+                                  class="btn btn-go btn-custom pull-right"
+                         ng-disabled="selectdCaseVariables.length==0"
+                         ng-click="saveCaseObjects()">
+                          <i class="fa fa-floppy-o"></i> Save</button>
+                    </div>
+              </div>
+              <div class="tab-pane fade caseworkflow" style="padding: 0px 20px 0px 25px;">
+                <div data-ui-view="bpmnWorkflow" class="insightdata-div"></div>
+              </div>
+              <div class="tab-pane fade casequeues" style="padding: 0px 20px 0px 25px;">
+                <div data-ui-view="caseQueuesView" class="insightdata-div"></div>
+              </div>
+          </div>
+
+      </div>
+
+</div>

@@ -1,0 +1,58 @@
+.rounded-image{
+    width:25px;
+    border-radius:50%;
+}
+.navbar{
+    margin-bottom:0px;
+}
+.navbar-custom{
+	background: linear-gradient(to right, #000000, #33aae3);
+	margin:0px !important;
+}
+.navbar-brand{
+    text-decoration:none;
+    border-right:1px solid #33aae3;
+    width:200px;
+    padding:0px 15px;
+}
+.header-image{
+    width:170px;
+}
+.header-image2 {
+    width:100px;
+}
+
+.navbar-sub-heading{
+    font-size:9px;
+    color:white;
+    font-weight:400;
+    margin-left: 5px;
+}
+
+
+.logout-image{
+    width:25px;
+}
+
+.navbar-nav > li > .dropdown-menu {
+    margin-top: 3px;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+    background-color: #2e98cb;
+    border-color: #337ab7;
+}
+.dropdown-menu >li {
+    border-bottom:1px solid #eee;
+}
+
+.btn-header{
+    background-color:black;
+    border-radius:25px;
+    color:white;
+}
+.createImage{
+    width:20px;
+}

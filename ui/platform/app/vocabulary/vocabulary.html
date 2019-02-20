@@ -1,0 +1,62 @@
+<div class="row minPadding">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+        <h3 class="zeroMargin">
+              <div class="dropdown">
+                  <a data-toggle="dropdown" class="noDecoration configureHeading">Sources <b class="caret"></b></a>
+                  <breadcrumb-dropdown></breadcrumb-dropdown>
+                  <span style="margin-left: 10px;font-size: 13px;">|</span>
+                  <span style="margin-left: 10px;font-size: 13px;color: #3babe1;"> Vocabulary Management	</span>
+              </div>
+        </h3>
+    </div>
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 alignRight">
+        <img class="helpImages" src="/app/images/comment-01.png"/>
+        <img class="helpImages" src="/app/images/help-01.png"/>
+    </div>
+</div>
+<div class="row vocabulary">
+      <div class="col-lg-12 col-md-12 col-sm-12" id="markerForm-tabs">
+          <div class="row vocabularyTabs">
+              <div class="col-lg-12 col-sm-12 col-xs-12 col-sm-12">
+                    <ul class="nav nav-tabs">
+                          <li ng-class="$root.activeState == 'dictionariesAndCorpus'?'active':''"><a data-toggle="tab" href=".dictionariesAndCorpus">Dictionaries & Corpus</a></li>
+                          <!--<li ng-class="$root.activeState == 'dictionaries'?'active':''"><a data-toggle="tab" href=".dictionaries">Dictionaries</a></li>-->
+                          <!--<li ng-class="$root.activeState == 'corpus'?'active':''"><a data-toggle="tab" href=".corpus">Corpus</a></li>-->
+                          <li ng-class="$root.activeState == 'ontologies'?'active':''"><a data-toggle="tab" href=".ontologies">Ontologies</a></li>
+                    </ul>
+                    <div class="tab-content">
+
+                          <div class="tab-pane fade  dictionariesAndCorpus" ng-class="$root.activeState == 'dictionariesAndCorpus'?'in active':''">
+                            <div class="row row-eq-height">
+                                <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-margin no-padding">
+                                    <div data-ui-view="dictionariesAndCorpus"></div>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="tab-pane fade  dictionaries" ng-class="$root.activeState == 'dictionaries'?'in active':''">
+                            <div class="row row-eq-height">
+                                <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-margin no-padding">
+                                    <div data-ui-view="dictionary"></div>
+                                </div>
+                            </div>
+                          </div>
+                           <div class="tab-pane fade corpus" ng-class="$root.activeState == 'corpus'?'in active':''">
+                               <div class="row row-eq-height">
+                                <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 customSftp no-margin no-padding">
+                                     <div data-ui-view="corpus"></div>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="tab-pane fade ontologies" ng-class="$root.activeState == 'ontologies'?'in active':''">
+                              <div class="row row-eq-height">
+                                  <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 customSftp no-margin no-padding">
+                                        <div data-ui-view="ontologies"></div>
+                                  </div>
+                              </div>
+                          </div>
+
+                    </div>
+              </div>
+          </div>
+      </div>
+</div>

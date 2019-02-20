@@ -1,0 +1,475 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+<div class="postProcessingRules">
+	<div class="postRules">
+		<div class="row">
+			<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
+				<span class="addTransformation" ng-click="addTransformation()">
+					<i class="fa fa-plus"></i>
+					Add Transformation
+				</span>
+			</div>
+		</div>
+		<br>
+		<div class="row" ng-show="showTransformation" style="margin-bottom: 20px;" id="#postProcessingRules">
+			<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-padding transformationDiv">
+				<ul class="nav nav-tabs nav-rulesTab">
+					  <li class="active"><a data-toggle="tab" href=".transformation">Transformation</a></li>
+					  <li><a data-toggle="tab" href=".test" ng-click="clearSourceTest()">Test</a></li>
+				</ul>
+				<div class="tab-content">
+              		<div class="tab-pane fade in active transformation">
+						<!--<div class="row">-->
+							<!--<div class="col-lg-12 col-sm-12 col-md-12 col-sm-12">-->
+								 <!--<div class="panel panel-customModel">-->
+									  <!--<div class="panel-heading collapsed" data-toggle="collapse" data-target="#ifCondition" style="padding-left:0px !important;">-->
+										  <!--<label class="conditionalValue">IF</label>-->
+										  <!--<i class="fa fa-caret-up caretColor"></i>-->
+										  <!--<i class="fa fa-caret-down caretColor"></i>-->
+										  <!--<span class="optionalColor">(Optional)</span>-->
+									  <!--</div>-->
+									  <!--<div class="panel-body panel-conditionBody"  style="padding-left:0px !important;">-->
+
+										<!--<div class="collapse " id="ifCondition">-->
+											<!--<div class="row" ng-repeat="ruleCond in pprc.transformRule.rule.conds" style="margin-bottom:10px;">-->
+												<!--<div class="col-lg-4 col-md-4 col-sm-4">-->
+													<!--<select class="form-control" ng-model="ruleCond.fn">-->
+														<!--<option value="">Select function</option>-->
+														<!--<option ng-repeat="option in pprc.functionsList" value="{$ option.fn $}">{$ option.display_name $}</option>-->
+													<!--</select>-->
+												<!--</div>-->
+												<!--<div class="col-lg-3 col-md-3 col-sm-3">-->
+													<!--<select class="form-control" ng-model="ruleCond.op" ng-change="pprc.checkForOperator(ruleCond.op)">-->
+														<!--<option value="">Select condition</option>-->
+														<!--<option ng-repeat="option in pprc.listOfOperators" value="{$ option.oper $}">{$ option.display_name $}</option>-->
+													<!--</select>-->
+												<!--</div>-->
+												<!--<div class="col-lg-3 col-md-3 col-sm-3">-->
+													<!--<input type="text" class="form-control" ng-model="ruleCond.rval" placeholder="Enter value"/>-->
+												<!--</div>-->
+												<!--<div class="col-lg-1 col-md-1 col-sm-1">-->
+													<!--<a ng-click="pprc.selectOperator('any')" ng-show="$index == 0">OR</a>-->
+													<!--<a ng-click="pprc.addCondition()" ng-show="$index != 0"><span ng-show="pprc.transformRule.run_type=='any'">OR</span><span ng-show="pprc.transformRule.run_type=='all'">AND</span></a>-->
+												<!--</div>-->
+												<!--<div class="col-lg-1 col-md-1 col-sm-1">-->
+													<!--<a ng-click="pprc.selectOperator('all')" ng-show="$index == 0">AND</a>-->
+													<!--<a ng-click="pprc.delCond($index)" ng-show="$index != 0"><span class="fa fa-trash"></span></a>-->
+												<!--</div>-->
+											<!--</div>-->
+											<!--<span>{$ pprc.conditionErr $}</span>-->
+										<!--</div>-->
+									  <!--</div>-->
+								 <!--</div>-->
+
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="row">-->
+							<!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">-->
+								<!--<h5 style="color:black;">THEN DO</h5>-->
+							<!--</div>-->
+						<!--</div>-->
+
+						<div class="row">
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+								<div class="form-group">
+									<label class="labelHeading">Operator</label>
+									<select class="form-control"  ng-model="pprc.transformRule.rule.op" ng-change="pprc.changeOperator(pprc.transformRule.rule.op)">
+										<option value="">Select the Operator</option>
+										<option ng-repeat="value in pprc.operateSupports track by $index" value="{$ value.condition $}">{$ value.display_name $}</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-2 col-sm-2 col-xs-12 col-md-2">
+								<div class="form-group">
+									<label class="labelHeading">Separator</label>
+									<select class="form-control" ng-model="pprc.transformRule.rule.sep">
+										<option value="">Separator</option>
+										<option ng-repeat="(key,value) in pprc.separatorsList track by $index" value="{$ value $}">{$ key $}</option>
+
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+								<div class="form-group">
+									<label class="labelHeading">Variable</label>
+									<select class="form-control" ng-model="pprc.transformRule.rule.doc_variable">
+										<option value="">Add Document variables</option>
+										<option ng-repeat="key in pprc.document_variables_list track by $index"  value="{$ key $}"> {$ key $}</option>
+									</select>
+									<span>{$ pprc.errorMsg $}</span>
+								</div>
+							</div>
+							<div class="col-lg-2 col-sm-2 col-md-2 col-xs-12" style="margin-top:30px;">
+								<span class="addTransformation" ng-click="pprc.addParameters();">
+									<i class="fa fa-plus"></i> Add
+								</span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-right">
+								<label class="labelHeading">Parameter</label>
+								<div class="row tagsOverflow">
+									<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
+										<div class="variableDIv">
+											<label class="custom-tagStyle" ng-if="pprc.transformRule.rule.lval.length == 0">
+												Add Variables
+											</label>
+											<label class="custom-tagStyleActive" ng-repeat="variable in pprc.transformRule.rule.lval track by $index">
+												{$ variable $}
+												<label style="margin-bottom:0px;"><i class="fa fa-times" ng-click="pprc.removeVariable($index)"></i></label>
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+								<label>SET</label>
+							</div>
+						</div>
+						<div class="row" ng-show="pprc.transformRule.rule.op == 'split'">
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+								<div class="form-group">
+									<select class="form-control" ng-model="pprc.transformRule.rule.is_split" ng-change="pprc.changeSet(pprc.transformRule.rule.is_split)">
+										<option value="assign">Assign</option>
+										<option value="foreach">For Each</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row" ng-hide="pprc.transformRule.rule.op == 'split' && pprc.transformRule.rule.is_split=='assign'">
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+								<div class="form-group">
+									<label class="labelHeading">Domain Object</label>
+									<select class="form-control"
+											ng-model="pprc.actionObj.entity"
+											ng-change="pprc.getAttribute(pprc.actionObj.entity,'norm')">
+										<option value="" ng-selected="true">Select
+											Domain
+											Objects
+										</option>
+										<option ng-repeat="(d,value) in entitiesList" value="{$ d $}">{$
+											d $}
+										</option>
+
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+								<div class="form-group">
+									<label class="labelHeading">Attribute</label>
+									<select class="form-control"
+											ng-model="pprc.actionObj.attribute">
+										<option value="" ng-selected="true">Select
+											Attribute
+										</option>
+										<option ng-repeat="d in listOfAttribut track by $index" value="{$ d $}">{$
+											d $}
+										</option>
+
+									</select>
+								</div>
+							</div>
+						</div>
+						<br>
+
+						<div class="row" ng-show="pprc.transformRule.rule.is_split == 'assign' && pprc.transformRule.rule.op == 'split'">
+							<div class="col-lg-12 col-sm-1 col-md-12 col-xs-12 text-right addTransformation" ng-click="pprc.addRvalue()">
+								<i class="fa fa-plus"></i>
+								Add
+							</div>
+						</div>
+
+						<div class="row" ng-show="pprc.transformRule.rule.is_split == 'assign' && pprc.transformRule.rule.op == 'split'" ng-repeat="rVal in pprc.actionObj.rule_val track by $index">
+							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+								<label class="labelHeading">Value</label>
+								<input type="text" class="form-control" value="array[{$ $index $}]">
+
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding">
+								<div class="form-group">
+									<label class="labelHeading">Domain Object</label>
+									<select class="form-control"
+											ng-model="rVal.entity"
+											ng-change="pprc.getAttribute(rVal.entity,$index)">
+										<option value="" ng-selected="true">Select
+											Domain
+											Objects
+										</option>
+										<option ng-repeat="(d,value) in entitiesList" value="{$ d $}">{$
+											d $}
+										</option>
+
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding">
+								<div class="form-group">
+									<label class="labelHeading">Attribute</label>
+									<select class="form-control"
+											ng-model="rVal.attribute">
+										<option value="" ng-selected="true">Select
+											Attribute
+										</option>
+										<option ng-repeat="d in listOfAttributes[$index] track by $index" value="{$ d $}">{$
+											d $}
+										</option>
+
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-1 col-md-1 col-sm-1 col-xs-12" style="margin-top: 3%;">
+								<button class="btn btn-default" ng-click="pprc.removeRval($index)">
+									<i class="fa fa-trash"></i>
+								</button>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+								<button class="btn btn-custom" ng-click="pprc.saveTransformation()">Save</button>
+								<div ng-show="showTransSave" class="loading-spiner-holder ralign-spinner"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class="">Saving Rule</span></div></div>
+							</div>
+							<div class="col-sm-12" ng-show="pprc.validateTransRule != ''">
+								<div class="alert alert-danger">{$ pprc.validateTransRule $}</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade test">
+						<form class="form-horizontal" ng-submit="pprc.testPostRuleBeforeCreate(pprc.transformRule)">
+							  <div class="form-group" ng-repeat="variable in pprc.transformRule.rule.lval track by $index">
+								<label class="col-sm-4 col-lg4 col-md-4 col-xs-4">{$ variable $}:</label>
+								<div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">
+								  <input type="text" class="form-control" ng-model="sourceValues[$index]">
+								</div>
+							  </div>
+							  <div class="form-group">
+								<div class="col-sm-10">
+								  <button type="submit" class="btn btn-custom" >Test</button>
+								</div>
+							  </div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row" ng-repeat="list in pprc.listOfTransformationRules" style="margin-bottom: 20px;">
+			<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 no-padding transformationDiv">
+				<ul class="nav nav-tabs nav-rulesTab">
+					  <li class="active"><a data-toggle="tab" href=".transformationList{$ $index $}">Transformation</a></li>
+					  <li><a data-toggle="tab" href=".testList{$ $index $}" ng-click="clearSourceTest()">Test</a></li>
+					  <li class="pull-right"><i class="fa fa-trash" style="padding: 10px;" ng-click="pprc.deleteRule(list.rule_id)"></i></li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane fade in active transformationList{$ $index $}">
+						<div class="row">
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+								<div class="form-group">
+									<label class="labelHeading">Operator</label>
+									<select class="form-control"  ng-model="list.rule.actions[0].op" ng-change="pprc.changeOperatorInGet(list.rule.actions[0].op,list)">
+										<option value="">Select the Operator</option>
+										<option ng-repeat="value in pprc.operateSupports track by $index" value="{$ value.condition $}">{$ value.display_name $}</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-2 col-sm-2 col-xs-12 col-md-2">
+								<div class="form-group">
+									<label class="labelHeading">Separator</label>
+									<select class="form-control" ng-model="list.rule.actions[0].attr.sep">
+										<option value="">Separator</option>
+										<option ng-repeat="(key,value) in pprc.separatorsList track by $index" value="{$ value $}">{$ key $}</option>
+
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+								<div class="form-group">
+									<label class="labelHeading">Variable</label>
+									<select class="form-control" ng-model="list.rule.doc_variable">
+										<option value="">Add Document variables</option>
+										<option ng-repeat="key in pprc.document_variables_list track by $index"  value="{$ key $}"> {$ key $}</option>
+									</select>
+									<span>{$ pprc.errorMsginGet[$index] $}</span>
+								</div>
+							</div>
+							<div class="col-lg-2 col-sm-2 col-md-2 col-xs-12" style="margin-top:30px;">
+								<span class="addTransformation" ng-click="pprc.addParametersInGet(list,$index);">
+									<i class="fa fa-plus"></i> Add
+								</span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-right">
+								<label class="labelHeading">Parameter</label>
+								<div class="row tagsOverflow">
+									<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
+										<div class="variableDIv">
+											<label class="custom-tagStyle" ng-if="list.rule.actions[0].attr.lval.length == 0">
+												Add Variables
+											</label>
+											<label class="custom-tagStyleActive" ng-repeat="variable in list.rule.actions[0].attr.lval track by $index">
+												{$ variable $}
+												<label style="margin-bottom:0px;"><i class="fa fa-times" ng-click="pprc.removeVariableInGet(list,$index)"></i></label>
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+								<label>SET</label>
+							</div>
+						</div>
+						<div class="row" ng-show="list.rule.actions[0].op == 'split'">
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+								<div class="form-group">
+									<select class="form-control" ng-model="list.rule.is_split" ng-change="pprc.changeSetInGet(list.rule.is_split,list)">
+										<option value="assign">Assign</option>
+										<option value="foreach">For Each</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row" ng-hide="list.rule.actions[0].op == 'split' && list.rule.is_split=='assign'">
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+								<div class="form-group">
+									<label class="labelHeading">Domain Object</label>
+									<select class="form-control"
+											ng-model="list.rule.actions[0].attr.entity"
+											>
+										<option value="" ng-selected="true">Select
+											Domain
+											Objects
+										</option>
+										<option ng-repeat="(d,value) in entitiesList" value="{$ d $}">{$
+											d $}
+										</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+								<div class="form-group">
+									<label class="labelHeading">Attribute</label>
+									<select class="form-control"
+											ng-model="list.rule.actions[0].attr.attribute">
+										<option value="" ng-selected="true">Select
+											Attribute
+										</option>
+										<option ng-repeat="d in entitiesObj[list.rule.actions[0].attr.entity] track by $index" value="{$ d $}">{$
+											d $}
+										</option>
+
+									</select>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-lg-12 col-sm-1 col-md-12 col-xs-12 text-right addTransformation" ng-click="pprc.addRvalueInGet(list)" ng-show="list.rule.is_split == 'assign' && list.rule.actions[0].op == 'split'" style="border-bottom: 1px solid #eee;">
+								<i class="fa fa-plus"></i>
+								Add
+							</div>
+						</div>
+						<div class="row" ng-show="list.rule.is_split == 'assign' && list.rule.actions[0].op == 'split'" ng-repeat="rVal in list.rule.actions[0].attr.rule_val track by $index">
+							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+								<label class="labelHeading">Value</label>
+								<input type="text" class="form-control" value="array[{$ $index $}]">
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+								<div class="form-group">
+									<label class="labelHeading">Domain Object</label>
+									<select class="form-control"
+											ng-model="rVal.entity"
+											>
+										<option value="" ng-selected="true">Select
+											Domain
+											Objects
+										</option>
+										<option ng-repeat="(d,value) in entitiesList" value="{$ d $}">{$
+											d $}
+										</option>
+
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding">
+								<div class="form-group">
+									<label class="labelHeading">Attribute</label>
+									<select class="form-control"
+											ng-model="rVal.attribute">
+										<option value="" ng-selected="true">Select
+											Attribute
+										</option>
+										<option ng-repeat="d in entitiesObj[rVal.entity] track by $index" value="{$ d $}">{$
+											d $}
+										</option>
+
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" style="margin-top: 3%;">
+								<button class="btn btn-default" ng-click="pprc.removeRvalInGet(list,$index)">
+									<i class="fa fa-trash"></i>
+								</button>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg12 col-sm-12 col-xs-12 col-md-12">
+								<button class="btn btn-custom" ng-click="pprc.saveTransformationInGet(list,$index)">Save</button>
+								<div ng-show="showTransSaveInGet[$index]" class="loading-spiner-holder ralign-spinner"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class="">Saving rule</span></div></div>
+							</div>
+							<div class="col-sm-12" ng-show="pprc.validateTransRuleInGet[$index]">
+								<div class="alert alert-danger">{$ pprc.validateTransRuleInGet[$index] $}</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade testList{$ $index $}">
+						<form class="form-horizontal" ng-submit="pprc.testPostRule(list,$index)">
+							  <div class="form-group" ng-repeat="variable in list.rule.actions[0].attr.lval track by $index">
+								<label class="col-sm-4 col-lg4 col-md-4 col-xs-4">{$ variable $}:</label>
+								<div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">
+								  <input type="text" class="form-control" ng-model="sourceValuesInEdit[$parent.$index][$index]">
+								</div>
+							  </div>
+							  <div class="form-group">
+								<div class="col-sm-10">
+								  <button type="submit" class="btn btn-custom">Test</button>
+								</div>
+							  </div>
+						</form>
+						<div class="row">
+							<div class="col-sm-12 col-md-12 col-lg-12 col-xs-12" ng-repeat="arr in pprc.testTransformResult[$index]">
+								<div class="row" ng-repeat="(key,value) in arr">
+									<div class="col-sm-6 col-md-6 col-xs-6 col-lg-6">
+										<label style="color:black">{$ key $}</label>
+									</div>
+									<div class="col-sm-1 col-md-1 col-xs-1 col-lg-1">
+										<label style="color:black">:</label>
+									</div>
+									<div class="col-sm-5 col-md-5 col-xs-5 col-lg-5">
+										{$ value $}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

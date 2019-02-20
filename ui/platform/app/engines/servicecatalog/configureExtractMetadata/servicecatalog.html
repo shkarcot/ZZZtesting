@@ -1,0 +1,35 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+
+<div class="row" id="servicecatalog-tabs">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div ng-repeat="service in vm.catalogServices track by $index" ng-class="vm.setServiceClass[$index]" class="col-lg-2 col-md-2 col-sm-2 servicecatalog-services">
+        <span ng-bind="service.name"></span>
+        </div>
+
+        <div class="clear"></div>
+
+        <tabs id="engine-tabs">
+        <pane title="Configure">
+        <div data-ui-view="configureCatalogService" class=""></div>
+        </pane>
+        <pane title="Test">
+        <div data-ui-view="testCatalogService" class=""></div>
+        </pane>
+        </tabs>
+    </div>
+</div>
+
+
+</div>

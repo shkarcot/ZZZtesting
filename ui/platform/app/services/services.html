@@ -1,0 +1,233 @@
+
+<div class="row overlay adaptContainer" id="createSerive">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+        <h4 class="push-left">
+          <span>
+              <b>Create New Service</b>
+          </span>
+          <span class="pull-right closeRule closebtn" ng-click="closeServices()">&times;</span>
+        </h4>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="margin-bottom: 70px;">
+                <form ng-submit="createNewService()">
+                    <div class="form-group">
+                        <label>Display Name</label>
+                        <input type="text" class="form-control custom-formControl" ng-model="serviceObj.display_name" placeholder="Type Service Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea  rows="4" cols="50" class="form-control custom-formControl"  ng-model="serviceObj.description" placeholder="Type Description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Service End Point</label>
+                        <input type="text" class="form-control custom-formControl" ng-model="serviceObj.service_endpoint" placeholder="Type Service End Point" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Feedback End Point</label>
+                        <input type="text" class="form-control custom-formControl" ng-model="serviceObj.feedback_endpoint" placeholder="Type Feedback End Point" >
+                    </div>
+                    <div class="form-group">
+                        <label>Service Key</label>
+                        <input type="text" class="form-control custom-formControl" ng-model="serviceObj.service_key" placeholder="Type Service Key" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Headers</label>
+                         <textarea  rows="4" cols="50" class="form-control custom-formControl" ng-model="serviceObj.headers" placeholder="Json"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Method</label>
+                        <select ng-model="serviceObj.method" class="form-control custom-formControl">
+                            <option value="get">GET</option>
+                            <option value="post">POSt</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Request</label>
+                        <textarea  rows="4" cols="50" class="form-control custom-formControl" ng-model="serviceObj.request_schema" placeholder="Json"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Response</label>
+                        <textarea  rows="4" cols="50" class="form-control custom-formControl" ng-model="serviceObj.response_schema" placeholder="Json"></textarea>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <button class="btn btn-custom" type="submit">
+                            <i class="fa fa-floppy-o"></i>
+                            Save
+                        </button>
+                        <button class="btn btn-custom" ng-click="cancelNewService()">
+
+                            Cancel
+                        </button>
+                        <!--<div class="loading-spiner-holder" ng-show="enabledatasetLoader">-->
+                            <!--<div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving dataset ...</i></span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row minPadding">
+    <div class="col-lg-9 col-sm-12 col-md-9 col-xs-12">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 dashboard-row">
+                <h3 class="zeroMargin">
+                      <div class="dropdown">
+                          <a data-toggle="dropdown" class="noDecoration configureHeading">configure services <b class="caret"></b></a>
+                          <ul class="customdropdown-menu dropdown-menu">
+                              <li>
+                                <a ui-sref="app.domainDashboard" class="noDecoration">
+                                  <img src="/app/images/Domain.png"/>
+                                  <span>Domain Configuration</span>
+                                </a>
+                              </li>
+                              <li>
+                                  <a class="noDecoration" ui-sref="app.modelDashboard">
+                                        <img src="/app/images/model.png"/>
+                                        <span>Models</span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a class="noDecoration" ui-sref="app.function">
+                                    <img src="/app/images/functionIcon.png"/>
+                                    <span>Functions</span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a ui-sref="app.services" class="noDecoration">
+                                      <img src="/app/images/Services-01.png"/>
+                                      <span>Service Configuration</span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a ui-sref="app.pipeline" class="noDecoration">
+                                      <img src="/app/images/pipeline.png"/>
+                                      <span>Pipeline Configuration</span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a ui-sref="app.sourceConfiguration" class="noDecoration">
+                                      <img src="/app/images/sources.png"/>
+                                      <span>Sources</span>
+                                  </a>
+                              </li>
+                          </ul>
+                      </div>
+                </h3>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 dashboard-row text-right">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div id="searchbar" class="collapsed">
+                           <div id="search-box">
+                                <div id="sliding-panel-outer">
+                                  <div id="sliding-panel-inner">
+                                      <div class="input-group">
+                                          <input type="text" class="form-control" placeholder="Search Services" ng-model="searchValue">
+
+                                      </div>
+                                  </div>
+                                </div>
+                                <div class="search-label">
+                                    <i class="fa fa-search"></i>
+                                    <i class="fa fa-times cancelSearch" ng-click="cancelSearch()"></i>
+                                </div>
+                           </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <button class="btn btn-add" ng-click="createServices();">
+                            <img src="/app/images/add.png" style="width:13px;"/>
+                            <span>Create New Service</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<h3 class="zeroMargin">-->
+              <!--<div class="dropdown">-->
+                  <!--<a data-toggle="dropdown" class="noDecoration configureHeading">configure services <b class="caret"></b></a>-->
+                  <!--<ul class="customdropdown-menu dropdown-menu">-->
+                      <!--<li>-->
+                        <!--<a ui-sref="app.domainDashboard" class="noDecoration">-->
+                          <!--<img src="/app/images/Domain.png"/>-->
+                          <!--<span>Domain Configuration</span>-->
+                        <!--</a>-->
+                      <!--</li>-->
+                      <!--<li>-->
+                          <!--<a ui-sref="app.services" class="noDecoration">-->
+                              <!--<img src="/app/images/Services-01.png"/>-->
+                              <!--<span>Service Configuration</span>-->
+                          <!--</a>-->
+                      <!--</li>-->
+                      <!--<li>-->
+                          <!--<a ui-sref="app.pipeline" class="noDecoration">-->
+                              <!--<img src="/app/images/pipeline.png"/>-->
+                              <!--<span>Pipeline Configuration</span>-->
+                          <!--</a>-->
+                      <!--</li>-->
+                      <!--<li>-->
+                          <!--<a ui-sref="app.sourceConfiguration" class="noDecoration">-->
+                              <!--<img src="/app/images/sources.png"/>-->
+                              <!--<span>Sources</span>-->
+                          <!--</a>-->
+                      <!--</li>-->
+                  <!--</ul>-->
+              <!--</div>-->
+        <!--</h3>-->
+    </div>
+    <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3 alignRight">
+        <img class="helpImages" src="/app/images/comment-01.png"/>
+        <img class="helpImages" src="/app/images/help-01.png"/>
+    </div>
+</div>
+<div>
+  <div class="row services">
+    <div class="col-sm-12 col-md-9 col-xs-12 col-lg-9 bodycontent-sidepadding-zero">
+      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"  ng-repeat="(key, value) in engineData | custom:searchValue">
+        <div class="card">
+          <div class="card-header card-customHeader">
+              <div clas="row">
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" style="padding-left:0;padding-right:0;">
+                  <img src="/app/images/data.png" style="width:70%;"/>
+                </div>
+                <div class="col-lg-11 col-sm-11 col-md-11 col-sm-11 no-padding">
+                  <div class="headingSpace textLimit" alt="{$ value.display_name $}" title="{$ value.display_name $}" ng-click="gotoEngine('app.services', value.display_name, key, value)">{$ value.display_name $}</div>
+                </div>
+              </div>
+          </div>
+          <div class="card-body">
+              <div class="row">
+                <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="padding-left:0;padding-right:0;">
+                    <!--<div class="textLimit" ng-bind="serviceDescription[key]"></div>-->
+                    <div class="textLimit" alt="{$ value.description $}" title="{$ value.description $}" ng-bind="value.description"></div>
+
+                </div>
+              </div>
+          </div>
+          <div class="card-footer">
+              <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label class="switch">
+                        <input type="checkbox" ng-model="isEnable[key]" ng-click="setServiceStatus(key,value)">
+                        <span class="slider round"></span>
+                        <div class="toggleText" ng-bind="(isEnable[key] == true) ? 'Disable' : 'Enable';" ></div>
+                    </label>
+                  </div>
+                  <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6" ng-click="gotoEngine('app.services', value.display_name, key, value)">
+                      <img src="/app/images/configureService.png" style="width:15px;"/>
+                      <label style="font-size:12px;" class="configure-link">Configure</label>
+                  </div>
+              </div>
+          </div>
+          <!--<div ng-show="showSpinner[key]" class="loading-spiner-holder right ralign-spinner"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i></i></span></div></div>-->
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

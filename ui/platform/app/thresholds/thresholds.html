@@ -1,0 +1,202 @@
+<div class="row minPadding">
+    <div class="col-lg-7 col-sm-7 col-md-7 col-xs-7">
+        <div class="zeroMargin">
+              <div class="dropdown">
+                  <a data-toggle="dropdown" class="noDecoration configureHeading"> domain <b class="caret"></b></a>
+                  <ul class="customdropdown-menu dropdown-menu">
+                      <li>
+                        <a ui-sref="app.domainDashboard"   class="noDecoration">
+                          <img src="/app/images/Domain.png"/>
+                          <span>Domain Configuration</span>
+                        </a>
+                      </li>
+                      <li>
+                          <a class="noDecoration" ui-sref="app.modelDashboard">
+                                <img src="/app/images/model.png"/>
+                                <span>Models</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a class="noDecoration" ui-sref="app.function">
+                            <img src="/app/images/functionIcon.png"/>
+                            <span>Functions</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a ui-sref="app.services" class="noDecoration">
+                              <img src="/app/images/Services-01.png"/>
+                              <span>Service Configuration</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a ui-sref="app.pipeline" class="noDecoration">
+                              <img src="/app/images/pipeline.png"/>
+                              <span>Pipeline Configuration</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a ui-sref="app.sourceConfiguration" class="noDecoration">
+                              <img src="/app/images/sources.png"/>
+                              <span>Sources</span>
+                          </a>
+                      </li>
+                  </ul>
+                  <span style="margin-left: 10px;font-size: 13px;"> > </span>
+                  <span style="margin-left: 10px;font-size: 13px;cursor:pointer;text-decoration:underline;" > Thresholds Defaults</span>
+
+              </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row solution-level-thresholds">
+
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+            <div class="well container-fluid col-lg-6 col-sm-6 col-md-6 col-xs-6" style="padding:5px;background-color: #fff;">
+                <div class="objects-div">
+                    <div class="header-area">
+                        <label>Domain Object Thresholds</label>
+                        <input type="text" class="search-box" placeholder="Search Variables" ng-model="domain-object-searchVariable"/>
+                    </div>
+                    <table class="table-nested">
+                                    <thead>
+                                      <tr style="line-height: 29px;">
+                                        <th>Variable name </th>
+                                        <th class="cell-members" style="text-align: right;">  Datatype  </th>
+                                        <th style="text-align: right;">   Dimension    </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody ng-class="{opened: item.opened}" ng-include="&#39;table_tree.html&#39;" ng-repeat="item in thc.domainObjectsData | filter : domain-object-searchVariable track by $index "></tbody>
+                                  </table>
+                                  <script id="table_tree.html" type="text/ng-template">
+                                      {$ item $}
+                                    <tr ng-class="taggedFlagArr[item.variable_id]?'selected-row':''" ng-init="parentScope = $parent.$parent; initCheckbox(item, parentScope.item)">
+                                      <!--<td class="cell-input">
+                                       <input ng-change="toggleCheckbox(item, parentScope)" ng-model="item.selected" type="checkbox" />
+                                      </td>-->
+                                      <td class="cell-name">
+                                        <div class="indent" style="padding-left: {$ 15*level $}px"></div>
+                                          <span ng-click="item.opened = !item.opened" ng-show="item.opened && item.attributes.length>0"><i class="fa fa-minus-square-o"></i></span>
+                                          <span ng-click="item.opened = !item.opened" ng-show="!item.opened && item.attributes.length>0"><i class="fa fa-plus-square-o"></i></span>
+<!--
+                                         <input ng-model="taggedFlagArr[item.variable_id]" ng-change="selectCaseObject(item, taggedFlagArr[item.variable_id])"  type="checkbox" />
+-->
+                                          {$ item.name $}
+                                      </td>
+                                      <td class="cell-members" style="text-align: right;">
+                                        {$ item.type $}
+                                      </td>
+                                      <td style="text-align: right;padding-right: 4px;">
+                                        {$ item.dimension $}
+                                      </td>
+                                    </tr>
+                                    <tr class="children" ng-if="item.attributes &amp;&amp; item.attributes.length &gt; 0">
+                                      <td colspan="3">
+                                        <table>
+                                          <tbody ng-class="{opened: item.opened}" ng-include="&#39;table_tree.html&#39;" ng-init="level = level + 1" ng-repeat="item in item.attributes"></tbody>
+                                        </table>
+                                      </td>
+                                    </tr>
+                                  </script>
+                    <!--<div class="tablediv">
+                        <table class="table variables-table">
+                        <thead>
+                            <tr>
+                                <th>Variable name</th>
+                                <th style="text-align: right;">Datatype</th>
+                                <th style="text-align: right;">Dimension</th>
+                            </tr>
+                        </thead>
+                        <tbody data-ng-repeat="domainObject in thc.domainObjectsData | filter : domain-object-searchVariable track by $index ">
+                            <tr ng-class=" thc.taggedFlagArr[$index]?'selected-row':''"
+                                ng-style="{ 'border-bottom' : (domainObject.dimension!='Domain Object') ? '1px solid #ddd' : '0px solid #ddd' }">
+                                <td>
+                                    <label class="custom-checkbox">
+                                      <input type="checkbox" id="$index" name="$index" checked="checked"
+                                      ng-model="thc.taggedFlagArr[$index]" ng-change="thc.selectCaseObject(domainObject, thc.taggedFlagArr[$index])">
+                                      <span class="checkmark"></span>
+                                    </label>
+                                    <span class="left-space-24">{$ domainObject.name $}</span>
+
+                                    &lt;!&ndash;<label for="$index">
+                                        <input type="checkbox" id="$index" name="$index"
+                                               ng-model="taggedFlag" ng-change="thc.selectCaseObject(domainObject, taggedFlag)"
+                                               class="ng-valid ng-dirty ng-valid-parse ng-touched"> {$ domainObject.name $}
+                                    </label>&ndash;&gt;
+                                </td>
+                                <td ng-bind="domainObject.type" style="text-align: right;"></td>
+                                <td ng-bind="domainObject.dimension" style="text-align: right;"></td>
+                            </tr>
+                            <tr ng-if="domainObject.dimension=='Domain Object'" style="border-bottom:1px solid #ddd">
+                                <td colspan="3">
+                                &lt;!&ndash;{$ domainObject.attributes | json$}&ndash;&gt;
+                                <json-formatter class="jsonformatter" open="1" json="domainObject.attributes" ng-if="domainObject.attributes!=undefined"></json-formatter>
+                            </td></tr>
+                        </tbody>
+                    </table>
+                    </div>-->
+                </div>
+            </div>
+
+            <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1 arrow-btn-div"></div>
+
+            <div class="well container-fluid col-lg-5 col-sm-5 col-md-5 col-xs-5" style="padding:5px;background-color: #fff;">
+                <div class="objects-div">
+                    <div class="header-area">
+                        <label>Document Object Thresholds</label>
+                        <input type="text" class="search-box" style="width:45%" placeholder="Search Variables" ng-model="document-object-searchVariable"/>
+                    </div>
+                    <div class="tablediv">
+                    <table class="table variables-table">
+                        <thead>
+                            <tr>
+                                <th>Variable name</th>
+                                 <th style="text-align: right;">Datatype</th>
+                                <th style="text-align: right;">Dimension</th>
+                            </tr>
+                        </thead>
+                        <tbody data-ng-repeat="documentObject in thc.documentObjectsData track by $index">
+                            <tr ng-class=" (thc.taggedFlagArr1[$index] && !documentObject.is_default)?'selected-row':''"
+                                ng-style="{ 'border-bottom' : (documentObject.dimension!='Domain Object') ? '1px solid #ddd' : '0px solid #ddd' }">
+                                <td>
+                                    <label class="custom-checkbox">
+                                      <input type="checkbox" id="$index" name="$index" checked="checked"
+                                      ng-model="thc.taggedFlagArr1[$index]" ng-change="thc.selectCaseObjectRtoL(documentObject, thc.taggedFlagArr1[$index])" ng-disabled="documentObject.is_default" >
+                                      <span class="checkmark" ng-class="documentObject.is_default?'disabledVariable':''"></span>
+                                    </label>
+                                    <span class="left-space-24">{$ documentObject.name $}</span>
+
+                                   <!-- <label for="$index">
+                                        <input type="checkbox" id="$index" name="$index"
+                                               ng-model="taggedFlag1" ng-change="thc.selectCaseObjectRtoL(documentObject, taggedFlag1)"
+                                               class="ng-valid ng-dirty ng-valid-parse ng-touched"> {$ documentObject.name $}
+                                    </label>-->
+                                </td>
+                                <td ng-bind="documentObject.type" style="text-align: right;"></td>
+                                <td ng-bind="documentObject.dimension" style="text-align: right;"></td>
+                            </tr>
+                            <tr ng-if="documentObject.dimension=='Domain Object'" style="border-bottom:1px solid #ddd">
+                                <td colspan="3">
+                                <!--{$ domainObject.attributes | json$}-->
+                                <json-formatter class="jsonformatter" open="1" json="documentObject.attributes" ng-if="documentObject.attributes!=undefined"></json-formatter>
+                            </td></tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="margin-top:20px;margin-bottom:20px;">
+             <button type="button" alt="Save Variables"  title="Save Case Objects"
+                      class="btn btn-go btn-custom pull-right"
+             ng-disabled="thc.selectdCaseVariables.length==0"
+             ng-click="thc.saveCaseObjects()">
+              <i class="fa fa-floppy-o"></i> Save</button>
+        </div>
+
+
+
+
+</div>

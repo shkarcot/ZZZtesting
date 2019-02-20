@@ -1,0 +1,445 @@
+<div>
+    <div class="row customNewUnknownFormat" ng-if="showTemplate">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 dashboard-row">
+                        <form  ng-submit="showKnownInfo()">
+                            <div class="form-group">
+                                <label>Template Name</label>
+                                <input type="text" ng-model="ttc.documentTemplate.template_name" class="form-control custom-formControl" placeholder="Template Name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea  rows="4" ng-model="ttc.documentTemplate.description" cols="50" class="form-control custom-formControl" placeholder="Description"></textarea>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <div class="row row-eq-height">
+                                    <div class="input-group custom-inputGroup">
+                                        <div class="row row-eq-height">
+                                            <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2">
+                                                <input type="radio" ng-model="ttc.documentTemplate.template_type" value="unknown_known" id="known" name="optradio" class="custom-radioallign">
+                                            </div>
+                                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                                                <label for="known" class="labelKnown">I know the information present in known sections</label>
+                                                <span class="knownDesc">Create a template by defining sections and map Domain Objects</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <div class="row  row-eq-height">
+                                    <div class="input-group custom-inputGroup">
+                                        <div class="row row-eq-height">
+                                            <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2">
+                                                <input type="radio"  ng-model="ttc.documentTemplate.template_type" value="unknown_unknown" id="unknown" name="optradio" class="custom-radioallign">
+                                            </div>
+                                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                                                <label for="unknown"  class="labelKnown">I don't know the information present in known sections</label>
+                                                <span class="knownDesc">Create a template by choosing Domain Objects</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-custom" type="submit" >
+                                    <img src="/app/images/next.png" style="width:15px;margin-right:10px;"/>
+                                    Next
+                                </button>
+                                <!--<div class="loading-spiner-holder">-->
+                                    <!--<div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving ...</i></span>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            </div>
+                        </form>
+                    </div>
+                </div>
+    <div class="row customNewUnknownFormat" ng-if="showKnownData">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 dashboard-row">
+            <div class="knownDiv">
+               <div class="panel-group" id="SectionsAccordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default" ng-repeat="item in menuItems track by $index">
+                    <div class="panel-heading" role="tab">
+                      <h4 class="panel-title">
+                            <div class="row">
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-6 dashboard-row">
+                                    <span ng-hide= "item.name== 'default'" data-toggle="collapse" href=".{$ item.temp_id $}" data-parent="#SectionsAccordion" aria-expanded="false" aria-controls="{$ item.temp_id $}" style="cursor:pointer;">{$item.name$}</span>
+                                    <span ng-show= "item.name== 'default'" data-toggle="collapse" href=".{$ item.temp_id $}" data-parent="#SectionsAccordion" aria-expanded="false" aria-controls="{$ item.temp_id $}" style="cursor:pointer;font-size:12px;">Define Sections, tables & Map Entities</span>
+                                </div>
+                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-6 text-right">
+                                    <button class="btn btn-add" ng-click="addElement(this,'section')" >
+                                          <img src="/app/images/plus-default.png" style="width:10px;">
+                                        <span>Add Sub Section</span>
+                                      </button>
+                                      <button class="btn btn-add" ng-click="addElement(this,'table')">
+                                          <img src="/app/images/plus-default.png" style="width:10px;">
+                                        <span>Add Table</span>
+                                      </button>
+                                </div>
+                            </div>
+                      </h4>
+                    </div>
+                    <div  class="panel-collapse collapse in {$ item.temp_id $}" role="tabpanel" aria-labelledby="{$ item.temp_id $}">
+                      <div class="panel-body">
+                           <div ng-if="item.elements && item.elements.length" ng-include="'menu.html'"></div>
+                      </div>
+                    </div>
+                  </div>
+               </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="showUnKnownData">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 dashboard-row">
+            <div class="knownDiv" style="margin-top:20px;">
+                <div class="row">
+                    <div>Map Domain Object</div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 dashboard-row">
+                        <div class="form-group">
+
+                            <select class="form-control"
+                                    ng-model="ttc.documentTemplate.domain_mapping"
+                                    >
+                                <option value="" ng-selected="true">Select
+                                    Domain
+                                    Objects
+                                </option>
+                                <option ng-repeat="value in domainObjectsList" value="{$ value $}">{$
+                                    value $}
+                                </option>
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-if="showCreate">
+        <button class="btn btn-custom" ng-click="backInfo()">
+            <img src="/app/images/back.png" style="width: 15px;margin-right: 10px;"/>
+            <span>Back</span>
+        </button>
+        <button class="btn btn-custom" ng-click="saveInfo()">
+            <i class="fa fa-floppy-o"></i>
+            <span>Save</span>
+        </button>
+
+        <button class="btn btn-cancel" ng-click="cancelInfo()">Cancel</button>
+    </div>
+</div>
+<script type="text/ng-template" id="menu.html">
+	<div class="markerForm">
+		<div class="panel-group" style="margin-top:10px;" id="SubSectionAccordion{$ item.temp_id $} " role="tablist" aria-multiselectable="true" >
+			<div class="panel panel-default" ng-repeat="item in item.elements  track by $index" style="border: solid 1px #d8d8d8;padding:10px;" ng-hide="item.is_delete || item.is_deleted">
+				<div class="panel-heading" role="tab" id="SubsectionHeading{$ item.temp_id $}">
+				  <h4 class="panel-title">
+                    <div class="row">
+                        <div class="col-lg-8 col-sm-8 col-md-8 col-xs-8 dashboard-row">
+                            <div ng-if="item.is_deleted==undefined">
+                                <input class="form-control" data-toggle="collapse" href=".{$ item.temp_id $}" type="text" ng-model="item.name"/>
+                            </div>
+                            <div ng-if="item.is_deleted!=undefined">
+                                <a ng-if="!item.name_edit" data-toggle="collapse" href=".{$ item.temp_id $}">{$ item.name $}</a>
+                                <input class="form-control" data-toggle="collapse" href=".{$ item.temp_id $}" type="text" ng-model="item.name" ng-if="item.name_edit"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-3 col-xs-3 dashboard-row text-right" role="button" >
+                          <span class="right" ng-if="item.is_deleted!=undefined">
+                            <button type="button" class="btn btn-success btn-circle"  ng-if="item.name_edit" ng-click="item.name_edit=false">
+                                <i class="fa fa-check"></i>
+                            </button>
+                            <button type="button" class="btn btn-info btn-circle" ng-click="clearEditSectionName(item)"  ng-if="item.name_edit">
+                                <i class="fa fa-times-circle"></i>
+                            </button>
+                            <!--<button type="button" class="btn btn-info btn-circle" ng-if="!item.name_edit"  ng-click="editSectionName(item)">-->
+                                <!--<i class="fa fa-edit"></i>-->
+                            <!--</button>-->
+                            <img class="editImage" src="/app/images/editsec.png" ng-if="!item.name_edit"  ng-click="editSectionName(item)"/>
+
+                            <img class="deleteImage" src="/app/images/delete.png" ng-click="ttc.cancelField(item,'delete')"/>
+                          </span>
+                        </div>
+                    </div>
+				  </h4>
+				</div>
+				<div class="panel-collapse collapse {$ item.temp_id $} cst-panel" role="tabpanel" aria-labelledby="{$ item.temp_id $}">
+				  <div class="panel-body custom-panelBody">
+					<div class="row sectionRow">
+                      <!--<div class="equal-width" ng-click="addElement(this,'section')" ng-if="item.type=='section'">-->
+                          <!--<img src="/app/images/subsection.png"/>-->
+                          <!--<br>-->
+                          <!--<label>Add Sub Section</label>-->
+                      <!--</div>-->
+                      <!--<div class="equal-width" ng-click="addElement(this,'table')" ng-if="item.type=='section'">-->
+                          <!--<img src="/app/images/table.png"/>-->
+                          <!--<br>-->
+                          <!--<label>Table</label>-->
+                      <!--</div>-->
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right">
+                                                <button class="btn btn-add" ng-click="addElement(this,'section')" >
+                                                      <img src="/app/images/plus-default.png" style="width:10px;">
+                                                    <span>Add Sub Section</span>
+                                                  </button>
+                                                  <button class="btn btn-add" ng-click="addElement(this,'table')">
+                                                      <img src="/app/images/plus-default.png" style="width:10px;">
+                                                    <span>Add Table</span>
+                                                  </button>
+                      </div>
+					</div>
+					<div class="row" ng-if="item.type=='section'">
+						<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 text-center">
+							<div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <label style="margin-top:5%;">Section Name</label>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 dashboard-row">
+                                    <div class="headerdiv">
+                                        <input type="text" class="form-control custom-formControl" ng-model="item.name">
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <label style="margin-top:5%;">Possible Headings</label>
+									</div>
+									<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 dashboard-row">
+										<div class="headerdiv">
+											<tags-input placeholder="Possible Headings"
+														ng-model="item.possible_headings"
+														replace-spaces-with-dashes="false"
+														use-strings="true"
+														add-on-comma="false" min-length=1></tags-input>
+										</div>
+									</div>
+                            </div>
+                            <div class="row">
+									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+										Entities
+									</div>
+									<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 dashboard-row">
+										<!--<div class="headerdiv">-->
+											<!--<tags-input placeholder="Table Start Identifier"-->
+														<!--ng-model="item.entities"-->
+														<!--replace-spaces-with-dashes="false"-->
+														<!--use-strings="true"-->
+														<!--add-on-comma="false"></tags-input>-->
+										<!--</div>-->
+
+                                        <multiselect ng-model="item.domain_mapping" class="multiSelect" options="sectionEntitiesList" show-search="true" search-limit="100000">
+                                        </multiselect>
+									</div>
+                            </div>
+						</div>
+                        <div class="panel-footer pull-right" style="background:none;" >
+
+								<button type="button" class="btn button-customCancel"
+										ng-click="ttc.cancelField(item,'cancel')">Cancel
+								</button>
+				         </div>
+					</div>
+
+					  <div ng-if="item.elements && item.elements.length" ng-include="'menu.html'"></div>
+                      <div ng-if="item.type=='table'" ng-include="'table.html'"></div>
+
+
+				  </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--<ul class="multiple-sectionsListStyle">-->
+		<!--<li  class="mutiplesections">-->
+
+			<!--<button  ng-click="addElement(this,'section')" ng-if="item.type=='section'">Subsection</button>-->
+			<!--<button  ng-click="addElement(this,'element')" ng-if="item.type=='section'">Table</button>-->
+			<!--<button   ng-click="addElement(this,'element')"ng-if="item.type=='section'">Field</button>-->
+			<!--&lt;!&ndash;<div ng-if="item.section && item.section.length" ng-include="'menu.html'"></div>&ndash;&gt;-->
+		<!--</li>-->
+	<!--</ul>-->
+
+</script>
+
+<script type="text/ng-template" id="table.html">
+	<div class="TableData">
+			<div class="panel panel-default">
+				<form>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+										Start Identifier
+									</div>
+									<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 dashboard-row">
+										<div class="headerdiv">
+											<tags-input placeholder="Table Start Identifier"
+														ng-model="item.top_keys"
+														replace-spaces-with-dashes="false"
+														use-strings="true"
+														add-on-comma="false" min-length=1></tags-input>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+										End Identifier
+									</div>
+									<div class="col-lg-8 col-sm-8 col-xs-8 col-md-8 dashboard-row">
+										<div class="footerdiv">
+											<tags-input placeholder="Table End Identifier"
+														ng-model="item.bottom_keys"
+														replace-spaces-with-dashes="false"
+														use-strings="true"
+														add-on-comma="false" min-length=1></tags-input>
+										</div>
+									</div>
+								</div>
+								<!--<div>-->
+									<!--<div>-->
+										<!--<input type="text" ng-model="datum.table_name"-->
+											   <!--class="form-control"-->
+											   <!--placeholder="Table Name" required/>-->
+									<!--</div>-->
+								<!--</div>-->
+								<div class="panel">
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<div class="row">
+													<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+														Column Headers
+													</div>
+													<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+														Multi-Column Headers
+													</div>
+												</div>
+											</div>
+											<div class="panel-body">
+												<div class="row" ng-repeat="field in item.headings  track by $index">
+													<div class="col-lg-5 col-sm-5 col-md-5 col-xs-5 dashboard-row" style="position:relative;padding: 0px;">
+														<tags-input placeholder="Column header" ng-model="item.headings[$index].column"
+																				replace-spaces-with-dashes="false"
+																				use-strings="true"
+																				add-on-comma="false" on-tag-added="columnAdded(item)" on-tag-removed="columnAdded(item)" min-length=1></tags-input>
+																		<!--<input type="text" class="form-control table-form" placeholder="Column header" ng-model="field" />-->
+																		<i class="fa fa-times-circle"
+																		   ng-click="removeTableColumn(item,$index)"
+																		   style="    position: absolute;top: -4px;right: -8px;font-size: 18px;"></i>
+													</div>
+													<div class="col-lg-1 col-sm-1 col-xs-1 col-md-1 dashboard-row">
+														<hr>
+													</div>
+													<div class="col-lg-5 col-sm-5 col-xs-5 col-md-5 dashboard-row" ng-hide="field.subColumn">
+														<a ng-click="addSubColumn(item,$index)">Add Multi Column</a>
+													</div>
+													<div class="col-lg-5 col-sm-5 col-xs-5 col-md-5 dashboard-row" ng-if="field.subColumn">
+														<div ng-repeat="subColumn in item.headings[$index].subColumn" style="position:relative">
+															<tags-input placeholder="Sub-column header" ng-model="item.headings[$parent.$index].subColumn[$index]"
+																				replace-spaces-with-dashes="false"
+																				use-strings="true"
+																				add-on-comma="false" on-tag-added="columnAdded(item)" on-tag-removed="columnAdded(item)" min-length=1></tags-input>
+																		<!--<input type="text" class="form-control table-form" placeholder="Column header" ng-model="field" />-->
+																		<i class="fa fa-times-circle"
+																		   ng-click="removeTableSubColumn(item,item.headings[$parent.$index],$index)"
+																		   style="    position: absolute;top: -4px;right: -8px;font-size: 18px;"></i>
+														</div>
+														<span><i class="fa fa-plus" ng-click="addSubColumn(item,$index)"></i></span>
+													</div>
+												</div>
+											</div>
+											<div class="panel-footer">
+												<a class="btnAddcol" ng-click="addTableColumn(item)">
+													<i class="fa fa-plus" alt="Add column"></i>
+													<span>Add column</span>
+												</a>
+											</div>
+										</div>
+									</div>
+								<br>
+
+								<div class="row">
+									<div class="col-lg-12 col-sm-12 col-md-12">
+										<span>No of empty rows to identify end of the table <input
+												class="table-form form-container"
+												placeholder="rows" type="text"
+												ng-model="item.row_gap"/></span>
+									</div>
+								</div>
+								<br>
+								<!--<div class="row">-->
+								<!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 right dashboard-row">-->
+								<!--<button type="button" class="btn btn-primary " ng-click="ttc.addedColumns()">Done</button>-->
+								<!--</div>-->
+								<!--</div>-->
+								<label>
+									Select Domain Object for Table
+								</label>
+
+								<div class="row">
+									<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 ">
+										<select class="form-control"
+												ng-model="item.entity"
+												>
+											<option value="" ng-selected="true">Select
+												Domain Object
+											</option>
+											<option ng-repeat="(d,key) in entitiesList track by $index" value="{$ d $}">{$
+												d $}
+											</option>
+										</select>
+									</div>
+								</div>
+								<br>
+
+								<div class="row" ng-if="item.entity!=''">
+									<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 ">
+										<table class="table  table-bordered">
+											<thead>
+											<th>Column</th>
+											<th>Attribute</th>
+											</thead>
+											<tbody>
+											<tr ng-repeat="keys in item.forDomainMapping track by $index">
+												<td>
+													<p ng-repeat="column in keys.column track by $index" style="color:black">
+														{$ column $}<span
+															ng-if="keys.column.length-1>$index">,</span>
+													</p>
+													<p ng-repeat="column in keys.subColumn[0] track by $index" ng-if="keys.subColumn != undefined">
+														{$ column $}<span
+															ng-if="keys.column.length-1>$index">,</span>
+													</p>
+												</td>
+												<td>
+													<select class="form-control"
+															ng-model="keys.attribute">
+														<option value=""
+																ng-selected="true">
+															Select Attribute
+														</option>
+														<option ng-repeat="d in entitiesList[item.entity] track by $index" value="{$ d $}">
+															{$ d $}
+														</option>
+
+													</select>
+
+												</td>
+											</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="panel-footer" style="background:none;">
+								<button type="button" class="btn btn-custom "
+										ng-click="ttc.addedColumns()"
+										ng-if="item.entity==''">Done
+								</button>
+								<button type="button" class="btn button-customCancel"
+										ng-click="ttc.cancelField(item,'cancel')">Cancel
+								</button>
+							</div>
+						</form>
+			</div>
+	</div>
+</script>

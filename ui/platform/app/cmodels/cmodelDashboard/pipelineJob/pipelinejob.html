@@ -1,0 +1,47 @@
+
+<form name="editForm" role="form"  ng-submit="vm.save()">
+    <div class="loadermodal" ng-show="loaderfeedback"></div>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myJobProcessLabel">Create or Edit Pipeline Job</h4>
+    </div>
+    <div class="modal-body">
+         <div class="form-group">
+            <label class="control-label" for="name">Job Name</label>
+             <input type="text" class="form-control" id="name" name="name" ng-model="vm.xstageconfig.pipejobNm"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="description">Description</label>
+            <input type="text" class="form-control" name="description" id="description" ng-model="vm.xstageconfig.description" />
+        </div>
+        <div class="form-group">
+            <label for="pipNm">Pipeline Name</label>
+             <select class="form-control" name="pipNm" id="pipNm" ng-model="pipeNm">
+                 <option value="">Please select</option>
+                 <option ng-repeat="plist in pipelinelist" value="{$ plist.pipeNm $}" style="height:30px">{$ plist.pipeNm $} - {$ plist.statusCd $}</option>
+
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="status">Status</label>
+             <select class="form-control" name="status" id="status" ng-model="vm.xstageconfig.statusCd" ng-disabled="{$ statusdisable $}">
+                <option value="FINAL">FINAL</option>
+                <option value="SUBMITTED">SUBMITTED</option>
+                 <option value="RUNNING">RUNNING</option>
+                  <option value="ERROR">ERROR</option>
+                  <option value="COMPLETED">COMPLETED</option>
+            </select>
+        </div>
+
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit"  class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

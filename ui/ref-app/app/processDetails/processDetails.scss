@@ -1,0 +1,80 @@
+.claim-bg {
+    padding: 20px;
+    background: #fff;
+}
+
+
+.custom-breadcrumb{
+    margin-top:15px;
+
+    .navigation{
+        color:black;
+        text-decoration:none;
+    }
+    .navigation-next{
+        margin-left:25px;
+    }
+}
+.breadcrumbTitle{
+    color: #00a3e0;
+    text-decoration:none;
+}
+.previewImage{
+
+    width:40px;
+}
+.triangleImage{
+    content:url("./images/triangle.png")
+}
+.prevCursor{
+      cursor: not-allowed;
+      pointer-events: none;
+      color: #d8dada;
+}
+
+.nextCursor{
+      cursor: not-allowed;
+      pointer-events: none;
+      color: #d8dada;
+}
+.pagination {
+    display: inline-block;
+    margin:0px;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: #42abe1;
+    color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+
+.pagination-button{
+    padding:2px !important;
+    background-color:black;
+    border-radius:0px;
+}
+.pagination-textBox{
+    margin-left:5px;
+    margin-right:5px;
+}
+.pagination-text{
+    width: 10%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}

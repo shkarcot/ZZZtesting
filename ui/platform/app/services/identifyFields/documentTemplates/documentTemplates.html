@@ -1,0 +1,227 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:35px;">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel" style="box-shadow:none;">
+        <div class="panel-heading" role="tab" id="headingOne" style="background-color: #e8f7fd;padding:15px;border-bottom:1px solid #dddddd;">
+          <div class="panel-title">
+            <a role="button" class="titleColor" ng-click="showTemplate=true" data-toggle="collapse" data-parent="#accordion" href=".collapseOne" aria-expanded="true" aria-controls="collapseOne" style="padding-left: 10px;color: #00a3e0;font-size: 15px;text-decoration:none;">
+              <i class="more-less fa fa-plus-square-o" style="float: right;margin-top: 5px;"></i>
+              Add Template
+            </a>
+            <a role="button" class="titleColor btn-theam" ng-click="showTemplate=false" data-toggle="collapse" data-parent="#accordion" href=".collapseTwo" aria-expanded="true" aria-controls="collapseTwo" style="padding-left: 10px;font-size: 15px;text-decoration:none;">
+              Template Rules
+            </a>
+          </div>
+        </div>
+        <div class="panel-collapse collapse collapseOne in" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body" style="border-bottom:1px solid #ddd;border-top:none;">
+            <form class="form-horizontal" validate-form>
+              <div class="row">
+                <div class="col-lg-5 col-sm-5 col-md-5">
+                  <input type="text" class="form-control" placeholder="Name" ng-model="dtc.fileName" required>
+                  <div ng-show="dtc.showdupMess" style="color:red">{$ dtc.dupNameMessage $}</div>
+                </div>
+                <div class="col-lg-3 col-sm-3 col-md-3">
+                   <p ng-show="dtc.browseName!=''" style="margin-top: 8px;">File: {$ dtc.browseName $} </p>
+                   <p ng-show="dtc.browseName==''" style="margin-top: 8px;">File: Browse to select </p>
+                </div>
+                <div class="col-lg-4 col-sm-4 col-md-4 right1" ng-show="!dtc.display">
+                  <!--<button class="btn" ngf-select ng-model="dicFile" name="file" ngf-change="uploadDic(dicFile)" type="button" style="display:inline;background-color:#ededed;color:#5d5d5d;">Browse</button>-->
+
+                  <button class="btn button-primary ng-click-active" type="button" ng-click="dtc.openModal('modal')">Browse</button>
+                </div>
+                <div class="col-lg-4 col-sm-4 col-md-4 right1" ng-show="dtc.display">
+                  <!--<button class="btn" ngf-select ng-model="dicFile" name="file" ngf-change="uploadDic(dicFile)" type="button" style="display:inline;background-color:#ededed;color:#5d5d5d;">Browse</button>-->
+                  <button class="btn btn-default pull-right ng-click-active" type="button" ng-click="dtc.openModal('modal')">Change</button>
+                  <button class="btn button-primary ng-click-active" type="submit" ng-click="dtc.openModal('submit')" ng-disabled="dtc.isDisable">Save</button>
+
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="panel-collapse collapse collapseTwo" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body" style="border-bottom:1px solid #ddd;border-top:none;">
+            <div class="row" ng-show="ruleListShow">
+              <div class="col-sm-12">
+                <!--<div style="padding-left:1em">-->
+                  <!--<div style="padding-left:1em">-->
+                    <!--<div class="rulzAddCard">-->
+                      <!--<i class="fa fa-ellipsis-v ellipsisFont" aria-hidden="true"></i>-->
+                      <!--<i class="fa fa-ellipsis-v ellipsisFont" aria-hidden="true"></i>-->
+                      <!--<span class="newRuleClass">Create New Rule</span>-->
+                    <!--</div>-->
+                  <!--</div>-->
+                <!--</div>-->
+                <ol type="1" style="padding-left:1em">
+                  <li style="padding-left:1em" ng-repeat="data in dtc.documentsList">
+                    <div class="rulzCard" ng-click="documentSelect($index)">
+                      <i class="fa fa-ellipsis-v ellipsisFont" aria-hidden="true"></i>
+                      <i class="fa fa-ellipsis-v ellipsisFont" aria-hidden="true"></i>
+                      <span style="padding-left:10px;font-size:16px;">{$ data.form_type $}</span>
+                      <i class="fa fa-pencil-square-o ellipsisFont pull-right" aria-hidden="true"></i>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+            </div>
+            <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content contentHeight">
+                  <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <img src="{$ selectedImageUrl $}" class="imagepreview" style="width: 100%;" >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <form ng-show="!ruleListShow" ng-submit="saveTemplateRules()">
+              <div class="form-group">
+                <label for="formSelect" style="padding-right:15px;">CLASSIFY AS</label>
+                <select class="form-control rulesSelectBack" ng-model="documentIndex" ng-change="documentSelect(documentIndex)" id="formSelect" style="display:inline;width: 25%;">
+                  <option value="">Select Template</option>
+                  <option ng-repeat="data in dtc.documentsList" value="{$ $index $}">{$ data.form_type $}</option>
+                </select>
+                <a class="viewImageClass" data-toggle="modal" data-target="#imagemodal">View Image</a>
+              </div>
+              <div ng-repeat="rules in rulesObj track by $index" ng-init="selectedButton[$index] = rulesObj[$index+1].condition">
+                <div class="row" ng-if="$index != 0">
+                  <div class="col-sm-12 paddingClass">
+                    <div class="fontStyle" ng-class="{'hr-sect': rules.condition == 'AND'}">{$ rules.condition $}</div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-2 paddingClass">
+                    <select class="form-control rulesSelectBack" ng-model="rulesObj[$index].content" required>
+                      <option>Content</option>
+                      <option>Filename</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-2 paddingClass">
+                    <select class="form-control rulesSelectBack" ng-model="rulesObj[$index].contains" required>
+                      <option>Contains</option>
+                      <option>Does Not Contain</option>
+                      <option>Matches Regex</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-5 paddingClass">
+                    <input type="text" class="form-control" ng-model="rulesObj[$index].providerValue" id="inputPassword" placeholder="Provider" required>
+                  </div>
+                  <div class="btn-group col-sm-3 paddingClass">
+                    <button type="button" class="btn btn-default" ng-click="switchCondition('DEL',$index)">-</button>
+                    <button type="button" class="btn btn-default" ng-click="switchCondition('OR',$index)" ng-class="{'buttonActive': 'OR'== selectedButton[$index]}">OR</button>
+                    <button type="button" class="btn btn-default" ng-click="switchCondition('AND',$index)" ng-class="{'buttonActive': 'AND'== selectedButton[$index]}">AND</button>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12" style="margin-top:5px">
+                  <p class="error">{$ errorInRule $}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12 paddingClass">
+                  <br>
+                  <button type="submit" class="btn btn-default pull-right">DONE</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div id="myModal"  class="modal fade " role="dialog">
+          <div class="modal-dialog cst-modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="row">
+                      <h3>Upload a new file:</h3>
+                      <div class="btn" style="background-color:transparent;border:1px solid #ddd;">
+                        <input class="hide_file" ngf-select ng-model="dtc.dicFile" name="file" ngf-change="dtc.uploadDic(dtc.dicFile)" type="file">
+                          <span>Choose a file form your computer</span>
+                          <p>&nbsp;</p>
+                          <i class="fa fa-plus" style="font-size:35px;"></i>
+                          <p>&nbsp;</p>
+                        </input>
+                      </div>
+
+                      <div ng-show="dtc.browseFileError" style="color:red">It accepts only jpeg,jpg,png</div>
+                    </div>
+                  </div>
+                  <div class="col-lg-8 col-sm-8 col-md-8" style="background-color:#efefef;overflow-x:scroll;" ng-show="dtc.heldDocuments.length>0">
+                    <h3 ng-if="dtc.heldDocuments.length>=20">Latest 20 held documents</h3>
+                    <h3 ng-if="dtc.heldDocuments.length<20">Available {$dtc.heldDocuments.length$} held document<span ng-if="dtc.heldDocuments.length>1">s</span></h3>
+
+                    <div class="DocumentList">
+                      <ul class="list-inline">
+                          <li class="DocumentItem" ng-repeat="held in dtc.heldDocuments" >
+                            <div style="position: relative;" ng-click="dtc.removeHeldDocument(held)">
+                              <i class="fa fa-trash" style="padding-top: 3px;position: absolute;right: -5px;top: -10px;cursor: pointer;"></i>
+                            </div>
+                             <img src="/static{$ held.url $}" class="disp" ng-click="dtc.sendDocument(held)">
+                          </li>
+
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" ng-show="showTemplate">
+  <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 ">
+    <div class="row panel panel-cst">
+      <table class="table table-bordered table-scroll">
+        <thead class="tableHeading">
+          <tr>
+            <th ng-repeat="(i,th) in head" ng-class="selectedCls(i)" ng-click="changeSorting(i)">{$th$}</th>
+          </tr>
+        </thead>
+        <tbody  ng-show="dtc.documentsList.length==0">
+          <tr>
+            <td colspan="4" class="DocumentBody">
+              <div class="alert alert-danger custom-alert">
+                No Documents
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <tbody>
+          <tr dir-paginate="data in dtc.documentsList | itemsPerPage:10"  total-items="dtc.totalRecords" current-page="vm.reqForDocumentList.page_no" pagination-id="branchPagination">
+            <td class="clicklink"><span ng-click="dtc.goTo(data)" style="cursor:pointer">{$ data.form_type $}</span></td>
+            <td>{$ data.created_ts $}</td>
+            <td>{$ data.modified_ts $}</td>
+            <td class="clicklink " ng-click="dtc.deleteRecord(data)"><i class="fa fa-trash"></i></td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="float:right;">
+          <!--total-items="40"-->
+          <dir-pagination-controls max-size="10" direction-links="true" pagination-id="branchPagination" boundary-links="true" on-page-change="dtc.onchangePage(newPageNumber, oldPageNumber)" ></dir-pagination-controls>
+      </div>
+    </div>
+  </div>
+
+</div>

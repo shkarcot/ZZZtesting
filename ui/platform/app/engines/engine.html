@@ -1,0 +1,49 @@
+<div class="row bodycontent-margin">
+  <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+
+    <div id="engineslist" class="col-lg-2 col-md-2 col-sm-2 engines-listbox-margin">
+        <div class="panel-body bg-div">
+          <ul class="custom-list">
+            <li class="list-style" ng-class="selectActive['NLP']" ng-click="setActive('NLP')"  ui-sref="app.engineslist.NLP">
+              <span>NLP</span>
+            </li>
+            <li class="list-style" ng-class="selectActive['Context']" ng-click="setActive('Context')">
+              <span style="color: #bdb5b5;">Context</span>
+            </li>
+            <li class="list-style" ng-class="selectActive['Learning']" ng-click="setActive('Learning')">
+              <span style="color: #bdb5b5;">Learning</span>
+            </li>
+            <li class="list-style" ng-class="selectActive['Service Catalog']" ng-click="setActive('Service Catalog')" ui-sref="app.engineslist.ServiceCatalog">
+              <span>Service Catalog</span>
+            </li>
+            <li class="list-style" ng-class="selectActive['Insights']" ng-click="setActive('Insights')" ui-sref="app.engineslist.Insights">
+              <span>Insights</span>
+            </li>
+            <li class="list-style" ng-class="selectActive['Actions']" ng-click="setActive('Actions')">
+              <span style="color: #bdb5b5;">Actions</span>
+            </li>
+            <li class="list-style" ng-class="selectActive['Extraction']" ng-click="setActive('Extraction')" ui-sref="app.engineslist.Extraction">
+              <span>Extraction</span>
+            </li>
+            <li class="list-style" ng-class="selectActive['Outcomes']" ng-click="setActive('Outcomes')">
+              <span style="color: #bdb5b5;">Outcomes</span>
+            </li>
+            <li class="list-style" ng-class="selectActive['Notifications']" ng-click="setActive('Notifications')">
+              <span style="color: #bdb5b5;">Notifications</span>
+            </li>
+            <li class="list-style" ng-class="selectActive['Scheduling']" ng-click="setActive('Scheduling')">
+              <span style="color: #bdb5b5;">Scheduling</span>
+            </li>
+          </ul>
+        </div>
+    </div>
+
+    <div class="col-lg-10 col-md-10 col-sm-10 bodycontent-rightpadding-zero">
+
+
+      <div ui-view="engineContent" class="engineContent"></div>
+
+    </div>
+
+  </div>
+</div>

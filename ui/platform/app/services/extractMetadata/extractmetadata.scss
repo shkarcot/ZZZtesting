@@ -1,0 +1,18 @@
+.clear{clear:both;}
+.breadcrumb .firstlevel{
+    color: #25aae1;
+    cursor:pointer;
+ }
+#extractmetadata-tabs{
+    margin-top: 10px;
+
+    #engine-tabs .nav-tabs > li:first-child > a {
+      width:180px;
+    }
+    #engine-tabs .nav-tabs > li:nth-child(4) > a {
+      width:130px;
+    }
+    #engine-tabs .tab-content > .tab-pane{
+        min-height:400px;
+    }
+}

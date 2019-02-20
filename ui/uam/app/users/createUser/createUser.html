@@ -1,0 +1,70 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+<div class="createUser">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 user-desc">
+        <label class="user-text"><a ui-sref="app.users">USERS</a></label><span> > </span><span class="user-text">Create a new user</span>
+      </div>
+    </div>
+     <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 user-creation">
+        <label>Create new user</label>
+      </div>-->
+      <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 creation-section">
+        <form ng-submit="create()">
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 form-group">
+              <label>User name</label>
+              <input type="text" class="form-control" placeholder="User name" ng-model="config.userName" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 form-group">
+              <label>Password</label>
+              <input type="password" class="form-control" placeholder="Password" ng-model="config.password" ng-disabled="id!='new'" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 form-group">
+              <label>Confirm password</label>
+              <input type="password" class="form-control" placeholder="Confirm password" ng-model="config.confirmPassword" ng-disabled="id!='new'" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 form-group">
+              <label>Solution</label>
+              <multiselect ng-model="config.solutions" id="multiSelectSolution" class="multiSelect" options="solutionsList"  show-search="true" search-limit="100000" id-prop="solution_id" display-prop="solution_name">
+              </multiselect>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 form-group">
+              <label>Role</label>
+              <multiselect ng-model="config.roles" id="multiSelectUserRoles" class="multiSelect" options="userRoles"  show-search="true" search-limit="100000" id-prop="id" display-prop="name">
+              </multiselect>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 form-group btn-custom-group">
+              <button class="btn btn-custom-create" type="submit">
+                <img src="./app/images/save_white.png" class="img-responsive img-save"> Save
+              </button>
+               <button class="btn btn-custom-cancel" ui-sref="app.users">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+</div>

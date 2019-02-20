@@ -1,0 +1,224 @@
+.modelDetailsClass{
+    .modelNameStyle{
+        color: #7d7d7d;
+        font-weight: 500;
+        font-size: 14px;
+    }
+
+    .algoStyle{
+        color: #b9b9b9;
+        font-weight: 500;
+    }
+
+    .activeVerHead{
+        font-weight: 600;
+        color: #676767;
+    }
+
+    .activeVerStyle{
+        font-size: 16px;
+        color: #676767;
+        font-weight: 600;
+    }
+
+    .posNegValhead{
+        color: #848587;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .tpClass{
+        width: 40%;
+        padding: 6px;
+        text-align: center;
+        background: #eaf9d4;
+        border: 1px solid #7ed321;
+        font-weight: 600;
+    }
+
+    .fnClass{
+        width: 40%;
+        padding: 6px;
+        text-align: center;
+        background: #f6c2bd;
+        border: 1px solid #e49b94;
+        font-weight: 600;
+    }
+
+    .fpClass{
+        width: 40%;
+        padding: 6px;
+        text-align: center;
+        background: #f6c2bd;
+        border: 1px solid #e49b94;
+        font-weight: 600;
+    }
+
+    .tnClass{
+        width: 40%;
+        padding: 6px;
+        text-align: center;
+        background: #eaf9d4;
+        border: 1px solid #7ed321;
+        font-weight: 600;
+    }
+
+    .metricValueStyle{
+        color: #7d7d7d;
+        font-size: 19px;
+        font-weight: 600;
+    }
+
+    .datasetNameClass{
+        color: #4a90e2;
+        font-size: 15px;
+    }
+
+    .timeClass{
+        font-weight: 500;
+        color: black;
+    }
+
+    .btn-view-custom{
+        color: white;
+        background: #040c0f;
+        border-radius: 18px;
+        padding: 8px 18px 8px 18px;
+        font-weight: 600;
+    }
+
+    .wellClass{
+        background: #f5faff;
+        padding-left: 25px;
+        padding-right: 25px;
+        border: 1px solid #c8cccf;
+        border-radius: 0px;
+    }
+
+    .evaluateHeadStyle{
+        font-size: 12px;
+        color: #b9b9b9;
+        font-weight: 500;
+    }
+
+    .evaluateValueStyle{
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .taggedCheckbox{
+        margin-top: 4px;
+        margin-bottom: 5px;
+        padding-right: 22px;
+    }
+
+    .testVersionClass{
+        background: #e9ebee;
+        text-align: center;
+    }
+
+    .trainVersionLabel{
+        font-size: 13px;
+        color: #757575;
+        font-weight: 600;
+    }
+
+    .custom-formControl{
+      border-radius: 0px !important;
+      border: solid 1px rgba(51, 170, 227, 0.32);
+      box-shadow: none;
+    }
+
+    .customDropdown{
+        float: right;
+        background: none;
+        border: none;
+        font-size: 10px;
+        font-weight: 600;
+    }
+
+    .customDropdown:focus{
+        border: none;
+    }
+
+    .editModelHead{
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .evaluateVerHead{
+        text-align: center;
+        font-weight: 600;
+        font-size: 15px;
+        background: #fcfcfc !important;
+        padding: 10px;
+    }
+
+    .loader {
+      border: 4px solid #c3bbbb;
+      border-radius: 50%;
+      border-top: 4px solid #6d6767;
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      left: 45%;
+      top: 20%;
+      background-color: white;
+      -webkit-animation: spin 1s linear infinite; /* Safari */
+      animation: spin 1s linear infinite;
+    }
+
+    .confTableStyle > tbody > .confHeadClass > td{
+        border: 1px solid grey !important;
+        background: white !important;
+        font-weight: bold;
+        font-size: 15px;
+        text-align: center;
+    }
+
+    .columnHeadAlign{
+        font-weight: bold;
+        font-size: 15px;
+        text-align: center;
+    }
+
+    .confTableStyle > tbody > tr > td{
+        border: 1px solid grey !important;
+        text-align: center;
+    }
+
+    .confTableStyle > tbody > tr{
+        border-bottom: none !important;
+    }
+
+    .verticalHead{
+
+    }
+
+    .verticalHeadText{
+
+    }
+    .customPrevVersion{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 18px;
+        font-weight: 500;
+    }
+
+}
+.modelsTable{
+    tbody {
+        display:block;
+        height:300px;
+        overflow:auto;
+    }
+    thead, tbody tr {
+        display:table;
+        width:100%;
+        table-layout:fixed;
+    }
+    thead {
+        width: calc( 100% - 1em )
+    }
+}

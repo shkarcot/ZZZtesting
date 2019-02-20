@@ -1,0 +1,33 @@
+.sourceConfig{
+    .no-padding{
+        padding:0px !important;
+    }
+    .no-margin{
+        margin:0px !important;
+    }
+    #markerForm-tabs{
+        .nav-tabs{
+            border-bottom: 1px solid #c5dcf6 !important;
+            li{
+                a{
+                    line-height: 1 !important;
+                    width:auto !important;
+                }
+            }
+        }
+        .tab-pane{
+            padding:13px 0;
+        }
+    }
+}
+
+.sidebar-overlay {
+  background: gray;
+  opacity: 0.5;
+  height: 100%;
+  left: -100%;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+  top:0;
+}

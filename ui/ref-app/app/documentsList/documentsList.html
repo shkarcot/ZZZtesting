@@ -1,0 +1,329 @@
+
+<!--<div class="custom-header">-->
+    <!--<div class="row">-->
+      <!--<div class="col-lg-8 col-sm-8 col-md-8">-->
+        <!--<div class="btn-group">-->
+          <!--&lt;!&ndash;<span class="documentsList-Text">Type</span>&ndash;&gt;-->
+          <!--&lt;!&ndash;<select class="select-style form-control" ng-model="selectedObj.val"  ng-change="changeReview(selectedObj.val)">&ndash;&gt;-->
+              <!--&lt;!&ndash;<option value="processed" ng-selected="true">All Documents</option>&ndash;&gt;-->
+
+            <!--&lt;!&ndash;</select>&ndash;&gt;-->
+            <!--<ul class="nav nav-tabs nav-reviewTabs" style="padding-top:10px;">-->
+                <!--<li ng-class="filter_obj.doc_state=='classified'?'active':''"><a data-toggle="tab" href=".classified" ng-click="changeDocState('classified')">Need Classification</a></li>-->
+                <!--<li ng-class="filter_obj.doc_state=='processing'?'active':''"><a data-toggle="tab" href=".processing" ng-click="changeDocState('processing')">Processing</a></li>-->
+                <!--<li ng-class="filter_obj.doc_state=='processed'?'active':''"><a data-toggle="tab" href=".processed" ng-click="changeDocState('processed')">Processed</a></li>-->
+                <!--<li ng-class="filter_obj.doc_state=='reviewed'?'active':''"><a data-toggle="tab" href=".reviewed" ng-click="changeDocState('reviewed')">Reviewed</a></li>-->
+
+              <!--</ul>-->
+        <!--</div>-->
+
+        <!--<div class="btn-group header-Style">-->
+          <!--<p class="documentsList-Text">Filter by</p>-->
+          <!--<select class="select-smallStyle form-control" ng-model="filter_obj.template_name" ng-change="getDocumentsList()">-->
+            <!--<option ng-repeat="(key,value) in listOfDocumentTypes track by $index" ng-selected="documentType.val == value.template_name" value="{$  value.template_name $}">{$  value.template_name $}</option>-->
+          <!--</select>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="col-lg-4 col&#45;&#45;sm-4 col-md-4">-->
+        <!--<div class="input-group topSpace">-->
+          <!--<input type="search" ng-model="filter_obj.search_string"  class="newcustom-form form-control" placeholder="Search by" ng-keyup="keyEnter($event)">-->
+            <!--<span class="glyphicon glyphicon-remove-circle searchclear" ng-click="clearSearch()"></span>-->
+            <!--&lt;!&ndash;ng-keypress="keyEnter($event)"&ndash;&gt;-->
+          <!--<span class="input-group-btn">-->
+            <!--<button class="btn btn-newStyle" ng-click="getDocumentsList()" type="button"><i class="fa fa-search"></i></button>-->
+          <!--</span>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!--<div class="tab-content">-->
+        <!--<div class="tab-pane fade classified" ng-class="filter_obj.doc_state=='classified'?'in active':''">-->
+       <!--<div class="row">-->
+    <!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">-->
+        <!--<div class="table-scroll" ng-show="showlist" style="margin-top:15px;">-->
+            <!--<table class="table table-responsive table-hovered">-->
+                <!--<thead class="tableHeading">-->
+                <!--<th ng-repeat="heading in processListData.config" ng-click="changeSorting(heading.key)">{$ heading.value $} <div class="alignSort" ng-class="selectedCls(heading.key)"></div></th>-->
+                <!--</thead>-->
+                <!--<tbody dir-paginate="row in processListDataList |itemsPerPage:filter_obj.no_of_recs" total-items="filter_obj.totalRecords" current-page="filter_obj.page_no" pagination-id="branchPagination"  style="cursor:pointer">-->
+                    <!--<tr ng-click="goToClassification(row)">-->
+                        <!--<td ng-repeat="heading in processListData.config" >-->
+                          <!--&lt;!&ndash;<span ng-show="row.child_documents.length>0 && $index==0">-->
+                            <!--<i ng-show="row.isExpanded" class="fa fa-chevron-down" ng-click="getProcessListDetailsForEmail(row,'parent',$index,$event)"></i>-->
+                            <!--<i ng-show="!row.isExpanded" class="fa fa-chevron-right" ng-click="getProcessListDetailsForEmail(row,'parent',$index,$event)"></i>-->
+                          <!--</span>&ndash;&gt;-->
+                            <!--<span>{$ row[heading.key] $}</span>-->
+                          <!--<span ng-show="row.child_documents.length>0 && $index==0">-->
+                            <!--<i class="fa fa-cog fa-spin  fa-fw margin-bottom" ng-show="row.spinner"aria-hidden="true"></i>-->
+
+                          <!--</span>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+
+                        <!--<tr ng-repeat="dummy in row.child_documents" ng-show="row.isExpanded && row.child_documents.length>0 " ng-click="getProcessListDetails(dummy,'child',$parent.$index)" style="    border: 1px solid black;-->
+    <!--background-color: #ebedef;">-->
+                            <!--<td ng-repeat="heading in processListData.config" >-->
+                                <!--<span>{$ dummy[heading.key] $}</span>-->
+                            <!--</td>-->
+
+                        <!--</tr>-->
+
+                <!--</tbody>-->
+            <!--</table>-->
+            <!--<div class="right">-->
+                <!--<dir-pagination-controls max-size=filter_obj.no_of_recs direction-links="true" pagination-id="branchPagination" boundary-links="true" on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+    <!--</div>-->
+    <!--<div class="tab-pane fade processing" ng-class="filter_obj.doc_state=='processing'?'in active':''">-->
+       <!--<div class="row">-->
+    <!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">-->
+        <!--<div class="table-scroll" ng-show="showlist" style="margin-top:15px;">-->
+            <!--<table class="table table-responsive table-hovered">-->
+                <!--<thead class="tableHeading">-->
+                <!--<th ng-repeat="heading in processListData.config" ng-click="changeSorting(heading.key)">{$ heading.value $} <div class="alignSort" ng-class="selectedCls(heading.key)"></div></th>-->
+                <!--</thead>-->
+                <!--<tbody dir-paginate="row in processListDataList |itemsPerPage:filter_obj.no_of_recs" total-items="filter_obj.totalRecords" current-page="filter_obj.page_no" pagination-id="branchPagination"  style="cursor:pointer">-->
+                    <!--<tr ng-click="getProcessListDetails(row,'parent',$index)">-->
+                        <!--<td ng-repeat="heading in processListData.config" >-->
+                          <!--<span ng-show="row.child_documents.length>0 && $index==0">-->
+                            <!--<i ng-show="row.isExpanded" class="fa fa-chevron-down" ng-click="getProcessListDetailsForEmail(row,'parent',$index,$event)"></i>-->
+                            <!--<i ng-show="!row.isExpanded" class="fa fa-chevron-right" ng-click="getProcessListDetailsForEmail(row,'parent',$index,$event)"></i>-->
+                          <!--</span>-->
+                            <!--<span>{$ row[heading.key] $}</span>-->
+                          <!--<span ng-show="row.child_documents.length>0 && $index==0">-->
+                            <!--<i class="fa fa-cog fa-spin  fa-fw margin-bottom" ng-show="row.spinner"aria-hidden="true"></i>-->
+
+                          <!--</span>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+
+                        <!--<tr ng-repeat="dummy in row.child_documents" ng-show="row.isExpanded && row.child_documents.length>0 " ng-click="getProcessListDetails(dummy,'child',$parent.$index)" style="    border: 1px solid black;-->
+    <!--background-color: #ebedef;">-->
+                            <!--<td ng-repeat="heading in processListData.config" >-->
+                                <!--<span>{$ dummy[heading.key] $}</span>-->
+                            <!--</td>-->
+
+                        <!--</tr>-->
+
+                <!--</tbody>-->
+            <!--</table>-->
+            <!--<div class="right">-->
+                <!--<dir-pagination-controls max-size=filter_obj.no_of_recs direction-links="true" pagination-id="branchPagination" boundary-links="true" on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+    <!--</div>-->
+    <!--<div class="tab-pane fade  processed" ng-class="filter_obj.doc_state=='processed'?'in active':''">-->
+        <!--<div class="row">-->
+    <!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">-->
+        <!--<div class="table-scroll" ng-show="showlist" style="margin-top:15px;">-->
+            <!--<table class="table table-responsive table-hovered">-->
+                <!--<thead class="tableHeading">-->
+                <!--<th ng-repeat="heading in processListData.config" ng-click="changeSorting(heading.key)">{$ heading.value $} <div class="alignSort" ng-class="selectedCls(heading.key)"></div></th>-->
+                <!--</thead>-->
+                <!--<tbody dir-paginate="row in processListDataList |itemsPerPage:filter_obj.no_of_recs | filter:searchValue" total-items="filter_obj.totalRecords" current-page="filter_obj.page_no" pagination-id="branchPagination"  style="cursor:pointer">-->
+                    <!--<tr ng-click="getProcessListDetails(row,'parent',$index)">-->
+                        <!--<td ng-repeat="heading in processListData.config" >-->
+                          <!--<span ng-show="row.child_documents.length>0 && $index==0">-->
+                            <!--<i ng-show="row.isExpanded" class="fa fa-chevron-down" ng-click="getProcessListDetailsForEmail(row,'parent',$index,$event)"></i>-->
+                            <!--<i ng-show="!row.isExpanded" class="fa fa-chevron-right" ng-click="getProcessListDetailsForEmail(row,'parent',$index,$event)"></i>-->
+                          <!--</span>-->
+                            <!--<span>{$ row[heading.key] $}</span>-->
+                          <!--<span ng-show="row.child_documents.length>0 && $index==0">-->
+                            <!--<i class="fa fa-cog fa-spin  fa-fw margin-bottom" ng-show="row.spinner"aria-hidden="true"></i>-->
+
+                          <!--</span>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+
+                        <!--<tr ng-repeat="dummy in row.child_documents" ng-show="row.isExpanded && row.child_documents.length>0 " ng-click="getProcessListDetails(dummy,'child',$parent.$index)" style="    border: 1px solid black;-->
+    <!--background-color: #ebedef;">-->
+                            <!--<td ng-repeat="heading in processListData.config" >-->
+                                <!--<span>{$ dummy[heading.key] $}</span>-->
+                            <!--</td>-->
+
+                        <!--</tr>-->
+
+                <!--</tbody>-->
+            <!--</table>-->
+            <!--<div class="right">-->
+                <!--<dir-pagination-controls max-size=filter_obj.no_of_recs direction-links="true" pagination-id="branchPagination" boundary-links="true" on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+    <!--</div>-->
+    <!--<div class="tab-pane fade reviewed" ng-class="filter_obj.doc_state=='reviewed'?'in active':''">-->
+         <!--<div class="row">-->
+    <!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">-->
+        <!--<div class="table-scroll" ng-show="showlist" style="margin-top:15px;">-->
+            <!--<table class="table table-responsive table-hovered">-->
+                <!--<thead class="tableHeading">-->
+                <!--<th ng-repeat="heading in processListData.config" ng-click="changeSorting(heading.key)">{$ heading.value $} <div class="alignSort" ng-class="selectedCls(heading.key)"></div></th>-->
+                <!--</thead>-->
+                <!--<tbody dir-paginate="row in processListDataList |itemsPerPage:filter_obj.no_of_recs | filter:searchValue" total-items="filter_obj.totalRecords" current-page="filter_obj.page_no" pagination-id="branchPagination"  style="cursor:pointer">-->
+                    <!--<tr ng-click="getProcessListDetails(row,'parent',$index)">-->
+                        <!--<td ng-repeat="heading in processListData.config" >-->
+                          <!--<span ng-show="row.child_documents.length>0 && $index==0">-->
+                            <!--<i ng-show="row.isExpanded" class="fa fa-chevron-down" ng-click="getProcessListDetailsForEmail(row,'parent',$index,$event)"></i>-->
+                            <!--<i ng-show="!row.isExpanded" class="fa fa-chevron-right" ng-click="getProcessListDetailsForEmail(row,'parent',$index,$event)"></i>-->
+                          <!--</span>-->
+                            <!--<span>{$ row[heading.key] $}</span>-->
+                          <!--<span ng-show="row.child_documents.length>0 && $index==0">-->
+                            <!--<i class="fa fa-cog fa-spin  fa-fw margin-bottom" ng-show="row.spinner"aria-hidden="true"></i>-->
+
+                          <!--</span>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+
+                        <!--<tr ng-repeat="dummy in row.child_documents" ng-show="row.isExpanded && row.child_documents.length>0 " ng-click="getProcessListDetails(dummy,'child',$parent.$index)" style="    border: 1px solid black;-->
+    <!--background-color: #ebedef;">-->
+                            <!--<td ng-repeat="heading in processListData.config" >-->
+                                <!--<span>{$ dummy[heading.key] $}</span>-->
+                            <!--</td>-->
+
+                        <!--</tr>-->
+
+                <!--</tbody>-->
+            <!--</table>-->
+            <!--<div class="right">-->
+                <!--<dir-pagination-controls max-size=filter_obj.no_of_recs direction-links="true" pagination-id="branchPagination" boundary-links="true" on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+    <!--</div>-->
+
+<!--</div>-->
+
+
+
+<section>
+		<div class="container-fluid no-padding listPage">
+			<div class="row row-eq-height">
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding" id="leftMenu" style="background-color:white;">
+
+                        <ul class="nav nav-pills nav-stacked nav-reviewTabs">
+                            <li ng-repeat="list in dlc.tabData" ng-class="filter_obj.doc_state==list.state?'active':''"><a ng-click="changeDocState(list.state)">{$ list.display $}</a></li>
+                        </ul>
+
+                        <!--<button class="tab btn btn-block" data-target="#demo" data-toggle="collapse" id="tabLinks">To be Classified</button><br>-->
+                        <!--<button class="tab btn btn-block" id="tabLinks">Processing</button><br>-->
+                        <!--<button class="tab btn btn-block" id="tabLinks">Extraction</button><br>-->
+                        <!--<button class="tab btn btn-block" id="tabLinks">post processing</button><br>-->
+                        <!--<button class="tab btn btn-block" id="tabLinks">Final QA</button><br>-->
+				</div>
+				<div class="col-lg-10 col-sm-10 col-md-10 col-xs-10 description no-padding" id="rightData">
+                    <div class="row">
+                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                            <h4 ui-sref="app.newDashboard" style="font-size: 14px;color: #7d7d7d;text-decoration: underline;">Home</h4>
+                        </div>
+                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                            <div class="input-group topSpace">
+                                <input type="search" ng-model="filter_obj.search_string"  class="form-control" placeholder="Search by" ng-keyup="keyEnter($event)" style="border:none;">
+                                <!--<span class="glyphicon glyphicon-remove-circle searchclear" ng-click="clearSearch()"></span>-->
+
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-newStyle" ng-click="getDocumentsList()" type="button"><i class="fa fa-search"></i></button>
+                                  </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active processed" >
+                            <div class="row">
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                    <div class="table-scroll" ng-show="showlist" style="margin-top:15px;">
+                                        <table class="table table-responsive table-hovered">
+                                            <thead class="tableHeading">
+                                            <th ng-repeat="heading in processListData.config" class="docListHeadStyle" ng-click="changeSorting(heading.key)">{$ heading.value $} <div class="alignSort" ng-class="selectedCls(heading.key)"></div></th>
+                                            </thead>
+                                            <tbody class="tableBody" dir-paginate="row in processListDataList |itemsPerPage:filter_obj.no_of_recs | filter:searchValue" total-items="filter_obj.totalRecords" current-page="filter_obj.page_no" pagination-id="branchPagination"  style="cursor:pointer">
+                                                <tr ng-click="getProcessListDetails(row,'parent',$index)" ng-mouseover="highlightBtn($index)" ng-mouseleave="removeBtn()" ng-class="filter_obj.doc_state!='processing'?'processedRowHover':''">
+                                                    <td ng-repeat="heading in processListData.config" ng-class=" processListData.config.length==$index+1?'emptyPadding':''">
+                                                      <span ng-show="row.child_documents.length>0 && $index==0">
+                                                        <i ng-show="row.isExpanded" class="fa fa-chevron-down" ng-click="getProcessListDetailsForEmail(row,'parent',$index,$event)"></i>
+                                                        <i ng-show="!row.isExpanded" class="fa fa-chevron-right" ng-click="getProcessListDetailsForEmail(row,'parent',$index,$event)"></i>
+                                                      </span>
+                                                        <span ng-if="heading.key == 'updated_ts'">{$ formatDateInList(row[heading.key]) $}</span>
+                                                        <span ng-if="heading.key != 'review_text' && heading.key != 'updated_ts'">
+                                                            <span ng-show="heading.key == 'file_name' && row.is_failed==undefined">{$ row[heading.key] $}
+                                                            </span>
+                                                            <span ng-show="heading.key == 'file_name' && row.is_failed!=undefined">
+                                                                <span ng-show="heading.key == 'file_name' && row.is_failed" style="color:red">
+                                                                {$ row[heading.key] $}
+                                                                </span>
+                                                                <span ng-show="heading.key == 'file_name' && !row.is_failed" >{$ row[heading.key] $}
+                                                                </span>
+                                                            </span>
+                                                            <span ng-show="heading.key != 'file_name'">{$ row[heading.key] $}</span>
+                                                        </span>
+
+                                                        <div ng-show="heading.key == 'review_text' && row.is_failed==undefined"><button class="btn" ng-if="heading.key == 'review_text' && dlc.showReviewBtn[$parent.$index] && row[heading.key]!='' && row.child_documents.length==0"  style="background: white;border-radius: 17px;">{$ row[heading.key] $}</button></div>
+                                                        <div ng-show="heading.key == 'review_text' && row.is_failed!=undefined">
+
+                                                            <div ng-show="heading.key == 'review_text' && !row.is_failed">
+
+                                                                <button class="btn" ng-show="heading.key == 'review_text' && dlc.showReviewBtn[$parent.$index] && row[heading.key]!='' && row.child_documents.length==0"  style="background: white;border-radius: 17px;">{$ row[heading.key] $}</button>
+                                                            </div>
+                                                            <div ng-show="heading.key == 'review_text' && row.is_failed">
+
+                                                                <span ng-show="heading.key == 'review_text' && dlc.showReviewBtn[$parent.$index] && row[heading.key]!='' && row.child_documents.length==0" ><img src="./app/images/triangle.png"/> <span style="color:red;">{$ row[heading.key] $}</span></span>
+                                                            </div>
+                                                        </div>
+                                                      <span ng-show="row.child_documents.length>0 && $index==0">
+                                                        <i class="fa fa-cog fa-spin  fa-fw margin-bottom" ng-show="row.spinner"aria-hidden="true"></i>
+
+                                                      </span>
+                                                    </td>
+                                                </tr>
+
+
+                                                    <tr ng-repeat="dummy in row.child_documents" ng-show="row.isExpanded && row.child_documents.length>0 " ng-click="getProcessListDetails(dummy,'child',$parent.$index)"  ng-mouseover="highlightBtnChild($index)" ng-mouseleave="removeBtnChild()" ng-class="filter_obj.doc_state!='processing'?'processedRowHover':''" style="    border: 1px solid black;
+                                background-color: #ebedef;">
+                                                        <td ng-repeat="heading in processListData.config"  ng-class=" processListData.config.length==$index+1?'emptyPadding':''">
+                                                            <span ng-if="heading.key == 'updated_ts'">{$ formatDateInList(dummy[heading.key]) $}</span>
+                                                            <span ng-if="heading.key != 'review_text' && heading.key != 'updated_ts'"><span ng-show="heading.key == 'file_name' && dummy.is_failed==undefined">{$ dummy[heading.key] $}</span>
+                                                            <span ng-show="heading.key == 'file_name' && dummy.is_failed!=undefined">
+                                                                <span ng-show="heading.key == 'file_name' && dummy.is_failed" style="color:red">
+                                                                {$ dummy[heading.key] $}
+                                                                </span>
+                                                                <span ng-show="heading.key == 'file_name' && !dummy.is_failed" >{$ dummy[heading.key] $}
+                                                                </span>
+
+                                                            </span>
+                                                                <span ng-show="heading.key != 'file_name'">{$ dummy[heading.key] $}</span>
+                                                        </span>
+                                                            <div ng-show="heading.key == 'review_text' && dummy.is_failed==undefined"><button class="btn" ng-if="heading.key == 'review_text' && dlc.showReviewBtnChild[$parent.$index] && dummy[heading.key]!=''" style="background: white;border-radius: 17px;">{$ dummy[heading.key] $}</button></div>
+                                                            <div ng-show="heading.key == 'review_text' && dummy.is_failed!=undefined">
+
+                                                            <div ng-show="heading.key == 'review_text' && !dummy.is_failed">
+                                                                <button class="btn" ng-if="heading.key == 'review_text' && dlc.showReviewBtnChild[$parent.$index] && dummy[heading.key]!=''" style="background: white;border-radius: 17px;">{$ dummy[heading.key] $}</button>
+
+                                                            </div>
+                                                            <div ng-show="heading.key == 'review_text' && dummy.is_failed">
+                                                                <span ng-show="heading.key == 'review_text' && dlc.showReviewBtnChild[$parent.$index] && dummy[heading.key]!=''" ><img src="./app/images/triangle.png"/> <span style="color:red">{$ dummy[heading.key] $}</span></span>
+                                                            </div>
+                                                        </div>
+                                                        </td>
+
+                                                    </tr>
+
+                                            </tbody>
+                                        </table>
+                                        <div class="right">
+                                            <dir-pagination-controls max-size=filter_obj.no_of_recs direction-links="true" pagination-id="branchPagination" boundary-links="true" on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</section>

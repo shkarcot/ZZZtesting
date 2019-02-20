@@ -1,0 +1,432 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="my-custom-template">
+  <div class="right-panel">
+    <span>{$ data.userName $}</span>
+  </div>
+</script>
+
+<br>
+<div classs="row">
+    <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
+        <p class="solDashHeading" style="font-size:14px;">User Groups</p>
+    </div>
+</div>
+<br>
+
+<br>
+<div class="user-groups-container">
+    <div classs="row" ng-show="!isUserGroups">
+        <div class="row emptygroup-container">
+            <label class="text-nodata">Seems like you didn't add any groups yet. Click here to add new group</label>
+            <div class="newbtndiv">
+                <button class="btn btn-customQueue" ng-click="createNewUserGroup();" style="border:1px solid #97d7ff;">
+                    <img src="./app/images/create.png" style="width:15px;"> Create a New Usergroup
+                </button>
+            </div>
+        </div>
+    </div>
+    <div classs="row" ng-show="isUserGroups">
+        <div class="col-lg-5 col-xs-5 col-md-5 col-sm-5 groups-hierarchy-container">
+
+                 <!--<div class="row links-div">
+                    <div class="pull-right">
+                        <div class="addgroup-link" ng-click="deleteUserGroup();">
+                            <img src="./app/images/delete.png" class="addg-icon"/>Delete Group
+                        </div>
+                    </div>
+                     <div class="pull-right" style="margin-right: 15px;">
+                        <div class="addgroup-link" ng-click="addChildGroup();">
+                            <img src="./app/images/create.png" class="delg-icon" />Add Child
+                        </div>
+                    </div>
+                     <div class="pull-right" style="margin-right: 15px;">
+                        <div class="addgroup-link" ng-click="addMainGroup();">
+                            <img src="./app/images/create.png" class="delg-icon" />Add Main Group
+                        </div>
+                    </div>
+                </div>-->
+
+                <div class="row links-div">
+                   <div class="pull-right">
+                       <div class="addgroup-link" ng-click="deleteUserGroup();">
+                           <img src="./app/images/delete.png" class="addg-icon"/>Delete Group
+                       </div>
+                   </div>
+                    <div class="pull-right" style="margin-right: 15px;">
+                       <div class="addgroup-link" ng-click="addChildGroupTree();">
+                           <img src="./app/images/create.png" class="delg-icon" />Add Child
+                       </div>
+                   </div>
+                    <div class="pull-right" style="margin-right: 15px;">
+                       <div class="addgroup-link" ng-click="addMainGroupTree();">
+                           <img src="./app/images/create.png" class="delg-icon" />Add Main Group
+                       </div>
+                   </div>
+               </div>
+
+               <!-- <div class="row">
+
+                    <div class="span6">
+                        <div style="">
+                            &lt;!&ndash;<ul class="breadcrumb">
+                                <li ng-repeat="b in breadcrums" ng-class="{ active: $last }">{$ b $}
+                                    <span class="divider" ng-show="!$last">/</span></li>
+                            </ul>&ndash;&gt;
+                            <div class="all-groups">All Groups</div>
+                            <div id="total-groups" tree-view="userGroupsObj" tree-view-options="options"></div>
+                        </div>
+                    </div>
+                </div>-->
+
+                <div class="row">
+                   <div class="all-groups">All Groups</div>
+                   <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12" id="uitree" style="padding-right:0;padding-left:0">
+                       <script type="text/ng-template" id="nodes_renderer.html">
+                           <div ui-tree-handle data-nodrag ng-class="cls[this.$id]" id="{$ node.genId $}" style="font-weight: 400;padding: 7px 5px 7px 18px;" ng-click="ugc.viewAndEditUserGroup(this)">
+                               <a data-nodrag ng-click="toggle(this)">
+                                   <span ng-style="node.subGroups==null && {'visibility':'hidden'}" ng-class="{'fa fa-plus-square-o': collapsed,'fa fa-minus-square-o': !collapsed}" style="font-size: 13px;color: #4D6878;"></span>
+                               </a>
+                               {$ node.name $}
+                           </div>
+                           <ol ui-tree-nodes="" ng-model="node.subGroups" ng-class="{hidden: collapsed}">
+                               <li ng-repeat="node in node.subGroups" ui-tree-node ng-include="'nodes_renderer.html'" collapsed="true">
+                               </li>
+                           </ol>
+                       </script>
+                       <div ui-tree class="angular-ui-tree">
+                           <ol ui-tree-nodes="" ng-model="UserGroupsList" id="tree-root">
+                               <li ng-repeat="node in UserGroupsList" ui-tree-node ng-include="'nodes_renderer.html'" collapsed="false"></li>
+                           </ol>
+                       </div>
+                   </div>
+               </div>
+
+
+
+        </div>
+        <div class="col-lg-7 col-xs-7 col-md-7 col-sm-7 groups-expand-container">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 creation-section">
+                <form ng-submit="ugc.saveUserGroup()">
+                  <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group">
+                      <label>Name</label>
+                      <input type="text"class="bottomLineInput" id="groupName" data-ng-model="ugc.newUserGroupObj.name" class="form-control" placeholder="Group name" required>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group">
+                      <label>Description</label>
+                        <textarea type="text" class="bottomLineInput" data-ng-model="ugc.newUserGroupObj.description" class="form-control" placeholder="Description"></textarea>
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group">
+                       <div class="panel-group">
+                        <div class="panel panel-default">
+                          <div class="panel-heading groupusers-div">
+                            <h4 class="panel-title pull-left">
+                              <a data-toggle="collapse" href=".users-collapse">Users</a>
+                            </h4>
+                              <div class="pull-right">
+                                 <div class="pull-right" style="margin-right: 15px;">
+                                    <div class="addgroup-link" id="addgrouplist" ng-click="assignNewUser()">
+                                        <img src="./app/images/create.png" class="addg-icon" />Assign new user
+                                    </div>
+                                </div>
+                              </div>
+                              <div class="clear"></div>
+                          </div>
+                          <div class="panel-collapse collapse in users-collapse">
+                            <div class="panel-body">
+                               <!--<div mass-autocomplete class="mass-autocompleteAttributeDiv">
+                                    <input ng-model="ugc.newUserGroupObj.users" class="form-control custom-form"
+                                           mass-autocomplete-item="autocomplete_options" placeholder="Search by name"
+                                           style="background: white;" required>
+                                </div>-->
+
+                               <tags-input placeholder="Search by name" ng-model="ugc.newUserGroupObj.members" id="txt_usersForGroups"
+                                            replace-spaces-with-dashes="false"
+                                            use-strings="true"
+                                            add-on-comma="false"
+                                            on-tag-added="onTagAdded($tag)"
+                                            display-property="userName"
+                                            on-tag-removed="onTagRemoved($tag)">
+                                    <!--<auto-complete source="ugc.users" min-length="1"></auto-complete>-->
+
+                                   <auto-complete source="loadUsers($query)"
+                                                     min-length="0"
+                                                     load-on-focus="true"
+                                                     load-on-empty="true"
+                                                     max-results-to-show="500"
+                                                     template="my-custom-template"></auto-complete>
+                                </tags-input>
+
+
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                   <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group">
+                       <div class="panel-group">
+                        <div class="panel panel-default">
+                          <div class="panel-heading groupusers-div">
+                            <h4 class="panel-title pull-left">
+                              <a data-toggle="collapse" href=".policy-collapse">Policies</a>
+                            </h4>
+                              <div class="pull-right">
+                                 <div class="pull-right" style="margin-right: 15px;">
+                                    <div class="addgroup-link" ng-click="addNewPolicy()">
+                                        <img src="./app/images/create.png" class="addg-icon" />Add new policy
+                                    </div>
+                                </div>
+                              </div>
+                              <div class="clear"></div>
+                          </div>
+                          <div class="panel-collapse collapse in policy-collapse">
+                            <div class="panel-body">Panel Body</div>
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                   <div class="row">
+                      <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group btn-custom-group">
+                          <button class="btn btn-custom-create" type="submit">
+                            <img src="./app/images/save_white.png" class="img-responsive img-save"> Save
+                          </button>
+                           <!--<button class="btn btn-custom-cancel" ui-sref="app.userGroup">
+                            Cancel
+                          </button>-->
+                      </div>
+                  </div>
+
+
+                </form>
+            </div>
+        </div>
+     </div>
+    </div>
+</div>
+
+<div class="row overlay" id="createUser" style="overflow:auto;height: auto;">
+    <div class="createUser">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 user-creation">
+        <label>Create new user</label>
+      </div>
+      <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 creation-section" style="padding: 10px 30px;">
+        <form ng-submit="saveNewUser()">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group" style="padding:0">
+              <label>User name</label>
+              <input type="text" class="form-control" placeholder="User name" ng-model="config.userName" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group"  style="padding:0">
+              <label>Password</label>
+              <input type="password" class="form-control" placeholder="Password" ng-model="config.password"  required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group"  style="padding:0">
+              <label>Conform password</label>
+              <input type="password" class="form-control" placeholder="Conform password" ng-model="config.confirmPassword"  required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group"  style="padding:0">
+              <label>Solution</label>
+              <multiselect ng-model="config.solutions" class="multiSelect" options="solutionsList"  show-search="true" search-limit="100000" id-prop="solution_id" display-prop="solution_name">
+              </multiselect>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group"  style="padding:0">
+              <label>Role</label>
+              <multiselect ng-model="config.roles" class="multiSelect" options="userRoles"  show-search="true" search-limit="100000" id-prop="id" display-prop="name">
+              </multiselect>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group btn-custom-group">
+              <button class="btn btn-custom-create" type="submit">
+                <img src="./app/images/save_white.png" class="img-responsive img-save"> Save
+              </button>
+               <label class="btn btn-custom-cancel" ng-click="closeNewUser()">Cancel</label>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+
+<div class="row overlay" id="createPolicy" style="overflow:auto;height: 100%;">
+    <div class="createUser creation-section">
+        <form ng-submit="saveNewPolicy()" >
+           <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 6px 6px 6px 20px;">
+                <label style="font-weight: normal;">Resources</label>
+              </div>
+           </div>
+           <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 " style="padding: 10px 20px;">
+              <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group" style="padding: 4px;border: 1px solid #b9e2f6;background-color: #fafdff;">
+
+                  <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4 form-group" style="padding:4px;">
+                    <div style="background-color: #fff; border: 1px solid #f1f1f1;margin: 0 2px;">
+                        <div style="background-color:#e2f5fe;padding: 5px;"><label style="font-weight: inherit;">Solutions</label></div>
+                        <div class="row">
+                         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group" style="padding:4px;margin-bottom: 0;">
+                             <input type="text" class="form-control" placeholder="Search by name" >
+                         </div>
+                     </div>
+                        <div class="row">
+                         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group" style="padding:4px;margin-bottom: 0;">
+                             <div>
+                                 <span  ng-click="selectAllSolutions()"   style="color: #3d7bc3;font-size: 12px; margin-right: 15px;cursor: pointer;">Select All</span>
+                                 <span  ng-click="deselectAllSolutions()" style="color: #3d7bc3;font-size: 12px; margin-right: 15px;cursor: pointer;">Deselect All</span>
+                             </div>
+                         </div>
+                     </div>
+                        <div class="row">
+                         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group" style="padding:4px;margin-bottom: 0;">
+                             <div class="checkbox">
+                              <label><input type="checkbox" value="">Solutions 1</label>
+                            </div>
+                             <div class="checkbox">
+                              <label><input type="checkbox" value="">Solutions 2</label>
+                            </div>
+                             <div class="checkbox">
+                              <label><input type="checkbox" value="">Solutions 3</label>
+                            </div>
+                         </div>
+                     </div>
+
+                    </div>
+                  </div>
+                   <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4 form-group" style="padding:4px;">
+                       <div style="background-color: #fff; border: 1px solid #f1f1f1;margin: 0 2px;">
+                            <div style="background-color:#e2f5fe;padding: 5px;"><label style="font-weight: inherit;">Workflows</label></div>
+                             <div class="row">
+                         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group" style="padding:4px;margin-bottom: 0;">
+                             <input type="text" class="form-control" placeholder="Search by name" >
+                         </div>
+                     </div>
+                            <div class="row">
+                             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group" style="padding:4px;margin-bottom: 0;">
+                                 <div>
+                                     <span  ng-click="selectAllSolutions()"   style="color: #3d7bc3;font-size: 12px; margin-right: 15px;cursor: pointer;">Select All</span>
+                                     <span  ng-click="deselectAllSolutions()" style="color: #3d7bc3;font-size: 12px; margin-right: 15px;cursor: pointer;">Deselect All</span>
+                                 </div>
+                             </div>
+                         </div>
+                            <div class="row">
+                             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group" style="padding:4px;margin-bottom: 0;">
+                                 <div class="checkbox">
+                                  <label><input type="checkbox" value="">Solutions 1</label>
+                                </div>
+                                 <div class="checkbox">
+                                  <label><input type="checkbox" value="">Solutions 2</label>
+                                </div>
+                                 <div class="checkbox">
+                                  <label><input type="checkbox" value="">Solutions 3</label>
+                                </div>
+                             </div>
+                         </div>
+
+                       </div>
+                  </div>
+                   <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4 form-group" style="padding:4px;">
+                       <div style="background-color: #fff; border: 1px solid #f1f1f1;margin: 0 2px;">
+                            <div style="background-color:#e2f5fe;padding: 5px;"><label style="font-weight: inherit;">Queues</label></div>
+                             <div class="row">
+                         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group" style="padding:4px;margin-bottom: 0;">
+                             <input type="text" class="form-control" placeholder="Search by name" >
+                         </div>
+                     </div>
+                            <div class="row">
+                             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group" style="padding:4px;margin-bottom: 0;">
+                                 <div>
+                                     <span  ng-click="selectAllSolutions()"   style="color: #3d7bc3;font-size: 12px; margin-right: 15px;cursor: pointer;">Select All</span>
+                                     <span  ng-click="deselectAllSolutions()" style="color: #3d7bc3;font-size: 12px; margin-right: 15px;cursor: pointer;">Deselect All</span>
+                                 </div>
+                             </div>
+                         </div>
+                            <div class="row">
+                             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group" style="padding:4px;margin-bottom: 0;">
+                                 <div class="checkbox">
+                                  <label><input type="checkbox" value="">Solutions 1</label>
+                                </div>
+                                 <div class="checkbox">
+                                  <label><input type="checkbox" value="">Solutions 2</label>
+                                </div>
+                                 <div class="checkbox">
+                                  <label><input type="checkbox" value="">Solutions 3</label>
+                                </div>
+                             </div>
+                         </div>
+                       </div>
+                  </div>
+
+                </div>
+              </div>
+          </div>
+           </div>
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 6px 6px 0px 20px;">
+            <label style="font-weight: normal;">Permissions</label>
+              <div class="pull-right">
+                 <span  ng-click="selectAllPermissions()"   style="color: #3d7bc3;font-size: 12px; margin-right: 15px;cursor: pointer;">Select All</span>
+                 <span  ng-click="deselectAllPermissions()" style="color: #3d7bc3;font-size: 12px; margin-right: 15px;cursor: pointer;">Deselect All</span>
+              </div>
+          </div>
+        </div>
+           <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 " style="padding: 0px 20px;">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group" style="padding: 4px;border: 1px solid #b9e2f6;background-color: #fafdff;">
+                        <label class="checkbox-inline"><input type="checkbox" value="">Create</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="">Read</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="">Update</label>
+                    </div>
+                </div>
+            </div>
+           </div>
+
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-group btn-custom-group">
+                <button class="btn btn-custom-create" type="submit"><img src="./app/images/save_white.png" class="img-responsive img-save"> Save </button>
+                <label class="btn btn-custom-cancel" ng-click="closeNewPolicy()">Cancel</label>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+.servicecatalog-services {
+    border: 1px solid #25aae1 !important;
+    background: #e8f7fd;
+    margin: 0.8em;
+    padding: 1.3em;
+    min-height: 94px;
+    cursor: pointer;
+    text-align: center;
+}
+.selected-servicecatalog-service{
+    background: #25aae1;
+    color: #fff;
+}
+.clear{clear:both;}
+#servicecatalog-tabs{
+
+    #engine-tabs .nav-tabs > li:first-child > a {
+      width:180px;
+    }
+    #engine-tabs .nav-tabs > li:nth-child(4) > a {
+      width:130px;
+    }
+}

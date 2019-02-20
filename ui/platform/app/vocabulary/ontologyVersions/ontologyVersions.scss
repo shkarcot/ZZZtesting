@@ -1,0 +1,31 @@
+.versionPage{
+        border:1px solid #eee;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        background-color: white;
+
+        .img1{
+            width:10px;
+            cursor:pointer;
+        }
+        .img2{
+            width:14px;
+            cursor:pointer;
+        }
+
+}
+.metaInfoCls{
+          border:1px solid #a0a0a0;
+          padding: 10px 4px;
+          border-bottom:0
+}
+.metaInfoClsForLast{
+          border:1px solid #a0a0a0;
+          padding: 10px 4px;
+}
+.keyCls{
+    color:#9b9b9b;
+}
+.valCls{
+    color:#3f3f3f;
+}

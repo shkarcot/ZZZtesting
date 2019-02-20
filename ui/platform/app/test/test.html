@@ -1,0 +1,49 @@
+
+<div class="row" style="padding-top: 20px;">
+    <form ng-submit="testRun()">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>Test Case</label>
+                <select class="form-control custom-formControl" ng-model="testObj.testCaseName" required>
+                    <option value="">Select Test Case</option>
+                    <option value="validateDoObj">Validate Domain object</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Request Json</label>
+                <textarea  rows="4" ng-model="testObj.requestJson" cols="50" class="form-control custom-formControl" placeholder="Request Json" required></textarea>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">TEST</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="alert alert-success" role="alert" ng-show="successShow">
+           <p>Test Cases Passed</p>
+        </div>
+        <div class="alert alert-danger" role="alert" ng-show="failureShow">
+           <p>Test Cases Failed</p>
+            <p>{$ validateMsg $}</p>
+        </div>
+    </div>
+</div>
+
+<br><br>
+
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+        <button class="btn left button-primary" alt="browse" title="browse" type="button" style="cursor:pointer;position:relative;display:inline;border-radius:0">
+            <input class="hide_file" ngf-select ng-model="fileInput" name="file"
+                   ngf-change="uploadFile(fileInput)" type="file" style="font-size:13px;"/>
+              Browse
+        </button>
+    </div>
+    <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+        <br>
+        <button class="btn left button-primary" ng-click="tcc.sendFile()">Send</button>
+    </div>
+</div>

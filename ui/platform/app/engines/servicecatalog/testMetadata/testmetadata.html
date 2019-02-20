@@ -1,0 +1,70 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+
+<div class="row" id="test-container">
+    <div class="col-lg-12 col-md-12 col-sm-12 parentdiv">
+
+        <!--<div class="col-lg-4 col-md-4 col-sm-4 box">
+            Input
+        </div>-->
+        <div class="col-lg-11 col-md-11 col-sm-11">
+
+            <table class="table" style="margin-bottom:5px">
+                <tbody>
+                    <tr>
+                        <td>Document id</td>
+                        <td>
+                            <div><input style=" width: 100%;" type="text" /></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>File path</td>
+                        <td>
+                            <div>
+                                <button class="btn button-primary" ngf-select ng-model="dicFile" name="file" ngf-change="tic.uploadImage(dicFile,value.key)"  alt="Upload image" title="Upload image" type="button" style="display:inline">Upload image</button>
+                                <span class="loading-spiner-holder" ng-show="showUploadMsg">
+                                <span class="loading-spiner">
+                                <i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i>
+                                <span class=""><i>Uploading ...</i></span>
+                                </span>
+                                </span>
+                                <span ng-show="showUploadMsg" style="color:red">Please select the file</span>
+                                <span  ng-show="showUploadMsg" style="color:green"></span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="configure">
+                <button class="btn button-primary ng-click-active" ng-click="testInsight()" ng-disabled="isDisabled">Test Insight</button>
+            </div>
+            <div class="loading-spiner-holder configure" ng-show="tic.spinTestInsight">
+                <div class="loading-spiner" style="margin-top: 10px;"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i></span></div>
+            </div>
+
+        </div>
+       <!-- <div class="col-lg-4 col-md-4 col-sm-4 box">
+            test
+        </div>
+-->
+
+       <!-- <div class="col-lg-12 col-md-12 col-sm-12 btn-pos">
+            <button class="btn btn-primary" ng-click="vm.configureMetadata()">Configure</button>
+            <span class="" ng-bind="vm.msg"></span>
+        </div>-->
+    </div>
+</div>
+
+
+</div>

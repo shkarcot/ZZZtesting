@@ -1,0 +1,64 @@
+.functionDetailCss{
+    .functDetailHead{
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+    .functDetailDes{
+        font-size:13px;
+    }
+
+    .table > tbody > tr > td{
+      padding: 10px;
+    }
+    .table > tbody >tr {
+      background-color:white;
+      border-bottom:5px solid #f3f7fb;
+    }
+    .table >thead {
+      background-color: #d3dfec;
+
+    }
+    .table >thead >tr> th {
+      color: #6f6f6f;
+      font-size: 11px;
+      border-bottom: none;
+    }
+    .testClassCss{
+        color: #6ba7e7;
+        font-weight:600;
+        text-decoration: none;
+        margin-right: 15px;
+    }
+
+    .backStyle{
+        text-decoration: none;
+        margin-left: 20px;
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    .disabledTest{
+        pointer-events: none;
+        cursor: not-allowed;
+        opacity: 0.4;
+    }
+
+    .seeLogsClass{
+        color: #6ba7e7;
+        text-decoration: underline;
+        margin-right: 10px;
+        font-weight: 600;
+        font-size: 13px;
+    }
+}
+
+.publishClassCss{
+    color: #4a8fe2;
+    font-weight:600;
+    text-decoration: none;
+    font-size: 18px;
+    float: right;
+    margin-left: 20px;
+    margin-right: 15px;
+}

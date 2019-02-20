@@ -1,0 +1,168 @@
+$icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
+@import '~bootstrap-sass/assets/stylesheets/_bootstrap.scss';
+@import '~angular-tree-control/css/tree-control.css';
+@import '~angular-tree-control/css/tree-control-attribute.css';
+@import '~uikit/dist/css/uikit.min.css';
+@import '~angular-loading-bar/build/loading-bar.css';
+@import '~uikit/dist/css/components/notify.min.css';
+@import '~ng-dialog/css/ngDialog.css';
+@import '~ng-tags-input/build/ng-tags-input.min.css';
+@import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
+
+
+$fa-font-path: "~font-awesome/fonts";
+@import "~font-awesome/scss/font-awesome.scss";
+
+/*custom scss files*/
+@import './common/assets/scss/variable';
+@import './common/assets/scss/generic';
+@import './login/login';
+@import './solution/solution';
+@import './createSolution/create';
+@import './layout/layout';
+@import './layout/bodycontent/bodycontent';
+@import './layout/leftmenu/leftmenu';
+@import './layout/header/header';
+@import './users/user';
+@import './users/createUser/createUser';
+@import './userGroups/userGroup';
+@import './userRoles/userRole';
+@import './queue/queue';
+@import './enso';
+@import '~angular-ui-tree/dist/angular-ui-tree.min.css';
+
+body{
+    font-family: 'Poppins', sans-serif !important;
+    background-color: #f0f3f6;
+}
+
+.row{
+    margin-left:0px;
+    margin-right:0px;
+}
+.ngdialog.ngdialog-theme-default .ngdialog-content {
+    -webkit-animation: ngdialog-flyin .5s;
+    animation: ngdialog-flyin .5s;
+    background: #f0f0f0;
+    border-radius: 5px;
+    color: #444;
+    font-family: Helvetica,sans-serif;
+    font-size: 1.1em;
+    line-height: 1.5em;
+    margin: 0 auto;
+    max-width: 100%;
+    padding: 1em;
+    position: relative;
+    width: 450px;
+    top:25%;
+}
+
+.ngdialog.ngdialog-theme-default .ngdialog-close {
+    border: none;
+    background: 0 0;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.table-scroll{
+    box-shadow: 2px 3px 5px 2px #ddd;
+    background: white;
+
+    .tableHeading {
+        background-color: #D0EBF5;
+        color: black;
+        font-size: 13px;
+    }
+    .capitalize {
+        text-transform: capitalize;
+        font-size: 15px;
+    }
+    .text-color{
+        color:#5EB5EB;
+    }
+}
+.table > tbody > tr > td {
+  padding: 20px 20px 20px 10px;
+  border-top:none;
+
+}
+.table-bordered > thead > tr > th, .table-bordered > thead > tr > td {
+    border-bottom-width: 1px;
+}
+.table > thead > tr > td {
+    padding: 10px;
+}
+
+.ngdialog.ngdialog-theme-default .ngdialog-content {
+    -webkit-animation: ngdialog-flyin .5s;
+    animation: ngdialog-flyin .5s;
+    background: #f0f0f0;
+    border-radius: 5px;
+    color: #444;
+    font-family: Helvetica,sans-serif;
+    font-size: 1.1em;
+    line-height: 1.5em;
+    margin: 0 auto;
+    max-width: 100%;
+    padding: 1em;
+    position: relative;
+    width: 450px;
+}
+
+.ngdialog.ngdialog-theme-default .ngdialog-close {
+    border: none;
+    background: 0 0;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.table-scroll{
+    box-shadow: 2px 3px 5px 2px #ddd;
+    background: white;
+
+    .tableHeading {
+        background-color: #D0EBF5;
+        color: black;
+        font-size: 13px;
+    }
+    .capitalize {
+        text-transform: capitalize;
+        font-size: 15px;
+    }
+    .text-color{
+        color:#5EB5EB;
+    }
+}
+.table > tbody > tr > td {
+  padding: 20px 20px 20px 10px;
+  border-top:none;
+  font-size:14px;
+
+}
+.table-bordered > thead > tr > th, .table-bordered > thead > tr > td {
+    border-bottom-width: 1px;
+}
+.table > thead > tr > td {
+    padding: 10px;
+}
+
+
+tags-input {
+    display: block;
+}
+tags-input .host {
+    position: relative;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 100%;
+}
+#loading-bar-spinner{
+    display:none;
+}
+#loading-bar .bar {
+    background: #3cd142;
+}

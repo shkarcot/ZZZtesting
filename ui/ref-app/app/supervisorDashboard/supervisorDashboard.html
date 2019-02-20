@@ -1,0 +1,94 @@
+<div class="supervisorDashboard-style">
+    <div class="container">
+        <div class="row row-eq-height customDashboardStyle top-menu">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <label>New Cases</label>
+                    <div class="dashboard-reports">{$ sdbc.dashboardStats.overall_new_count $}</div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <label>In-progress Cases</label>
+                    <div class="dashboard-reports">{$ sdbc.dashboardStats.overall_inprogress_count $} </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <label>Closed Cases</label>
+                    <div class="dashboard-reports">{$ sdbc.dashboardStats.overall_closed_count $}</div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <label>Unassigned Cases</label>
+                    <div class="dashboard-reports">{$ sdbc.dashboardStats.overall_unassigned_count $}</div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <label>Cases Past Due</label>
+                    <div class="dashboard-reports dues">
+                        <img src="/app/images/exclamation_red.png"/>-</div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <label>Cases At Risk</label>
+                    <div class="dashboard-reports risk">
+                        <img src="/app/images/exclamation_yellow.png"/>-</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container supervisor-container2">
+    <div class="row">
+        <div class="col-sm-9 col-md-9 col-lg-9 col-xs-9">
+            <h4 class="heading">QUEUES </h4>
+        </div>
+    </div>
+    <div class="row row-eq-height">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">
+            <div class="form-group has-feedback has-search">
+                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                <input type="text" class="form-control" placeholder="Search">
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  no-padding text-right">
+            <div class="row row-eq-height">
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                    <span class="filterStyle">Filters</span>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-padding">
+                    <select class="form-control">
+                        <options>All Queues</options>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td>Queue Name</td>
+                    <td class="text-center">New Cases</td>
+                    <td class="text-center">In-progress Cases</td>
+                    <td class="text-center">Closed Cases</td>
+                    <td class="text-center">Unassigned Cases</td>
+                    <td class="text-center">Case Past Due</td>
+                    <td class="text-center">Case At Risk</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="list in sdbc.allQueues" ng-click="sdbc.goToQueueCases(list)">
+                    <td>{$ list.name $} <span ng-if="list.workflow_id !=undefined">(</span><span>{$ list.workflow_id $}</span><span ng-if="list.workflow_id !=undefined">)</span></td>
+                    <td class="text-center">{$ list.new $}</td>
+                    <td class="text-center">{$ list.inprogress_count $}</td>
+                    <td class="text-center">{$ list.closed $}</td>
+                    <td class="text-center">{$ list.unassigned_count $}</td>
+                    <td class="text-center">
+                        <img src="/app/images/exclamation_red.png"/>
+                        <span class="dues"></span>
+                    </td>
+                    <td class="text-center">
+                        <img src="/app/images/exclamation_yellow.png"/>
+                        <span class="risk"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

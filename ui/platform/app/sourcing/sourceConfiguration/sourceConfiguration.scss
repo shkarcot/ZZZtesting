@@ -1,0 +1,40 @@
+.bg-div2{
+  background:white;
+  border:1px solid #e0e0e0;
+  padding:20px;
+}
+.hide_file {
+    position: absolute;
+    z-index: 1000;
+    opacity: 0;
+    cursor: pointer;
+    right: 0;
+    top: 0;
+    height: 100%;
+    font-size: 24px;
+    width: 100%;
+}
+
+.upload_text{
+    font-size:15px;
+}
+
+.img_height{
+    height:150px;
+}
+.sourceCard{
+    border: none;
+    box-shadow: 0px 0px 4px 0px #eee;
+}
+.card-body{
+    cursor:pointer;
+}
+.imapHeight{
+    height: 200px;
+    cursor: pointer;
+}
+.imapText{
+    padding-left: 25px;
+    font-weight: 300;
+    margin:auto;
+}

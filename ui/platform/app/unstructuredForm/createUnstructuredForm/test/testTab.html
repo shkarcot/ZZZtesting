@@ -1,0 +1,1462 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+<div class="row" ng-if="!afterUpload">
+    <div class="col-sm-7 col-lg-7 col-xs-7 col-md-7">
+        <img src="/app/images/testBg.png" />
+         <input class="hide_file" ngf-select="sendDic($files)" multiple="multiple" type="file" style="font-size:13px;"/>
+    </div>
+    <div class="col-sm-5 col-lg-5 col-xs-5 col-md-5" style="background:#f3f7fb;padding:0px;">
+        <div class="domainHierarchyDiv" style="overflow-y: scroll;">
+            <!--<p class="fontDomainHead">Domain Objects For Your Reference (View Only)</p>-->
+            <script type="text/ng-template" id="nodes_renderer_viewonly.html">
+                  <div ui-tree-handle class="tree-node tree-node-content"
+                       data-nodrag>
+                        <label ng-if="node.entity_type=='domain_object' && node.entity_name != ''">
+                            <span class="domainHeading">Domain Object</span>
+                            <br>
+                            <span>{$ node.entity_name $}</span>
+                        </label>
+                        <label ng-if="node.entity_type=='entity' && node.entity_name != ''" style="margin-bottom: 0px;">
+                            <div>
+                                <label>
+                                    <img src="/app/images/entity.png" style="width: 20px;vertical-align: super;"/>
+                                </label>
+                                <label style="padding-left: 5px;">
+                                    {$ node.entity_name $}
+                                    <br>
+                                    <span  class="domainHeading" >Entity</span>
+                                </label>
+                            </div>
+                        </label>
+                        <label style="margin-bottom:0px;"  ng-if="!(node.entity_type=='entity' || node.entity_type=='domain_object') && node.key_name != ''">
+                            <div>
+                                <label>
+                                    <img src="/app/images/attribute.png" style="width: 20px;vertical-align: super;"/>
+                                </label>
+                                <label style="padding-left: 5px;">
+                                    {$ node.key_name $}
+                                    <br ng-if="!(node.entity_type=='entity' || node.entity_type=='domain_object')">
+                                    <span  class="domainHeading"  ng-if="!(node.entity_type=='entity' || node.entity_type=='domain_object')">{$ node.type $}</span>
+                                </label>
+                            </div>
+                        </label>
+                        <label style="padding-top: 10px;" ng-if="!(node.entity_type=='entity' || node.entity_type=='domain_object') && node.key_name == ''">
+                            <img src="/app/images/attribute.png" style="width: 20px;"/> < New Attribute  >
+                        </label>
+                        <a class="pull-right" ng-if="node.attributes && node.attributes.length > 0 && (node.entity_type=='entity' || node.entity_type=='domain_object' )"
+                           data-nodrag ng-click="toggle(this)"
+                           style="padding: 13px; border-left: 1px solid #ddd; background-color: aliceblue;">
+                            <span  ng-class="{'sort_down': collapsed,'sort_up': !collapsed}"></span>
+                        </a>
+                  </div>
+                  <ol ui-tree-nodes="" ng-model="node.attributes" ng-class="{hidden: collapsed}" class="scrollingTree 2">
+                      <li ng-repeat="node in node.attributes" id="{$ node.$$hashKey.replace(':', '') $}"  ui-tree-node ng-include="'nodes_renderer_viewonly.html'">
+                      </li>
+                  </ol>
+            </script>
+            <!--<div class="domainObjectBody">-->
+                <!--<div class="row row-eq-height" >-->
+                    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                        <!--<div ui-tree id="tree-root" data-empty-placeholder-enabled="false">-->
+                            <!--<ol ui-tree-nodes ng-model="domainObjects" id="domainObjectsNodes" style="padding:0px;">-->
+                                <!--<li ng-repeat="node in domainObjects"-->
+                                    <!--class="treeDomainObject" collapsed="true"-->
+                                    <!--ng-class="{disabledStyle: isDisabled}" ui-tree-node ng-include="'nodes_renderer_viewonly.html'"></li>-->
+                            <!--</ol>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+<div class="row draftMode" ng-if="testList.length>0">
+    <div class="col-lg-6 col-md-6 col-sm-6">
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-xs-8 col-sm-8 text-right">
+                <div class="btn-group" >
+                    <button type="button" class="btn btn-default btn-zoom" ng-click="tttc.disableSelector()"><i
+                            class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-default btn-zoom btn-magnifier" ng-disabled="true"><img src="/app/images/zoomIcon.png"
+                                                                                              style="width: 18px;"/>
+                    </button>
+                    <button type="button" class="btn btn-default btn-zoom" ng-click="tttc.enableSelector()"><i class="fa fa-plus-circle"
+                                                                                                  aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right">
+                <div ng-show="no_of_pages>1">
+                    <span>
+                        <button class="btn pagination-button" ng-disabled="current_page==1" ng-click="tttc.changePageNumUnknown('prev')"><i class="fa fa-chevron-left" style="color:white;font-size:12px;"></i></button>
+                    </span>
+                    <span class="pagination-textBox">
+                        <input type="number" class="pagination-text" ng-model="current_page" ng-keyup="tttc.keyEnterUnknown($event)"/>
+                    </span>
+                    <span>
+                        <button class="btn pagination-button" ng-disabled="current_page==no_of_pages" ng-click="tttc.changePageNumUnknown('next')"><i class="fa fa-chevron-right" style="color:white;font-size:12px;"></i></button>
+                    </span>
+                    <span> of {$ no_of_pages $}</span>
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="pagination" ng-show="tttcdocumentDetails.no_of_pages>1">
+          <a ng-repeat="(key,value) in tttcdocumentDetails.pages" ng-click="tttcchangeDocumentInfo(value.page_no)" ng-class="current_page==value.page_no?'active':''">{$ value.page_no $}</a>
+        </div> -->
+
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right" ng-if="testList.length>0">
+            <button class="btn btn-add">
+                <input class="hide_file" ngf-select="sendDic($files)" multiple="multiple" type="file" style="font-size:13px;"/>
+                <i class="fa fa-upload"></i>Upload Document
+            </button>
+    </div>
+
+</div>
+<div class="row row-eq-height"   ng-show="afterUpload" style="border-top: 1px solid #e1e1e1;">
+    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6 nopadding">
+        <div class="row row-eq-height">
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3 nopadding domainHierarchyDiv" style="background-color: #f9fdff;border: 1px solid #e1e1e1;overflow-y:auto;">
+                <div class="tab" style="width:100%;">
+                  <div class="tablinks" ng-class="activeClass[$index]" data-toggle="tab"  ng-click="getHierarchyData(list,$index)" ng-repeat="list in testList track by $index">
+                      <img src="/app/images/pdf-01.png" style="width:16px;"/>
+                      <div style="display: inline;font-size: 12px;">{$ list.metadata.file_name $}</div>
+                  </div>
+
+                </div>
+            </div>
+            <div class="col-sm-9 col-md-9 col-lg-9 col-xs-9 text-center nopadding " style="padding-left: 5px;">
+
+                     <div class="row domainHierarchyDiv image-style" id="scrollImage" style="overflow:scroll">
+                        <div id="ImageLocation" ng-class="zoomDisplay" style="position:relative;">
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12 image-style domainHierarchyDiv"  id="scrollDiv2" style="position:relative;background: #fafafa;overflow-y:scroll;height:{$ height $}px;">
+    <div class="row" style="margin: 10px 0px 10px 0px;">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="">
+            <div class="dropdown" id="addEntityDropDown">
+                <!--<a class="fontNewEntity dropdown-toggle" data-toggle="dropdown">-->
+                <!--<span class="fa fa-plus" style="font-size:11px;"></span>Add New Entity</a>-->
+
+                <div class="dropdown-menu" ng-click="$event.stopPropagation()" style="min-width:430px;min-height:242px;">
+                    <div class="" style="background:#f3f7fb;padding:0px;">
+                        <div class="domainHierarchyDiv" style="overflow-y: scroll;">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6 fontDomainHead">Domain Objects </div>
+                                <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6 pull-right"
+                                     style="padding: 17px;text-align: right;border-bottom: 1px solid #cacaca;cursor:pointer;font-size: 12px;color: #13A6E1;font-weight: normal;">
+                                    <span ng-click="createNewEntityPopup()">Create New Entity</span></div>
+                            </div>
+
+                            <script type="text/ng-template" id="nodes_renderer3.html">
+                                  <div ui-tree-handle class="tree-node tree-node-content"
+                                       data-nodrag>
+                                        <label ng-if="node.entity_type=='domain_object' && node.entity_name != ''">
+                                            <span class="domainHeading">Domain Object</span>
+                                            <br>
+                                            <span>{$ node.entity_name $}</span>
+                                        </label>
+                                        <label ng-if="node.entity_type=='entity' && node.entity_name != ''" style="margin-bottom: 0px;">
+                                            <div>
+                                                <label>
+                                                    <img src="/app/images/entity.png" style="width: 20px;vertical-align: super;"/>
+                                                </label>
+                                                <label style="padding-left: 5px;">
+                                                    {$ node.entity_name $}
+                                                    <br>
+                                                    <span  class="domainHeading" >Entity</span>
+                                                </label>
+                                            </div>
+                                        </label>
+                                        <label style="margin-bottom:0px;"  ng-if="!(node.entity_type=='entity' || node.entity_type=='domain_object') && node.key_name != ''">
+                                            <div>
+                                                <label>
+                                                    <img src="/app/images/attribute.png" style="width: 20px;vertical-align: super;"/>
+                                                </label>
+                                                <label style="padding-left: 5px;">
+                                                    {$ node.key_name $}
+                                                    <br ng-if="!(node.entity_type=='entity' || node.entity_type=='domain_object')">
+                                                    <span  class="domainHeading"  ng-if="!(node.entity_type=='entity' || node.entity_type=='domain_object')">{$ node.type $}</span>
+                                                </label>
+                                            </div>
+                                        </label>
+                                        <label style="padding-top: 10px;" ng-if="!(node.entity_type=='entity' || node.entity_type=='domain_object') && node.key_name == ''">
+                                            <img src="/app/images/attribute.png" style="width: 20px;"/> < New Attribute >
+                                        </label>
+                                        <a class="pull-right" ng-if="node.attributes && node.attributes.length > 0 && (node.entity_type=='entity' || node.entity_type=='domain_object' )" data-nodrag ng-click="toggle(this)" style="padding: 13px;
+                                    border-left: 1px solid #ddd;
+                                    background-color: aliceblue;">
+                                            <span  ng-class="{'sort_down': !collapsed,'sort_up': collapsed}"></span>
+                                        </a>
+                                  </div>
+                                  <ol ui-tree-nodes="" ng-model="node.attributes" ng-class="{hidden: !collapsed}" class="scrollingTree 1">
+                                      <li ng-repeat="node in node.attributes" id="{$ node.$$hashKey.replace(':', '') $}"  ui-tree-node ng-include="'nodes_renderer_viewonly.html'">
+                                      </li>
+                                  </ol>
+                            </script>
+                            <!--<div class="domainObjectBody">-->
+                                <!--<div class="row row-eq-height" >-->
+                                    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding:0;">-->
+                                        <!--<div ui-tree id="tree-root" data-empty-placeholder-enabled="false">-->
+                                            <!--<ol ui-tree-nodes ng-model="domainObjects" id="domainObjectsNodes" style="padding:0px;">-->
+                                                <!--<li ng-repeat="node in domainObjects"-->
+                                                    <!--class="treeDomainObject" collapsed="true"-->
+                                                    <!--ng-class="{disabledStyle: isDisabled}" ui-tree-node ng-include="'nodes_renderer3.html'"></li>-->
+                                            <!--</ol>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                    <!--<button class="btn btn-custom"><i class="fa fa-floppy-o"></i><span>Done</span></button>-->
+                                    <button class="btn btn-cancel" ng-click="closeAddNewEntityWindow()">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding">
+                    <img src="./app/images/legend.png" style="width:11px;"/>
+                    <span class="accepted"></span>
+                    <span style="font-size:11px;">ACCEPTED</span>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding">
+                    <img src="./app/images/legend.png"  style="width:11px;"/>
+                    <span class="corrected"></span>
+                    <span style="font-size:11px;">CORRECTED</span>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right no-padding">
+                    <img src="./app/images/legend.png"  style="width:11px;"/>
+                    <span class="reviewed"></span>
+                    <span style="font-size:11px;">NEEDS REVIEW</span>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+    <script type="text/ng-template" id="nodes_renderer2.html">
+              <div ui-tree-handle class="tree-node tree-node-content" data-nodrag  style="padding:0px;" >
+                    <div ng-if="node.type=='attribute'"  style="padding:10px 5px 10px 5px ">
+                        <div ng-repeat="node in node.attributes track by $index" ng-click="tttc.getCurrentValue(node)"  class="tree-node tree-node-content {$ rowHighlightAttr[node.temp_id] $}"
+                             ng-mouseover="hoverIn($index,node.temp_id)" ng-mouseleave="hoverOut($index,node.temp_id)"
+                             ng-init="!isEditAttributeValue[node.temp_id]; moreValue[node.temp_id]='false'"
+                             style="padding-top:10px,padding-bottom:10px ">
+                            <div class="row" style="display:inline;">
+                               <div class="col-sm-4 col-xs-4 col-md-4 col-lg-4">
+                                    <span  ng-class="fieldCriteria(node)" style="margin-left: -20px;"></span>
+                                    <label style="font-size: 10px;color: #8c8c8c;padding-left: 12px;">Attribute</label>
+                                </div>
+                                <div class="col-sm-6 col-xs-6 col-md-6 col-lg-6">
+                                    <label style="font-size: 10px;color: #8c8c8c;padding-left: 12px;">Values</label>
+                                </div>
+
+                            </div>
+                            <div class="row" style="display:inline;">
+                                <div class="col-sm-4 col-xs-4 col-md-4 col-lg-4">
+                                    <label class="el-attribute-name" ng-show="!isEditAttributeValue[node.temp_id]">{$ node.name $}</label>
+                                    <div ng-show="isEditAttributeValue[node.temp_id]">
+                                        <input type="text" data-ng-model="node.name" class="el-attribute-input" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div ng-show="!isEditAttributeValue[node.temp_id]">
+                                            <div class="el-radio-btn" style="margin-bottom:0;color:black;">
+                                                <input type="checkbox" name="node.current_value[0].value"
+                                                       ng-checked="node.current_value[0].is_checked"
+                                                       data-ng-model="node.current_value[0].is_checked" />
+                                                <span class="el-redio-text">{$ node.current_value[0].value $} </span>
+                                            </div>
+
+                                        <div ng-repeat="data in node.current_value track by $index" class="black-text"
+                                             ng-show="moreValue[node.temp_id]=='true'">
+
+                                            <div class="el-radio-btn" ng-if="$index!=0">
+                                                <input type="checkbox" name="data.value"
+                                                       data-ng-model="data.is_checked"
+                                                       ng-checked="data.is_checked" />
+                                                <span class="el-redio-text">{$ data.value $} </span>
+                                            </div>
+                                        </div>
+                                        <span class="moreORless"
+                                              ng-if="moreValue[node.temp_id]=='false' && node.current_value.length>1"
+                                              ng-click="showMore($index,node.temp_id)">
+                                            +{$ node.current_value.length $} more</span>
+                                        <span class="moreORless"
+                                              ng-if="moreValue[node.temp_id]=='true'"
+                                              ng-click="showLess($index,node.temp_id)">
+                                             -less</span>
+                                    </div>
+                                    <div ng-show="isEditAttributeValue[node.temp_id]">
+                                        <div ng-repeat="data in node.current_value" class="black-text">
+                                            <div class="el-radio-btn">
+                                                <input type="checkbox" ng-checked="data.is_checked" data-ng-model="data.is_checked" />
+                                                <input type="text" data-ng-model="data.value" style="" class="el-attribute-input" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                 <div class="col-sm-2 col-xs-2 col-md-2 col-lg-2 right" style="padding:0px;"
+                                      data-toggle="collapse" data-target=".{$ node.temp_id $}">
+                                    <div ng-show="!isEditAttributeValue[node.temp_id]">
+                                        <span class="check-icon"
+                                              ng-click="activeAttributeValues($index,node.temp_id,'unknown',node)"
+                                              ng-class="(hoverEdit==true) ? 'check-icon-active' : ''">
+                                            <i class="fa fa-check-circle" style="font-size:16px;"></i></span>
+                                        <span class="edit-icon"
+                                              ng-click="editAttributeValues($index,node.temp_id,'unknown',node)"
+                                              ng-class="(hoverEdit==true) ? 'edit-icon-active' : ''">
+                                            <i class="fa fa-edit"  style="font-size:16px;"></i></span>
+                                        <sapn class="del-icon"
+                                              ng-click="deleteAttributeValues($index,node.temp_id,'unknowm',this,$parent.$index)"
+                                              ng-class="(hoverEdit==true) ? 'del-icon-active' : ''">
+                                            <i class="fa fa-trash"  style="font-size:16px;"></i></sapn>
+                                    </div>
+                                    <div ng-show="isEditAttributeValue[node.temp_id]" style="text-align:center;">
+                                        <div class="pull-left pointer right-10"
+                                             ng-class="(hoverEdit==true) ? 'cancel-icon-active' : ''"
+                                             ng-click="cancelEditAttributeValues($index,node.temp_id,'unknown')">
+                                            <i class="fa fa-times-circle"  style="font-size:16px;"></i><div class="fontsize-10">Cancel</div>
+                                        </div>
+                                        <div class="pull-left pointer"
+                                             ng-class="(hoverEdit==true) ? 'save-icon-active' : ''"
+                                             ng-click="saveEditAttributeValues($index,node.temp_id,'unknown',node,this,$parent.$index)">
+                                            <i class="fa fa-save"  style="font-size:16px;"></i><div class="fontsize-10">Save</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="node.nlp != undefined" style="margin-top:10px;">
+                                  <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                                      <div class="table-responsive">
+                                          <table class="table table-bordered">
+                                              <thead>
+                                                <tr>
+                                                    <td><span class="fontStyleForAttrHead">Action</span></td>
+                                                    <td><span class="fontStyleForAttrHead">Attribute</span></td>
+                                                    <td><span class="fontStyleForAttrHead">Value</span></td>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <tr ng-repeat="data in node.nlp[0].attributes">
+                                                    <td>{$ data.action $}</td>
+                                                    <td>{$ data.attribute $}</td>
+                                                    <td>{$ data.value $}</td>
+                                                </tr>
+                                              </tbody>
+                                          </table>
+                                      </div>
+                                  </div>
+                              </div>
+                        </div>
+                        <li ng-show="newNode!=node.entity_id">
+                              <a ng-click="tttc.addNewNode(node,'group',this)">
+                                  <i class="fa fa-plus"></i>
+                                  <span>Add</span>
+                              </a>
+                        </li>
+                        <li class="tree-node" ng-show="newNode==node.entity_id">
+                              <div class="row">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <div class="ExtractedHeading">Attribute</div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <div class="ExtractedHeading">Value</div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    </div>
+                              </div>
+                             <div class="row row-eq-height" style="margin: 5px 0px 10px 0px;">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+                                        <select class="newattributeSelect" style="width:100%;font-weight:400;" ng-model="tttc.attributeKey">
+                                            <option value="">Select Attribute</option>
+                                            <option ng-repeat="d in attributesList" value="{$ d $}">{$ d $}
+                                           </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                         <input class="newattributeSelect" ng-model="tttc.attributeValue" type="text" placeholder="Type the Value" style="font-weight:400;font-size:11px;"/>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                        <button class="btn btn-custom select-button" style="width:100%;padding:5px 10px;font-size:11px;" title="Click on the highlighted portion of the image where this new text for the attribute belongs" ng-click="tttc.selectedElement()">Select Element</button>
+                                    </div>
+                                 
+                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                        <span class="pointer right-10" ng-click="tttc.cancelNewnode()">
+                                            <i class="fa fa-times-circle" style="font-size:16px;"></i>
+                                        </span>
+
+                                        <span class="customSave" title="Save" ng-click="tttc.saveNewnode(node,'group',this)">
+                                            <i class="fa fa-floppy-o" aria-hidden="true" style="font-size:16px;"></i>
+                                        </span>
+                                    </div>
+                                 <span ng-show="croppingError" style="color:red">{$ cropMsg $}</span>
+                             </div>
+                        </li>
+                    </div>
+                    <div ng-if="node.type=='entity'">
+                        <div ui-tree-handle class="tree-node tree-node-content"
+                        data-nodrag ng-include="'nodes_renderer1.html'" style="padding:0px;">
+
+                        </div>
+                    </div>
+              </div>
+        </script>
+        <script type="text/ng-template" id="nodes_renderer1.html">
+              <div ui-tree-handle class="tree-node tree-node-content"
+                   data-nodrag>
+                    <label ng-if="node.type!='attribute'" style="padding-top:10px;">
+                        <span>{$ node.name $}</span>
+                    </label>
+                    <a class="pull-right" ng-if="node.attributes && node.attributes.length > 0" data-nodrag data-toggle="collapse" data-target=".{$ node.temp_id $}" style="padding: 10px 10px 10px 10px;">
+                        <span  ng-class="{'sort_down': collapsed,'sort_up': !collapsed}"></span>
+                    </a>
+              </div>
+              <ol ui-tree-nodes="" ng-model="node.attributes" class="listedStyle collapse in olStyle1 {$ node.temp_id $}" >
+                  <li ng-repeat="node in node.attributes track by $index"  ui-tree-node ng-include="'nodes_renderer2.html'" style="padding-bottom:10px;"></li>
+                  <li ng-show="newNode!=node.temp_id && node.attributes[0].type=='attribute' && node.cardinality != '1'">
+                      <a ng-click="tttc.addNewNode(node)">
+                          <i class="fa fa-plus"></i>
+                          <span>Add</span>
+                      </a>
+                  </li>
+                  <li class="tree-node" ng-show="newNode==node.temp_id">
+                      <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                <div class="ExtractedHeading">Attribute</div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                <div class="ExtractedHeading">Value</div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            </div>
+                      </div>
+                     <div class="row row-eq-height" style="margin: 5px 0px 10px 0px;">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+                                <select class="newattributeSelect" style="width:100%;font-weight:400;"  ng-model="tttc.attributeKey">
+                                    <option value="">Select Attribute</option>
+                                    <option ng-repeat="d in attributesList" value="{$ d $}">{$ d $}
+                                   </option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                 <input class="newattributeSelect" ng-model="tttc.attributeValue" type="text" placeholder="Type the Value" style="font-weight:400;font-size:11px;"/>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                        <button class="btn btn-custom select-button" style="width:100%;padding:5px 10px;font-size:11px;" title="Click on the highlighted portion of the image where this new text for the attribute belongs" ng-click="tttc.selectedElement()">Select Element</button>
+                                    </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-right">
+                                <span class="pointer right-10" ng-click="tttc.cancelNewnode()">
+                                    <i class="fa fa-times-circle" style="font-size:16px;"></i>
+                                </span>
+
+                                <div class="customSave" title="Save" ng-click="tttc.saveNewnode(node)">
+                                    <i class="fa fa-floppy-o" aria-hidden="true" style="font-size:16px;"></i>
+                                </div>
+                            </div>
+                         <span ng-show="croppingError" style="color:red">{$ cropMsg $}</span>
+                     </div>
+                  </li>
+              </ol>
+        </script>
+        <div class="domainObjectBody">
+
+            <div class="row row-eq-height">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                    <div ui-tree id="tree-root1" data-empty-placeholder-enabled="false">
+                        <ol ui-tree-nodes class="olStyle" ng-model="extractOutput">
+                            <li ng-repeat="node in extractOutput track by $index"
+                                class="treeDomainObject" collapsed="true"
+                                ng-class="{disabledStyle: isDisabled}" ui-tree-node ng-include="'nodes_renderer1.html'"></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btn  btn-custom btn-block " ng-click="tttc.completeReview()" >
+            Complete review
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row overlay overlay-threshold" id="addNewEntityWindow" style="z-index: 10000 !important;">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h4 class="push-left">
+          <span ng-bind="labelForcreate"></span>
+          <span class="pull-right closeRule closebtn" ng-click="tttc.cancelAddNewEntityWindow()" style="margin-right:1px; margin-left:17px;">&times;</span>
+        </h4>
+
+        <div class="row">
+            <!-- Nested node template -->
+
+           <script type="text/ng-template" id="nodes_renderer.html">
+              <div ui-tree-handle class="tree-node tree-node-content" ng-class="cls[this.$id]"
+                   data-nodrag ng-click="tttc.viewAndEditDomainObject(this)">
+                    <label ng-if="node.entity_type=='domain_object' && node.entity_name != ''">
+                        <span class="domainHeading">Domain Object</span>
+                        <br>
+                        <span>{$ node.entity_name $}</span>
+                    </label>
+                    <label ng-if="node.entity_type=='entity' && node.entity_name != ''" style="margin-bottom: 0px;">
+                        <div>
+                            <label>
+                                <img src="/app/images/entity.png" style="width: 20px;vertical-align: super;"/>
+                            </label>
+                            <label style="padding-left: 5px;">
+                                {$ node.entity_name $}
+                                <br>
+                                <span  class="domainHeading" >Entity</span>
+                            </label>
+                        </div>
+                    </label>
+                    <label style="padding-top: 10px;" ng-if="(node.entity_type=='entity') && node.entity_name == ''">
+                        <img src="/app/images/entity.png" style="width: 20px;" ng-if="node.entity_type!='domain_object'"/>
+                        < New Entity >
+                    </label>
+                    <label style="padding-top: 10px;" ng-if="(node.entity_type=='domain_object') && node.entity_name == ''">
+                        <img src="/app/images/entity.png" style="width: 20px;" ng-if="node.entity_type!='domain_object'"/>
+                        < New Domain Object >
+                    </label>
+                    <label style="margin-bottom:0px;"  ng-if="!(node.entity_type=='entity' || node.entity_type=='domain_object') && node.key_name != ''">
+                        <div>
+                            <label ng-show="node.type=='entity'">
+                                <img src="/app/images/entity.png" style="width: 20px;vertical-align: super;"/>
+                            </label>
+                            <label ng-show="!(node.type=='entity')">
+                                <img src="/app/images/attribute.png" style="width: 20px;vertical-align: super;"/>
+                            </label>
+                            <label style="padding-left: 5px;">
+                                {$ node.key_name $}
+                                <br ng-if="!(node.entity_type=='entity' || node.entity_type=='domain_object')">
+                                <span  class="domainHeading"  ng-if="!(node.entity_type=='entity' || node.entity_type=='domain_object')">{$ node.type $}</span>
+                            </label>
+                        </div>
+
+                    </label>
+                    <label style="padding-top: 10px;" ng-if="!(node.entity_type=='entity' || node.entity_type=='domain_object') && node.key_name == ''">
+                        <img src="/app/images/attribute.png" style="width: 20px;"/> < New Attribute >
+                    </label>
+                    <a class="pull-right" ng-if="node.attributes && node.attributes.length > 0 && (node.entity_type=='entity' || node.entity_type=='domain_object' )" data-nodrag ng-click="toggle(this)" style="padding: 13px;
+                border-left: 1px solid #ddd;
+                background-color: aliceblue;">
+                        <span  ng-class="{'sort_down': collapsed,'sort_up': !collapsed}"></span>
+                    </a>
+                    <a class="pull-right" data-nodrag ng-click="removeAttr(this,node.entity_type,$event)" ng-class="{disabledStyle: isDisabled}" style="margin-right: 8px;padding: 10px;">
+                        <span class="fa fa-trash " style="font-size:14px;"></span>
+                    </a>
+                    <span ng-if="node.entity_name!=''">
+
+                        <a class="pull-right" data-nodrag ng-click="newSubItem(this,'attribute',$event)" ng-class="{disabledStyle: isDisabled}" style="margin-right: 8px;padding: 10px;" ng-show="node.type=='entity' || node.entity_type=='entity' || node.entity_type=='domain_object'">
+                            <span><i class="fa fa-plus"></i> New Attribute </span>
+                        </a>
+                    </span>
+                    <span class="pull-right badge" title="Rules count" style="margin: 13px;background-color: white;border: 1px solid #ddd;color: #ababab;font-weight: 500;" ng-if="!(node.type=='entity' || node.entity_type=='entity' || node.entity_type=='domain_object')">
+                        {$ node.rule_id.length $}
+                    </span>
+              </div>
+              <ol ui-tree-nodes="" ng-model="node.attributes" ng-class="{hidden: collapsed}" class="scrollingTree 3" style="max-height: 480px;">
+                  <li ng-repeat="node in node.attributes" id="{$ node.$$hashKey.replace(':', '') $}"  ui-tree-node ng-include="'nodes_renderer.html'">
+                  </li>
+              </ol>
+            </script>
+
+
+            <div class="domainObjectBody">
+                <div class="row row-eq-height custom-row" >
+                    <!--<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12" style="height: {$ popupHeight $}px;overflow-y:scroll;">-->
+                        <!--<div ui-tree id="tree-root" data-empty-placeholder-enabled="false">-->
+                            <!--<ol ui-tree-nodes ng-model="domainObjects" id="domainObjectsNodes" style="padding:0px;">-->
+                                <!--<li ng-repeat="node in domainObjects" ng-click="parentNodeOfdomainObjects(node)"-->
+                                    <!--id="{$ node.$$hashKey.replace(':', '') $}"-->
+                                    <!--class="treeDomainObject" collapsed="{$ collapseKey $}"-->
+                                    <!--ng-class="{disabledStyle: isDisabled}" ui-tree-node ng-include="'nodes_renderer.html'"></li>-->
+                            <!--</ol>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding domainObjectDefinition" ng-if="!tttc.attributeShow && tttc.placeholder" style="height: {$ popupHeight $}px;overflow-y:scroll;">
+                        <ul class="nav nav-tabs nav-custom-tabs">
+                            <li class="active"><a data-toggle="tab" href=".properties">Properties</a></li>
+                            <li><a data-toggle="tab" href=".enrichments">Enrichments</a></li>
+                            <li><a data-toggle="tab" href=".entitytest">Test</a></li>
+                        </ul>
+                        <br>
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active properties">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-4 co-md-4 col-sm-4 col-xs-12">
+                                                <label class="keyText">Name</label>
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-xs-12 col-sm-8">
+                                                <input type="text" class="form-control custom-form"
+                                                       ng-blur="checkEntityIsEmpty(tttc.domainObject, $event)"
+                                                       ng-model="tttc.domainObject.entity_name" placeholder="Entity Name" id="focusInput" resspechars/>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-4 co-md-4 col-sm-4 col-xs-12">
+                                                <label class="keyText">NER Type</label>
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-xs-12 col-sm-8">
+                                                <div mass-autocomplete class="mass-autocompleteAttributeDiv">
+                                                    <input ng-model="tttc.domainObject.ner_type" class="form-control custom-form"
+                                                           mass-autocomplete-item="autocomplete_options" placeholder="Enter Ner Type">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item" ng-show="tttc.domainObject.entity_type!='domain_object'">
+                                        <div class="row">
+                                            <div class="col-lg-4 co-md-4 col-sm-4 col-xs-12">
+                                                <label class="keyText">Cardinality</label>
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-xs-12 col-sm-8">
+                                                <!--<input type="text" class="form-control custom-form" ng-model="tttc.domainObject.entity_relation.cardinality"/>-->
+                                                <select class="form-control  custom-form" ng-model="tttc.domainObject.entity_relation.cardinality"  style="padding:0;">
+                                                    <option data-ng-repeat="data in cardinalityList"
+                                                            ng-selected="tttc.domainObject.entity_relation.cardinality==data.value"
+                                                            value="{$ data.value $}">{$  data.name $}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <br>
+                                <div>
+                                    <label class="SubHeading-text">Synonym</label>
+                                    <textarea placeholder="synonym" rows="5" class="form-control" ng-model="tttc.domainObject.entity_synonym" ressynchars></textarea>
+                                </div>
+                                <br>
+                                <div class="attribute" ng-show="!tttc.newEntity">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 no-padding">
+                                            <label class="SubHeading-text">Attributes</label>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 no-padding">
+                                            <span class="right">
+                                                <img src="/app/images/plus.png" ng-click="tttc.newAttribute(tttc.domainObject,'attribute')" style="width:15px;cursor:pointer;"/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <ul class="list-group">
+                                            <li class="list-group-item" ng-repeat="list in tttc.domainObject.attributes" ng-if="list.entity_type!='entity'">
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                        <label>{$ list.key_name $}</label>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                        <span  class="valueText">{$ list.type $}</span>
+                                                    </div>
+                                                    <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12 text-right">
+                                                        <img src="/app/images/edit.png" ng-click="tttc.autoSelectOnNewAttr(tttc.domainObject,list)" style="width:15px;cursor:pointer;"/>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <br>
+                                <p class="error">{$ validateAttribute $}</p>
+                                <div class="row">
+                                  <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                                    <button class="btn button-customSave btn-custom" ng-click="saveHierarchy()" ng-disabled="isDisabled"> <i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                                    <!--<button class="btn button-customCancel" ng-click="cancelActions()">Cancel</button>-->
+                                    <div class="loading-spiner-holder" ng-show="isDisabled" ><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving Entity...</i></span></div></div>
+                                    <p class="error">{$ message $}</p>
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade enrichments">
+                                <div class="row domainObjectStyle" >
+                                  <div class="row">
+                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                                        <ul id="do-tabs" class="nav nav-tabs nav-custom-tabs">
+                                            <li class="active"><a data-toggle="tab" href=".attributes">Attributes</a></li>
+                                            <li ><a data-toggle="tab" href=".enrichment">Enrichments</a></li>
+                                        </ul>
+                                    </div>
+                                  </div>
+
+                                  <div class="tab-content">
+                                    <div class="tab-pane fade in active attributes bckColor">
+                                      <div class="row">
+                                        <div class="col-sm-12">
+                                          <ul class="list-group">
+                                            <li class="list-group-item custom-list-item" style="text-align:left !important"><span class="groupHead">Attributes</span> <a class="pull-right enableColor" ng-click="tttc.enableAllAttributes()">Enable All</a></li>
+                                            <li class="list-group-item custom-list-item" style="text-align:left !important" ng-repeat="item in tttc.attributesList track by $index" ng-show="item!=''">
+                                                <div class="checkbox">
+                                                    <form class="customForm">
+                                                        <label class="checkbox-inline">
+                                                            <input type="checkbox" ng-checked="tttc.selectedAttributes.indexOf(item) > -1" ng-click="tttc.toggleAttribute(item)" value="{$ item $}">
+                                                            <i class="helper"></i>
+                                                             {$ item $}
+                                                        </label>
+                                                    </form>
+                                                </div>
+
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="tab-pane fade enrichment bckColor">
+                                      <div class="row">
+                                          <div class="col-sm-12">
+                                              <ul class="list-group">
+                                                <li class="list-group-item custom-list-item" style="text-align:left !important"><span class="groupHead">Enrichments</span> <a class="pull-right enableColor" ng-click="tttc.enableAllEnrichments()">Enable All</a></li>
+                                                <li class="list-group-item custom-list-item" style="text-align:left !important" ng-repeat="item in tttc.enrichmentsList">
+                                                    <div class="checkbox">
+                                                        <form class="customForm">
+                                                            <label class="checkbox-inline">
+                                                                <input type="checkbox" value="{$ item $}" ng-checked="tttc.selectedEnrichments.indexOf(item) > -1" ng-click="tttc.toggleEnrichment(item)">
+                                                                <i class="helper"></i>
+                                                                 {$ item $}
+                                                            </label>
+                                                        </form>
+                                                    </div>
+                                                </li>
+                                                  <li class="list-group-item custom-list-item" style="text-align:left !important" ng-show="loadingEnrichments">
+                                                      <div class="loading-spiner-holder" style="margin-top:10px;">
+                                                        <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span
+                                                                class=""><i>loading enrichments...</i></span></div>
+                                                      </div>
+                                                  </li>
+                                              </ul>
+                                          </div>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10">
+                                          <button class="btn button-customSave" ng-click="tttc.saveEnrichment()" ng-disabled="isDisabled"> <i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                                          <div class="loading-spiner-holder" ng-show="isDisabled" ><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving Enrichments...</i></span></div></div>
+                                            <p class="error">{$ message $}</p>
+                                            <p class="red">{$ tttc.validateEnrichment $}</p>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade entitytest">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                      <div class="panelCustom">
+                                        <div class="panel-custom">
+                                          <p class="headClass">Input</p>
+                                        </div>
+                                        <div class="panelBody-custom">
+                                          <textarea rows="10" class="textAreaClass" ng-model="inputModel" placeholder="Type or Paste the input(JSON)"></textarea>
+                                        </div>
+                                        <div>
+                                          <button class="btn btn-primary btn-block btn-test" ng-click="testInput(inputModel)">Test</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                      <div class="panelCustom">
+                                        <div class="panel-custom">
+                                          <p class="headClass">Output</p>
+                                        </div>
+                                        <div class="panelBody-custom" style="overflow-y:scroll">
+                                          <p class="outputText" ng-show="executeData==''">Output will be shown here</p>
+
+                                          <div class="card" ng-show="executeData!=''" ng-repeat="card in executeRulesOutput">
+                                            <div class="card-title" ng-class="card.EStatus" data-toggle="collapse" href=".outputCard{$ $index $}" aria-expanded="false" aria-controls="outputCard{$ $index $}">
+                                              <label>{$ card.domain_object $}</label>
+                                            </div>
+                                            <div class="collapse in outputCard{$ $index $}">
+                                              <div class="card-body" ng-repeat="attr in card.attributes">
+                                                <table class="table table-bordered table-rule">
+                                                  <tr >
+                                                    <td><label class="labelBold">Attribute Name:</label> {$ attr.attribute $}</td>
+                                                    <td><label class="labelBold">Value:</label> {$ attr.value $}</td>
+                                                  </tr>
+                                                </table>
+                                                <ul class="list-group list-group-flush" style="margin-bottom: 0px;" ng-repeat="rule in attr.rules track by $index">
+                                                  <li class="list-group-item list-custom">
+                                                    <span><label class="labelBold">Rule:</label> {$ rule.rule_name $}</span>
+                                                    <span class="right"><i class="fa fa-check-circle ruleApplied" ng-show="rule.status"></i><i class="fa fa-times-circle red" ng-hide="rule.status"></i></span>
+                                                  </li>
+                                                </ul>
+                                                <br ng-show="card.enrichEntities.length>0">
+                                                <div class="card" ng-show="card.enrichEntities.length>0">
+                                                  <div class="card-title withEnrichment">
+                                                    <label class="labelBold">Extract Entities</label>
+                                                  </div>
+                                                  <ul class="list-group list-group-flush" style="margin-bottom: 0px;" >
+                                                    <li class="list-group-item list-custom" ng-repeat="value in card.enrichEntities">
+                                                      <span><label class="labelBold">{$ value.entity_key[0] $}:</label> {$ value.text $}</span>
+                                                    </li>
+                                                  </ul>
+                                                </div>
+                                                <br ng-show="tttc.checkObjectLength(card.enrichIntent)">
+                                                <div class="card" ng-show="tttc.checkObjectLength(card.enrichIntent)">
+                                                  <div class="card-title withEnrichment">
+                                                    <label class="labelBold">Extract Intent</label>
+                                                  </div>
+                                                  <div ng-repeat="(key,value) in card.enrichIntent">
+                                                    <table class="table table-bordered table-rule">
+                                                      <tr>
+                                                        <td><label class="labelBold">{$ key $}</label></td>
+                                                      </tr>
+                                                    </table>
+                                                    <ul class="list-group list-group-flush" style="margin-bottom: 0px;">
+                                                      <li class="list-group-item list-custom" ng-repeat="data in value.action_metadata">
+                                                        <span><label class="labelBold">{$ data.entity_key $}:</label> {$ data.entity_value $}</span>
+                                                      </li>
+                                                    </ul>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding domainObjectDefinition" ng-if="tttc.attributeShow && tttc.placeholder" style="height: {$ popupHeight $}px;overflow-y:scroll;">
+                        <ul class="nav nav-tabs nav-custom-tabs">
+                            <li class="active"><a data-toggle="tab" href=".properties">Properties</a></li>
+                        </ul>
+                        <br>
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active properties">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-4 co-md-4 col-sm-4 col-xs-12">
+                                                <label class="keyText">Name</label>
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-xs-12 col-sm-8">
+                                                <input type="text" class="form-control custom-form" id="attrFocus" ng-blur="checkAttributeIsEmpty(tttc.attributeSelected, $event)"  ng-model="tttc.attributeSelected.key_name" placeholder="Enter attribute" ng-disabled="tttc.entityName!=undefined && tttc.entityName!='' && tttc.entityName!='create'" resspechars/>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-4 co-md-4 col-sm-4 col-xs-12">
+                                                <label class="keyText">Data Type</label>
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-xs-12 col-sm-8">
+                                                <select class="form-control  custom-form" ng-model="tttc.attributeSelected.type" ng-change="tttc.changeDataType(tttc.attributeSelected.type)" style="padding:0;">
+                                                    <option ng-repeat="(key,options) in typeList" value="{$ options $}" ng-selected="options == ec.attributeSelected.type">{$ key $}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item" ng-if="tttc.attributeSelected.type=='related_entity'">
+                                        <div class="row">
+                                            <div class="col-lg-4 co-md-4 col-sm-4 col-xs-12">
+                                                <label class="keyText">Entity</label>
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-xs-12 col-sm-8">
+                                                <select class="form-control  custom-form" ng-model="tttc.entityName" ng-change="tttc.changeEntity(tttc.entityName)" style="padding:0;">
+                                                    <option value="" ng-selected="true">Select Entity</option>
+                                                    <option style="color:#35aae3;font-size:16px;" value="create"><a>Create Entity</a></option>
+                                                    <option ng-repeat="options in entitiesList" value="{$ options $}">{$ options $}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-4 co-md-4 col-sm-4 col-xs-12">
+                                                <label class="keyText">NER Type</label>
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-xs-12 col-sm-8">
+                                                <div mass-autocomplete class="mass-autocompleteAttributeDiv">
+                                                    <input ng-model="tttc.attributeSelected.ner_type" class="form-control custom-form"
+                                                           mass-autocomplete-item="autocomplete_options" placeholder="Enter Ner Type">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item" ng-if="tttc.attributeSelected.type=='related_entity' || tttc.attributeSelected.type=='entity'">
+                                    <div class="row">
+                                        <div class="col-lg-4 co-md-4 col-sm-4 col-xs-12">
+                                            <label class="keyText">Cardinality</label>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-xs-12 col-sm-8">
+                                            <select class="form-control  custom-form" ng-model="tttc.attributeSelected.entity_relation.cardinality"  style="padding:0;">
+                                                <option data-ng-repeat="data in cardinalityList"
+                                                        ng-selected="tttc.attributeSelected.entity_relation.cardinality==data.value"
+                                                        value="{$ data.value $}">{$  data.name $}</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                </li>
+                                </ul>
+
+                                <br>
+                                <div>
+                                    <label class="SubHeading-text">Synonym</label>
+                                    <textarea placeholder="synonym" rows="5" class="form-control" ng-model="tttc.attributeSelected.synonym" ressynchars></textarea>
+                                </div>
+                                <br>
+                                <div class="rule" ng-hide="tttc.attributeSelected.type=='related_entity'">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
+                                            <label>Rules</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                            <div class="customCreateRules">
+                                                <div class="row">
+                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                        <a ng-click="addRuleForVariable()" style="text-decoration:none;color:#5eb5eb;">
+                                                            <img src="./app/images/add.png" style="width:15px;"/>
+                                                            Create Rule
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2" style="color:#5eb5eb;font-weight:bold;">
+                                                        OR
+                                                    </div>
+                                                    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                                                        <a ng-click="existingRulesdiv()" style="text-decoration:none;color:#5eb5eb;">
+                                                            <img src="./app/images/existing.png" style="width:15px;"/>
+                                                            Choose Existing Rule
+                                                        </a>
+
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12" style="border-bottom:1px solid #eee;">
+                                                        <label>Associated Rules</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row rulesPadding" ng-repeat="rule in tttc.selectedRulesWithObj">
+                                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                                                        {$ rule.rule_name $}
+                                                    </div>
+                                                    <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                                        <img src="./app/images/edit.png" title="Edit rule" style="width:15px;cursor:pointer;" ng-click="tttc.editRule(rule)"/>
+                                                        <img src="./app/images/bin.png" title="delete rule" style="width:15px;cursor:pointer;margin-left:12px" ng-click="tttc.removeRuleFromAttr($index)" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="error">{$ validateAttribute $}</p>
+                                <div class="row">
+                                  <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                                    <button class="btn button-customSave btn-custom" ng-click="saveEntities()" ng-disabled="isDisabled"> <i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                                    <!--<button class="btn button-customCancel" ng-click="cancelActions()">Cancel</button>-->
+                                    <div class="loading-spiner-holder" ng-show="isDisabled" ><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving Entity...</i></span></div></div>
+                                    <p class="error">{$ message $}</p>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding domainObjectDefinition" ng-if="!tttc.placeholder" style="height: {$ popupHeight $}px;overflow-y:scroll;text-align:center">
+                            <img src="/app/images/emptyDomain.png" style="margin-top:20%;"/>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row overlay" id="ruleOverlayDiv">
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 image-style1" style="overflow:auto">
+                    <h4 class="push-left">
+                        <span>&nbsp;</span>
+                      <span class="pull-right closeRule closebtn" ng-click="cancel()">&times;</span>
+                    </h4>
+                    <form ng-submit="tttc.saveRule()">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                <label style="color: #5eb5eb;font-weight: 400;cursor:pointer;font-size:12px;">
+                                    <input type="radio" name="optradio" ng-model="ruleSelection" value="vrule"/>
+                                    Validation rule
+                                </label>
+                            </div>
+                            <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                <label style="color: #5eb5eb;font-weight: 400;cursor:pointer;font-size:12px;">
+                                    <input type="radio" name="optradio" ng-model="ruleSelection" value="srule"/>
+                                    Standardisation Rule
+                                </label>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                <label style="color: #5eb5eb;font-weight: 400;cursor:pointer;font-size:12px;" ng-click="errorMsg=''">
+                                    <input type="radio" name="optradio" ng-model="ruleSelection" value="cusCondition"/>
+                                    Custom Condition
+                                </label>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                <label style="color: #5eb5eb;font-weight: 400;cursor:pointer;font-size:12px;"  ng-click="errorMsg=''">
+                                    <input type="radio" name="optradio" ng-model="ruleSelection" value="cusAction"/>
+                                    Custom Action
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="ruleSelection == 'vrule' || ruleSelection == 'srule'">
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                <label class="text-heading">Rule Name</label>
+                                <input type="text" class="form-control bottomLineInput"
+                                       placeholder="Enter Rule Name" ng-model="tttc.ruleObj.rule_name" style="background: white;" required />
+                            </div>
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                <label class="text-heading">Validation Message<span style="font-size: 10px;">( This message appears in Business User Interface when validation fails  )</span></label>
+                                <input type="text" class="form-control bottomLineInput"
+                                       placeholder="Enter validation message" ng-model="tttc.ruleObj.validation_message" style="background: white;" required />
+                            </div>
+                        </div>
+                        <div class="row" ng-show="ruleSelection == 'vrule' || ruleSelection == 'srule'">
+                            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                                <label>IF</label>
+                                <div class="row" ng-repeat="ruleCond in tttc.ruleObj.rule.conds" style="margin-bottom:10px;">
+                                    <div class="col-lg-4 col-md-4 col-sm-4">
+                                        <select class="form-control" ng-model="ruleCond.fn" style="padding:0px;">
+                                            <option value="">Select function</option>
+                                            <option ng-repeat="option in tttc.functionsList" value="{$ option.fn $}">{$ option.display_name $}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3">
+                                        <select class="form-control" ng-model="ruleCond.op" ng-change="tttc.checkForOperator(ruleCond.op,ruleCond,$index)"  style="padding:0px;">
+                                            <option value="">Select condition</option>
+                                            <option ng-repeat="option in tttc.operatorsList" value="{$ option.oper $}">{$ option.display_name $}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3">
+                                        <select class="form-control" ng-model="ruleCond.rval" ng-if="ruleCond.op == 'lookup'"  style="padding:0px;">
+                                            <option value="">Select Tag</option>
+                                            <option ng-repeat="opt in tttc.tagsArray" value="{$ opt $}">{$ opt $}</option>
+                                        </select>
+                                        <input type="text" class="form-control" ng-model="ruleCond.rval" ng-if="ruleCond.op != 'lookup'" placeholder="Enter value"/>
+                                    </div>
+                                    <div class="col-lg-1 col-md-1 col-sm-1">
+                                        <a ng-click="tttc.selectOperator('any')" ng-show="$index == 0">OR</a>
+                                        <a ng-click="tttc.addCondition()" ng-show="$index != 0"><span ng-show="tttc.ruleObj.rule.run_type=='any'">OR</span><span ng-show="tttc.ruleObj.rule.run_type=='all'">AND</span></a>
+                                    </div>
+                                    <div class="col-lg-1 col-md-1 col-sm-1">
+                                        <a ng-click="tttc.selectOperator('all')" ng-show="$index == 0">AND</a>
+                                        <a ng-click="tttc.delCond($index)" ng-show="$index != 0"><span class="fa fa-trash"></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="ruleSelection == 'srule'">
+                            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                                <label>THEN</label>
+                                <div class="row" style="margin-bottom:10px;" ng-repeat="ruleAction in tttc.ruleObj.rule.actions">
+                                    <div class="col-lg-5 col-md-5 col-sm-5">
+                                        <select class="form-control" ng-model="ruleAction.act" ng-change="tttc.checkForAction(ruleAction.act,ruleAction,$index)"  style="padding:0px;">
+                                            <option value="">Select condition</option>
+                                            <option ng-repeat="option in tttc.actionsList" value="{$ option.oper $}">{$ option.display_name $}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-5">
+                                        <input type="text" class="form-control" ng-model="ruleAction.attr.rval" placeholder="Enter value"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="ruleSelection == 'cusCondition'">
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                <div class="row">
+                                    <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6 " style="padding-left:0px;">
+                                        <label class="text-heading">Custom Condition Name</label>
+                                        <input type="text" class="form-control bottomLineInput"
+                                            placeholder="Enter Condition Name" ng-model="customConditionName" style="background: white;" />
+                                    </div>
+                                    <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6 ">
+                                        <label class="text-heading">Language</label>
+                                        <select class="form-control" ng-model="lngForCondition" ng-change="conditionLng(lngForCondition)"  style="padding:0px;">
+                                            <option value="javascript">Javascript</option>
+                                            <option value="groovy">Groovy</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="aceEditorcusCondition" ui-ace="aceOptionsCon" ng-trim="true"></div><br>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="ruleSelection == 'cusAction'">
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6 " style="padding-left:0px;">
+                                        <label class="text-heading">Custom Action Name</label>
+                                        <input type="text" class="form-control bottomLineInput"
+                                            placeholder="Enter Action Name" ng-model="customActionName" style="background: white;" />
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                                        <label class="text-heading">Language</label>
+                                        <select class="form-control" ng-model="lngForAction" ng-change="actionLng(lngForAction)"  style="padding:0px;">
+                                            <option value="javascript">Javascript</option>
+                                            <option value="groovy">Groovy</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="aceEditorcusAction" ui-ace="aceOptionsAct" ng-trim="true"></div><br>
+                            </div>
+                        </div>
+                        <div class="alert alert-danger" ng-show="tttc.conditionErr != ''">{$ tttc.conditionErr $}</div>
+                        <div class="row" ng-show="ruleSelection == 'vrule' || ruleSelection == 'srule'">
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                <button type="submit" class="btn btn-custom">Save</button>
+                                <div ng-show="showSpinnerRule" class="loading-spiner-holder ralign-spinner"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class="">Saving rule</span></div></div>
+                                <div class="alert alert-danger" ng-show="tttc.validateErr!=''">{$ tttc.validateErr $}</div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="ruleSelection == 'cusCondition' || ruleSelection == 'cusAction'">
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                <button type="button" class="btn btn-custom" ng-click="tttc.submitCustomRule(ruleSelection)">Save</button>
+                                <div class="error">{$ errorMsg $}</div>
+                                <div ng-show="showSpinnerRule" class="loading-spiner-holder ralign-spinner"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class="">Saving condition</span></div></div>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                    <hr>
+                    <br>
+                    <form ng-submit="tttc.testRule()" ng-show="ruleSelection == 'vrule' || ruleSelection == 'srule'">
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                <label class="text-heading">Source</label>
+                                <input type="text" class="form-control bottomLineInput"
+                                       placeholder="Enter Value" ng-model="tttc.sourceValue" style="background: white;" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                <button type="submit" class="btn btn-custom">Test</button>
+                            </div>
+                        </div><br>
+                        <div class="row">
+                            <div class="col-sm-12" ng-if="tttc.ruleFailedmessage">
+                                <span style="color:black">Valid : </span>
+                                <span style="padding-left:10px;">
+                                    <i class="fa fa-times-circle red"></i>
+                                </span>
+                            </div>
+                            <div class="col-sm-12" ng-if="tttc.ruleSuccessmessage">
+                                <span style="color:black">Valid : </span>
+                                <span style="padding-left:10px;">
+                                    <i class="fa fa-check-circle ruleApplied"></i>
+                                </span>
+                                <br>
+                                <span style="color:black" ng-show="tttc.ruleResult != undefined">Result : </span><span>{$ tttc.ruleResult $}</span>
+                            </div>
+                        </div>
+                    </form>
+                    <form ng-submit="tttc.testCondition('cusCondition')" ng-show="ruleSelection == 'cusCondition'">
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                <input type="text" class="form-control bottomLineInput"
+                                       placeholder="Enter Source Value" ng-model="tttc.sourceConditionValue" style="background: white;" required />
+                            </div>
+                            <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                <input type="text" class="form-control bottomLineInput"
+                                       placeholder="Enter Target Value" ng-model="tttc.targetConditionValue" style="background: white;" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                <button type="submit" class="btn btn-custom">Test</button>
+                                <div ng-show="showSpinnertestCondition" class="loading-spiner-holder ralign-spinner"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class="">testing condition</span></div></div>
+                            </div>
+                        </div><br>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                                <span>Result : </span><span>{$ outputOfTestCondition $}</span>
+                            </div>
+                        </div>
+                    </form>
+                    <form ng-submit="tttc.testCondition('cusAction')" ng-show="ruleSelection == 'cusAction'">
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                <input type="text" class="form-control bottomLineInput"
+                                       placeholder="Enter Source Value" ng-model="tttc.sourceActionValue" style="background: white;" required />
+                            </div>
+                            <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                <input type="text" class="form-control bottomLineInput"
+                                       placeholder="Enter Target Value" ng-model="tttc.targetActionValue" style="background: white;" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                <button type="submit" class="btn btn-custom">Test</button>
+                                <div ng-show="showSpinnertestAction" class="loading-spiner-holder ralign-spinner"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class="">testing action</span></div></div>
+                            </div>
+                        </div><br>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                                <span>Result : </span><span>{$ outputOfTestAction $}</span>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                </div>
+            </div>
+
+            <div class="row overlay" id="existingruleDiv">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h4 class="push-left">
+                      <span>Choose From Existing</span>
+                      <span class="pull-right closeRule closebtn" ng-click="cancelExisting()">&times;</span>
+                    </h4>
+
+
+                    <br>
+                    <form >
+                        <div class="image-style3" style="overflow: auto;">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                    <label style="color: #5eb5eb;font-weight: 400;">
+                                        <input type="radio" name="optradio" ng-model="tttc.ruleListSelection" value="vlrule"/>
+                                        Validation rule
+                                    </label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                    <label style="color: #5eb5eb;font-weight: 400;">
+                                        <input type="radio" name="optradio" ng-model="tttc.ruleListSelection" value="slrule"/>
+                                        Standardisation Rule
+                                    </label>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                    <label style="color: #5eb5eb;font-weight: 400;cursor:pointer;font-size:12px;">
+                                        <input type="radio" name="optradio" ng-model="tttc.ruleListSelection" value="cusCondition"/>
+                                        Custom Condition
+                                    </label>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                    <label style="color: #5eb5eb;font-weight: 400;cursor:pointer;font-size:12px;">
+                                        <input type="radio" name="optradio" ng-model="tttc.ruleListSelection" value="cusAction"/>
+                                        Custom Action
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row ruleMode" ng-show="tttc.ruleListSelection == 'slrule'">
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                     <div class="panel-group" id="ruleAccordion{$ $index $}" ng-repeat="rule in tttc.allRules" ng-show="rule.rule_type=='S'">
+                                          <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                              <h4 class="panel-title">
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" ng-model="selectedRules[rule.rule_id]" value="{$ rule.rule_id $}">
+                                                    <i class="helper" style="top: 6px;"></i>
+                                                    {$ rule.rule_name $}
+                                                </label>
+                                                  <i class="fa fa-trash pull-right" ng-click="tttc.deleteRule(rule.rule_id)"></i>
+                                              </h4>
+                                            </div>
+
+                                          </div>
+                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="row ruleMode" ng-show="tttc.ruleListSelection == 'vlrule'">
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                     <div class="panel-group" id="vruleAccordion" ng-repeat="rule in tttc.allRules" ng-show="rule.rule_type=='V'">
+                                          <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                              <h4 class="panel-title">
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" ng-model="selectedRules[rule.rule_id]" value="{$ rule.rule_id $}">
+                                                    <i class="helper" style="top: 6px;"></i>
+                                                    {$ rule.rule_name $}
+                                                </label>
+                                                   <i class="fa fa-trash pull-right" ng-click="tttc.deleteRule(rule.rule_id)"></i>
+                                              </h4>
+                                            </div>
+
+                                          </div>
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="row ruleMode" ng-show="tttc.ruleListSelection == 'cusCondition'">
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                     <div class="panel-group" ng-repeat="cond in tttc.customConditionList" >
+                                          <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                              <h4 class="panel-title">
+                                                <label class="checkbox-inline" style="cursor: default;">
+                                                    {$ cond.name $}
+                                                </label>
+                                                  <i class="indicator glyphicon glyphicon-chevron-down  pull-right" style="margin-left: 12px;cursor:pointer;" ng-click="tttc.clearAllScopes()" data-toggle="collapse" data-target=".conditionAccordion{$ $index $}"></i>
+                                                  <i class="fa fa-trash pull-right" ></i>
+                                              </h4>
+                                            </div>
+                                            <div class="panel-collapse collapse conditionAccordion{$ $index $}">
+                                              <div class="panel-body">
+                                                  <div class="row" style="padding-top:12px;">
+                                                      <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                                          <div class="row">
+                                                              <div class="col-sm-6 col-xs-6 col-lg-6 col-xs-6">
+                                                                  <label class="text-heading">Custom Condition Name</label>
+                                                                  <input type="text" class="form-control bottomLineInput"
+                                                                         placeholder="Enter Condition Name" ng-model="cond.name" style="background: white;" />
+                                                              </div>
+                                                              <div class="col-sm-6 col-lg-6 col-xs-6 col-md-6">
+                                                                  <label class="text-heading">Language</label>
+                                                                  <select class="form-control" ng-model="cond.lang" disabled>
+                                                                      <option value="js">Javascript</option>
+                                                                      <option value="groovy">Groovy</option>
+                                                                  </select>
+                                                              </div>
+                                                          </div>
+                                                          <div id="aceEditorCondition{$ $index $}" ui-ace="aceOptionsCndEdt[$index]" ng-trim="true"></div><br>
+                                                      </div>
+                                                  </div>
+                                                  <div class="row">
+                                                      <div class="col-sm-12 col-lg-12 col-xs-12 col-md-12">
+                                                          <button class="btn btn-custom" ng-click="tttc.editCustom(cond,$index)">Save</button>
+                                                      </div>
+                                                  </div><hr>
+                                                  <div class="row">
+                                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                                            <input type="text" class="form-control bottomLineInput"
+                                                                   placeholder="Enter Source Value" ng-model="tttc.sourceConditionValueInEdit" style="background: white;" required />
+                                                        </div>
+                                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                                            <input type="text" class="form-control bottomLineInput"
+                                                                   placeholder="Enter Target Value" ng-model="tttc.targetConditionValueInEdit" style="background: white;" required />
+                                                        </div>
+                                                  </div>
+                                                  <div class="row">
+                                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                                            <button type="submit" class="btn btn-custom" ng-click="tttc.testConditionAndActionInEdit(cond,$index)">Test</button>
+                                                        </div>
+                                                  </div><br>
+                                                  <div class="row">
+                                                        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                                                            <span>Result : </span><span>{$ outputOfTestConditionInEdit $}</span>
+                                                        </div>
+                                                  </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                     </div>
+                                </div>
+                            </div>
+                            <div class="row ruleMode" ng-show="tttc.ruleListSelection == 'cusAction'">
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                     <div class="panel-group" ng-repeat="cond in tttc.customActionList" >
+                                          <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                              <h4 class="panel-title">
+                                                <label class="checkbox-inline" style="cursor: default;">
+                                                    {$ cond.name $}
+                                                </label>
+                                                  <i class="indicator glyphicon glyphicon-chevron-down  pull-right" style="margin-left: 12px;cursor:pointer" ng-click="tttc.clearAllScopes()" data-toggle="collapse" data-target=".actionAccordion{$ $index $}"></i>
+                                                  <i class="fa fa-trash pull-right" ></i>
+                                              </h4>
+                                            </div>
+                                            <div class="panel-collapse collapse actionAccordion{$ $index $}">
+                                              <div class="panel-body">
+                                                  <div class="row" style="padding-top:12px;">
+                                                      <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                                          <div class="row">
+                                                              <div class="col-sm-6 col-xs-6 col-lg-6 col-xs-6">
+                                                                  <label class="text-heading">Custom Action Name</label>
+                                                                  <input type="text" class="form-control bottomLineInput"
+                                                                     placeholder="Enter Action Name" ng-model="cond.name" style="background: white;" />
+                                                              </div>
+                                                              <div class="col-sm-6 col-lg-6 col-xs-6 col-md-6">
+                                                                  <label class="text-heading">Language</label>
+                                                                  <select class="form-control" ng-model="cond.lang" disabled>
+                                                                      <option value="js">Javascript</option>
+                                                                      <option value="groovy">Groovy</option>
+                                                                  </select>
+                                                              </div>
+                                                          </div>
+                                                          <div id="aceEditorAction{$ $index $}" ui-ace="aceOptionsActEdt[$index]" ng-trim="true"></div><br>
+                                                      </div>
+                                                  </div>
+                                                  <div class="row">
+                                                      <div class="col-sm-12 col-lg-12 col-xs-12 col-md-12">
+                                                          <button class="btn btn-custom" ng-click="tttc.editCustom(cond,$index)">Save</button>
+                                                      </div>
+                                                  </div><hr>
+                                                  <div class="row">
+                                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                                            <input type="text" class="form-control bottomLineInput"
+                                                                   placeholder="Enter Source Value" ng-model="tttc.sourceActionValueInEdit" style="background: white;" required />
+                                                        </div>
+                                                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                                            <input type="text" class="form-control bottomLineInput"
+                                                                   placeholder="Enter Target Value" ng-model="tttc.targetActionValueInEdit" style="background: white;" required />
+                                                        </div>
+                                                  </div>
+                                                  <div class="row">
+                                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                                            <button type="submit" class="btn btn-custom" ng-click="tttc.testConditionAndActionInEdit(cond,$index)">Test</button>
+                                                        </div>
+                                                  </div><br>
+                                                  <div class="row">
+                                                        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                                                            <span>Result : </span><span>{$ outputOfTestActionInEdit $}</span>
+                                                        </div>
+                                                  </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                     </div>
+                                </div>
+                            </div>
+                        </div><br>
+
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12" ng-show="tttc.ruleListSelection == 'vlrule' || tttc.ruleListSelection == 'slrule'">
+                                <button type="submit" class="btn btn-custom" ng-click="tttc.fromExistingRules(selectedRules)">Save</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>

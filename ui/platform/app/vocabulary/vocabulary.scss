@@ -1,0 +1,33 @@
+.vocabulary{
+    .no-padding{
+        padding:0px !important;
+    }
+    .no-margin{
+        margin:0px !important;
+    }
+    #markerForm-tabs{
+        background-color:transparent;
+        box-shadow: none;
+        border: none;
+        .nav-tabs{
+            border-bottom:none !important;
+            li{
+                a{
+                    line-height: 1 !important;
+                    width:auto !important;
+                    font-size:12px !important
+                }
+            }
+        }
+        .tab-pane{
+            padding:13px 0;
+        }
+    }
+    .vocabularyTabs{
+        border:1px solid #eee;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        background-color: white;
+    }
+
+}

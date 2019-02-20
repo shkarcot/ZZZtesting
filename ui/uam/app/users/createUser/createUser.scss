@@ -1,0 +1,75 @@
+.createUser{
+    .user-text{
+        font-size: 16px;
+        font-weight: normal;
+        color: #787878;
+        a{
+            color: #787878;
+        }
+         a:hover{
+            color: #787878;
+
+        }
+    }
+    .user-desc{
+        padding: 20px 30px;
+    }
+    .user-creation{
+        padding:10px 15px;
+        border: 1px solid #ddd;
+        background-color: #f0f8ffb0;
+    }
+    .user-creation{
+        label{
+            margin:0;
+            color: #787878;
+        }
+    }
+    .creation-section{
+        height: 100vh;
+        padding: 25px 50px;
+        color: #787878;
+        background-color: #ffffff;
+        .form-group{
+             padding: 10px 0px;
+        }
+        label{
+            font-weight: normal;
+            color: #787878;
+
+        }
+        .form-control{
+            border-radius: 0px;
+            border-color: rgba(51, 170, 227,0.3);
+        }
+        select{
+            padding:5px 0px;
+            border-color: rgba(51, 170, 227,0.3);
+            width: 100%;
+            background-color: #ffffff;
+        }
+    }
+    .btn-custom-group{
+        display: inline-block;
+    }
+    .btn-custom-create{
+        background-color: #000000;
+        padding:8px 20px;
+        color: #ffffff;
+        border-radius: 20px;
+    }
+    .btn-custom-cancel{
+        background-color: transparent;
+        padding:15px 20px;
+        color: #000;
+        border-radius: 20px;
+    }
+    .select-option{
+        border-radius: 20px;
+        padding: 10px 10px;
+    }
+    .img-save{
+        display: inline;
+        width: 16px;
+    }
+}

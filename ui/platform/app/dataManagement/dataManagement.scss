@@ -1,0 +1,132 @@
+.dataManagement{
+        margin:10px;
+        border-radius:0px;
+        background-color:white;
+
+        .corpusUpload{;
+            background-color: #f8f8f8;
+        }
+        .uploadCorpus{
+            cursor: pointer;
+            text-align: center;
+            padding-top: 30px;
+            padding-bottom: 30px;
+            background-color: white;
+        }
+        .btn-upload{
+            border: 1px solid #35aae3;
+            color: #35aae3 !important;
+        }
+        .bottomLineInput{
+            background-color:white;
+        }
+        .dictionaryBox{
+            background-color: #ffffff;
+            box-shadow: 0 0 4px 0 rgba(202, 202, 202, 0.5);
+            padding: 10px;
+            margin: 10px;
+        }
+        .corpusRow{
+            border-bottom:1px solid #e4e4e4;
+            cursor:pointer;
+        }
+        .emptyDictionary{
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .active1  {
+            color: #35aae3;
+            cursor: pointer;
+            border: 1px solid #35aae3;
+            box-shadow: 0 0px 2px 0px;
+        }
+        .term{
+
+             background-color: white;
+        }
+        .custom-inline{
+            background-color: white;
+            border: 1px solid #eee;
+            padding: 10px;
+            margin-bottom:10px;
+        }
+
+        .custom-search{
+            border: 1px solid #ccc;
+            border-left: 0px;
+            padding-bottom: 7px !important;
+        }
+
+
+         table.termsTable{
+            table {
+                width: 100%;
+            }
+
+            thead, tbody, tr, td, th { border-bottom: 0px solid #e4e4e4;}
+
+            tr:after {
+                content: ' ';
+
+
+                clear: both;
+            }
+
+            thead th {
+                height: 40px;
+                /*text-align: left;*/
+            }
+
+            tbody {
+                /*height: 300px;*/
+                overflow-y: auto;
+                border-bottom: 1px solid #e4e4e4;
+            }
+
+            thead {
+                /* fallback */
+                background-color: #f8f8f8;
+            }
+
+
+            tbody td, thead th {
+
+
+                border-bottom: 0px solid #e4e4e4;
+            }
+         }
+         .tagListStyle{
+            padding:10px;
+            padding: 16px;
+            padding-left: 19px;
+            border-top: 1px solid #e8e8e8;
+         }
+
+}
+.btn-upload{
+            background-color: #36aae4;
+            padding: 7px;
+            color: white;
+        }
+.termdetailsKey{
+    color: #7d7d7d;
+    font-weight: bold;
+    font-size: 18px;
+}
+.termDetailsType{
+    color: #d1d1d1;
+    margin-left: 15px;
+}
+.termdetailsLabel{
+    color: #afafaf;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+.termdetailsVal{
+    color: #7d7d7d;
+    font-size: 16px;
+    font-weight: 600;
+}
+

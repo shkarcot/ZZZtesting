@@ -1,0 +1,225 @@
+<div class="row overlay adaptContainer" id="datasetImport">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="margin-bottom:70px;">
+        <h4 class="push-left">
+          <span ng-bind="ImportDataset"></span>
+          <span class="pull-right closeRule closebtn" ng-click="canceldataSet()">&times;</span>
+        </h4>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <form ng-submit="cmc.sendDataSet()">
+                    <div class="form-group">
+                        <label>Data Set Name</label>
+                        <input type="text" ng-model="cmc.importDsObj.name" class="form-control custom-formControl" placeholder="Data Set Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea  rows="4" ng-model="cmc.importDsObj.description" cols="50" class="form-control custom-formControl" placeholder="Description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Data Format</label>
+                        <select class="form-control custom-formControl" ng-model="cmc.importDsObj.dataType">
+                            <option value="">Select data format</option>
+                            <option ng-repeat="option in cmc.datasetTypeList" value="{$ option $}">{$ option $}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Data Set</label>
+                        <br>
+                        <label ><b>Choose From Local</b></label>
+                            <div>
+                              <button class="btn left button-primary" alt="browse" title="browse" type="button" style="cursor:pointer;position:relative;display:inline;border-radius:0">
+                                <input class="hide_file" ngf-select ng-model="fileInput" name="file"
+                                       ngf-change="uploadFile(fileInput)" type="file" style="font-size:13px;"/>
+                                  Browse
+                              </button>
+                            </div>
+                            <label class="entity-filepath" style="overflow: hidden;width: 80%;border: 1px solid #3babe1;height: 33px;">
+                                <span style="display:inline;" class="ng-binding" ng-show="browseFileName == undefined || browseFileName == ''">Please select the file</span>
+                                <span style="display:inline;" class="ng-binding" >{$ browseFileName $}</span>
+                            </label>
+                        <div class="row" ng-show="sftpList.length>0">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <span class="badge">OR</span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group" ng-show="sftpList.length>0">
+                            <span>Choose From SFTP</span>
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-repeat="list in sftpList">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" ng-model="checkList[$index]" value="{$ list $}"  ng-click="toggleSelection(list,$index)" >
+                                        <i class="helper" style="top: 6px;"></i>
+                                        {$ list $}
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="form-group">
+                        <button class="btn btn-custom" type="submit">
+                            <i class="fa fa-floppy-o"></i>
+                            Save
+                        </button>
+                        <div class="loading-spiner-holder" ng-show="enabledatasetLoader">
+                            <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving dataset ...</i></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row minPadding">
+    <div class="col-lg-7 col-sm-7 col-md-7 col-xs-7">
+       <label style="text-transform: uppercase;cursor:pointer;color:#5EB5EB;" ui-sref="app.adapt">adapt</label>
+        <label> > New Model</label>
+    </div>
+    <div class="col-lg-5 col-sm-5 col-md-5 col-xs-5 alignRight">
+        <!--<button class="btn btn-add">-->
+            <!--<img src="/app/images/plus-default.png" style="width:10px;">-->
+            <!--<span>Create New Model</span>-->
+        <!--</button>-->
+        <button class="btn btn-add" ng-click="uploadDataset();">
+            <img src="/app/images/import.png" style="width:10px;">
+            <span>Import Data Set</span>
+        </button>
+
+    </div>
+</div>
+<div class="row createModel">
+    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+        <div class="panel panel-custom">
+            <div class="panel-body">
+                <form ng-submit="cmc.createNewModel(modelCreateType)" ng-show="!cmc.showIframe">
+                    <div class="row">
+                        <div class="col-lg-5 col-sm-6 col-md-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Model Name</label>
+                                    <input class="form-control custom-formControl" ng-model="cmc.createModelObj.name" style="padding: 25px 0px 25px 15px;" placeholder="Type Model Name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <textarea rows="10" cols="20" class="form-control custom-formControl" ng-model="cmc.createModelObj.description" placeholder="Description Here"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="radio-inline">
+                                      <input type="radio" name="optradio" value="custom" ng-model="modelCreateType">Custom Model
+                                    </label>
+                                    <label class="radio-inline">
+                                      <input type="radio" name="optradio" value="platform" ng-model="modelCreateType" checked="checked">Platform Model
+                                    </label>
+                                </div>
+                        </div>
+                        <div class="col-lg-5 col-s -6 col-md-6 col-xs-12">
+                            <div class="form-group">
+                                <label>Model Type</label>
+                                <select class="form-control custom-formControl" style="height:52px;" ng-model="cmc.createModelObj.model_type" required>
+                                    <option value="">Select Model Type</option>
+                                    <option ng-repeat="option in cmc.allModelTypes[modelCreateType]" value="{$ option $}">{$ option $}</option>
+                                </select>
+                            </div>
+                            <!--<div class="form-group">-->
+                                <!--<label>Model Object</label>-->
+                                <!--<div class="row">-->
+                                  <!--<label class="col-lg-10 col-md-10 col-sm-10 col-xs-10 no-padding" style="overflow: hidden;">-->
+                                      <!--<span style="display:inline;" class="ng-binding">-->
+                                          <!--<input type="text" class="form-control custom-formControl" placeholder="Choose file or Type URL"/>-->
+                                      <!--</span>-->
+                                  <!--</label>-->
+                                  <!--<button class="col-lg-2 col-md-2 col-sm-2 col-xs-2 btn left button-primary" alt="browse" title="browse" type="button" style="cursor:pointer;position:relative;display:inline;border-radius:0;height:52px;">-->
+                                    <!--<input class="import buttonUpload ng-isolate-scope" type="file" id="file" style="opacity: 0;position: absolute;top:0;width:100%;left:0px;padding:5px 0px;cursor:pointer;opacity: 0;position: absolute;top:0;width:100%;left:0px;padding:5px 0px;cursor:pointer" content="csv.content" header="csv.header" separator="csv.separator" result="csv.result" confirm-action="parseToJson()">-->
+                                      <!--Browse-->
+                                  <!--</button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label>Python Script (Zipped)</label>-->
+                                <!--<div class="row">-->
+                                  <!--<label class="col-lg-10 col-md-10 col-sm-10 col-xs-10 no-padding" style="overflow: hidden;">-->
+                                      <!--<span style="display:inline;" class="ng-binding">-->
+                                          <!--<input type="text" class="form-control custom-formControl" placeholder="Choose file or Type URL"/>-->
+                                      <!--</span>-->
+                                  <!--</label>-->
+                                  <!--<button class="col-lg-2 col-md-2 col-sm-2 col-xs-2 btn left button-primary" alt="browse" title="browse" type="button" style="cursor:pointer;position:relative;display:inline;border-radius:0;height:52px;">-->
+                                    <!--<input class="import buttonUpload ng-isolate-scope" type="file" id="file" style="opacity: 0;position: absolute;top:0;width:100%;left:0px;padding:5px 0px;cursor:pointer;opacity: 0;position: absolute;top:0;width:100%;left:0px;padding:5px 0px;cursor:pointer" content="csv.content" header="csv.header" separator="csv.separator" result="csv.result" confirm-action="parseToJson()">-->
+                                      <!--Browse-->
+                                  <!--</button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <div class="form-group">
+                                <label>Upload Training Set</label>
+                                <select class="form-control custom-formControl" style="height:52px;" ng-model="cmc.createModelObj.dataset_id" ng-change="cmc.setColumnList(cmc.createModelObj.dataset_id)" required>
+                                    <option value="">Select dataset</option>
+                                    <option ng-repeat="option in cmc.listOfDataSets" value="{$ option.dataset_id $}" ng-show="option.name !=''">{$ option.name $}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Target Column</label>
+                                <select class="custom-formControl form-control" style="height:52px;" ng-model="cmc.createModelObj.column" required>
+                                    <option value="">Select target column</option>
+                                    <option ng-repeat="option in cmc.listOfColumns" value="{$ option $}">{$ option $}</option>
+                                </select>
+                            </div>
+                            <!--<div class="form-group">-->
+                                <!--<label>Input Format of the Result</label>-->
+                                <!--<div class="row">-->
+                                  <!--<label class="col-lg-10 col-md-10 col-sm-10 col-xs-10 no-padding" style="overflow: hidden;">-->
+                                      <!--<span style="display:inline;" class="ng-binding">-->
+                                          <!--<input type="text" class="form-control custom-formControl" style="padding: 25px 0px 25px 15px;" placeholder="Choose file or Type URL"/>-->
+                                      <!--</span>-->
+                                  <!--</label>-->
+                                  <!--<button class="col-lg-2 col-md-2 col-sm-2 col-xs-2 btn left button-primary" alt="browse" title="browse" type="button" style="cursor:pointer;position:relative;display:inline;border-radius:0;height:52px;">-->
+                                    <!--<input class="import buttonUpload ng-isolate-scope" type="file" id="file" style="opacity: 0;position: absolute;top:0;width:100%;left:0px;padding:5px 0px;cursor:pointer;opacity: 0;position: absolute;top:0;width:100%;left:0px;padding:5px 0px;cursor:pointer" content="csv.content" header="csv.header" separator="csv.separator" result="csv.result" confirm-action="parseToJson()">-->
+                                      <!--Browse-->
+                                  <!--</button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                            <button class="btn button-customSave btn-custom" type="submit" ng-show="modelCreateType == 'platform'">
+                                <i class="fa fa-floppy-o"></i>
+                                Save
+                            </button>
+                            <button class="btn button-customSave btn-custom" type="submit" ng-show="modelCreateType == 'custom'">
+                                <i class="fa fa-floppy-o"></i>
+                                Next
+                            </button>
+                            <div class="loading-spiner-holder" ng-show="enableCreateModelLoader">
+                                <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>creating new model ...</i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="row" ng-if="cmc.showIframe">
+                    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 ">
+                        <div id="loadImg" class="loader"></div>
+                        <iframe ng-src="{$ cmc.jupiterNoteBookUrl $}"
+                        style="margin-top: 1px;width:100%;height:480px;" onload="document.getElementById('loadImg').style.display='none';"></iframe>
+                    </div>
+                    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                        <button class="btn btn-custom" ng-click="cmc.saveCustomModel('draft')">
+                            Save as draft
+                        </button>
+                        <button class="btn btn-custom" ng-click="cmc.saveCustomModel('model')">
+                            Save as model
+                        </button>
+                        <div class="loading-spiner-holder" ng-show="enableCustomModel">
+                            <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving model ...</i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

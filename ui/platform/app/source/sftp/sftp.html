@@ -1,0 +1,461 @@
+
+<div class="row overlay adaptContainer heightFull" id="runDetails" style="background-color:#fafafa;">
+    <div class="row customPaddingBottom">
+        <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10">
+            <h4>Run Details</h4>
+        </div>
+        <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 dashboard-row text-right">
+            <span class="closeRule closebtn" ng-click="closeRundetails()">&times;</span>
+        </div>
+    </div>
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 sftpTable" style="margin-bottom: 70px;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>Run</td>
+                    <td>Started</td>
+                    <td>Completed</td>
+                    <td>Files Processed</td>
+                    <td>Completed</td>
+                    <td>Failed</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>18/01/2018 8:00 am</td>
+                    <td>18/01/2018 8:00 am</td>
+                    <td>13</td>
+                    <td>13</td>
+                    <td>0</td>
+                </tr>
+            <tr>
+                    <td>1</td>
+                    <td>18/01/2018 8:00 am</td>
+                    <td>18/01/2018 8:00 am</td>
+                    <td>13</td>
+                    <td>13</td>
+                    <td>0</td>
+            </tr>
+            <tr>
+                    <td>1</td>
+                    <td>18/01/2018 8:00 am</td>
+                    <td>18/01/2018 8:00 am</td>
+                    <td>13</td>
+                    <td>13</td>
+                    <td>0</td>
+                </tr>
+            <tr>
+                    <td>1</td>
+                    <td>18/01/2018 8:00 am</td>
+                    <td>18/01/2018 8:00 am</td>
+                    <td>13</td>
+                    <td>13</td>
+                    <td>0</td>
+                </tr>
+            <tr>
+                    <td>1</td>
+                    <td>18/01/2018 8:00 am</td>
+                    <td>18/01/2018 8:00 am</td>
+                    <td>13</td>
+                    <td>13</td>
+                    <td>0</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row overlay adaptContainer heightFull" id="ingestsftp" style="background-color:#fafafa;">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="margin-bottom: 70px;">
+        <div class="row customPaddingBottom">
+            <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10" id="sftpTabs">
+                <ul class="nav nav-tabs">
+                      <li class="active"><a data-toggle="tab" href=".config">SFTP Configuration</a></li>
+                      <li><a data-toggle="tab" href=".schedule">Schedule</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 dashboard-row text-right">
+                <span class="closeRule closebtn" ng-click="cancelSftp()">&times;</span>
+            </div>
+        </div>
+
+        <div class="tab-content">
+              <div class="tab-pane fade in active config">
+                    <div class="row  customPaddingBottom">
+                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4  no-padding">
+                            <label class="customCheckBox">New SFTP
+                              <input type="radio" checked="checked" name="radio">
+                              <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding">
+                            <label class="customCheckBox">Existing SFTP
+                              <input type="radio" name="radio">
+                              <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                  <form>
+                      <div class="row  customPaddingBottom">
+                          <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
+                              <div class="form-group">
+                                <label for="email">Reference Name</label>
+                                <input type="text" class=" form-control cst-formControl" placeholder="Reference Name">
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="row  customPaddingBottom">
+                          <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 no-padding">
+                              <div class="form-group">
+                                <label for="email">HOST IP</label>
+                                <input type="text" class=" form-control cst-formControl" placeholder="Enter HOST IP Address">
+                              </div>
+                          </div>
+                          <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                              <div class="form-group">
+                                <label for="email">PORT</label>
+                                <input type="text" class=" form-control cst-formControl" placeholder="Enter PORT Number">
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="row customPaddingBottom">
+                          <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 no-padding">
+                              <div class="form-group">
+                                <label for="email">SFTP User Name</label>
+                                <input type="text" class=" form-control cst-formControl" placeholder="Enter SFTP User Name">
+                              </div>
+                          </div>
+                          <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                              <div class="form-group">
+                                <label for="email">SFTP Password</label>
+                                <input type="text" class=" form-control cst-formControl" placeholder="Enter SFTP Password">
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="row customPaddingBottom">
+                          <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 no-padding">
+                              <button class="btn btn-customIngest">
+                                    Test This Configuration
+                              </button>
+                          </div>
+                          <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                              <img src="/app/images/checked.png" style="width: 15px;"/>
+                              <span>Connection Successful</span>
+                          </div>
+                      </div>
+
+                      <div class="row customPaddingBottom">
+                          <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
+                              <div class="form-group">
+                                <label for="email">Define Pattern</label>
+                                  <textarea class=" form-control cst-formControl" placeholder="Eg: ^(?:[\w]\:|\\)(\\[a-z_\-\s0-9\.]+)+\.(txt|gif|pdf|doc|docx|xls|xlsx)$" cols="3"></textarea>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="row customPaddingBottom">
+                          <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 no-padding">
+                              <div class="form-group">
+                                <label for="email">Destination Folder</label>
+                                  <input type="text" class=" form-control cst-formControl" placeholder="Document Queue">
+                              </div>
+                          </div>
+                          <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                              <div class="form-group">
+                                <label for="email">Assign Workflow</label>
+                                  <select class="form-control cst-formControl">
+                                      <option>Workflow 1</option>
+                                      <option>Workflow 1</option>
+                                      <option>Workflow 1</option>
+                                      <option>Workflow 1</option>
+                                      <option>Workflow 1</option>
+                                  </select>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="row fixedBottom">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <button class="btn btn-custom btn-upload">Proceed To Schedule</button>
+                                    <button class="btn btn-customCancel">Cancel</button>
+                            </div>
+                      </div>
+                  </form>
+              </div>
+              <div class="tab-pane fade schedule">
+                    <div class="row customPaddingBottom">
+                        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                            <div class="alert alert-info">
+                              Schedule the time to enable to system to auto check for the new files in the SFTP and store them in S3.
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row customPaddingBottom">
+                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                            <label style="font-weight:500;font-size: 14px;">Pull Schedule</label>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                            <label class="customCheckBox">Daily
+                              <input type="radio" name="radio">
+                              <span class="checkmark"></span>
+                            </label>
+                            <label class="customCheckBox">Set Interval
+                              <input type="radio" name="radio">
+                              <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row customPaddingBottom">
+                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 ">
+                            <div class="pullSchedule">
+                                <div class="row customPaddingBottom">
+                                    <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                                        <label>Time</label>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                                        <label>Zone</label>
+                                    </div>
+                                </div>
+                                <div class="row customPaddingBottom">
+                                    <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                                       <select class="form-control cst-formControl">
+                                           <option>23.00hrs</option>
+                                           <option>23.00hrs</option>
+                                           <option>23.00hrs</option>
+                                           <option>23.00hrs</option>
+
+                                       </select>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                                        <select class="form-control cst-formControl">
+                                           <option>IST</option>
+                                           <option>GMT</option>
+                                           <option>PST</option>
+                                       </select>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                        <img src="/app/images/cancelSchedule.png" style="width:20px;cursor: pointer;"/>
+                                        <img src="/app/images/addSchedule.png" style="width:20px;cursor: pointer;"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <span style="font-size: 10px;"><b>Summary</b>: Pull the files from SFTP every day at 23.00 IST and 19.00 PST</span>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row customPaddingBottom">
+                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                            <label style="font-weight:500;font-size:14px;">Process Schedule</label>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                            <label class="customCheckBox">Daily
+                              <input type="radio" name="radio">
+                              <span class="checkmark"></span>
+                            </label>
+                            <label class="customCheckBox">Set Interval
+                              <input type="radio" name="radio">
+                              <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 ">
+                            <div class="pullSchedule">
+                                <div class="row customPaddingBottom">
+                                    <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                        <label>Every </label>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                        <label>No of Hours</label>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                        <label>Minutes</label>
+                                    </div>
+                                </div>
+                                <div class="row customPaddingBottom">
+                                    <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                       <select class="form-control cst-formControl">
+                                           <option>23.00hrs</option>
+                                           <option>23.00hrs</option>
+                                           <option>23.00hrs</option>
+                                           <option>23.00hrs</option>
+
+                                       </select>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                        <input type="text" class=" form-control cst-formControl" placeholder="Hrs" style="width: 60%;display: inline-block;"/>
+                                        <span>hrs</span>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                                        <input type="text" class=" form-control cst-formControl" placeholder="Mins" style="width: 60%;display: inline-block;"/>
+                                        <span>Mins</span>
+                                    </div>
+                                    <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 no-padding">
+                                        <img src="/app/images/cancelSchedule.png" style="width:20px;cursor: pointer;"/>
+                                        <img src="/app/images/addSchedule.png" style="width:20px;cursor: pointer;"/>
+                                    </div>
+                                </div>
+                                <div class="row customPaddingBottom">
+                                    <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                       <select class="form-control cst-formControl">
+                                           <option>23.00hrs</option>
+                                           <option>23.00hrs</option>
+                                           <option>23.00hrs</option>
+                                           <option>23.00hrs</option>
+
+                                       </select>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                        <input type="text" class=" form-control cst-formControl" placeholder="Hrs" style="width: 60%;display: inline-block;"/>
+                                        <span>hrs</span>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                                        <input type="text" class=" form-control cst-formControl" placeholder="Mins" style="width: 60%;display: inline-block;"/>
+                                        <span>Mins</span>
+                                    </div>
+                                    <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 no-padding">
+                                        <img src="/app/images/cancelSchedule.png" style="width:20px;cursor: pointer;"/>
+                                        <img src="/app/images/addSchedule.png" style="width:20px;cursor: pointer;"/>
+                                    </div>
+                                </div>
+                                <div class="row customPaddingBottom">
+                                    <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                       <select class="form-control cst-formControl">
+                                           <option>23.00hrs</option>
+                                           <option>23.00hrs</option>
+                                           <option>23.00hrs</option>
+                                           <option>23.00hrs</option>
+
+                                       </select>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                        <input type="text" class=" form-control cst-formControl" placeholder="Hrs" style="width: 60%;display: inline-block;"/>
+                                        <span>hrs</span>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                                        <input type="text" class=" form-control cst-formControl" placeholder="Mins" style="width: 60%;display: inline-block;"/>
+                                        <span>Mins</span>
+                                    </div>
+                                    <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 no-padding">
+                                        <img src="/app/images/cancelSchedule.png" style="width:20px;cursor: pointer;"/>
+                                        <img src="/app/images/addSchedule.png" style="width:20px;cursor: pointer;"/>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <span  style="font-size: 10px;"><b>Summary:</b> Send files to process for every 2hrs 30 Minutes</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <button class="btn btn-custom btn-upload">Done</button>
+                                    <button class="btn btn-customCancel">Cancel</button>
+                            </div>
+                    </div>
+              </div>
+        </div>
+    </div>
+</div>
+<div class="sourceContainer full-height">
+    <div class="row full-height">
+        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 text-center full-height" style="padding-top:20%;">
+            <p>You can configure the SFTP file system, where the platform can pull the files on regular intervals based on the configuration setting</p>
+            <button class="btn btn-customIngest" ng-click="ingestSftp();">
+                <img src="/app/images/plus-default.png" style="width:15px;"/>
+                Configure SFTP Source
+            </button>
+        </div>
+    </div>
+    <div class="row full-height">
+        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 text-center full-height sftpTable">
+            <table class="table ">
+                    <thead style="background-color:#e2e2e2;color:#7b7b7b;">
+                        <tr>
+                            <td>SFTP Source</td>
+                            <td>Last Upadte</td>
+                            <td>Pull Status</td>
+                            <td>Workflow</td>
+                            <td>Workflow Enable/Disable</td>
+                            <td>Actions</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <img src="/app/images/stp.png"/>
+                                <span>SFTP : 192.168.0.0</span>
+                            </td>
+                            <td>
+                                <label>12 Mar 2018 @ 2.10pm</label>
+                            </td>
+                            <td class="text-center">
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider round"></span>
+                                    <div class="toggleText">Paused</div>
+                                </label>
+                            </td>
+                            <td class="text-center">
+                                <select class="form-control cst-formControl" style="width:50%;margin: 0 auto;">
+                                       <option>Work Flow 1</option>
+                                       <option>Work Flow 1</option>
+                                       <option>Work Flow 1</option>
+                                       <option>Work Flow 1</option>
+                                </select>
+                            </td>
+                            <td>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider round"></span>
+                                    <div class="toggleText">Disabled</div>
+                                </label>
+                            </td>
+                            <td class="text-center">
+                                <img src="/app/images/editSFTP.png" style="width: 15px;"  ng-click="openRundetails()"/>
+                                <img src="/app/images/editSftp.png" style="width: 15px;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="/app/images/stp.png"/>
+                                <span>SFTP : 192.168.0.0</span>
+                            </td>
+                            <td>
+                                <label>12 Mar 2018 @ 2.10pm</label>
+                            </td>
+                            <td class="text-center">
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider round"></span>
+                                    <div class="toggleText">Paused</div>
+                                </label>
+                            </td>
+                            <td class="text-center">
+                                <select class="form-control cst-formControl" style="width:50%;margin: 0 auto;">
+                                       <option>Work Flow 1</option>
+                                       <option>Work Flow 1</option>
+                                       <option>Work Flow 1</option>
+                                       <option>Work Flow 1</option>
+                                </select>
+                            </td>
+                            <td>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider round"></span>
+                                    <div class="toggleText">Disabled</div>
+                                </label>
+                            </td>
+                            <td class="text-center">
+                                <img src="/app/images/editSFTP.png" style="width: 15px;"  ng-click="openRundetails()"/>
+                                <img src="/app/images/editSftp.png" style="width: 15px;"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+    </div>
+</div>

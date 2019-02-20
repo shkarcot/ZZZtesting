@@ -1,0 +1,13 @@
+#test-container {
+    min-height:230px;
+    .parentdiv{
+        position: relative;
+        min-height: 200px;
+    }
+    .btn-pos{
+        text-align: center;position: absolute; bottom: 0;
+    }
+    .box{
+        border:1px solid #999 !important;
+    }
+}

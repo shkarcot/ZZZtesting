@@ -1,0 +1,124 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+<div class="row minPadding">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+        <h3 class="zeroMargin">
+              <div class="dropdown">
+                  <a data-toggle="dropdown" class="noDecoration configureHeading"> domain <b class="caret"></b></a>
+                      <ul class="customdropdown-menu dropdown-menu">
+                          <li>
+                            <a ui-sref="app.domainDashboard" class="noDecoration">
+                              <img src="/app/images/Domain.png"/>
+                              <span>Domain Configuration</span>
+                            </a>
+                          </li>
+                          <li>
+                              <a class="noDecoration" ui-sref="app.modelDashboard">
+                                    <img src="/app/images/model.png"/>
+                                    <span>Models</span>
+                              </a>
+                          </li>
+                          <li>
+                              <a class="noDecoration" ui-sref="app.function">
+                                <img src="/app/images/functionIcon.png"/>
+                                <span>Functions</span>
+                              </a>
+                          </li>
+                          <li>
+                              <a ui-sref="app.services" class="noDecoration">
+                                  <img src="/app/images/Services-01.png"/>
+                                  <span>Service Configuration</span>
+                              </a>
+                          </li>
+                          <li>
+                              <a ui-sref="app.pipeline" class="noDecoration">
+                                  <img src="/app/images/pipeline.png"/>
+                                  <span>Pipeline Configuration</span>
+                              </a>
+                          </li>
+                          <li>
+                              <a ui-sref="app.sourceConfiguration" class="noDecoration">
+                                  <img src="/app/images/sources.png"/>
+                                  <span>Sources</span>
+                              </a>
+                          </li>
+                      </ul>
+                      <span style="margin-left: 10px;font-size: 13px;"> > </span>
+                      <span style="margin-left: 10px;font-size: 13px;color: #3babe1;"> Unknown Format Extraction</span>
+              </div>
+        </h3>
+    </div>
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 alignRight">
+        <!--<img class="helpImages" src="/app/images/comment-01.png"/>-->
+        <!--<img class="helpImages" src="/app/images/help-01.png"/>-->
+    </div>
+</div>
+
+<div class="unknownFormat">
+    <div class="well container-fluid">
+        <div class="row row-eq-height">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 dashboard-row">
+                <h3>Unknown Format Templates</h3>
+                <span>Templates that are useful to extract information from unknown or unstructured documents</span>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 dashboard-row text-right">
+                <button class="btn btn-add" ng-click="createTemplate()">
+                    <img src="/app/images/plus-default.png" style="width:10px;">
+                    <span>Create New Template</span>
+                </button>
+            </div>
+        </div>
+        <hr>
+        <br>
+        <div class="row">
+            <div class="col-lg-9 col-sm-9 col-md-9 col-xs-12 dashboard-row">
+                <div class="row">
+                    <div class="col-lg-4 col-sm-4 col-md-4 col-xs-12 no-paddingLeft" ng-repeat="list in ufc.documentsList">
+                        <div class="panel panel-custom" ng-click="goToDetails(list)">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 dashboard-row">
+                                        <p class="titleHeading">{$ list.template_name $}</p>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                        <span ng-click=";$event.stopPropagation();deleteRecord(list)">
+                                            <i class="fa fa-trash"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <p>{$ list. description $}</p>
+                                <span class="timeFont">{$ list. created_ts $}</span>
+                            </div>
+                            <hr>
+                            <div class="panel-footer">
+                                 <div class="row">
+                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 dashboard-row">
+                                         <p class="subheading">Entites Mapped</p>
+                                         <span class="countSize">-</span>
+                                     </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 dashboard-row">
+                                         <p class="subheading">Sections Defined</p>
+                                         <span class="countSize">-</span>
+                                     </div>
+                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

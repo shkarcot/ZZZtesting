@@ -1,0 +1,217 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+<div class="row" style="padding-top:10px">
+  <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default panel-entities" style="box-shadow: none;">
+        <div class="panel-heading panel-headStyle" role="tab" id="headingOne" ng-click="expandPlus()" data-toggle="collapse" data-parent="#accordion" href=".collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          <h4 class="panel-title">
+            <a role="button" class="titleColor">
+             Add Source Template
+            </a>
+            <span class="right expand-icon">
+              <i class="fa" ng-class="hideAndCollapse" aria-hidden="true"></i>
+            </span>
+          </h4>
+        </div>
+        <div class="panel-collapse collapse collapseOne" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body panel-bodyStyle">
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 dashboard-row">
+                <div class="row">
+                  <div class="col-lg-12 col-sm-12 col-sm-12 col-xs-12 dashboard-row">
+                    <input type="text" class="bottomLineInput" ng-model="templateName" placeholder="Template Name"   />
+                     <p class="error" >{$ templateNameError $}</p>
+                  </div>
+                </div>
+              </div>
+            </div><br>
+            <div class="row" ng-repeat = "row in totalRows" style="margin-bottom:15px;">
+              <form ng-submit="addRow()" validate-form>
+              <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 dashboard-row">
+                <div class="row" style="padding-left:15px;">
+                  <select class="bottomLineInput" ng-model="totalRows[$index].key">
+                      <option value='' ng-selected="true">Select Key</option>
+                      <option ng-repeat="options in entitiesList track by $index" value="{$ options $}">{$ options $}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                <div class="row">
+                  <input type="text" class="bottomLineInput" ng-model="totalRows[$index].value" placeholder="Enter Path" required/>
+                </div>
+              </div>
+              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <div class="row" style="margin-top: 8px;">
+                  <input type="checkbox" ng-model="totalRows[$index].is_upsert"> <span>Override</span>
+                </div>
+              </div>
+                <input type="submit" style="width:0px; height:0px; opacity:0;"/>
+              </form>
+            </div>
+            <span class="error">{$ templateValidateMsg $}</span><br/>
+            <span style="font-size: 12px;margin-top: 10px;"><i>Please fill the above fields and press 'Enter' to add new row.</i></span>
+            <div class="row text-right">
+              <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <button type="button" class="btn right button-primary" alt="save" title="save" ng-click="submitTemplate()">
+                  Save
+                </button>
+              </div>
+              <p class="error">{$ templateNameRepeat $}</p>
+              <div class="loading-spiner-holder" ng-show="saveLoading" ><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving Source Template...</i></span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12" >
+      <div class="panel panel-default" style="border-radius:5px;box-shadow:none;border-top:none;" ng-show="stc.allTemplates.length>0">
+        <table class="table table-bordered table-striped table-scroll">
+          <thead class="tableHeading">
+            <tr>
+              <td>Template Name</td>
+              <td>Keys</td>
+              <td></td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="temp in stc.allTemplates" ng-class="blinkingRow[temp._id]" ng-mouseover="showIcons($index)" ng-mouseout="hideIcons($index)">
+              <td width="40%">
+                <a style="color:#07D;" ng-click="viewSourceTemplate($index)"  data-toggle="modal" data-target="#sourceViewModal{$ $index $}" >{$ temp.template_name $}</a>
+              </td>
+              <td  width="50%">
+                <span ng-repeat = "(key,value) in temp.template">{$ key $}<span ng-show="(temp.template | numkeys) != $index+1">,{$ Object.keys(temp.template).length $}</span> </span>
+              </td>
+              <td  width="10%" style="color:#0093d7;" class="text-center">
+                <span ng-show="showEditIcons[$index]">
+                <i class="fa fa-pencil-square-o clickable iconColor" style="padding-right: 8px;"
+                   ng-click="editSourceTemplate($index)" data-toggle="modal" data-target="#sourceeditmodal{$ $index $}" title="edit"></i>
+                <i class="fa fa-trash iconColor" style="padding-left:6px" ng-click="removeTemplateCard(temp.template_name,$index);" title="delete"></i>
+                </span>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sourceViewModal modal fade" id="sourceViewModal{$ $index $}" ng-repeat="temp in stc.allTemplates" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" >View Source Template</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-sm-10 col-lg-10 col-xs-10 col-md-10" style="padding-left:0px;">
+                  <span style="color:#939393">Name</span><br>
+                  <span style="font-size: 19px;color: #666666;" ng-bind="stc.viewSourceTemplateData.template_name"></span>
+                </div>
+                <div class="col-sm-2 col-lg-2 col-xs-2 col-md-2" style="padding-top: 14px;">
+                  <i class="fa fa-trash pull-right iconColor" style="padding-left:6px" ng-click="removeTemplateCard(stc.viewSourceTemplateData.template_name,$index);" title="delete"></i>
+                  <i class="fa fa-pencil-square-o clickable pull-right iconColor" style="padding-right: 8px;"
+                   ng-click="editSourceTemplateFromView($index)" data-toggle="modal" data-target="#entityeditmodal{$ $index $}" title="edit"></i>
+                </div>
+              </div><br>
+              <table class="table">
+                <thead style="border-bottom: 2px solid #959595;font-weight:bold;font-size:15px;">
+                  <tr>
+                    <td width="30%" class="entity-lable-small attribute-row-bg">Key</td>
+                    <td width="20%" class="entity-lable-small attribute-row-bg">Value</td>
+                    <td width="50%" class="entity-lable-small attribute-row-bg">Override</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="(key,value) in stc.viewSourceTemplateData.template">
+                    <td class="text-break"> {$ key $} </td>
+                    <td class="text-break">{$ value.path $}
+                    </td>
+                    <td class="text-break"><input type="checkbox" ng-checked="value.is_upsert" disabled /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div>
+      <div class="sourceeditmodal modal fade" id="sourceeditmodal{$ $index $}" ng-repeat="data in stc.allTemplates" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Edit Source Template</h4>
+            </div>
+            <div class="modal-body">
+              <div class="panel" role="tabpanel" aria-labelledby="headingOne" style="border:none">
+                  <div class="panel-body panel-bodyStyle">
+                  <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 dashboard-row">
+                      <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-sm-12 col-xs-12 dashboard-row">
+                          <input type="text" class="bottomLineEdit" ng-change="templateNameError = ''" ng-model="stc.viewSourceTemplateData.template_name" placeholder="Template Name" disabled />
+                        </div>
+                      </div>
+                    </div>
+                  </div><br>
+                  <div class="row" ng-repeat = "currentObj in stc.editSTObj track by $index" style="margin-bottom:15px;">
+                    <form ng-submit="addRow1()" validate-form>
+                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 dashboard-row">
+                      <div class="row" style="padding-left:15px;">
+                        <select class="bottomLineEdit" ng-model="currentObj.key">
+                            <option value='' ng-selected="true">Select Key</option>
+                            <option ng-repeat="options in entitiesList track by $index" ng-selected="currentObj.key == options" value="{$ options $}">{$ options $}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                      <div class="row">
+                        <input type="text" class="bottomLineEdit" ng-model="currentObj.path"  placeholder="Enter Path" required/>
+                      </div>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                      <div class="row" style="margin-top: 8px;">
+                        <input type="checkbox" ng-model="currentObj.is_upsert"> <span>Override</span>
+                      </div>
+                    </div>
+                    <div class="col-sm-1 col-md-1 col-xs-1 col-lg-1">
+                      <span class="fa fa-times atr-color" data-toggle="tooltip" data-placement="top" style="margin-top:7px;" alt="remove" title="remove" ng-click="removeKey(currentObj.key,$index,stc.viewSourceTemplateData.template_name)"></span>
+                    </div>
+                      <input type="submit" style="width:0px; height:0px; opacity:0;"/>
+                    </form>
+                  </div>
+                  <span class="error" ng-bind="templateValidateMsg"></span><br/>
+                  <span style="font-size: 12px;margin-top: 10px;"><i>Please fill the above fields and press 'Enter' to add new row.</i></span>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <p class="success left">{$ updateMessage $}</p>
+              <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+              <button type="button" class="btn right button-primary" alt="update" title="update" ng-click="updateTemplate($index)">Update</button>
+              <div class="loading-spiner-holder" ng-show="updateLoading" ><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Updating Source Template...</i></span></div></div>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+        </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,67 @@
+<div class="row minPadding">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+        <h3 class="zeroMargin">
+            <div class="dropdown">
+                <a data-toggle="dropdown" class="noDecoration configureHeading">Functions <b class="caret"></b></a>
+                <breadcrumb-dropdown></breadcrumb-dropdown>
+            </div>
+      </h3>
+    </div>
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+        <button class="btn btn-add pull-right" ui-sref="app.createFunction">
+            <img src="/app/images/plus-default.png" style="width:10px;">
+            <span>Create New Function</span>
+        </button>
+    </div>
+</div>
+
+<div class="row functionCss">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-body" style="padding-top:15px !important;padding-bottom:15px !important;">
+                <div class="row">
+                    <div class="col-sm-4 col-lg-4 col-xs-4 col-md-4">
+                        <input type="text" class="form-control" placeholder="Search Functions"/>
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-12 col-lg-12 col-xs-12 col-md-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td >Name</td>
+                                        <td >Current Version</td>
+                                        <td >Enable/Disable</td>
+                                        <td >Description</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dir-paginate="data in fc.functionsList | itemsPerPage:filter_obj.no_of_recs"
+                      total-items="filter_obj.totalRecords" current-page="filter_obj.page_no"
+                        pagination-id="branchPagination" >
+                                        <td ng-click="fc.goToFunctionDetail(data.function_name)" style="cursor:pointer">{$ data.function_name $}</td>
+                                        <td>{$ data.current_version $}</td>
+                                        <td>
+                                            <label class="switch">
+                                                <input type="checkbox" ng-model="data.is_active" ng-change="fc.setActiveToFunction(data)">
+                                                <span class="slider round"></span>
+                                                <div class="toggleText"></div>
+                                            </label>
+                                        </td>
+                                        <td>{$ data.function_desc $}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="right">
+                                <dir-pagination-controls max-size=filter_obj.no_of_recs direction-links="true"
+                                                         pagination-id="branchPagination" boundary-links="true"
+                                                         on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

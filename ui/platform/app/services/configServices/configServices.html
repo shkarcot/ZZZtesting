@@ -1,0 +1,271 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+
+<div class="row minPadding">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+        <div class="zeroMargin" >
+            <div class="dropdown">
+                  <a data-toggle="dropdown" class="noDecoration configureHeading"> configure services <b class="caret"></b></a>
+                      <ul class="customdropdown-menu dropdown-menu">
+                          <li>
+                            <a ui-sref="app.domainDashboard" class="noDecoration">
+                              <img src="/app/images/Domain.png"/>
+                              <span>Domain Configuration</span>
+                            </a>
+                          </li>
+                          <li>
+                              <a class="noDecoration" ui-sref="app.modelDashboard">
+                                    <img src="/app/images/model.png"/>
+                                    <span>Models</span>
+                              </a>
+                          </li>
+                          <li>
+                              <a class="noDecoration" ui-sref="app.function">
+                                <img src="/app/images/functionIcon.png"/>
+                                <span>Functions</span>
+                              </a>
+                          </li>
+                          <li>
+                              <a ui-sref="app.services" class="noDecoration">
+                                  <img src="/app/images/Services-01.png"/>
+                                  <span>Service Configuration</span>
+                              </a>
+                          </li>
+                          <li>
+                              <a ui-sref="app.pipeline" class="noDecoration">
+                                  <img src="/app/images/pipeline.png"/>
+                                  <span>Pipeline Configuration</span>
+                              </a>
+                          </li>
+                          <li>
+                              <a ui-sref="app.sourceConfiguration" class="noDecoration">
+                                  <img src="/app/images/sources.png"/>
+                                  <span>Sources</span>
+                              </a>
+                          </li>
+                      </ul>
+
+                      <span class="firstlevel" ui-sref="app.services" style="margin-left: 10px;font-size: 13px;">> Services</span>
+                      <span style="margin-left: 10px;font-size: 13px;color: #3babe1;"> {$ csc.serviceName $} 	</span>
+              </div>
+
+        </div>
+    </div>
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 alignRight">
+        <img class="helpImages" src="/app/images/comment-01.png"/>
+        <img class="helpImages" src="/app/images/help-01.png"/>
+    </div>
+</div>
+
+<!--<div class="breadcrumb"><span class="firstlevel" ui-sref="app.services">Services</span> >
+    <span>{$ csc.serviceName $}</span> </div>-->
+
+<div class="row" id="configServices-tabs">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+
+        <tabs id="engine-tabs">
+            <pane title="Configure">
+                <div ng-if="csc.configTabWidget=='convertDoc'">
+                    <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+                        <div class="row" style="padding: 10px 0;">
+                            <h4 class="panel-title">
+                             <a role="button" style="padding:0;" class="titleColor">Convert Document</a>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+                        <div class="row">
+                             <div data-ng-repeat="list in data.document_conversions track by $index"
+                                  class="col-lg-7 col-sm-7 col-xs-7 co-md-7" style="padding:10px;">
+                                 <div class="col-lg-3 col-sm-3 col-xs-3 co-md-3" data-ng-bind="list.from"></div>
+                                 <div class="col-lg-2 col-sm-2 col-xs-2 co-md-2">to</div>
+                                 <div class="col-lg-3 col-sm-3 col-xs-3 co-md-3" data-ng-bind="list.to"></div>
+                                 <div class="col-lg-3 col-sm-3 col-xs-3 co-md-3">
+                                    <input type="checkbox" data-ng-model="list.enabled"  value="" ng-click="setConfig($index)" />
+                                 </div>
+                             </div>
+                         </div>
+                    </div>
+                </div>
+                <div ng-if="csc.configTabWidget=='extract_hocr'">
+                    <form>
+                        <div class="row" style="margin-top: 15px;">
+                            <div class="col-lg-12 col-sm-6 col-md-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="radio-inline">
+                                      <input type="radio" name="optradio" value="XPMS" ng-model="csc.hocrType" ng-change="csc.saveHocrSelection()">Platform Hocr
+                                    </label>
+                                    <label class="radio-inline">
+                                      <input type="radio" name="optradio" value="rightfx" ng-model="csc.hocrType" checked="checked" ng-change="csc.saveHocrSelection()">Rightfx Hocr
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div ng-if="csc.configTabWidget=='default'">
+                    <div class="config-message">
+                        <span>Default configuration setting have been applied.</span>
+                    </div>
+                </div>
+            </pane>
+            <pane title="Test">
+                <div ng-if="csc.testTabWidget=='docTest'">
+                    <div class="row" style="padding: 30px 0;">
+                        <form class="form-horizontal">
+                            <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12"><lable class="docid-title">Document Id</lable></div>
+                            <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                                 <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6" style="padding-left:0">
+                                     <input type="text" class="form-control" ng-model="inputDocumentId"
+                                            value="" placeholder="Document Id"  />
+                                 </div>
+                                 <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding-left:0">
+                                     <button class="btn button-primary" ng-click="testDocId(inputDocumentId)">Test</button>
+                                 </div>
+                            </div>
+                            <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12" style="margin-top: 20px;">
+                                <div class="loading-spiner-holder" ng-show="csc.showJobStatusLinkServ">
+                                    <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i> Request is being processed ( {$ csc.currentTimeStamp $} ). <a ng-click="csc.getJobStatusForServ(csc.jobId)">Click Here to get the status</a></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12" ng-show="csc.responseHtml['extract_document_metadata']">
+                            <div>Mime type</div>
+                             <json-formatter class="jsonformatter" open="3" json="resposeData"></json-formatter>
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12" ng-show="csc.responseHtml['convert_document']">
+                            <div>Document Id</div>
+                             <json-formatter class="jsonformatter" open="3" json="resposeData"></json-formatter>
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12" ng-show="csc.responseHtml['extract_document_page_groups']">
+                            <div>Classfication</div>
+                             <json-formatter class="jsonformatter" open="3" json="resposeData"></json-formatter>
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12" ng-show="csc.responseHtml['classify_document']">
+                            <!--<table class="table table-striped">-->
+                            <!--<thead>-->
+                            <!--<tr>-->
+                                <!--<th>Template Id</th>-->
+                                <!--<th>Template Name</th>-->
+                            <!--</tr>-->
+                            <!--</thead>-->
+                            <!--<tbody>-->
+                            <!--<tr ng-repeat="data in resposeData.groups.groups">-->
+                                <!--<td ng-bind="data.template_id"></td>-->
+                                <!--<td ng-bind="data.template_name"></td>-->
+                            <!--</tr>-->
+                            <!--</tbody>-->
+                        <!--</table>-->
+
+                             <json-formatter class="jsonformatter" open="3" json="resposeData"></json-formatter>
+
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12" ng-show="csc.responseHtml['extract_document_elements']">
+
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12" ng-show="csc.responseHtml['extract_document_text']">
+
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12" ng-show="csc.responseHtml['extract_document_entities']">
+
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12" ng-show="csc.responseHtml['default']">
+                            <json-formatter class="jsonformatter" open="3" json="resposeData"></json-formatter>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="csc.testTabWidget=='ingest'">
+                    <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                        <div class="well">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12" style="margin: 10px 0 20px 0;">
+                                  <h4 class="panel-title">
+                                    <a role="button" style="padding:0;" class="titleColor">Ingest Document</a>
+                                  </h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                  <div class="panel panel-default">
+                                    <div class="panel-collapse in collapseOne" role="tabpanel" aria-labelledby="headingOne">
+                                        <div class="panel panel-bodyStyle">
+                                            <form class="form-horizontal" validate-form ng-submit="sendDic()">
+                                              <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                                                <button ng-show="showChangeBtn"  type="button" class="btn btn-default" data-dismiss="modal" alt="change" title="change" ng-click="clearBrowse()">Change</button>
+                                                <button ng-show="!showChangeBtn"class="btn button-primary" ngf-select ng-model="dicFile" name="file" ngf-change="uploadDic(dicFile)"  alt="browse" title="browse" type="button" style="display:inline">Browse</button>
+                                                <button ng-show="showChangeBtn" type="submit" alt="upload" title="upload" class="btn button-primary">Upload</button>
+
+                                                  <div class="loading-spiner-holder" ng-show="showLoaderIcon" >
+                                                      <div class="loading-spiner">
+                                                          <i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Uploading ...</i></span>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-sm-5 col-md-5 col-lg-5" style="padding-left:0;margin-top: 14px;">
+                                                <span style="display:inline">{$ browseName $}</span>
+                                                 <span ng-show="browseFileError" style="color:red">Please select the file</span>
+                                              </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top:30px" ng-show="showDocumentId">
+                                <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                                    <div class="col-sm-2 col-md-2 col-xs-2 col-lg-2">Document Id</div>
+                                    <div class="col-sm-6 col-md-6 col-xs-6 col-lg-6"><span ng-bind="doc_id"></span></div>
+                                </div>
+                            </div>
+                       </div>
+                    </div>
+                </div>
+                <div ng-if="csc.testTabWidget=='default'">
+                    <div class="row" style="padding: 10px 0;">
+                        <form class="form-horizontal">
+                            <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12" style="padding: 10px 15px;">
+                                <lable class="docid-title">Enter json</lable></div>
+                            <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                                 <textarea class="form-control" rows="4" ng-model="csc.inputJsonForTest" placeholder="Enter json"></textarea>
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12" style="padding: 30px 15px;">
+                                 <button class="btn button-primary" ng-click="csc.onTestDefault(csc.inputJsonForTest)">Test</button>
+                            </div>
+                            <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                                <div class="loading-spiner-holder" ng-show="csc.showJobStatusLink">
+                                    <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i> Request is being processed ( {$ csc.currentTimeStamp $} ). <a ng-click="csc.getJobStatus(csc.jobId)">Click Here to get the status</a></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12" ng-show="csc.showDefaultTable">
+                            <div>
+                                <lable class="docid-title">Response</lable>
+                            </div>
+                            <json-formatter class="jsonformatter" open="3" json="csc.resposeDefaultData"></json-formatter>
+                        </div>
+                    </div>
+                </div>
+            </pane>
+        </tabs>
+    </div>
+</div>
+
+
+</div>

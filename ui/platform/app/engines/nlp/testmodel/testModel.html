@@ -1,0 +1,348 @@
+<div class="row" style="padding-top:10px;">
+  <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3">
+    <label style="margin-top:7px">Select a model</label>
+  </div>
+  <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+    <select class="form-control" ng-model="selectedModel" ng-change="dictionarySelect(selectedModel)">
+      <option value="">Select Model</option>
+      <option ng-repeat="model in tm.modelsObj" value="{$ model $}">{$ model.name $}</option>
+    </select>
+    <div class="loading-spiner-holder " ng-show="spinGetModelData">
+      <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Retrieving Model Data...</i></span>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-5 col-md-5 col-lg-5 col-xs-5 error" style="padding-top: 7px;">
+    {$ modelSelectError $}
+  </div>
+</div>
+<br>
+
+<!--
+<div class="bin" droppable drop="handleDrop" ng-repeat="bin in [1, 2, 3]" bin="bin" id="bin{$ bin $}">{$ bin $}</div>
+<div class="item" id="item{$ item $}" ng-repeat="item in [1, 2, 3]" draggable item="item">{$ item $}</div>
+-->
+
+<div class="modelTypeBorder" ng-show="intentShow">
+  <div class="testmodelTitle">Intent</div>
+  <div class="row">
+    <div style="margin-bottom:15px;padding:10px">
+      <table class="table table-bordered table-striped table-scroll" style="margin-bottom:5px">
+        <tr>
+          <td>
+            <form>
+              <div class="input-group">
+                <input type="text" class="form-control" ng-model="sentence" placeholder="Enter the Sentence">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-disabled="sentence=='' || sentence==undefined"
+                            ng-click="sendSentence(sentence)" class="btn btn-primary">Submit</button>
+                  </span>
+              </div>
+              <div class="loading-spiner-holder" ng-show="isTestSubmit">
+                <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span
+                  class=""><i>Fetching verbs...</i></span></div>
+              </div>
+              <span class="error">{$ failureMsg $}</span>
+            </form>
+          </td>
+        </tr>
+      </table>
+      <div class="row" ng-repeat="arr in intentVerbs" ng-show="!modifyButton">
+        <div class="col-sm-3">
+          <b>Intent Verb</b>
+        </div>
+        <div class="col-sm-3">
+          {$ arr.intent_verb $}
+        </div>
+        <div class="col-sm-3">
+          <b>Confidence Score</b>
+        </div>
+        <div class="col-sm-3">
+          <span>{$ arr.intent_confidence | number:3 $}</span>
+        </div>
+      </div>
+      <div class="row" ng-repeat="arr in intentVerbs" ng-show="!modifyButton">
+        <div class="col-sm-3">
+          <b>Platform Intent</b>
+        </div>
+        <div class="col-sm-3">
+          <span>{$ arr.platform_intent $}</span>
+        </div>
+        <div class="col-sm-3">
+          <b>Confidence Score</b>
+        </div>
+        <div class="col-sm-3">
+          <span>{$ arr.verb_confidence $}</span>
+        </div>
+      </div>
+      <div class="row" ng-repeat="arr in intentVerbs" ng-show="!modifyButton">
+        <div class="col-sm-3">
+          <b>Entity Type</b>
+        </div>
+        <div class="col-sm-3">
+          <p ng-repeat="entData in arr.entities">{$ arr.entities[$index].entity_type $}</p>
+        </div>
+        <div class="col-sm-3">
+          <b>Entity Value</b>
+        </div>
+        <div class="col-sm-3">
+          <p ng-repeat="entData in arr.entities">{$ arr.entities[$index].entity_value $}</p>
+        </div>
+      </div>
+
+      <div class="row" ng-repeat="arr in verb_deps" ng-show="modifyButton">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-4">
+          {$ arr.verb $}
+        </div>
+        <div class="col-sm-4">
+          <input type="checkbox" ng-model="arr.is_intent_verb" ng-disabled="verbsDisable"
+                 ng-change="checkChange($index,arr.is_intent_verb)"/>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+          <button class="btn btn-primary btn-sm pull-right" ng-disabled="sentence=='' || sentence==undefined"
+                  ng-show="!modifyButton" style="margin-left:10px" ng-click="clearSentence();sentence = ''">YES
+          </button>
+          <button class="btn btn-default btn-sm pull-right" ng-disabled="sentence=='' || sentence==undefined"
+                  ng-show="!modifyButton" ng-click="clearVerbs(sentence)">NO
+          </button>
+          <button class="btn btn-primary btn-sm pull-right" style="margin-left:10px" ng-show="modifyButton"
+                  ng-click="addToModify(sentence);sentence=''">Add To Training Set
+          </button>
+          <button class="btn btn-default btn-sm pull-right" ng-show="modifyButton" ng-click="cancelModify()">Cancel
+          </button>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <table class="table table-bordered">
+          <thead style="font-size: 15px;font-weight: bold;border-bottom: 2px solid #959595 ;">
+          <tr>
+            <td>#</td>
+            <td>Sentence</td>
+            <td>Intent Verb</td>
+            <td></td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="data in savedSentences">
+            <td width="10%">{$ $index+1 $}</td>
+            <td>{$ data.sentence $}</td>
+            <td ng-repeat="verb in data.verb_deps" ng-show="verb.is_intent_verb">{$ verb.verb $}</td>
+            <td ng-show="isIntentVerb(data.verb_deps)"></td>
+            <td style="text-align:center;"><a ng-click="removeSentence($index)"><i class="fa fa-trash"
+                                                                                   style="color:#a79d9d;"></i></a></td>
+          </tr>
+          </tbody>
+        </table>
+        <br>
+        <button class="btn btn-primary pull-right" ng-disabled="savedSentences.length==0" ng-click="retrain()">
+          Re-train
+        </button>
+        <div class="col-sm-12" style="padding-right: 0px;">
+          <span class="error pull-right ng-binding">{$ failureRetrain $}</span>
+          <span class="pull-right ng-binding" style="color:green">{$ successMsg $}</span>
+          <div class="loading-spiner-holder pull-right" ng-show="isRetrainSubmit">
+            <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Retraining Model...</i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="modelTypeBorder" ng-show="actionShow">
+  <div class="testmodelTitle">Action</div>
+  <div class="row">
+    <div style="margin-bottom:15px;padding:10px">
+
+      <table class="table table-bordered table-striped" style="margin-bottom:5px">
+        <tr>
+          <td>
+            <form>
+                <div class="input-group">
+                  <input type="text" class="form-control" ng-model="verb" placeholder="Enter the Verb" >
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-disabled="verb=='' || verb==undefined"
+                            ng-click="sendVerb(verb)">Submit</button>
+                  </span>
+                </div>
+                <div class="loading-spiner-holder" ng-show="isTestActionSubmit">
+                  <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span
+                    class=""><i>Fetching Meanings...</i></span></div>
+                </div>
+                <span class="error">{$ failureMsg $}</span>
+            </form>
+          </td>
+        </tr>
+      </table>
+      <div class="row" ng-show="!modifyActionButton">
+        <div class="col-sm-6">
+          <span style="font-weight:bold" ng-show="testActionMeanings.intent_confidence!=undefined">Intent Confidence: </span>
+          <span>{$ testActionMeanings.intent_confidence $}</span>
+        </div>
+        <div class="col-sm-6">
+          <span style="font-weight:bold" ng-show="testActionMeanings.platform_intent!=undefined">Platform Intent: </span>
+          <span>{$ testActionMeanings.platform_intent $}</span>
+        </div>
+      </div>
+      <div class="row" ng-show="modifyActionButton">
+        <div class="col-sm-3">
+          <p>
+            {$ verbMeaningsArray.word $}
+          </p>
+        </div>
+        <div class="col-sm-7">
+          <div ng-repeat="dat in verbMeaningsArray.meanings track by $index"><input type="checkbox" ng-model="verbMeaningsArray.meanings[$index].is_selected"/> {$ dat.definition $} </div>
+        </div>
+        <div class="col-sm-2">
+          <i class="fa fa-trash-o pull-right"></i>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+          <button class="btn btn-primary btn-sm pull-right" ng-disabled="verb=='' || verb==undefined"
+                  ng-show="!modifyActionButton" style="margin-left:10px" ng-click="clearVerb();verb = ''">YES
+          </button>
+          <button class="btn btn-default btn-sm pull-right" ng-disabled="verb=='' || verb==undefined"
+                  ng-show="!modifyActionButton" ng-click="clearMeaning(verb)">NO
+          </button>
+          <button class="btn btn-primary btn-sm pull-right" style="margin-left:10px" ng-show="modifyActionButton"
+                  ng-click="addToModifyMeaning(verb);" data-toggle="modal" data-target="#myModal">Add To
+          </button>
+          <button class="btn btn-default btn-sm pull-right" ng-show="modifyActionButton" ng-click="cancelModifyAction()">Cancel
+          </button>
+        </div>
+      </div>
+      <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="radio">
+                      <label><input type="radio" name="optradio" ng-model="radioSelect" value="get_entity">Get Entity</label>
+                    </div>
+                    <div class="radio">
+                      <label><input type="radio" name="optradio" ng-model="radioSelect" value="create_entity">Create Entity</label>
+                    </div>
+                    <div class="radio">
+                      <label><input type="radio" name="optradio" ng-model="radioSelect" value="update_entity">Update Entity</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="radio">
+                      <label><input type="radio" name="optradio" ng-model="radioSelect" value="delete_entity">Delete Entity</label>
+                    </div>
+                    <div class="radio">
+                      <label><input type="radio" name="optradio" ng-model="radioSelect" value="set_value">Set Value</label>
+                    </div>
+                    <div class="radio">
+                      <label><input type="radio" name="optradio" ng-model="radioSelect" value="send_message">Send Message</label>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <button class="btn btn-primary pull-right" ng-click="addTo()" data-dismiss="modal">Save</button>
+              <button class="btn btn-default pull-right" style="margin-right: 10px;" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div style="margin-bottom:15px" ng-repeat="(key,value) in testActionObjConstruct track by $index">
+        <div class="panel-group">
+          <div class="panel panel-default">
+            <div class="panel-heading" data-toggle="collapse" href="#collapse{$ key $}">
+              <h4 class="panel-title">
+                <a>{$key$}</a>
+              </h4>
+            </div>
+            <div id="collapse{$ key $}" class="panel-collapse collapse">
+              <table class="table table-bordered">
+                <tr ng-repeat="object in value track by $index">
+                  <td>
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <p>
+                          {$ object.word $}
+                        </p>
+                      </div>
+
+                        <div class="col-sm-6 dropingDiv" ng-drop="true" ng-drop-success="onDropComplete($data,$event,key,$index)">
+
+                          <div ng-repeat="dat in object.meanings track by $index">
+
+                              <div ngDraggable ng-drag="true" ng-drag-success="onDragSuccess($data,$event,key,object.word,$parent.$index,$index,dat)" ng-drag-data="{$ dat $}" class="dragDiv">
+                                <span>{$ dat.definition $}</span><span><i class="fa fa-times testIntentClass"
+                                                                          ng-click="removeMeaning(key,$parent.$index,$index,dat)"></i></span>
+                              </div>
+                          </div>
+                        </div>
+
+                      <div class="col-sm-2">
+                        <i class="fa fa-trash-o pull-right" ng-click="deleteGetEntityVerb(key,$index)"></i>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--<div class="row">-->
+        <!--<div class="col-sm-12 col-md-12 col-lg-12">-->
+          <!--<button class="btn btn-primary btn-sm pull-right" style="margin-left:10px">YES-->
+          <!--</button>-->
+          <!--<button class="btn btn-default btn-sm pull-right" >NO-->
+          <!--</button>-->
+        <!--</div>-->
+      <!--</div>-->
+      <br>
+      <div class="row">
+        <!--<table class="table table-bordered">-->
+          <!--<thead style="font-size: 15px;font-weight: bold;border-bottom: 2px solid #959595 ;">-->
+          <!--<tr>-->
+            <!--<td>#</td>-->
+            <!--<td>Intent Verb</td>-->
+            <!--<td>Platform Action</td>-->
+            <!--<td></td>-->
+          <!--</tr>-->
+          <!--</thead>-->
+          <!--<tbody>-->
+          <!--<tr ng-repeat="data in savedSentences">-->
+            <!--<td width="10%">{$ $index+1 $}</td>-->
+            <!--<td>{$ data.sentence $}</td>-->
+            <!--<td ng-repeat="verb in data.verb_deps" ng-show="verb.is_intent_verb">{$ verb.verb $}</td>-->
+            <!--<td ng-show="isIntentVerb(data.verb_deps)"></td>-->
+            <!--<td style="text-align:center;"><a ng-click="removeSentence($index)"><i class="fa fa-trash"-->
+                                                                                   <!--style="color:#a79d9d;"></i></a></td>-->
+          <!--</tr>-->
+          <!--</tbody>-->
+        <!--</table>-->
+        <br>
+        <button class="btn btn-primary pull-right" ng-click="retrainTestAction()">
+          Re-train
+        </button>
+        <div class="col-sm-12" style="padding-right: 0px;">
+          <span class="error pull-right ng-binding">{$ failureRetrainAction $}</span>
+          <span class="pull-right ng-binding" style="color:green">{$ successMsgRetrainAction $}</span>
+          <div class="loading-spiner-holder pull-right" ng-show="isRetrainSubmitAction">
+            <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Retraining Model...</i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

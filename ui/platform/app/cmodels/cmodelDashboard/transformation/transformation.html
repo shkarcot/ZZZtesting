@@ -1,0 +1,154 @@
+  <div class="transformation">
+      <div class="loadermodal" ng-show="finderloader"></div>
+      <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                        ng-click="vm.clear()">&times;</button>
+                <h4 class="modal-title" id="myJobProcessLabel">Pipeline Design</h4>
+      </div>
+         <div class="modal-body">
+                <div class="row" style="padding-top:10px;">
+                    <div class="col-sm-3 col-lg-3 col-md-3 col-xs-3" style="overflow-x:scroll;height:600px">
+                         <div  ng-repeat="tstagex in jsonElements">
+                            <div  class="panel panel-info" ng-repeat="(key, value) in tstagex">
+                                 <div class="panel-heading"  ng-click="isCollapsed = !isCollapsed" style="cursor:pointer">
+                                       <h3 class="panel-title">
+                                        {$ key $}
+                                     </h3>
+                                 </div>
+
+                                 <div uib-collapse="isCollapsed">
+                              <div class="panel-body panel-scroll" style="max-height:200px;overflow-x:scroll;">
+                                   <div class="form-group">
+                                      <div class="col-sm-8" ng-repeat="data in value">
+                                              <button class="btn btn-custom" style="margin-top:5px;width: 170px;background-color: lightgray;" ng-click="flowchartdraw(data.classId)" >
+                                                <a style="color:blue">{$ data.stageNm $}</a>
+                                              </button>
+                                      </div>
+                                   </div>
+                              </div>
+                            </div>
+                            </div>
+                         </div><!--Panel Info div close-->
+                        <!-- <div class="panel panel-info">
+                            <div class="panel-heading"  ng-click="isCollapsed1 = !isCollapsed1">
+                              <h3 class="panel-title">
+                                   Feature Transformers
+                              </h3>
+                            </div>
+                            <div uib-collapse="isCollapsed1">
+                              <div class="panel-body">
+                                   <div class="row form-group">
+                                      <div class="col-sm-4">
+                                          <div ng-repeat="option in jsonElements">
+                                              <button class="btn btn-custom" ng-click="flowchartdraw(option.trans_cd)" style="margin-top:12px">
+                                                <a style="color:white">{$ option.dispnametrans $}</a>
+                                              </button>
+                                           </div>
+                                      </div>
+                                   </div>
+                              </div>
+                            </div>
+                        </div>&lt;!&ndash;Panel Info div close&ndash;&gt;
+-->
+                    </div> <!--Panel Info div close-->
+                     <div class="col-sm-7 col-lg-7 col-md-7 col-xs-7 columdivider" style="height:500px">
+
+    			<button class="btn btn-custom"
+    				ng-click="deleteSelected()"
+    				ng-disabled="chartViewModel.getSelectedNodes().length == 0 && chartViewModel.getSelectedConnections().length == 0"
+    				title="Delete selected nodes and connections"
+    				>
+    				Delete Node
+				</button>
+                 <button class="btn btn-custom"   style="float:right"
+    				ng-click="saveDrawNode()">
+    				Save
+				</button>
+                        <flow-chart style="margin: 5px;width:100%;height:600px;"
+			      	             chart="chartViewModel"    ng-click="handleNodeClicked()" ng-right-click="ShowContextMenu()"  context="context1">
+			            </flow-chart>
+                           <ul id="context1" class="dropdown-menu" role='menu'>
+                              <li><a ng-click="dataView()">DataView</a></li>
+                           </ul>
+                    </div>
+                     <div class="col-sm-2 col-lg-2 col-md-2 col-xs-2">
+                          <form name="userFormTwo">
+                            <div class="form-group" ng-repeat="field in formFields" >
+                            <ng-form name="userFieldForm">
+                                 <div ng-if="field.type=='text'" class="form-group row">
+                                  <label class="col control-label">{$field.label$}</label>
+                                  <div class="col">
+                                    <input type="{$field.type$}" dynamic-name="field.name" ng-model="field.data" class="form-control" required/>
+
+                                  </div>
+                                </div>
+                                 <div ng-if="field.type=='select'" class="form-group" >
+                                  <label class="col control-label">{$field.label$}</label>
+                                  <div class="col">
+                                    <select ng-model="field.data" ng-options="option.name for option in field.options" class="form-control" required/>
+                                  </div>
+                                </div>
+
+                            </ng-form>
+                            </div>
+                           <!--  <button class="btn btn-custom" ng-click="SaveData()">Save</button>-->
+                        </form>
+                    </div>
+                </div>
+         </div>
+      </div>
+  </div>
+
+  <!-- Modal -->
+<div class="modal fade " id="dataModal" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-md" style="margin: 0% auto;width:700px;height:400px">
+       <div class="modal-content" style="border-radius: 0px;">
+            <div class="modal-body" style="padding: 20px 30px 30px 30px;">
+                 <div>
+                    <button type="button" class="close" data-dismiss="modal" ng-click="adc.changeToManual('no')">&times;</button>
+
+                </div><br>
+                <div>
+               <ul class="nav nav-tabs nav-custom-tabs">
+                      <li  class="active" ng-click="mdc.closeUploadSideBar()"><a data-toggle="tab" href=".designDataView" aria-expanded="false">Data View</a></li>
+                     <li  ng-click="mdc.closeUploadSideBar()"><a data-toggle="tab" href=".designgraphview" aria-expanded="true">Graph</a></li>
+                </ul>
+              <div class="tab-content">
+                    <div class="tab-pane fade in active designDataView">
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                 <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                         <tr ng-repeat="data in dataGraph">
+                                             <td>{$ data.Letter $}</td>
+                                             <td>{$ data.Freq $}</td>
+                                         </tr>
+                                        </tbody>
+                                    </table>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="tab-pane fade designgraphview">
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                <div id="graphid"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+            </div>
+       </div>
+
+    </div>
+</div>
+
+

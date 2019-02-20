@@ -1,0 +1,725 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> Do you really want to archive the dataset? </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+<div class="row overlay adaptContainer" id="datasetImport">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12"  style="margin-bottom:70px;">
+        <h4 class="push-left">
+          <span ng-bind="ImportDataset"></span>
+          <span class="pull-right closeRule closebtn" ng-click="canceldataSet()">&times;</span>
+        </h4>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <form ng-submit="adc.sendDataSet()">
+                    <div class="form-group">
+                        <label>Data Set Name</label>
+                        <input type="text" ng-model="adc.importDsObj.name" class="form-control custom-formControl" placeholder="Data Set Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea  rows="4" ng-model="adc.importDsObj.description" cols="50" class="form-control custom-formControl" placeholder="Description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Data Format</label>
+                        <select class="form-control custom-formControl" ng-model="adc.importDsObj.dataType">
+                            <option value="">Select data format</option>
+                            <option ng-repeat="option in adc.datasetTypeList" value="{$ option $}">{$ option $}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Data Set</label>
+                        <br>
+                        <label><b>Choose From Local</b></label>
+                            <div>
+                              <button class="btn left button-primary" alt="browse" title="browse" type="button" style="cursor:pointer;position:relative;display:inline;border-radius:0">
+                                <input class="hide_file" ngf-select ng-model="fileInput" name="file"
+                                       ngf-change="uploadFile(fileInput)" type="file" style="font-size:13px;"/>
+                                  Browse
+                              </button>
+                            </div>
+                            <label class="entity-filepath" style="overflow: hidden;width: 80%;border: 1px solid #3babe1;height: 33px;">
+                                <span style="display:inline;" class="ng-binding" ng-show="browseFileName == undefined || browseFileName == ''">Please select the file</span>
+                                <span style="display:inline;" class="ng-binding" >{$ browseFileName $}</span>
+                            </label>
+                        <div class="row" ng-show="sftpList.length>0">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <span class="badge">OR</span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group" ng-show="sftpList.length>0">
+                            <span>Choose From SFTP</span>
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-repeat="list in sftpList">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" ng-model="checkList[$index]" value="{$ list $}"  ng-click="toggleSelection(list,$index)" >
+                                        <i class="helper" style="top: 6px;"></i>
+                                        {$ list $}
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="form-group">
+                        <button class="btn btn-custom" type="submit">
+                            <i class="fa fa-floppy-o"></i>
+                            Save
+                        </button>
+                        <div class="loading-spiner-holder" ng-show="enabledatasetLoader">
+                            <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving dataset ...</i></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row minPadding fixedClass" >
+    <div class="col-lg-7 col-sm-7 col-md-7 col-xs-7">
+       <label style="text-transform: uppercase;" ng-click="adc.modelDetailsPage();">adapt</label>
+    </div>
+    <div class="col-lg-5 col-sm-5 col-md-5 col-xs-5 alignRight">
+        <button class="btn btn-add" ui-sref="app.adapt.createmodel">
+            <img src="/app/images/plus-default.png" style="width:10px;">
+            <span>Create New Ensemble</span>
+        </button>
+        <button class="btn btn-add" ng-click="uploadDataset();">
+            <img src="/app/images/import.png" style="width:10px;">
+            <span>Import Data Set</span>
+        </button>
+
+    </div>
+</div>
+<div class="row adaptContainer padClassAdapt" ng-show="!adc.editModelView">
+    <div>
+        <ul class="nav nav-tabs nav-custom-tabs">
+            <li class="active"><a data-toggle="tab" href=".models" aria-expanded="false">models</a></li>
+            <li ng-click="showOriginalCardsStyle()"><a data-toggle="tab" href=".datasets" aria-expanded="true">datasets</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade in active models" ng-class="cardsLayout">
+                <div class="row">
+                    <div ng-class="cardinnerPanels" ng-show="adc.modelsArray.length==0">No Models yet.</div>
+                    <div ng-class="cardinnerPanels" ng-repeat="modelObj in adc.modelsArray" >
+                        <div class="panel models-panel" ng-click="setcolumnsWidth(modelObj);" style="cursor:pointer;" ng-class="{'eventsBlock':modelObj.status=='in_draft'}">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 dashboard-row">
+                                        <div >
+                                            <div style="font-size:18px;" class="overFlowModelType" title="{$ modelObj.name $}">{$modelObj.name$}</div>
+
+                                        </div>
+
+                                        <div class="modelDesc overFlowModelType" title="{$ modelObj.description $}" ng-bind="modelObj.description"></div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+                                        <div style="font-size:11px;float:left;" ng-class="{'readyColor': modelObj.status == 'ready', 'inProgress': modelObj.status == 'progress', 'failedStatus': modelObj.status == 'failed', 'inDraft': modelObj.status == 'in_draft'}">{$ modelObj.status $}</div>
+                                        <div class="classifyBadge overFlowModelType" title="{$ modelObj.model_type $}" ng-bind="modelObj.model_type"></div>
+                                        <img src="/app/images/classification.png" style="width:15px;margin-top: 6px;"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="model-body">
+                                    <fieldset class="the-fieldset">
+                                        <legend class="the-legend">
+                                            <span class="modelDesc">Active : </span>
+                                            <label class="activeModelName" ng-bind="modelObj.active_version_name"></label>
+                                        </legend>
+                                        <div class="row" >
+                                            <div class="dashboard-row" ng-show="value != null" ng-class="adc.checkForKeysLength(modelObj.model_score,$parent.$index)" style="min-height:43px;padding-right: 10px;" ng-repeat="(key,value) in modelObj.model_score">
+                                                <div class="modelDesc overFlowModelType" title="{$ key $}">{$ key $}</div>
+                                                <div class="accuracyColor" >{$ value | number:4 $}</div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade in datasets">
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td >Name</td>
+                                        <td >Description</td>
+                                        <td >Created on</td>
+                                        <td >Type</td>
+                                        <td >Size</td>
+                                        <td style="width:10%"></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="data in adc.listOfDataSets" ng-mouseover="showIcons($index)" ng-mouseout="hideIcons($index)">
+                                        <td>{$ data.name $}</td>
+                                        <td>{$ data.description $}</td>
+                                        <td ng-bind="adc.formatDate(data.ts)"></td>
+                                        <td>{$ data.dataset_type $}</td>
+                                        <td>{$ data.size $}</td>
+                                        <td>
+                                          <span ng-show="showEditIcons[$index]">
+                                            <i class="fa fa-download iconColor" title="Download" ng-click="adc.downloadFile(data.path)" style="margin-right: 10px;"></i>
+                                              <i class="fa fa-archive iconColor" ng-click="adc.archiveDataset(data)" aria-hidden="true" title="Archive"></i>
+                                          </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-class="cardsEmptyLayout">
+        <div class="modelOutput models" ng-show="showcardContent"></div>
+        <div class="row modelContent models" ng-show="!showcardContent">
+            <div class="row" style="padding: 20px 20px 0px 20px;">
+                <div class="col-lg-6 com-sm-6 col-md-6 col-xs-12">
+                    <span class="modelsHeading" ng-bind="adc.modelNameFromCard"></span>
+                    <span class="classifyBadge" ng-bind="adc.modelType"></span>
+                    <span ng-click="adc.editModel(adc.modelDetailsObj)" ng-show="adc.showEditModelIcon"><img src="{$ config.base_url $}/app/images/edit.png" class="editIconModelDetails"/></span>
+                    <br>
+                    <p class="modelDesc" ng-bind="adc.modelDescriptionFromCard">Model Description</p>
+                </div>
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12 text-right">
+                    <span style="font-size:16px;cursor:pointer;" ng-click="showOriginalCardsStyle();">X</span>
+                </div>
+            </div>
+            <div class="row">
+                    <ul class="nav nav-tabs nav-custom-modelTabs">
+                        <li class="active"><a data-toggle="tab" href=".performance" ng-click="adc.clearAllObjects()">PERFORMANCE</a></li>
+                        <li><a data-toggle="tab" href=".details" ng-click="adc.clearAllObjects()">DETAILS</a></li>
+                        <li><a data-toggle="tab" href=".modeltrain" ng-click="adc.clearAllObjects()">TRAIN</a></li>
+                        <li><a data-toggle="tab" href=".modeltest" ng-click="adc.clearAllObjects()">TEST</a></li>
+                        <li><a data-toggle="tab" href=".modelevaluate" ng-click="adc.clearAllObjects()">EVALUATE</a></li>
+                        <li><a data-toggle="tab" href=".versions" ng-click="adc.clearAllObjects()">VERSIONS</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active performance">
+                            <div class="row" style="padding: 20px;">
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 dashboard-row" ng-show="value != null" ng-repeat="(key,value) in adc.modelDetailsObj.model_score">
+                                    <span class="modelDesc">{$ key $}</span><br>
+                                    <label class="accuracyColor bold">{$ value | number:3 $}</label>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 dashboard-row">
+                                    <span  class="modelDesc">Active Version</span><br>
+                                    <label class="bold" ng-bind="adc.modelDetailsObj.name">V4</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding" style="position:relative;">
+                                  <!--<div class="" style="background:#fff;height:25px;">
+                                     <div class="pull-right" style="">All versions <span class="down-arrow"></span></div>
+                                  </div>-->
+                                <div id="versionsGraph" style="min-height: 29em;background-color: white;"></div>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade details">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                    <div class="desFont">
+                                        Choose manual ensemble strategy to give weights to trained algorithms.
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3">
+                                    <div style="padding-left:15px;color:#b1b3b5;font-weight:600;">
+                                        Ensemble Strategy
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                                    <div>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="optradio" ng-model="trainMode" value="automatic" ng-change="adc.showCreateModel()">Auto
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="optradio" ng-model="trainMode" value="manual" ng-change="adc.openModal()" ng-disabled="adc.ensembleModels.length == 1">Manual
+                                        </label>
+                                    </div>
+                                </div>
+                                <!--<div class="col-sm-3 col-md-3 col-lg-3 col-xs-3" ng-show="!saveButShow">-->
+                                    <!--<button class="btn btn-add">-->
+                                        <!--<img src="/app/images/plus-default.png" style="width:10px;">-->
+                                        <!--<span>Create New Model</span>-->
+                                    <!--</button>-->
+                                <!--</div>-->
+                                <div class="col-sm-3 col-md-3 col-xs-3 col-lg-3" ng-show="trainMode == 'manual'">
+                                    <input class="form-control" ng-model="newVersionName" placeholder="Enter name"/><br>
+                                    <button class="btn button-customSave btn-custom pull-right" ng-click="adc.saveWeights()">
+                                        <i class="fa fa-floppy-o"></i>
+                                        Save
+                                    </button>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6" ng-repeat="modelObj in adc.ensembleModels" >
+                                    <div class="panel models-panel" >
+                                        <div class="panel-heading" style="height:64px;">
+                                            <div class="row">
+                                                <div class="col-lg-8 col-sm-8 col-md-8 col-xs-8">
+                                                    <div >
+                                                        <div style="font-size:18px;" class="overFlowModelType" title="{$ modelObj.name $}">{$modelObj.name$}</div>
+                                                        <div style="font-size:11px;float:left;" ng-class="{'readyColor': modelObj.status == 'ready', 'inProgress': modelObj.status == 'progress', 'failedStatus': modelObj.status == 'failed', 'inDraft': modelObj.status == 'in_draft'}">{$ modelObj.status $}</div>
+                                                    </div>
+
+                                                    <div class="modelDesc overFlowModelType" title="{$ modelObj.description $}" ng-bind="modelObj.description"></div>
+                                                </div>
+                                                <div class="col-sm-4 col-md-4 col-xs-4 col-lg-4" ng-if="trainMode == 'manual' && modelObj.status != 'failed' ">
+                                                    <rzslider rz-slider-model="$root.slider[$index].value" rz-slider-options="$root.slider[$index].options"
+                                                    rz-slider-hide-limit-labels="false" rz-slider-always-show-bar="true"></rzslider>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="model-body">
+                                                <fieldset class="the-fieldset">
+                                                    <legend class="the-legend">
+                                                        <span class="modelDesc">Active : </span>
+                                                        <label class="activeModelName" ng-bind="modelObj.active_version_name"></label>
+                                                    </legend>
+                                                    <div class="row" >
+                                                        <div class="dashboard-row" ng-show="value != null" ng-class="adc.checkForKeysLength(modelObj.model_score,$parent.$index)" style="min-height:43px;padding-right: 10px;" ng-repeat="(key,value) in modelObj.model_score">
+                                                            <div class="modelDesc overFlowModelType" title="{$ key $}">{$ key $}</div>
+                                                            <div class="accuracyColor" >{$ value | number:4 $}</div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade modeltrain">
+                            <div class="row" style="padding: 20px;">
+                                <div class="form-group">
+                                    <label>Choose Data Set</label>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 no-padding">
+                                            <select class="custom-formControl form-control" ng-model="adc.trainObj.dataset_id" ng-change="adc.setColumnList(adc.trainObj.dataset_id)">
+                                                <option value="">List of Datasets</option>
+                                                <option ng-repeat="option in adc.listOfDataSets" value="{$ option.dataset_id $}">{$ option.name $}</option>
+                                            </select>
+                                        </div>
+                                        <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">-->
+
+                                            <!--<button class="btn btn-add" ng-click="uploadDataset();">-->
+                                                <!--<img src="/app/images/import.png" style="width:10px;">-->
+                                                <!--<span>Import Data set</span>-->
+                                            <!--</button>-->
+                                        <!--</div>-->
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Select Model Version</label>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 no-padding">
+                                            <select class="custom-formControl form-control" ng-model="adc.trainObj.version_id">
+                                                <option value="">List of Versions</option>
+                                                <option ng-repeat="option in adc.modelDetailsObj.versions" value="{$ option.version_id $}" ng-disabled="!(option.status=='ready')">
+                                                    <span>{$ option.name $}</span>
+                                                    <span>{$ option.is_active ? '(Active Version)':'' $}</span>
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">-->
+                                            <!--<select class="custom-formControl form-control" ng-model="adc.trainObj.column" ng-if="adc.modelDetailsObj.algo_type == 'classification' || adc.modelDetailsObj.algo_type == 'regression'">-->
+                                                <!--<option value="">Select target column</option>-->
+                                                <!--<option ng-repeat="option in adc.listOfColumns" value="{$ option $}">{$ option $}</option>-->
+                                            <!--</select>-->
+                                        <!--</div>-->
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Model Version Name</label>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 no-padding">
+                                            <input type="text" class="custom-formControl form-control" ng-model="adc.trainObj.name" placeholder="You have selected a inactive model give a name here"/>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="btn btn-custom" ng-click="adc.retrainModel()">Train</div>
+                                <div class="loading-spiner-holder" ng-show="enableRetrainModel">
+                                    <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Submitting job ...</i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade modeltest">
+                            <div class="row" style="padding: 20px;">
+                                <div class="form-group">
+                                    <label>Choose Data Set</label>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 no-padding">
+                                            <select class="custom-formControl form-control" ng-model="adc.testObj.dataset_id" >
+                                                <option value="">List of Datasets</option>
+                                                <option ng-repeat="option in adc.listOfDataSets" value="{$ option.dataset_id $}">{$ option.name $}</option>
+                                            </select>
+                                        </div>
+                                        <!--<div class="col-lg-1 col-sm-1 col-md-1 col-xs-12 no-padding">-->
+                                            <!--<div class="text-center" style="padding-top: 8px;">OR</div>-->
+                                        <!--</div>-->
+                                        <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">-->
+                                            <!--<button class="btn btn-add" ng-click="uploadDataset();">-->
+                                                <!--<img src="/app/images/import.png" style="width:10px;">-->
+                                                <!--<span>Import Data set</span>-->
+                                            <!--</button>-->
+                                        <!--</div>-->
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Select Model Version</label>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 no-padding">
+                                            <select class="custom-formControl form-control" ng-model="adc.testObj.version_id">
+                                                <option value="">List of Versions</option>
+                                                <option ng-repeat="option in adc.modelDetailsObj.versions" value="{$ option.version_id $}" ng-disabled="!(option.status=='ready')">
+                                                    <span>{$ option.name $}</span>
+                                                    <span>{$ option.is_active ? '(Active Version)':'' $}</span>
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="btn btn-custom" ng-click="adc.testModel()">Test</div>
+                                <div class="loading-spiner-holder" ng-show="enableTestModel">
+                                    <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>testing model ...</i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" ng-show="adc.testOutputShow">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 table-responsive"  style="max-height:300px;">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <td>
+                                                    Predicted Value
+                                                </td>
+                                                <td>
+                                                    Confidence
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="data in adc.testOutputModel">
+                                                <td>{$ data.value $}</td>
+                                                <td>{$ data.score $}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                                    <button class="btn btn-custom" ng-click="adc.downloadFile(adc.downloadFilePath)">
+                                        Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade modelevaluate">
+                            <div class="row" style="padding: 20px;">
+                                <div class="form-group">
+                                    <label>Evaluation Test Set</label>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12 no-padding">
+                                            <select class="custom-formControl form-control" ng-model="datasetIdForEvaluate" >
+                                                <option value="">List of Datasets</option>
+                                                <option ng-repeat="option in adc.listOfDataSets" value="{$ option.dataset_id $}">{$ option.name $}</option>
+                                            </select>
+                                        </div>
+                                        <!--<div class="col-lg-1 col-sm-1 col-md-1 col-xs-12 no-padding">-->
+                                            <!--<div class="text-center" style="padding-top: 8px;">OR</div>-->
+                                        <!--</div>-->
+                                        <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">-->
+                                            <!--<button class="btn btn-add" ng-click="uploadDataset();">-->
+                                                <!--<img src="/app/images/import.png" style="width:10px;">-->
+                                                <!--<span>Import Data set</span>-->
+                                            <!--</button>-->
+                                        <!--</div>-->
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Select Model Version</label>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 no-padding">
+                                            <select class="custom-formControl form-control" ng-model="versionForEvaluate">
+                                                <option value="">List of Versions</option>
+                                                <option ng-repeat="option in adc.modelDetailsObj.versions" value="{$ option.version_id $}" ng-disabled="!(option.status=='ready')" ng-show="option.is_tagged || option.is_active" >
+                                                    <span>{$ option.name $}</span>
+                                                    <span>{$ option.is_active ? '(Active Version)':'' $}</span>
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="btn btn-custom" ng-click="adc.evaluateDataSet()">Evaluate</div>
+                                <div class="loading-spiner-holder" ng-show="enableEvaluateModel">
+                                    <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>evaluating model ...</i></span>
+                                    </div>
+                                </div>
+                                <br><br>
+                                <div class="row">
+                                    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 no-padding">
+                                        <div class="row" ng-show="adc.evaluateOutputShow">
+                                            <div class="col-sm-5 col-md-5 col-lg-5 col-xs-5">
+                                                <h5>Output</h5>
+                                            </div>
+                                            <div class="col-sm-5 col-md-5 col-lg-5 col-xs-5">
+                                                <select class="custom-formControl form-control pull-right" ng-model="scoreInEvaluate">
+                                                    <option ng-repeat="(key,value) in adc.evaluateResult.score" value="{$ key $}">
+                                                        <span>{$ key $}</span>
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-2 col-lg-2 col-md-2 col-xs-2">
+                                                <h5 class="pull-right"> {$ adc.evaluateResult.score[scoreInEvaluate] | number: 5 $}</h5>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive" style="max-height:300px;">
+                                            <table class="table" ng-show="adc.evaluateOutputShow">
+                                                <thead>
+                                                    <tr>
+                                                        <td>
+                                                            Actual Value
+                                                        </td>
+                                                        <td>
+                                                            Predicted Value
+                                                        </td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="data in adc.evaluateOutput">
+                                                        <td>{$ data.actual $}</td>
+                                                        <td>{$ data.predicted $}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row" ng-show="adc.evaluateOutputShow">
+                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                                        <a ng-click="adc.saveAsEvaluationSet()">Save as Evaluation Set</a>
+                                    </div>
+                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                                        <button class="btn btn-custom" ng-click="adc.downloadFile(adc.downloadFilePathInEvaluate)">
+                                            Download
+                                        </button>
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade versions">
+                            <div class="pull-right taggedCheckbox">
+                                <label for="tagCheck"><input type="checkbox" id="tagCheck" name="tagged" ng-model="taggedVersionFlag" ng-change="adc.showTaggedVersions(taggedVersionFlag)"/> Show Tagged Versions </label>
+                            </div>
+                            <div class="row" style="padding: 20px;">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">Name</th>
+                                                <th class="text-center">Created</th>
+                                                <th class="text-center" ng-repeat="head in adc.modelDetailsObj.Available_scores">{$ head $}</th>
+                                                <th class="text-center">Tagged?</th>
+                                                <th class="text-center">Active</th>
+                                                <th class="text-center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="list in adc.modelDetailsObj.versions | filter:{is_tagged: taggedVersionFlag}" >
+                                                <td ng-show="!renameVer[$index]" ng-style="list.status != 'ready' && {'color':'#a8a8a8'}">
+                                                    <span>{$ list.name $}</span>
+                                                </td>
+                                                <td ng-show="!renameVer[$index] " ng-bind="adc.formatDate(list.training_ts)" ng-style="list.status != 'ready' && {'color':'#a8a8a8'}">
+
+                                                </td>
+                                                <td ng-show="!renameVer[$parent.$index] && list.status == 'ready'" ng-repeat="prop in adc.modelDetailsObj.Available_scores" ng-style="list.status != 'ready' && {'color':'#898888'}">{$ list.model_score[prop] | number:3 $}</td>
+                                                <td ng-show="!renameVer[$index] && list.status == 'ready'">
+                                                    <label class="switch">
+                                                        <input type="checkbox" ng-model="list.is_tagged" ng-change="adc.setTaggedToVersion(list)">
+                                                        <span class="slider round"></span>
+                                                        <div class="toggleText"></div>
+                                                    </label>
+                                                </td>
+                                                <td ng-show="!renameVer[$index] && list.status == 'ready'">
+                                                    <label class="switch">
+                                                        <input type="checkbox" ng-model="list.is_active" ng-change="adc.setActiveToVersion(list)">
+                                                        <span class="slider round"></span>
+                                                        <div class="toggleText"></div>
+                                                    </label>
+                                                </td>
+                                                <td ng-show="!renameVer[$index] && list.status == 'ready'" class="text-center">
+                                                    <span class="linkStyles" ng-click="adc.openTestTab(list.version_id)">Test</span>
+                                                    <span class="linkStyles" ng-click="adc.openTrainTab(list.version_id)">Train</span>
+                                                    <span class="linkStylesLast" ng-click="adc.enableRenameVersion($index)">Rename</span>
+                                                </td>
+                                                <td colspan="{$ adc.modelDetailsObj.Available_scores.length+5 $}" ng-show="renameVer[$index]">
+                                                    <div class="input-group" style="width:100%;">
+                                                        <input type="text" class="form-control" ng-model="list.name" placeholder="Enter the version name" style="border: none; box-shadow: none;">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn btn-cancelRename" type="button" ng-click="adc.disableRenameVersion()">Cancel</button>
+                                                        </span>
+                                                        <span class="input-group-btn">
+                                                            <button class="btn btn-saveRename" type="button" ng-click="adc.setNameToVersion(list)">Save</button>
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td colspan="{$ adc.modelDetailsObj.Available_scores.length+3 $}" ng-show="list.status != 'ready'" style="text-align:center;">
+                                                    <div class="loading-spiner-holder">
+                                                        <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom" style="color:#4a90e2"></i><span class=""><i> Version is being trained</i></span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row createModel padClassAdapt" ng-show="adc.editModelView">
+    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+        <div class="panel panel-custom">
+            <div class="panel-body">
+                <form ng-submit="adc.updateModelFunct(modelUpdateType)" ng-show="!adc.showIframe">
+                    <div class="row">
+                        <div class="col-lg-5 col-sm-6 col-md-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Model Name</label>
+                                    <input class="form-control custom-formControl" ng-model="adc.editModelObj.name" style="padding: 25px 0px 25px 15px;" placeholder="Type Model Name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <textarea rows="10" cols="20" class="form-control custom-formControl" ng-model="adc.editModelObj.description" placeholder="Description Here"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="radio-inline">
+                                      <input type="radio" name="optradio" value="custom" ng-model="modelUpdateType" ng-disabled="modelUpdateType == 'platform'">Custom Model
+                                    </label>
+                                    <label class="radio-inline">
+                                      <input type="radio" name="optradio" value="platform" ng-model="modelUpdateType" ng-disabled="modelUpdateType == 'custom'" checked="checked">Platform Model
+                                    </label>
+                                </div>
+                        </div>
+                        <div class="col-lg-5 col-s -6 col-md-6 col-xs-12">
+                            <div class="form-group">
+                                <label>Model Type</label>
+                                <select class="form-control custom-formControl" style="height:52px;" ng-model="adc.editModelObj.model_type" disabled>
+                                    <option value="">Select Model Type</option>
+                                    <option ng-repeat="option in adc.allModelTypes[modelUpdateType]" value="{$ option $}">{$ option $}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Upload Training Set</label>
+                                <select class="form-control custom-formControl" style="height:52px;" ng-model="adc.editModelObj.dataset_id" ng-change="adc.setColumnList(adc.editModelObj.dataset_id)" disabled>
+                                    <option value="">Select dataset</option>
+                                    <option ng-repeat="option in adc.listOfDataSets" value="{$ option.dataset_id $}" ng-show="option.name !=''">{$ option.name $}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                            <button class="btn button-customSave btn-custom" type="submit" ng-show="modelUpdateType == 'platform'">
+                                <i class="fa fa-floppy-o"></i>
+                                Save
+                            </button>
+                            <button class="btn button-customSave btn-custom" type="submit" ng-show="modelUpdateType == 'custom'">
+                                <i class="fa fa-floppy-o"></i>
+                                Next
+                            </button>
+                            <div class="loading-spiner-holder" ng-show="enableCreateModelLoader">
+                                <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>updating model ...</i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="row" ng-if="adc.showIframe">
+                    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 ">
+                        <div id="loadImg" class="loader"></div>
+                        <iframe ng-src="{$ adc.jupiterNoteBookUrl $}"
+                        style="margin-top: 1px;width:100%;height:480px;" onload="document.getElementById('loadImg').style.display='none';"></iframe>
+                    </div>
+                    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                        <button class="btn btn-custom" ng-click="adc.saveCustomModel('draft')">
+                            Save as draft
+                        </button>
+                        <button class="btn btn-custom" ng-click="adc.saveCustomModel('model')">
+                            Save as model
+                        </button>
+                        <div class="loading-spiner-holder" ng-show="enableCustomModel">
+                            <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving model ...</i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade " id="myModal" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-md" style="margin: 15% auto;">
+        <div class="modal-content" style="border-radius: 0px;">
+            <div class="modal-body" style="padding: 20px 30px 30px 30px;">
+                <div>
+                    <button type="button" class="close" data-dismiss="modal" ng-click="adc.changeToManual('no')">&times;</button>
+                    <h4 class="modal-title" style="font-size: 16px;font-weight: bold;">Confirmation</h4>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-1 col-md-1 col-lg-1 col-xs-1">
+
+                    </div>
+                    <div class="col-sm-11 col-md-11 col-lg-11 col-xs-11">
+                        <p style="font-size:12px;">Changing the ensemble strategy will create a new model version. Would you like to proceed?</p>
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                        <button class="btn btn-add" ng-click="adc.changeToManual('yes')" style="color:#35aae3;">
+                            <span>Yes, Change To Manual</span>
+                        </button>
+                        <button class="btn" style="background:none;color:#35aae3;" ng-click="adc.changeToManual('no')">
+                            <span>No, Skip it</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

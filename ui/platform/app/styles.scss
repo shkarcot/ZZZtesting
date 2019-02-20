@@ -1,0 +1,252 @@
+$icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
+@import '~bootstrap-sass/assets/stylesheets/_bootstrap.scss';
+@import '~angular-tree-control/css/tree-control.css';
+@import '~angular-tree-control/css/tree-control-attribute.css';
+@import '~uikit/dist/css/uikit.min.css';
+@import '~uikit/dist/css/components/notify.min.css';
+@import '~ng-dialog/css/ngDialog.css';
+@import '~angularjs-slider/dist/rzslider.css';
+@import '~angular-mass-autocomplete/massautocomplete.theme.css';
+@import '~angular-loading-bar/build/loading-bar.css';
+@import '~ui-bootstrap/vendor/ui-bootstrap/bootstrap.css';
+@import '~ui-bootstrap/vendor/ui-bootstrap/ui-bootstrap-improvements.css';
+@import '~ng-tags-input/build/ng-tags-input.min.css';
+@import '~angular-bootstrap-toggle-switch/dist/css/bootstrap3/bootstrap-switch.css';
+@import '~angular-ui-tree/dist/angular-ui-tree.min.css';
+@import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
+
+@import '~jsonformatter/dist/json-formatter.css';
+/*
+$bpmn-font-path: "~/bpmn-font/dist/font";
+@import '~/bpmn-font/dist/css/bpmn.css';
+@import '~/bpmn-font/dist/css/bpmn-embedded.css';
+*/
+
+$fa-font-path: "~font-awesome/fonts";
+@import "~font-awesome/scss/font-awesome.scss";
+//@import "~bpmn-js-properties-panel/styles/properties.less";
+
+
+/*custom scss files*/
+@import './common/assets/scss/variable';
+@import './common/assets/scss/generic';
+@import './solution/solution';
+@import './layout/layout';
+@import './dashboard/dashboard';
+@import './domainDashboard/domainDashboard';
+@import './layout/header/header';
+@import './layout/main';
+@import './sourceConfig/identifyFields/markerForm/marker-form';
+@import './sourceConfig/identifyFields/documentTemplates/documentTemplate';
+@import './engines/engines';
+@import './entities/entities';
+@import './nlp/nlp';
+@import './dataManagement/dataManagement';
+@import './engines/extraction/extrationengine';
+@import './layout/bodycontent/bodycontent';
+@import './engines/servicecatalog/servicecatalog';
+@import './engines/servicecatalog/configureExtractMetadata/configure';
+@import './engines/servicecatalog/testMetadata/testmetadata';
+@import './caseManagement/workFlows';
+@import './caseManagement/caseObjects/caseObjects.scss';
+@import './caseManagement/caseQueues/caseQueues.scss';
+@import './services/services';
+@import './services/extractMetadata/extractmetadata';
+@import './services/identifyTables/identifytables';
+@import './services/identifyFields/identifyfields';
+@import './services/extractElements/extractelements';
+@import './services/IngestDocument/IngestDocument';
+@import './services/ConvertDocument/ConvertDocument';
+@import './services/ClassifyDocument/ClassifyDocument';
+@import './services/ExtractDocumentText/ExtractDocumentText';
+@import './models/modelDashboard/modelDashboard';
+@import './models/modelDetails/modelDetails';
+@import './models/createEnsemble/createEnsemble';
+@import './deloitte';
+@import './enso';
+@import './services/ExtractDocumentEntities/ExtractDocumentEntities';
+@import './sourcing/sourceConfiguration/sourceConfiguration';
+@import './sourcing/sourceConfiguration/ingestFile/ingestFile';
+@import './services/configServices/configServices';
+@import './sourceConfig/identifyFields/markerForm/markerFormTab/abn_tree';
+@import './bpmnjs/bpmn';
+@import './adapt/adapt';
+@import './adapt/createModel/createmodel';
+@import './unstructuredForm/unstructuredForm';
+@import './unstructuredForm/newUnstructuredForm/newUnstructuredForm';
+@import './unstructuredForm/createUnstructuredForm/test/imageCrop';
+@import './function/functionDashboard/function';
+@import './function/createFunction/createFunction';
+@import './function/functionDetail/functionDetail';
+@import './source/source';
+@import './source/email/email';
+@import './source/fileUpload/fileUpload';
+@import './source/sftp/sftp';
+@import './vocabulary/vocabulary';
+@import './vocabulary/corpus/corpus';
+@import './vocabulary/dictionary/dictionary';
+@import './vocabulary/ontologies/ontologies';
+@import './vocabulary/ontologyVersions/ontologyVersions';
+
+@import './thresholds/thresholds';
+@import './cmodels/cmodelDashboard/customModelDashboard';
+
+
+
+.ngdialog.ngdialog-theme-default .ngdialog-content {
+    -webkit-animation: ngdialog-flyin .5s;
+    animation: ngdialog-flyin .5s;
+    background: #f0f0f0;
+    border-radius: 5px;
+    color: #444;
+    font-family: Helvetica,sans-serif;
+    font-size: 1.1em;
+    line-height: 1.5em;
+    margin: 0 auto;
+    max-width: 100%;
+    padding: 1em;
+    position: relative;
+    width: 450px;
+}
+
+.ngdialog.ngdialog-theme-default .ngdialog-close {
+    border: none;
+    background: 0 0;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.table-scroll{
+    box-shadow: 2px 3px 5px 2px #ddd;
+    background: white;
+
+    .tableHeading {
+        background-color: #D0EBF5;
+        color: black;
+        font-size: 13px;
+    }
+    .capitalize {
+        text-transform: capitalize;
+        font-size: 15px;
+    }
+    .text-color{
+        color:#5EB5EB;
+    }
+}
+.table > tbody > tr > td {
+  padding: 20px 20px 20px 10px;
+  font-size:14px;
+
+}
+.table-bordered > thead > tr > th, .table-bordered > thead > tr > td {
+    border-bottom-width: 1px;
+}
+.table > thead > tr > td {
+    padding: 10px;
+}
+
+
+tags-input {
+    display: block;
+}
+tags-input .host {
+    position: relative;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 100%;
+}
+
+.jsonformatter{
+    display: block;
+    padding: 9.5px;
+    margin: 0 0 10px;
+    font-size: 13px;
+    line-height: 1.42857;
+    word-break: break-all;
+    word-wrap: break-word;
+    color: #333333;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+#loading-bar-spinner{
+    display:none;
+}
+#loading-bar .bar {
+    background: #3cd142;
+}
+
+
+.apiCallSpinner{
+    position: absolute;
+    text-align: center;
+    width: 90%;
+}
+.apiCallSpinner .fa-spinner{
+    font-size: 35px;
+    color: #333;
+}
+.btn-reset:focus{
+    outline:0 !important;
+    box-shadow:0px 0px 0px 2px skyblue;
+}
+
+
+.custom-checkbox {
+    display: block;
+    position: relative;
+    padding-left: 21px;
+    margin-bottom: 0px;
+    margin: 0px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.custom-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    margin-left: -19px;
+    margin-top: 0;
+    padding: 0;
+}
+
+.custom-checkbox .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 15px;
+    width: 15px;
+    background-color: #fff;
+    border: 1px solid #bfbaba;
+}
+.custom-checkbox .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+ .custom-checkbox input:checked ~ .checkmark:after {
+    display: block;
+}
+.custom-checkbox .checkmark:after {
+    left: 4px;
+    top: 1px;
+    width: 6px;
+    height: 10px;
+    border: solid #000;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.dropdown-menu{
+   z-index:1000000;
+}
+element[disabled]{
+  pointer-events: none;
+ }

@@ -1,0 +1,53 @@
+.dictionary{
+    .form-group {
+        margin-bottom: 0px;
+    }
+    .form-control{
+        height:35px;
+    }
+    .form-control-feedback{
+        height:35px;
+        line-height:35px;
+    }
+    .btn-upload{
+        border:1px solid #36aae4;
+        background-color:white;
+        color: #7b7b7b;
+        border-radius: 5px;
+        padding: 8px 5px;
+        font-size:12px;
+
+        img{
+            width:15px;
+        }
+    }
+    .table{
+        background-color: #fafafa;
+    }
+    .table > thead{
+        background-color: #e6e6e6;
+    }
+    .table > thead > tr > td {
+        border:1px solid #dedede;
+        font-size:12px;
+    }
+    .table > tbody > tr {
+        border-bottom:1px solid #dedede;
+    }
+    .table > tbody > tr > td {
+        border:none;
+        color: #3f3f3f;
+        font-weight: 500;
+        font-size:12px;
+        padding: 10px;
+    }
+    p{
+        color: #3f3f3f;
+        font-size: 12px;
+        font-weight: 500;
+    }
+    a{
+        color: #4a90e2;
+        text-decoration:none;
+    }
+}

@@ -1,0 +1,1100 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+<script type="text/ng-template" id="confirmBox1">
+    <div class="popup-header">
+        <h3 class="text-primary"> Confirm Action </h3>
+        <hr class="popup-hr"/>
+        <p class="text-info1" style="padding:10px"> {$ activePopupText $} </p>
+        <br/>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+                <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm</button>
+            </div>
+        </div>
+    </div>
+</script>
+<div class="row minPadding">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+        <h3 class="zeroMargin">
+              <div class="dropdown">
+                  <a data-toggle="dropdown" class="noDecoration configureHeading"> domain <b class="caret"></b></a>
+                      <ul class="customdropdown-menu dropdown-menu">
+                          <li>
+                            <a ui-sref="app.domainDashboard" class="noDecoration">
+                              <img src="/app/images/Domain.png"/>
+                              <span>Domain Configuration</span>
+                            </a>
+                          </li>
+                          <li>
+                              <a class="noDecoration" ui-sref="app.modelDashboard">
+                                    <img src="/app/images/model.png"/>
+                                    <span>Models</span>
+                              </a>
+                          </li>
+                          <li>
+                              <a class="noDecoration" ui-sref="app.function">
+                                <img src="/app/images/functionIcon.png"/>
+                                <span>Functions</span>
+                              </a>
+                          </li>
+                          <li>
+                              <a ui-sref="app.services" class="noDecoration">
+                                  <img src="/app/images/Services-01.png"/>
+                                  <span>Service Configuration</span>
+                              </a>
+                          </li>
+                          <li>
+                              <a ui-sref="app.pipeline" class="noDecoration">
+                                  <img src="/app/images/pipeline.png"/>
+                                  <span>Pipeline Configuration</span>
+                              </a>
+                          </li>
+                          <li>
+                              <a ui-sref="app.sourceConfiguration" class="noDecoration">
+                                  <img src="/app/images/sources.png"/>
+                                  <span>Sources</span>
+                              </a>
+                          </li>
+                      </ul>
+                      <span style="margin-left: 10px;font-size: 13px;"> > </span>
+                      <span style="margin-left: 10px;font-size: 13px;cursor:pointer" ui-sref="app.unstructuredForm"> Unknown Format Extraction</span>
+                      <span style="margin-left: 10px;font-size: 13px;"> > </span>
+                      <span style="margin-left: 10px;font-size: 13px;color: #3babe1;" ng-if="state_id=='new'"> New Template</span>
+                      <span style="margin-left: 10px;font-size: 13px;color: #3babe1;" ng-if="state_id!='new'"> {$ nufc.documentTemplate.template_name $}</span>
+              </div>
+        </h3>
+    </div>
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 alignRight">
+        <!--<img class="helpImages" src="/app/images/comment-01.png"/>-->
+        <!--<img class="helpImages" src="/app/images/help-01.png"/>-->
+    </div>
+</div>
+
+<div class="row overlay overlay-threshold" id="createThreshold">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h4 class="push-left">
+          <span ng-bind="labelForcreate"></span>
+          <span class="pull-right closeRule closebtn" ng-click="nufc.cancelCustomThreshold()">&times;</span>
+        </h4>
+        <div class="row">
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 form-group">
+                <label>Threshold for</label>
+                <!--<input type="text" class="form-control" data-ng-model="nufc.objOfNewThreshold.attribute"
+                       placeholder="Type entity or attribute name" required>-->
+                <select class="form-control custom-control" data-ng-model="nufc.objOfNewThreshold.attribute">
+                    <option value="" selected="true">Select the Threshold for</option>
+                    <option ng-repeat="(key, value) in nufc.mappingEntities track by $index" value="{$ value $}">{$ value $}</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 form-group">
+
+                <label>For the process</label>
+                <select class="form-control custom-control" data-ng-model="nufc.objOfNewThreshold.process">
+                    <option value="" selected="true">Select the process</option>
+                    <option ng-repeat="process in nufc.processList track by $index" value="{$ process.value $}">{$ process.name $}</option>
+                </select>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 form-group">
+                <label>Threshold value</label>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                <rzslider rz-slider-model="nufc.objOfNewThreshold.score"
+                          rz-slider-hide-limit-labels="true"
+                          rz-slider-always-show-bar="true"
+                          rz-slider-options="slider1.options"></rzslider>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <input type="number"  min="0" max="100" data-ng-model="nufc.objOfNewThreshold.score" class="input-slider-value">
+                <span>%</span>
+            </div>
+
+         </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <button class="btn btn-custom" ng-click="nufc.saveCustomThreshold()">
+                            <i class="fa fa-floppy-o"></i>
+                            <span>Save</span>
+                        </button>
+                        <button class="btn btn-cancel " ng-click="nufc.cancelCustomThreshold()" style="background-color: transparent; font-weight:bold">Cancel</button>
+                    </div>
+        </div>
+    </div>
+</div>
+
+<div class="newUnstructuredForm">
+    <div class="well container-fluid">
+         <ul class="nav nav-tabs nav-custom-tabs">
+            <li class="active"><a data-toggle="tab" href=".template" aria-expanded="false">Template</a></li>
+            <li><a  data-toggle="tab" ng-click="refreshSlider()" ng-class="state_id=='new'?'disabledTest':''" href=".threshold" aria-expanded="true">Thresholds</a></li>
+             <li ng-click="getTestList()"><a ng-class="state_id=='new'?'disabledTest':''" data-toggle="tab" href=".unknownTest" aria-expanded="true">Test</a></li>
+             <li ng-click="getTrainDetails(state_id)" ><a ng-class="state_id=='new'?'disabledTest':''" data-toggle="tab" href=".unknownTrain" aria-expanded="true">Train</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade in active template" style="padding: 0px 20px 0px 25px;">
+                <div class="row customNewUnknownFormat" ng-if="showTemplate">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 dashboard-row">
+                        <form  ng-submit="showKnownInfo()">
+                            <div class="form-group">
+                                <label>Template Name</label>
+                                <input type="text" ng-model="nufc.documentTemplate.template_name" class="form-control custom-formControl" placeholder="Template Name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea  rows="4" ng-model="nufc.documentTemplate.description" cols="50" class="form-control custom-formControl" placeholder="Description"></textarea>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <div class="row row-eq-height">
+                                    <div class="input-group custom-inputGroup">
+                                        <div class="row row-eq-height">
+                                            <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2">
+                                                <input type="radio" ng-model="nufc.documentTemplate.template_type" value="unknown_known" id="known" name="optradio" class="custom-radioallign">
+                                            </div>
+                                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                                                <label for="known" class="labelKnown">I know the information present in known sections</label>
+                                                <span class="knownDesc">Create a template by defining sections and map Domain Objects</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <div class="row  row-eq-height">
+                                    <div class="input-group custom-inputGroup">
+                                        <div class="row row-eq-height">
+                                            <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2">
+                                                <input type="radio"  ng-model="nufc.documentTemplate.template_type" value="unknown" id="unknown" name="optradio" class="custom-radioallign">
+                                            </div>
+                                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                                                <label for="unknown"  class="labelKnown">I don't know the information present in known sections</label>
+                                                <span class="knownDesc">Create a template by choosing Domain Objects</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-custom" type="submit" >
+                                    <img src="/app/images/next.png" style="width:15px;margin-right:10px;"/>
+                                    Next
+                                </button>
+                                <!--<div class="loading-spiner-holder">-->
+                                    <!--<div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving ...</i></span>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row customNewUnknownFormat" ng-if="showKnownData">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 dashboard-row">
+                        <div class="knownDiv">
+                           <div class="panel-group" id="SectionsAccordion" role="tablist" aria-multiselectable="true">
+                              <div class="panel panel-default" ng-repeat="item in menuItems track by $index">
+                                <div class="panel-heading" role="tab">
+                                  <h4 class="panel-title">
+                                        <div class="row">
+                                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-6 dashboard-row">
+                                                <span ng-hide= "item.name== 'default'" data-toggle="collapse" href=".{$ item.temp_id $}" data-parent="#SectionsAccordion" aria-expanded="false" aria-controls="{$ item.temp_id $}" style="cursor:pointer;">{$item.name$}</span>
+                                                <span ng-show= "item.name== 'default'" data-toggle="collapse" href=".{$ item.temp_id $}" data-parent="#SectionsAccordion" aria-expanded="false" aria-controls="{$ item.temp_id $}" style="cursor:pointer;font-size:12px;">Define Sections, tables & Map Entities</span>
+                                            </div>
+                                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-6 text-right">
+                                                <button class="btn btn-add" ng-click="addElement(this,'section')" >
+                                                      <img src="/app/images/plus-default.png" style="width:10px;">
+                                                    <span>Add Sub Section</span>
+                                                  </button>
+                                                  <button class="btn btn-add" ng-click="addElement(this,'table')">
+                                                      <img src="/app/images/plus-default.png" style="width:10px;">
+                                                    <span>Add Table</span>
+                                                  </button>
+                                            </div>
+                                        </div>
+                                  </h4>
+                                </div>
+                                <div  class="panel-collapse collapse in {$ item.temp_id $}" role="tabpanel" aria-labelledby="{$ item.temp_id $}">
+                                  <div class="panel-body">
+                                       <div ng-if="item.sections && item.sections.length" ng-include="'menu.html'"></div>
+                                  </div>
+                                </div>
+                              </div>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-if="showUnKnownData">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 dashboard-row">
+                        <div class="knownDiv" style="margin-top:20px;">
+                            <div class="row">
+                                <div>Map Domain Object</div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 dashboard-row">
+                                    <div class="form-group">
+
+                                        <select class="form-control"
+                                                ng-model="nufc.documentTemplate.domain_mapping"
+                                                >
+                                            <option value="" ng-selected="true">Select
+                                                Domain
+                                                Objects
+                                            </option>
+                                            <option ng-repeat="value in domainObjectsList" value="{$ value $}">{$
+                                                value $}
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="showCreate">
+                    <button class="btn btn-custom" ng-click="backInfo()">
+                        <img src="/app/images/back.png" style="width: 15px;margin-right: 10px;"/>
+                        <span>Back</span>
+                    </button>
+                    <button class="btn btn-custom" ng-click="saveInfo()">
+                        <i class="fa fa-floppy-o"></i>
+                        <span>Save</span>
+                    </button>
+
+                    <button class="btn btn-cancel" ng-click="cancelInfo()">Cancel</button>
+                </div>
+                <br>
+            </div>
+            <div class="tab-pane fade in threshold" style="padding: 0px 20px 0px 25px;">
+                <div class="row row-eq-height">
+                    <div class="col-lg-8 col-sm-8 col-md-8 col-xs-8 no-padding threshold-custom">
+
+                        <div class="row" data-ng-repeat="(key, thresholds) in nufc.thresholdsData track by $index">
+                            <div ng-if="key!='custom'">
+                                <label data-ng-bind="setDisplayLabel(key)"></label>
+                                <hr>
+                                <div class="row row-eq-height" data-ng-repeat="(subkey, threshold) in thresholds track by $index">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <div class="threshold-snippet">
+                                            <span class="" data-ng-bind="setDisplayLabel(subkey)"></span>
+                                            <span class="threshold-info-icon" alt="{$ nufc.hoverText[key][subkey] $}" title="{$ nufc.hoverText[key][subkey] $}"><img src="/app/images/info.png" style="width:18px"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                                        <rzslider rz-slider-model="nufc.thresholdsData[key][subkey]"
+                                                  rz-slider-hide-limit-labels="true"
+                                                  rz-slider-always-show-bar="true"
+                                                  rz-slider-options="slider.options"></rzslider>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                        <input type="number" ng-model="nufc.thresholdsData[key][subkey]"
+                                               ng-blur="onBlurValue(nufc.thresholdsData[key][subkey])"
+                                               ng-focus="onFocusValue(nufc.thresholdsData[key][subkey])"
+                                               min="0" max="100" class="input-slider-value">
+                                        <span>%</span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 threshold-custom " style="margin-left:20px">
+                        <div class="customThreshold" ng-show="nufc.showCTH">
+                            <div class="threshold-snippet">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <label style="">Custom Thresholds</label>
+                                        <small style="padding-bottom: 10px;">Set the thresholds for custom attributes and entities</small>
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="threshold-custom-desc">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xs-offset-1 center-block">
+                                        <label class="center-block">No custom threshold are create</label>
+                                         <button class="btn btn-custom center-block" style="margin-top:20px;" ng-click="nufc.create();">Create</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="!nufc.showCTH">
+                            <div class="threshold-snippet">
+                                <div class="row">
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                        <label style="">Custom Thresholds</label>
+                                        <span class="thresholdSesc"style="padding-bottom: 10px;">Set the thresholds for custom attributes and entities</span>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <button class="btn btn-custom center-block" style="margin-top:20px;" ng-click="nufc.create();">Create</button>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="row patient-details" data-ng-repeat="cthObj in nufc.thresholdsData.custom track by $index">
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                    <label data-ng-bind="cthObj.attribute">Patient.Address</label><br>
+                                    <small data-ng-bind="setDisplayLabel(cthObj.process)">Page classification</small>
+                                </div>
+                                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+                                    <label data-ng-bind="cthObj.score">90</label><span>%</span>
+                                </div>
+                                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="padding-left:0;padding-right:0;">
+                                     <div class="patient-icon" style="text-align:left;">
+                                         <span href="#" ng-click="nufc.editCustomThreshold(cthObj, $index)" style="margin-right:12px;"><i class="fa fa-pencil"></i></span>
+                                         <span href="#"  ng-click="nufc.deleteCustomThreshold(cthObj, $index)"><i class="fa fa-trash-o"></i></span>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade unknownTest" style="margin-top: 10px;padding: 0px 0px 20px 0px;">
+
+                <div class="row" ng-if="!afterUpload">
+                    <div class="col-sm-7 col-lg-7 col-xs-7 col-md-7">
+                        <img src="/app/images/testBg.png" />
+                         <input class="hide_file" ngf-select="sendDic($files)" multiple="multiple" type="file" style="font-size:13px;"/>
+                    </div>
+                    <div class="col-sm-5 col-lg-5 col-xs-5 col-md-5" style="background:#f3f7fb;padding:0px;">
+                        <div class="domainHierarchyDiv" style="overflow-y: scroll;">
+                            <p class="fontDomainHead">Domain Objects For Your Reference (View Only)</p>
+                            <script type="text/ng-template" id="nodes_renderer.html">
+                                  <div ui-tree-handle class="tree-node tree-node-content"
+                                       data-nodrag>
+                                        <label ng-if="node.entity_type=='domain_object' && node.entity_name != ''">
+                                            <span class="domainHeading">Domain Object</span>
+                                            <br>
+                                            <span>{$ node.entity_name $}</span>
+                                        </label>
+                                        <label ng-if="node.entity_type=='entity' && node.entity_name != ''" style="margin-bottom: 0px;">
+                                            <div>
+                                                <label>
+                                                    <img src="/app/images/entity.png" style="width: 20px;vertical-align: super;"/>
+                                                </label>
+                                                <label style="padding-left: 5px;">
+                                                    {$ node.entity_name $}
+                                                    <br>
+                                                    <span  class="domainHeading" >Entity</span>
+                                                </label>
+                                            </div>
+                                        </label>
+                                        <label style="margin-bottom:0px;"  ng-if="!(node.entity_type=='entity' || node.entity_type=='domain_object') && node.key_name != ''">
+                                            <div>
+                                                <label>
+                                                    <img src="/app/images/attribute.png" style="width: 20px;vertical-align: super;"/>
+                                                </label>
+                                                <label style="padding-left: 5px;">
+                                                    {$ node.key_name $}
+                                                    <br ng-if="!(node.entity_type=='entity' || node.entity_type=='domain_object')">
+                                                    <span  class="domainHeading"  ng-if="!(node.entity_type=='entity' || node.entity_type=='domain_object')">{$ node.type $}</span>
+                                                </label>
+                                            </div>
+                                        </label>
+                                        <label style="padding-top: 10px;" ng-if="!(node.entity_type=='entity' || node.entity_type=='domain_object') && node.key_name == ''">
+                                            <img src="/app/images/attribute.png" style="width: 20px;"/> < New Attribute >
+                                        </label>
+                                        <a class="pull-right" ng-if="node.attributes && node.attributes.length > 0 && (node.entity_type=='entity' || node.entity_type=='domain_object' )" data-nodrag ng-click="toggle(this)" style="padding: 13px;
+                                    border-left: 1px solid #ddd;
+                                    background-color: aliceblue;">
+                                            <span  ng-class="{'sort_down': collapsed,'sort_up': !collapsed}"></span>
+                                        </a>
+                                  </div>
+                                  <ol ui-tree-nodes="" ng-model="node.attributes" ng-class="{hidden: collapsed}" class="scrollingTree">
+                                      <li ng-repeat="node in node.attributes" id="{$ node.$$hashKey.replace(':', '') $}"  ui-tree-node ng-include="'nodes_renderer.html'">
+                                      </li>
+                                  </ol>
+                            </script>
+                            <div class="domainObjectBody">
+                                <div class="row row-eq-height" >
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div ui-tree id="tree-root" data-empty-placeholder-enabled="false">
+                                            <ol ui-tree-nodes ng-model="domainObjects" id="domainObjectsNodes" style="padding:0px;">
+                                                <li ng-repeat="node in domainObjects"
+                                                    class="treeDomainObject" collapsed="true"
+                                                    ng-class="{disabledStyle: isDisabled}" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row draftMode" ng-if="testList.length>0">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="row">
+                                <div class="col-lg-8 col-md-8 col-xs-8 col-sm-8 text-right">
+                                    <div class="btn-group" >
+                                            <button type="button" class="btn btn-default btn-zoom" ng-click="nufc.disableSelector()"><i
+                                                    class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                                            <button type="button" class="btn btn-default btn-zoom btn-magnifier" ng-disabled="true"><img src="/app/images/zoomIcon.png"
+                                                                                                                      style="width: 18px;"/>
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-zoom" ng-click="nufc.enableSelector()"><i class="fa fa-plus-circle"
+                                                                                                                          aria-hidden="true"></i>
+                                            </button>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right">
+                                    <div ng-show="documentInfo.no_of_pages>1">
+                                        <span>
+                                            <button class="btn pagination-button" ng-disabled="current_page==1" ng-click="nufc.changePageNum('prev')"><i class="fa fa-chevron-left" style="color:white;font-size:12px;"></i></button>
+                                        </span>
+                                        <span class="pagination-textBox">
+                                            <input type="number" class="pagination-text" ng-model="current_page" ng-keyup="nufc.keyEnter($event)"/>
+                                        </span>
+                                        <span>
+                                            <button class="btn pagination-button" ng-disabled="current_page==documentInfo.no_of_pages" ng-click="nufc.changePageNum('next')"><i class="fa fa-chevron-right" style="color:white;font-size:12px;"></i></button>
+                                        </span>
+                                        <span> of {$ documentInfo.no_of_pages $}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--<div class="pagination" ng-show="nufc.documentDetails.no_of_pages>1">
+                              <a ng-repeat="(key,value) in nufc.documentDetails.pages" ng-click="nufc.changeDocumentInfo(value.page_no)" ng-class="current_page==value.page_no?'active':''">{$ value.page_no $}</a>
+                            </div> -->
+
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right" ng-if="testList.length>0">
+                                <button class="btn btn-add">
+                                    <input class="hide_file" ngf-select="sendDic($files)" multiple="multiple" type="file" style="font-size:13px;"/>
+                                    <i class="fa fa-upload"></i>Upload Document
+                                </button>
+                        </div>
+
+                    </div>
+
+                <div class="row row-eq-height"   ng-show="afterUpload" style="border-top: 1px solid #e1e1e1;">
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6 nopadding">
+                        <div class="row row-eq-height">
+                            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3 nopadding domainHierarchyDiv" style="background-color: #f9fdff;border: 1px solid #e1e1e1;overflow-y:auto;">
+                                <div class="tab" style="width:100%;">
+                                  <div class="tablinks" ng-class="activeClass[$index]" data-toggle="tab"  ng-click="getHierarchyData(list,$index)" ng-repeat="list in testList track by $index">
+                                      <img src="/app/images/pdf-01.png" style="width:16px;"/>
+                                      <div style="display: inline;font-size: 12px;">{$ list.metadata.file_name $}</div>
+                                  </div>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-9 col-md-9 col-lg-9 col-xs-9 text-center nopadding " style="padding-left: 5px;">
+                                <!--<div class="row image-style" id="scrollImage">-->
+                                        <!--<div class="col-lg-12 col-md-12 col-sm-12">-->
+                                            <!---->
+                                            <!--&lt;!&ndash;<div ng-if="nufc.documentDetails.doc_type=='excel'">&ndash;&gt;-->
+                                                <!--&lt;!&ndash;<div ng-bind-html="nufc.renderHTMLData()"></div>&ndash;&gt;-->
+                                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                     <div class="row domainHierarchyDiv" id="scrollImage" style="overflow:scroll">
+                                        <div id="ImageLocation" ng-class="zoomDisplay" style="position:relative;">
+                                                <!--<div ng-repeat='path in imagePaths track by $index' id='page_{$ path.page_no $}' class='post'>{$ path.page_no $}<div class='panel panel-default' form-image form-src='path.file_path' form-max width='auto' form-selector='selector[$index+1]' form-drawer='drawer[$index+1]'></div></div>-->
+                                                    <!--<div class='panel panel-default' form-image form-src="image.src" form-max width="image.maxWidth" form-selector="selector" form-drawer="drawer"></div>-->
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6 nopadding domainHierarchyDiv" style="background: #fafafa;overflow-y:auto;border-left: 1px solid #e1e1e1;">
+                        <div class="row" style="margin: 10px 0px 10px 10px;">
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 no-padding">
+                                <a class="fontNewEntity">
+                                    <span class="fa fa-plus" style="font-size:11px;"></span> Add New Entity
+                                </a>
+                            </div>
+                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 no-padding">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <img src="./app/images/legend.png" style="width:15px;"/>
+                                        <span class="accepted"></span>
+                                        <span>ACCEPTED</span>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <img src="./app/images/legend.png"  style="width:15px;"/>
+                                        <span class="corrected"></span>
+                                        <span>CORRECTED</span>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right no-padding">
+                                        <img src="./app/images/legend.png"  style="width:15px;"/>
+                                        <span class="reviewed"></span>
+                                        <span>NEEDS REVIEW</span>
+                                    </div>
+                                    <!--<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right">
+                                        <i class="fa fa-search"></i>
+                                        <i class="fa fa-arrows-alt" aria-hidden="true"></i>
+                                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                                    </div>-->
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <script type="text/ng-template" id="nodes_renderer2.html">
+                              <div ui-tree-handle class="tree-node tree-node-content" data-nodrag  style="padding:0px;" >
+                                    <div ng-if="node.type=='attribute'"  ng-style="node.attributes.length!=1 && {'padding':'10px 5px 10px 5px'} ">
+                                        <div ng-repeat="node in node.attributes track by $index" class="tree-node tree-node-content {$ rowHighlightAttr[node.temp_id] $}"
+                                             ng-mouseover="hoverIn($index,node.temp_id)" ng-mouseleave="hoverOut($index,node.temp_id)"
+                                             ng-init="isEditAttributeValue[node.temp_id]='false'; moreValue[node.temp_id]='false'"
+                                             ng-style="node.attributes.length!=1 && {'padding-top':'10px','padding-bottom':'10px'} ">
+                                            <div class="row" style="display:inline;">
+                                               <div class="col-sm-4 col-xs-4 col-md-4 col-lg-4">
+                                                    <span class="accepted" style="margin-left: -20px;"></span>
+                                                    <label style="font-size: 10px;color: #8c8c8c;padding-left: 12px;">Attribute</label>
+                                                </div>
+                                                <div class="col-sm-6 col-xs-6 col-md-6 col-lg-6">
+                                                    <label style="font-size: 10px;color: #8c8c8c;padding-left: 12px;">Values</label>
+                                                </div>
+                                                <div class="col-sm-2 col-xs-2 col-md-2 col-lg-2 right" style="padding-right:15px;"
+                                                     data-toggle="collapse" data-target=".{$ node.temp_id $}" >
+                                                    <a class="pull-right"  data-nodrag>
+                                                        <div  ng-class="{'sort_down': collapsed,'sort_up': !collapsed}"></div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="display:inline;">
+                                                <div class="col-sm-4 col-xs-4 col-md-4 col-lg-4">
+                                                    <label class="el-attribute-name" ng-show="(isEditAttributeValue[node.temp_id]=='false')">{$ node.name $}</label>
+                                                    <div ng-show="(isEditAttributeValue[node.temp_id]=='true')">
+                                                        <input type="text" data-ng-model="node.name" class="el-attribute-input" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                    <div ng-show="(isEditAttributeValue[node.temp_id]=='false')">
+                                                            <div class="el-radio-btn" style="margin-bottom:0;color:black;">
+                                                                <input type="checkbox" name="node.current_value[0].value"
+                                                                       ng-checked="node.current_value[0].is_checked"
+                                                                       ng-disabled="(processListDetails.data.template_type=='known')? true : false"
+                                                                       data-ng-model="node.current_value[0].is_checked" style="opacity:1;margin: 2px 0;" />
+                                                                <span class="el-redio-text">{$ node.current_value[0].value $} </span>
+                                                            </div>
+
+                                                        <div ng-repeat="data in node.current_value track by $index" class="black-text"
+                                                             ng-show="moreValue[node.temp_id]=='true'">
+
+                                                            <div class="el-radio-btn" ng-if="$index!=0">
+                                                                <input type="checkbox" name="data.value"
+                                                                       data-ng-model="data.is_checked"
+                                                                       ng-disabled="(processListDetails.data.template_type=='known')? true : false"
+                                                                       ng-checked="data.is_checked" style="opacity:1;margin: 2px 0;" />
+                                                                <span class="el-redio-text">{$ data.value $} </span>
+                                                            </div>
+                                                        </div>
+                                                        <span class="moreORless"
+                                                              ng-if="moreValue[node.temp_id]=='false' && node.current_value.length>1"
+                                                              ng-click="showMore($index,node.temp_id)">
+                                                            +{$ node.current_value.length $} more</span>
+                                                        <span class="moreORless"
+                                                              ng-if="moreValue[node.temp_id]=='true'"
+                                                              ng-click="showLess($index,node.temp_id)">
+                                                             -less</span>
+                                                    </div>
+                                                    <div ng-show="(isEditAttributeValue[node.temp_id]=='true')">
+                                                        <div ng-repeat="data in node.current_value" class="black-text">
+                                                            <div class="el-radio-btn">
+                                                                <input type="checkbox" ng-checked="data.is_checked" data-ng-model="data.is_checked" />
+                                                                <input type="text" data-ng-model="data.value" style="" class="el-attribute-input" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 collapse {$ node.temp_id $}">
+                                                    <span ng-repeat="data in node.current_value">
+                                                        <span style="margin-right:5px;">{$ data.value $}</span>
+                                                    </span>
+                                                </div>
+                                                 <div class="col-sm-2 col-xs-2 col-md-2 col-lg-2 right" style="padding:0px;"
+                                                      data-toggle="collapse" data-target=".{$ node.temp_id $}" >
+                                                    <div ng-show="(isEditAttributeValue[node.temp_id]=='false')">
+                                                        <span class="check-icon"
+                                                              ng-click="activeAttributeValues($index,node.temp_id,processListDetails.data.template_type,node)"
+                                                              ng-class="(hoverEdit==true && processListDetails.data.template_type!='known') ? 'check-icon-active' : ''">
+                                                            <i class="fa fa-check-circle" style="font-size:16px;"></i></span>
+                                                        <span class="edit-icon"
+                                                              ng-click="editAttributeValues($index,node.temp_id,processListDetails.data.template_type,node)"
+                                                              ng-class="(hoverEdit==true && processListDetails.data.template_type!='known') ? 'edit-icon-active' : ''">
+                                                            <i class="fa fa-edit" style="font-size:16px;"></i></span>
+                                                        <sapn class="del-icon"
+                                                              ng-click="deleteAttributeValues($index,node.temp_id,processListDetails.data.template_type,this,$parent.$index)"
+                                                              ng-class="(hoverEdit==true && processListDetails.data.template_type!='known') ? 'del-icon-active' : ''">
+                                                            <i class="fa fa-trash" style="font-size:16px;"></i></sapn>
+                                                    </div>
+                                                    <div ng-show="(isEditAttributeValue[node.temp_id]=='true')" style="text-align:center;">
+                                                        <div class="pull-left pointer right-10"
+                                                             ng-class="(hoverEdit==true) ? 'cancel-icon-active' : ''"
+                                                             ng-click="cancelEditAttributeValues($index,node.temp_id,processListDetails.data.template_type)">
+                                                            <i class="fa fa-times-circle" style="font-size: 16px;"></i><div class="fontsize-10">Cancel</div>
+                                                        </div>
+                                                        <div class="pull-left pointer"
+                                                             ng-class="(hoverEdit==true) ? 'save-icon-active' : ''"
+                                                             ng-click="saveEditAttributeValues($index,node.temp_id,processListDetails.data.template_type,node,this,$parent.$index)">
+                                                            <i class="fa fa-save" style="font-size: 16px;"></i><div class="fontsize-10">Save</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div ng-if="node.type=='entity'">
+                                        <div ui-tree-handle class="tree-node tree-node-content"
+                                        data-nodrag ng-include="'nodes_renderer1.html'" style="padding:0px;">
+
+                                        </div>
+                                    </div>
+                              </div>
+                        </script>
+
+                        <script type="text/ng-template" id="nodes_renderer1.html">
+                              <div ui-tree-handle class="tree-node tree-node-content"
+                                   data-nodrag>
+                                    <label ng-if="node.type!='attribute'" style="padding-top:10px;">
+                                        <span>{$ node.name $}</span>
+                                    </label>
+                                    <a class="pull-right" ng-if="node.attributes && node.attributes.length > 0" data-nodrag data-toggle="collapse" data-target=".{$ node.temp_id $}" style="padding: 10px 10px 10px 10px;">
+                                        <span  ng-class="{'sort_down': collapsed,'sort_up': !collapsed}"></span>
+                                    </a>
+                                       <!--<i class="fa fa-trash pull-right" style="font-size: 16px;padding: 10px;"></i>
+                                        <i class="fa fa-pencil pull-right" style="font-size: 16px;padding: 10px;"></i>-->
+                              </div>
+                              <ol ui-tree-nodes="" ng-model="node.attributes" class="listedStyle collapse in olStyle1 {$ node.temp_id $}" >
+                                  <li ng-repeat="node in node.attributes track by $index"  ui-tree-node ng-include="'nodes_renderer2.html'" style="padding-bottom:10px;"></li>
+                                  <li ng-show="newNode!=node.temp_id && node.attributes[0].type=='attribute'">
+                                      <a ng-click="nufc.addNewNode(node)">
+                                          <i class="fa fa-plus"></i>
+                                          <span>Add</span>
+                                      </a>
+                                  </li>
+                                  <li class="tree-node" ng-show="newNode==node.temp_id">
+                                      <div class="row">
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                <div class="ExtractedHeading">Attribute</div>
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                <div class="ExtractedHeading">Value</div>
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                            </div>
+                                      </div>
+                                     <div class="row row-eq-height" style="margin: 5px 0px 10px 0px;">
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+                                                <select class="newattributeSelect addAttribute-select" style="width:100%;" ng-model="nufc.attributeKey">
+                                                    <option value="">Select Attribute</option>
+                                                    <option ng-repeat="d in attributesList" value="{$ d $}">{$ d $}
+											       </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                 <input class="newattributeSelect addAttribute-input-text" ng-model="nufc.attributeValue" type="text" placeholder="Type the Value"/>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-right">
+                                                <div class="img-edit cancel" title="Cancel" ng-click="nufc.cancelNewnode()">
+                                                    <i class="fa fa-times-circle" aria-hidden="true" style="font-size: 16px;"></i>
+                                                </div>
+                                                <div class="customSave" title="Save" ng-click="nufc.saveNewnode(node)">
+                                                    <i class="fa fa-floppy-o" aria-hidden="true" style="font-size: 16px;"></i>
+                                                </div>
+                                            </div>
+                                         <span ng-show="croppingError" style="color:red">{$ cropMsg $}</span>
+                                     </div>
+                                  </li>
+                              </ol>
+                        </script>
+
+
+                        <div class="domainObjectBody">
+                            <div class="row row-eq-height">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 nopadding">
+                                    <div ui-tree id="tree-root1" data-empty-placeholder-enabled="false">
+                                        <ol ui-tree-nodes class="olStyle" ng-model="extractOutput">
+                                            <li ng-repeat="node in extractOutput track by $index"
+                                                class="treeDomainObject" collapsed="true"
+                                                ng-class="{disabledStyle: isDisabled}"
+                                                ui-tree-node ng-include="'nodes_renderer1.html'"></li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="btn  btn-custom btn-block " ng-click="nufc.completeReview()">Complete review</div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade unknownTrain">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-show="uploadImageShow">
+                        <h4>Please upload the training set</h4>
+                    </div>
+                    <div class="row" ng-show="!uploadImageShow">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <h4>Please upload the training set</h4>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
+                            <img src="/app/images/Upload-01.png" style="width:35px;" class="pointerClass" ngf-select="uploadFiles($files)" multiple="multiple" />
+                            <span ngf-select="uploadFiles($files)" multiple="multiple" class="pointerClass">Upload More</span>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 text-center" ng-show="uploadImageShow">
+                        <img src="/app/images/Upload-01.png" style="width:200px;" class="pointerClass" ngf-select="uploadFiles($files)" multiple="multiple" />
+                        <h4>Upload Documents</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                            <div class="panel panel-default panel-train">
+                                <div class="custom-padding" ng-repeat="document in uploadedDocuments" style="border-top: 1px solid #eee;border-bottom: 2px solid #ddd !important;">
+                                    <div class="row">
+                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                            <span>{$ document.metadata.file_name $}</span>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                            <i class="fa fa-check-circle success" style="cursor: pointer" ng-if="document.doc_state=='ready' || document.doc_state=='trained'"></i>
+                                            <i class="fa fa-times-circle danger" style="cursor: pointer" ng-if="document.doc_state!='ready' && document.doc_state!='trained'"></i>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                            <i class="fa fa-trash" style="cursor: pointer" ng-click="deleteFile(document,$index)"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-custom" ng-click="trainigSet()" ng-show="!uploadImageShow">Submit As Training Set</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="menu.html">
+	<div class="markerForm">
+		<div class="panel-group" style="margin-top:10px;" id="SubSectionAccordion{$ item.temp_id $} " role="tablist" aria-multiselectable="true" >
+			<div class="panel panel-default" ng-repeat="item in item.sections  track by $index" style="border: solid 1px #d8d8d8;padding:10px;" ng-hide="item.is_delete || item.is_deleted">
+				<div class="panel-heading" role="tab" id="SubsectionHeading{$ item.temp_id $}">
+				  <h4 class="panel-title">
+                    <div class="row">
+                        <div class="col-lg-8 col-sm-8 col-md-8 col-xs-8 dashboard-row">
+                            <div ng-if="item.is_deleted==undefined">
+                                <input class="form-control" data-toggle="collapse" href=".{$ item.temp_id $}" type="text" ng-model="item.name"/>
+                            </div>
+                            <div ng-if="item.is_deleted!=undefined">
+                                <a ng-if="!item.name_edit" data-toggle="collapse" href=".{$ item.temp_id $}">{$ item.name $}</a>
+                                <input class="form-control" data-toggle="collapse" href=".{$ item.temp_id $}" type="text" ng-model="item.name" ng-if="item.name_edit"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-3 col-xs-3 dashboard-row text-right" role="button" >
+                          <span class="right" ng-if="item.is_deleted!=undefined">
+                            <button type="button" class="btn btn-success btn-circle"  ng-if="item.name_edit" ng-click="item.name_edit=false">
+                                <i class="fa fa-check"></i>
+                            </button>
+                            <button type="button" class="btn btn-info btn-circle" ng-click="clearEditSectionName(item)"  ng-if="item.name_edit">
+                                <i class="fa fa-times-circle"></i>
+                            </button>
+                            <!--<button type="button" class="btn btn-info btn-circle" ng-if="!item.name_edit"  ng-click="editSectionName(item)">-->
+                                <!--<i class="fa fa-edit"></i>-->
+                            <!--</button>-->
+                            <img class="editImage" src="/app/images/editsec.png" ng-if="!item.name_edit"  ng-click="editSectionName(item)"/>
+
+                            <img class="deleteImage" src="/app/images/delete.png" ng-click="nufc.cancelField(item,'delete')"/>
+                          </span>
+                        </div>
+                    </div>
+				  </h4>
+				</div>
+				<div class="panel-collapse collapse {$ item.temp_id $} cst-panel" role="tabpanel" aria-labelledby="{$ item.temp_id $}">
+				  <div class="panel-body custom-panelBody">
+					<div class="row sectionRow">
+                      <!--<div class="equal-width" ng-click="addElement(this,'section')" ng-if="item.type=='section'">-->
+                          <!--<img src="/app/images/subsection.png"/>-->
+                          <!--<br>-->
+                          <!--<label>Add Sub Section</label>-->
+                      <!--</div>-->
+                      <!--<div class="equal-width" ng-click="addElement(this,'table')" ng-if="item.type=='section'">-->
+                          <!--<img src="/app/images/table.png"/>-->
+                          <!--<br>-->
+                          <!--<label>Table</label>-->
+                      <!--</div>-->
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right">
+                                                <button class="btn btn-add" ng-click="addElement(this,'section')" >
+                                                      <img src="/app/images/plus-default.png" style="width:10px;">
+                                                    <span>Add Sub Section</span>
+                                                  </button>
+                                                  <button class="btn btn-add" ng-click="addElement(this,'table')">
+                                                      <img src="/app/images/plus-default.png" style="width:10px;">
+                                                    <span>Add Table</span>
+                                                  </button>
+                      </div>
+					</div>
+					<div class="row" ng-if="item.type=='section'">
+						<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 text-center">
+							<div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <label style="margin-top:5%;">Section Name</label>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 dashboard-row">
+                                    <div class="headerdiv">
+                                        <input type="text" class="form-control custom-formControl" ng-model="item.name">
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <label style="margin-top:5%;">Possible Headings</label>
+									</div>
+									<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 dashboard-row">
+										<div class="headerdiv">
+											<tags-input placeholder="Possible Headings"
+														ng-model="item.possible_headings"
+														replace-spaces-with-dashes="false"
+														use-strings="true"
+														add-on-comma="false"></tags-input>
+										</div>
+									</div>
+                            </div>
+                            <div class="row">
+									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+										Entities
+									</div>
+									<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 dashboard-row">
+										<!--<div class="headerdiv">-->
+											<!--<tags-input placeholder="Table Start Identifier"-->
+														<!--ng-model="item.entities"-->
+														<!--replace-spaces-with-dashes="false"-->
+														<!--use-strings="true"-->
+														<!--add-on-comma="false"></tags-input>-->
+										<!--</div>-->
+
+                                        <multiselect ng-model="item.domain_mapping" class="multiSelect" options="sectionEntitiesList" show-search="true" search-limit="100000">
+                                        </multiselect>
+									</div>
+                            </div>
+						</div>
+                        <div class="panel-footer pull-right" style="background:none;" >
+
+								<button type="button" class="btn button-customCancel"
+										ng-click="nufc.cancelField(item,'cancel')">Cancel
+								</button>
+				         </div>
+					</div>
+
+					  <div ng-if="item.sections && item.sections.length" ng-include="'menu.html'"></div>
+                      <div ng-if="item.type=='table'" ng-include="'table.html'"></div>
+
+
+				  </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--<ul class="multiple-sectionsListStyle">-->
+		<!--<li  class="mutiplesections">-->
+
+			<!--<button  ng-click="addElement(this,'section')" ng-if="item.type=='section'">Subsection</button>-->
+			<!--<button  ng-click="addElement(this,'element')" ng-if="item.type=='section'">Table</button>-->
+			<!--<button   ng-click="addElement(this,'element')"ng-if="item.type=='section'">Field</button>-->
+			<!--&lt;!&ndash;<div ng-if="item.section && item.section.length" ng-include="'menu.html'"></div>&ndash;&gt;-->
+		<!--</li>-->
+	<!--</ul>-->
+
+</script>
+
+<script type="text/ng-template" id="table.html">
+	<div class="TableData">
+			<div class="panel panel-default">
+				<form>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+										Start Identifier
+									</div>
+									<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 dashboard-row">
+										<div class="headerdiv">
+											<tags-input placeholder="Table Start Identifier"
+														ng-model="item.top_keys"
+														replace-spaces-with-dashes="false"
+														use-strings="true"
+														add-on-comma="false"></tags-input>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+										End Identifier
+									</div>
+									<div class="col-lg-8 col-sm-8 col-xs-8 col-md-8 dashboard-row">
+										<div class="footerdiv">
+											<tags-input placeholder="Table End Identifier"
+														ng-model="item.bottom_keys"
+														replace-spaces-with-dashes="false"
+														use-strings="true"
+														add-on-comma="false"></tags-input>
+										</div>
+									</div>
+								</div>
+								<!--<div>-->
+									<!--<div>-->
+										<!--<input type="text" ng-model="datum.table_name"-->
+											   <!--class="form-control"-->
+											   <!--placeholder="Table Name" required/>-->
+									<!--</div>-->
+								<!--</div>-->
+								<div class="panel">
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<div class="row">
+													<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+														Column Headers
+													</div>
+													<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+														Multi-Column Headers
+													</div>
+												</div>
+											</div>
+											<div class="panel-body">
+												<div class="row" ng-repeat="field in item.headings  track by $index">
+													<div class="col-lg-5 col-sm-5 col-md-5 col-xs-5 dashboard-row" style="position:relative;padding: 0px;">
+														<tags-input placeholder="Column header" ng-model="item.headings[$index].column"
+																				replace-spaces-with-dashes="false"
+																				use-strings="true"
+																				add-on-comma="false" on-tag-added="columnAdded(item)" on-tag-removed="columnAdded(item)"></tags-input>
+																		<!--<input type="text" class="form-control table-form" placeholder="Column header" ng-model="field" />-->
+																		<i class="fa fa-times-circle"
+																		   ng-click="removeTableColumn(item,$index)"
+																		   style="    position: absolute;top: -4px;right: -8px;font-size: 18px;"></i>
+													</div>
+													<div class="col-lg-1 col-sm-1 col-xs-1 col-md-1 dashboard-row">
+														<hr>
+													</div>
+													<div class="col-lg-5 col-sm-5 col-xs-5 col-md-5 dashboard-row" ng-hide="field.subColumn">
+														<a ng-click="addSubColumn(item,$index)">Add Multi Column</a>
+													</div>
+													<div class="col-lg-5 col-sm-5 col-xs-5 col-md-5 dashboard-row" ng-if="field.subColumn">
+														<div ng-repeat="subColumn in item.headings[$index].subColumn" style="position:relative">
+															<tags-input placeholder="Sub-column header" ng-model="item.headings[$parent.$index].subColumn[$index]"
+																				replace-spaces-with-dashes="false"
+																				use-strings="true"
+																				add-on-comma="false" on-tag-added="columnAdded(item)" on-tag-removed="columnAdded(item)"></tags-input>
+																		<!--<input type="text" class="form-control table-form" placeholder="Column header" ng-model="field" />-->
+																		<i class="fa fa-times-circle"
+																		   ng-click="removeTableSubColumn(item,item.headings[$parent.$index],$index)"
+																		   style="    position: absolute;top: -4px;right: -8px;font-size: 18px;"></i>
+														</div>
+														<span><i class="fa fa-plus" ng-click="addSubColumn(item,$index)"></i></span>
+													</div>
+												</div>
+											</div>
+											<div class="panel-footer">
+												<a class="btnAddcol" ng-click="addTableColumn(item)">
+													<i class="fa fa-plus" alt="Add column"></i>
+													<span>Add column</span>
+												</a>
+											</div>
+										</div>
+									</div>
+								<br>
+
+								<div class="row">
+									<div class="col-lg-12 col-sm-12 col-md-12">
+										<span>No of empty rows to identify end of the table <input
+												class="table-form form-container"
+												placeholder="rows" type="text"
+												ng-model="item.row_gap"/></span>
+									</div>
+								</div>
+								<br>
+								<!--<div class="row">-->
+								<!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 right dashboard-row">-->
+								<!--<button type="button" class="btn btn-primary " ng-click="nufc.addedColumns()">Done</button>-->
+								<!--</div>-->
+								<!--</div>-->
+								<label>
+									Select Domain Object for Table
+								</label>
+
+								<div class="row">
+									<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 ">
+										<select class="form-control"
+												ng-model="item.entity"
+												>
+											<option value="" ng-selected="true">Select
+												Domain Object
+											</option>
+											<option ng-repeat="(d,key) in entitiesList track by $index" value="{$ d $}">{$
+												d $}
+											</option>
+										</select>
+									</div>
+								</div>
+								<br>
+
+								<div class="row" ng-if="item.entity!=''">
+									<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 ">
+										<table class="table  table-bordered">
+											<thead>
+											<th>Column</th>
+											<th>Attribute</th>
+											</thead>
+											<tbody>
+											<tr ng-repeat="keys in item.forDomainMapping track by $index">
+												<td>
+													<p ng-repeat="column in keys.column track by $index" style="color:black">
+														{$ column $}<span
+															ng-if="keys.column.length-1>$index">,</span>
+													</p>
+													<p ng-repeat="column in keys.subColumn[0] track by $index" ng-if="keys.subColumn != undefined">
+														{$ column $}<span
+															ng-if="keys.column.length-1>$index">,</span>
+													</p>
+												</td>
+												<td>
+													<select class="form-control"
+															ng-model="keys.attribute">
+														<option value=""
+																ng-selected="true">
+															Select Attribute
+														</option>
+														<option ng-repeat="d in entitiesList[item.entity] track by $index" value="{$ d $}">
+															{$ d $}
+														</option>
+
+													</select>
+
+												</td>
+											</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="panel-footer" style="background:none;">
+								<button type="button" class="btn btn-custom "
+										ng-click="nufc.addedColumns()"
+										ng-if="item.entity==''">Done
+								</button>
+								<button type="button" class="btn button-customCancel"
+										ng-click="nufc.cancelField(item,'cancel')">Cancel
+								</button>
+							</div>
+						</form>
+			</div>
+	</div>
+</script>

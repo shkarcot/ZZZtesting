@@ -1,0 +1,275 @@
+<div class="row overlay adaptContainer" id="errPanel">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12"  style="margin-bottom:70px;">
+        <h4 class="push-left">
+          <span>Error Details</span>
+          <span class="pull-right closeRule closebtn" ng-click="cancelErr()" style="cursor:pointer">&times;</span>
+        </h4>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <pre>
+                    {$ errDetail $}
+                </pre>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container supervisor-container">
+    <div class="row">
+        <div class="col-sm-9 col-xs-9 col-md-9 col-lg-9">
+            <ol class="breadcrumb">
+              <li><a ui-sref="app.supervisorDashboard">Queues</a></li>
+              <li class="active">{$ currentQueueName $}</li>
+            </ol>
+        </div>
+
+    </div>
+    <div class="row row-eq-height">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding">
+            <form ng-submit="sdlc.getQueueCases()">
+                <div class="flexContainer">
+                    <input type="text" class="form-control inputField" ng-model="searchText" placeholder="Search">
+                    <button type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding text-right">
+            <div class="row row-eq-height" ng-show="transferSelectionFlag || transferSelectionFlagChild">
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                    <span class="filterStyle">Transfer To</span>
+                </div>
+                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 no-padding">
+                    <form ng-submit="sdlc.transferTo()">
+                        <div class="select-box">
+                            <select class="form-control" ng-model="sdlc.agentSelected" style="border-radius:0" required>
+                                <option value="">select agent</option>
+                                <option ng-repeat="opt in sdlc.agentsList" value="{$ opt.id $}">{$ opt.name $}</option>
+                            </select>
+                            <button type="submit" style="padding: 0px;border: none;">
+                               <i class="fa fa-arrow-right icon-right" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  no-padding text-right">
+            <div class="row row-eq-height">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <span class="filterStyle">Filters</span>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 no-padding">
+                    <select class="form-control">
+                        <options>All Queues</options>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td>Case ID</td>
+                    <td>File Name</td>
+                    <td>Template</td>
+                    <td>Task</td>
+                    <td>Status</td>
+                    <td>Recieved On</td>
+                    <td>Assigned To</td>
+                    <td ng-if="sdlc.queueType=='uncategorized'">Queue</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody dir-paginate="arr in sdlc.caseDocumentsList | itemsPerPage:filterObj.no_of_recs" total-items="sdlc.documentsLength" current-page="filterObj.page_no" pagination-id="branchPagination" class="hoverRow">
+                <tr>
+                    <td>
+                        <input type="checkbox" ng-model="caseDocSelection[$index]" ng-change="caseSelectFunct()" ng-disabled="arr.user_id == null"/>
+                        <label ng-click="sdlc.navigateReview(arr,'parent',$index)">{$ arr.case_id $}</label>
+                    </td>
+                    <td class="ellipsis">
+                        <div>
+                        <i class="fa fa-file-pdf-o dues"></i>
+                        <span ng-show="arr.child_cases.length>0" ng-click="getChildDetails(arr,$index);$event.stopPropagation();">
+                            <i ng-show="arr.isExpanded" class="fa fa-chevron-down"></i>
+
+                            <i ng-show="!arr.isExpanded" class="fa fa-chevron-right"></i>
+                        </span>
+                        <span ng-bind="returnFilename(arr)"></span>
+                        <span ng-show="arr.child_cases.length>0">
+                                                        <i class="fa fa-cog fa-spin  fa-fw margin-bottom" ng-show="arr.spinner"aria-hidden="true"></i>
+
+                        </span>
+                            </div>
+                    </td>
+                    <td ng-bind="returnTemplatename(arr)"></td>
+                    <td>{$ arr.state $}</td>
+                    <td>
+                        <span ng-if="arr.processing_state=='failed'" class="errorTraingle"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span><span>{$ arr.processing_state $}</span><span ng-if="arr.processing_state=='failed'" class="infoIcon" ng-click="sdlc.checkErrDetail(arr)"><i class="fa fa-question-circle" aria-hidden="true"></i></span>
+                    </td>
+                    <td>{$ formatDateInList(arr.created_ts) $}</td>
+                    <td>
+                        <a ng-if="arr.user_id == null && !showAgentDrop[$index] && checkForReview(arr.review_id)" ng-click="sdlc.showDropdown($index,$event)">Un Assigned</a>
+                        <span ng-show="showAgentDrop[$index]">
+                            <form ng-submit="sdlc.assignAgent(arr)">
+                                <div class="select-box">
+                                    <select class="form-control" ng-model="sdlc.agentSelected" style="border-radius:0" required>
+                                        <option value="">select agent</option>
+                                        <option ng-repeat="opt in sdlc.agentsList" value="{$ opt.id $}">{$ opt.name $}</option>
+                                    </select>
+                                    <button type="submit" style="padding: 0px;border: none;">
+                                       <i class="fa fa-arrow-right icon-right" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </span>
+                        <span ng-if="arr.user_id != null && !showAgentDrop[$index]">{$ arr.user_name $}</span>
+                        <!--<span ng-if="arr.assignee != null && !showAgentDrop[$index]" ng-click="sdlc.showDropdown($index,$event)"><i class="fa fa-pencil" style="padding-left:8px;"></i></span>-->
+                    </td>
+                    <td ng-if="sdlc.queueType=='uncategorized'">
+                        <a ng-if="arr.queue_name == undefined && !showQueueDrop[$index]" ng-click="sdlc.showQueDropdown($index,$event)">Un Assigned</a>
+                        <span ng-show="arr.queue_name == undefined && showQueueDrop[$index]">
+                            <form ng-submit="sdlc.assignQueue(arr)">
+                                <div class="select-box">
+                                    <select class="form-control" ng-model="sdlc.queueSelected" style="border-radius:0" required>
+                                        <option value="">Select Queue</option>
+                                        <option ng-repeat="opt in sdlc.queueList" value="{$ opt $}">{$ opt.queue_name $}</option>
+                                    </select>
+                                    <button type="submit" style="padding: 0px;border: none;">
+                                       <i class="fa fa-arrow-right icon-right" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </span>
+                        <span ng-if="arr.queue_name != undefined">{$ arr.queue_name $}</span>
+                    </td>
+                    <td>
+                        <div class="dropdown" ng-if="arr.processing_state=='failed'">
+                            <i class="fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                            <ul class="dropdown-menu-edit">
+                              <li ng-click="sdlc.reprocessState(arr)"><a>Reprocess {$ arr.state $}</a></li>
+                              <li ng-click="sdlc.proceedToNextState(arr)"><a>Force Complete {$ arr.state $}</a></li>
+                              <li><a>Report Issue</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-repeat="data in arr.child_cases" ng-show="arr.isExpanded && arr.child_cases.length>0 " style="border-bottom:none !important;" ng-class="!data.highlight?'row_fade_in':''">
+                    <td>
+                        <input type="checkbox" ng-model="caseDocSelectionChild[$parent.$index][$index]" ng-change="caseSelectFunctChild()" ng-disabled="data.user_id == null"/>
+                        <label ng-click="sdlc.navigateReview(data,'parent',$index);$event.stopPropagation();">{$ data.case_id $}</label>
+                    </td>
+                    <td ng-disabled="!data.highlight">
+                        <i class="fa fa-file-pdf-o dues"></i>
+
+
+                        <span ng-bind="returnFilename(data)"></span>
+
+                    </td>
+                    <td ng-disabled="!data.highlight" ng-bind="returnTemplatename(data)"></td>
+                    <td ng-disabled="!data.highlight">{$ data.state $}</td>
+                    <td ng-disabled="!data.highlight">
+                        <span ng-if="data.processing_state=='failed'" class="errorTraingle"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span><span>{$ data.processing_state $}</span><span ng-if="arr.processing_state=='failed'" class="infoIcon" ng-click="sdlc.checkErrDetail(arr)"><i class="fa fa-question-circle" aria-hidden="true"></i></span>
+                    </td>
+                    <td>{$ formatDateInList(data.created_ts) $}</td>
+                    <td>
+                        <a ng-if="data.user_id == null && !showAgentChildDrop[$index] && checkForReview(data.review_id)" ng-click="sdlc.showChildDropdown(arr,$index,$event)">Un Assigned</a>
+                        <span ng-show="data.user_id == null && showAgentChildDrop[$index]">
+                            <form ng-submit="sdlc.assignAgent(data)">
+                                <div class="select-box">
+                                    <select class="form-control" ng-model="sdlc.agentSelected" style="border-radius:0" required>
+                                        <option value="">select agent</option>
+                                        <option ng-repeat="opt in sdlc.agentsList" value="{$ opt.id $}">{$ opt.name $}</option>
+                                    </select>
+                                    <button type="submit" style="padding: 0px;border: none;">
+                                       <i class="fa fa-arrow-right icon-right" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </span>
+                        <span ng-if="data.user_id != null">{$ data.user_name $}</span>
+                    </td>
+                    <td ng-if="sdlc.queueType=='uncategorized'">
+                        <a ng-if="data.queue_name == undefined && !showChildQueueDrop[$index]" ng-click="sdlc.showQueChildDropdown($index,$event)">Un Assigned</a>
+                        <span ng-show="data.queue_name == undefined && showChildQueueDrop[$index]">
+                            <form ng-submit="sdlc.assignQueue(data)">
+                                <div class="select-box">
+                                    <select class="form-control" ng-model="sdlc.queueSelected" style="border-radius:0" required>
+                                        <option value="">Select Queue</option>
+                                        <option ng-repeat="opt in sdlc.queueList" value="{$ opt $}">{$ opt.queue_name $}</option>
+                                    </select>
+                                    <button type="submit" style="padding: 0px;border: none;">
+                                       <i class="fa fa-arrow-right icon-right" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </span>
+                        <span ng-if="data.queue_name != undefined">{$ data.queue_name $}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="right">
+            <dir-pagination-controls max-size=filterObj.no_of_recs direction-links="true" pagination-id="branchPagination" boundary-links="true" on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+        </div>
+    </div>
+
+    <!-- Un Categorized Queue tables -->
+
+    <!--<div class="table-responsive">-->
+        <!--<table class="table table-bordered">-->
+            <!--<thead>-->
+                <!--<tr>-->
+                    <!--<td>Case ID</td>-->
+                    <!--<td>File Name</td>-->
+                    <!--<td>Status</td>-->
+                    <!--<td>Assigned To</td>-->
+                    <!--<td>Template</td>-->
+                    <!--<td>Solution</td>-->
+                    <!--<td>State</td>-->
+                    <!--<td>Queue</td>-->
+                <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+                <!--<tr>-->
+                    <!--<td>-->
+                       <!--<input class="styled-checkbox" id="checkbox-1" type="checkbox" value="value2">-->
+                        <!--<label for="checkbox-1">12743</label>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<i class="fa fa-file-pdf-o dues"></i>-->
+                        <!--file name-->
+                    <!--</td>-->
+                    <!--<td>New</td>-->
+                    <!--<td>-->
+                        <!--<a>Un Assigned</a>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--Template Name-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--Solution Name-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--Extraction-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<span class="queueName">Queue Name</span>-->
+                        <!--<span class="queueSelect">-->
+                            <!--<select class="form-control">-->
+                                <!--<option>Queue 1</option>-->
+                                <!--<option>Queue 2</option>-->
+                                <!--<option>Queue 3</option>-->
+
+                            <!--</select>-->
+                        <!--</span>-->
+                    <!--</td>-->
+
+                <!--</tr>-->
+            <!--</tbody>-->
+        <!--</table>-->
+    </div>
+
+</div>

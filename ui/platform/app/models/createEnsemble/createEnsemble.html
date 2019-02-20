@@ -1,0 +1,367 @@
+<div class="row minPadding">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+        <p class="zeroMargin">
+            <span ui-sref="app.modelDashboard" style="cursor:pointer">Models Configuration </span><span> > </span> <span> New Independent Ensemble</span>
+        </p>
+    </div>
+</div>
+
+<div class="row overlay adaptContainer" id="datasetImport">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12"  style="margin-bottom:70px;">
+        <h4 class="push-left">
+          <span ng-bind="ImportDataset"></span>
+          <span class="pull-right closeRule closebtn" ng-click="canceldataSet()">&times;</span>
+        </h4>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <form ng-submit="cec.sendDataSet()">
+                    <div class="form-group">
+                        <label>Data Set Name</label>
+                        <input type="text" ng-model="cec.importDsObj.name" class="form-control custom-formControl" placeholder="Data Set Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea  rows="4" ng-model="cec.importDsObj.description" cols="50" class="form-control custom-formControl" placeholder="Description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Data Format</label>
+                        <select class="form-control custom-formControl" ng-model="cec.importDsObj.dataType">
+                            <option value="">Select data format</option>
+                            <option ng-repeat="option in cec.datasetTypeList" value="{$ option $}">{$ option $}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Data Set</label>
+                        <br>
+                        <label><b>Choose From Local</b></label>
+                            <div>
+                              <button class="btn left button-primary" alt="browse" title="browse" type="button" style="cursor:pointer;position:relative;display:inline;border-radius:0">
+                                <input class="hide_file" ngf-select ng-model="fileInput" name="file"
+                                       ngf-change="uploadFile(fileInput)" type="file" style="font-size:13px;"/>
+                                  Browse
+                              </button>
+                            </div>
+                            <label class="entity-filepath" style="overflow: hidden;width: 80%;border: 1px solid #3babe1;height: 33px;">
+                                <span style="display:inline;" class="ng-binding" ng-show="browseFileName == undefined || browseFileName == ''">Please select the file</span>
+                                <span style="display:inline;" class="ng-binding" >{$ browseFileName $}</span>
+                            </label>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="form-group">
+                        <button class="btn btn-custom" type="submit">
+                            <i class="fa fa-floppy-o"></i>
+                            Save
+                        </button>
+                        <div class="loading-spiner-holder" ng-show="enabledatasetLoader">
+                            <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving dataset ...</i></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row createEnsembleClass">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 no-padding">
+        <div class="model-header-labels">
+             <ul class="nav nav-pills nav-pills-custom nav-justified">
+                 <li class="active ensembleActive">
+                     <a href=".ensembleInfo" data-toggle="tab"><span class="numbering">1</span>
+                     <span>Ensemble Information</span></a>
+                 </li>
+                 <li class="modelsActive">
+                     <a href=".models" data-toggle="tab"> <span class="numbering">2</span>
+                     <span>Models</span></a>
+                 </li>
+                 <!--<li class="cwActive">-->
+                     <!--<a href=".configureWeights" data-toggle="tab"> <span class="numbering">3</span>-->
+                     <!--<span>Configure weights</span></a>-->
+                 <!--</li>-->
+                 <!--<li class="trainActive">-->
+                     <!--<a href=".train" data-toggle="tab"><span class="numbering">4</span>-->
+                     <!--<span>Train</span></a>-->
+                 <!--</li>-->
+              </ul>
+        </div>
+
+        <div class="tab-content" style="background: white">
+            <div class="tab-pane ensembleInfo fade in active">
+                <div class="row" style="padding-top:10px;">
+                    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                        <form ng-submit="cec.saveEnsemble()">
+                            <div class="form-group row">
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                    <label class="trainVersionLabel">Name</label>
+                                    <input type="text" class="form-control custom-formControl" ng-model="cec.createEnsembleObj.name" placeholder="Type Ensemble Name" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                    <label class="trainVersionLabel">Description</label>
+                                    <textarea  rows="4" cols="50" class="form-control custom-formControl" ng-model="cec.createEnsembleObj.description" placeholder="Type Description"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                    <label class="trainVersionLabel">Dataset</label>
+                                    <select class="form-control custom-formControl" ng-model="cec.createEnsembleObj.dataset_id" ng-change="cec.setColumnList(cec.createEnsembleObj.dataset_id)" required>
+                                        <option value="">Select Dataset</option>
+                                        <option ng-repeat="option in cec.listOfDataSets" value="{$ option.dataset_id $}">{$ option.name $}</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-1 col-md-1 col-lg-1 col-xs-1 text-center">
+                                    <label class="trainVersionLabel"></label>
+                                    <div>OR</div>
+                                </div>
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                    <label class="trainVersionLabel"></label>
+                                    <div>
+                                        <button class="btn btn-add" type="button" ng-click="uploadDataset();">
+                                            <img src="/app/images/import.png" style="width:10px;">
+                                            <span>Import Dataset</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                    <label class="trainVersionLabel">Ensemble Type</label>
+                                    <select class="form-control custom-formControl" ng-model="cec.createEnsembleObj.model_type" ng-change="cec.checkForEnsembleType()" required>
+                                        <option value="">Select Model Type</option>
+                                        <option ng-repeat="option in cec.modelTypeList[cec.datasetSelectedType]" value="{$ option $}">{$ option $}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row" ng-show="cec.ensembleType=='custom'">
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                    <label class="trainVersionLabel">Binary</label>
+                                    <select class="form-control custom-formControl" ng-model="cec.createEnsembleObj.resource_id">
+                                        <option value="">Select Binary</option>
+                                        <option ng-repeat="option in cec.listOfBinaries" value="{$ option.resource_id $}">{$ option.name $}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                    <label class="trainVersionLabel">Target Column</label>
+                                    <select class="form-control custom-formControl" ng-model="cec.createEnsembleObj.column" ng-change="cec.checkForEnsembleType()" required>
+                                        <option value="">Select Target Column</option>
+                                        <option ng-repeat="option in cec.listOfColumns" value="{$ option $}">{$ option $}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                                    <button class="btn btn-custom" type="submit">
+                                        Next
+                                    </button>
+                                    <div class="loading-spiner-holder" ng-show="enableEnsembleLoader">
+                                        <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving Ensemble ...</i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane models fade">
+                <div class="row" style="padding-top:10px;">
+                    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                        <div ng-show="!cec.createModel">
+                            <form ng-submit="cec.saveAllModels()">
+                                <!--<div class="form-group row">-->
+                                    <!--<div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">-->
+                                        <!--<label class="trainVersionLabel">Version Name</label>-->
+                                        <!--<input type="text" class="form-control custom-formControl" ng-model="cec.versionName" placeholder="Type Version Name" required>-->
+                                        <!--<i style="font-size: 11px;">A new version will be created when models are modified</i>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <div class="form-group row">
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                        <label class="trainVersionLabel">Models</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" ng-repeat="card in cec.modelAlgoTypes[cec.createEnsembleObj.model_type]" ng-hide="cec.ensembleType == 'custom'">
+                                         <div class="panel documentPanel">
+                                            <div class="modelCardBody">
+                                               <div class="modelHeading">
+                                                   <label class="modelHeadStyle">{$ card $}</label>
+                                               </div>
+                                                <div class="algoTypeStyle">{$ cec.createEnsembleObj.model_type $}</div>
+                                               <div class="templateBody">
+                                                  <div class="row modelTopBody">
+
+                                                  </div>
+                                               </div>
+                                            </div>
+                                         </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" ng-show="cec.ensembleType == 'custom' && !cec.showIframe" ng-click="cec.getJupiterNotebookUrl()">
+                                        <div class="panel documentPanel" style="cursor:pointer">
+                                            <div class="modelCardBody">
+                                               <div class="modelHeading">
+                                                   <label class="modelHeadStyle">&nbsp;</label>
+                                               </div>
+                                               <div class="templateBody">
+                                                  <div class="row modelTopBody" style="text-align:center">
+                                                      <img src="/app/images/plus-default.png" style="width:10px;">
+                                                      &nbsp;Create New Model
+                                                  </div>
+                                               </div>
+                                                <div class="algoTypeStyle">&nbsp;</div>
+                                            </div>
+                                         </div>
+                                    </div>
+                                </div><br>
+                                <div class="row" ng-hide="cec.ensembleType == 'custom'">
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                        <button class="btn btn-custom" type="button" ng-click="cec.goToEnsemble()">
+                                            Done
+                                        </button>
+                                    </div>
+                                </div>
+                                <!--<div class="form-group row">-->
+                                    <!--<div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">-->
+                                        <!--<button class="btn btn-custom" type="submit">-->
+                                            <!--Next-->
+                                        <!--</button>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            </form>
+                            <div class="row" ng-if="cec.showIframe">
+                                <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 ">
+                                    <div id="loadImg" class="loader"></div>
+                                    <iframe ng-src="{$ cec.jupiterNoteBookUrl $}"
+                                    style="margin-top: 1px;width:100%;height:480px;" onload="document.getElementById('loadImg').style.display='none';"></iframe>
+                                </div>
+                                <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                                    <button class="btn btn-custom" ng-click="cec.saveCustomModel('draft')">
+                                        Save as draft
+                                    </button>
+                                    <button class="btn btn-custom" ng-click="cec.saveCustomModel('model')">
+                                        Save as model
+                                    </button>
+                                    <div class="loading-spiner-holder" ng-show="enableModelSaving">
+                                        <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving model ...</i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="cec.createModel">
+                            <h4 class="createModelHead">Create New Model<span class="pull-right"><i class="fa fa-times" ng-click="cec.backToCreateModel()"></i></span></h4>
+                            <form ng-submit="cec.saveNewModel()">
+                                <div class="form-group row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                        <label class="trainVersionLabel">Name</label>
+                                        <input type="text" class="form-control custom-formControl" ng-model="cec.createModelObj.name" placeholder="Type Model Name" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                        <label class="trainVersionLabel">Description</label>
+                                        <textarea  rows="4" cols="50" class="form-control custom-formControl" ng-model="cec.createModelObj.description" placeholder="Type Description"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                        <label class="trainVersionLabel">Binaries</label>
+                                        <select class="form-control custom-formControl" ng-model="cec.createModelObj.binary_id">
+                                            <option value="">Select Binary</option>
+                                        </select>
+                                    </div>
+                                </div><br>
+                                <div class="form-group row">
+                                    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                                        <button class="btn btn-custom" type="submit">
+                                            Create Model
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane configureWeights fade">
+                <div class="row" style="padding-top:15px;">
+                    <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3">
+                        <div style="padding-left:15px;color:#b1b3b5;font-weight:600;">
+                            Ensemble Strategy
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                        <div>
+                            <label class="radio-inline">
+                                <input type="radio" name="optradio" ng-model="trainMode" value="automatic" >Auto
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="optradio" ng-model="trainMode" value="manual" >Manual
+                            </label>
+                        </div>
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-9 col-md-9 col-lg-9 col-xs-9">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th >Model Name</th>
+                                        <th >Accuracy</th>
+                                        <th >Precision</th>
+                                        <th >Recall</th>
+                                        <th >Weight</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr >
+                                        <td>Bidirectional LSTM</td>
+                                        <td>0.64</td>
+                                        <td>0.734</td>
+                                        <td>1.243</td>
+                                        <td><input type="text" value="1" style="width: 10%;"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane train fade">
+                <div class="row">
+                    <div class="col-sm-9 col-md-9 col-lg-9 col-xs-9">
+                        <label class="trainVersionLabel">Select Models to Train</label>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th ><input type="checkbox"/> Model Name</th>
+                                        <th ng-repeat="head in mde.modelDetailsObj.Available_scores">{$ head $}</th>
+                                        <th >Weight</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="checkbox"/> Bidirectional LSTM</td>
+                                        <td>0.64</td>
+                                        <td>0.734</td>
+                                        <td>1.243</td>
+                                        <td>1</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

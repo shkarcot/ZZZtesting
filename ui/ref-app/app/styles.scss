@@ -1,0 +1,213 @@
+$icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
+@import '~bootstrap-sass/assets/stylesheets/_bootstrap.scss';
+@import '~angular-tree-control/css/tree-control.css';
+@import '~angular-tree-control/css/tree-control-attribute.css';
+@import '~angularjs-slider/dist/rzslider.css';
+@import '~angular-loading-bar/build/loading-bar.css';
+@import '~ng-dialog/css/ngDialog.css';
+@import '~ng-dialog/css/ngDialog.css';
+@import '~uikit/dist/css/uikit.min.css';
+@import '~uikit/dist/css/components/notify.min.css';
+@import '~angular-ui-tree/dist/angular-ui-tree.min.css';
+@import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
+
+@import '~jsonformatter/dist/json-formatter.css';
+
+$fa-font-path: "~font-awesome/fonts";
+@import "~font-awesome/scss/font-awesome.scss";
+
+/*custom scss files*/
+@import './common/assets/scss/variable';
+@import './common/assets/scss/generic';
+@import './common/c3.min.css';
+@import './layout/layout';
+@import './layout/header/header';
+@import './review/imageCrop';
+@import './solution/solution';
+
+@import './documentReviewList/documentReview.scss';
+@import './documentsList/documentsList.scss';
+@import './newDashboard/newDashboard.scss';
+@import './agentDashboard/agentDashboard.scss';
+@import './agentDocumentsList/agentDocumentsList.scss';
+@import './supervisorDashboard/supervisorDashboard.scss';
+@import './supervisorDocumentsList/supervisorDocumentsList.scss';
+@import './processDetails/processDetails.scss';
+@import './review/review.scss';
+@import './multiPage/multiPage.scss';
+@import './extraction/extraction.scss';
+@import './entityLinking/entityLinking.scss';
+@import './enso';
+
+
+html,body{
+  overflow: auto;
+}
+body {
+  padding: 0;
+  color: black;
+  font-family: 'Poppins', sans-serif;
+  font-size:12px;
+  background-color:#f4f4f4;
+  height: 100%;
+}
+.custom-header{
+    padding: 0px 20px 5px 20px;
+    background: white;
+    margin-bottom: 5px;
+    box-shadow: 0px 2px 5px 0px #afadad;
+}
+.dashboard-Text{
+    margin:0px 0px 0px 4px !important;
+    color:#9e9d9d !important;
+}
+.select-style{
+    box-shadow: none;
+    padding: 0px 0px;
+    border: none;
+    background: no-repeat;
+    font-size: 21px;
+    color: #283163;
+}
+
+.header-Style{
+    float:right;
+    border-right: 1px solid #ddd;
+    margin-top: 7px;
+}
+.select-smallStyle{
+    border: none;
+    padding: 0px;
+    height: 25px;
+    color: #283163;
+    box-shadow: none;
+}
+.topSpace{
+   padding-top:10px;
+}
+.dashboardMargin{
+    margin:20px 20px 20px 20px;
+}
+.table-scroll{
+
+    .tableHeading {
+        color: #0d7aa5;
+        font-size: 13px;
+        background-color:transparent !important;
+    }
+    .tableBody{
+        background-color:white !important;
+    }
+    .capitalize {
+        text-transform: capitalize;
+        font-size: 15px;
+    }
+    .text-color{
+        color:#5EB5EB;
+    }
+}
+.table > tbody > tr > td {
+  padding: 15px;
+
+}
+.table-bordered > thead > tr > th, .table-bordered > thead > tr > td {
+    border-bottom-width: 1px;
+}
+.table > thead > tr > td {
+    padding: 10px;
+}
+h3{
+  color: #283163 !important;
+}
+.clickableLink {
+    color:#00a3e0;
+    cursor: pointer;
+    font-size:14px;
+}
+.disablelink{
+    color:#8c8c8c;
+    font-size:14px;
+}
+.right{
+    float:right;
+}
+
+.pagination{
+    li {
+        a , span {
+            color:#00a3e0;
+            border: none;
+        }
+    }
+    .active {
+        a:active,a:hover,a:focus{
+                background-color:#00a3e0;
+                border-color:#00a3e0;
+
+        }
+        span:active,span:hover,span:focus {
+                background-color:#00a3e0;
+                border-color:#00a3e0;
+        }
+    }
+
+}
+
+.pagination > li:last-child > a, .pagination > li:last-child > span{
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+}
+.btn-newStyle{
+  color:#58b1e4;
+  height: 34px;
+  border:none;
+  background-color:white;
+}
+.newcustom-form {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.no-padding{
+    padding-left:0px;
+    padding-right:0px;
+}
+.bnt-cst-process{
+    background-color:#00A3E0;
+    color:white;
+}
+
+.ngdialog.ngdialog-theme-default .ngdialog-content {
+    -webkit-animation: ngdialog-flyin .5s;
+    animation: ngdialog-flyin .5s;
+    background: #f0f0f0;
+    border-radius: 5px;
+    color: #444;
+    font-family: Helvetica,sans-serif;
+    font-size: 1.1em;
+    line-height: 1.5em;
+    margin: 0 auto;
+    max-width: 100%;
+    padding: 1em;
+    position: relative;
+    width: 450px;
+    top:30%;
+}
+
+.ngdialog.ngdialog-theme-default .ngdialog-close {
+    border: none;
+    background: 0 0;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.bg-color{
+    background-color:#eee;
+}
+#loading-bar-spinner{
+    display:none;
+}
+#loading-bar .bar {
+    background: #3cd142;
+}

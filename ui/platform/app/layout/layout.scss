@@ -1,0 +1,33 @@
+@import './footer/footer';
+@import './leftmenu/leftmenu';
+@import './bodycontent/bodycontent';
+
+#page-content-wrapper{
+    width:79%;
+}
+
+.bodyheader{
+ height:50px;
+ background: #fff;
+ margin-bottom: 14px;
+}
+
+.solution-name{
+  font-size:23px;
+  color:#1e1e1e;
+}
+
+.headerLogo{
+    width: 50px;
+    float: right;
+    opacity: 0.2;
+    margin-right: -16px;
+    margin-top: -7px;
+}
+
+.productCenterContainer {
+    height: calc(100% - 55px);
+    .productContainer {
+        height: calc(100% - 55px);
+    }
+}

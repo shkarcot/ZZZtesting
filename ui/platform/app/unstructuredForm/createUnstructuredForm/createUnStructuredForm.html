@@ -1,0 +1,84 @@
+
+
+
+<div class="row minPadding">
+    <div class="col-lg-7 col-sm-7 col-md-7 col-xs-7">
+                <div class="zeroMargin">
+                      <div class="dropdown">
+                          <a data-toggle="dropdown" class="noDecoration configureHeading"> domain <b class="caret"></b></a>
+                          <ul class="customdropdown-menu dropdown-menu">
+                              <li>
+                                <a ui-sref="app.domainDashboard"   class="noDecoration">
+                                  <img src="/app/images/Domain.png"/>
+                                  <span>Domain Configuration</span>
+                                </a>
+                              </li>
+                              <li>
+                                  <a class="noDecoration" ui-sref="app.modelDashboard">
+                                        <img src="/app/images/model.png"/>
+                                        <span>Models</span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a class="noDecoration" ui-sref="app.function">
+                                    <img src="/app/images/functionIcon.png"/>
+                                    <span>Functions</span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a ui-sref="app.services" class="noDecoration">
+                                      <img src="/app/images/Services-01.png"/>
+                                      <span>Service Configuration</span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a ui-sref="app.pipeline" class="noDecoration">
+                                      <img src="/app/images/pipeline.png"/>
+                                      <span>Pipeline Configuration</span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a ui-sref="app.sourceConfiguration" class="noDecoration">
+                                      <img src="/app/images/sources.png"/>
+                                      <span>Sources</span>
+                                  </a>
+                              </li>
+                          </ul>
+                          <span style="margin-left: 10px;font-size: 13px;"> > </span>
+                          <span style="margin-left: 10px;font-size: 13px;cursor:pointer" ui-sref="app.unstructuredForm"> Unknown Format Extraction</span>
+                          <span style="margin-left: 10px;font-size: 13px;"> > </span>
+                          <span style="margin-left: 10px;font-size: 13px;color: #3babe1;" ng-if="$root.unknown_template_name==''"> New Template</span>
+                          <span style="margin-left: 10px;font-size: 13px;color: #3babe1;" ng-if="$root.unknown_template_name!=''"> {$ $root.unknown_template_name $}</span>
+
+                      </div>
+                </div>
+    </div>
+
+</div>
+
+
+<div class="row newUnstructuredForm">
+      <div class="well container-fluid">
+          <ul class="nav nav-tabs nav-custom-tabs">
+              <li class="active"><a data-toggle="tab" href=".template">Template</a></li>
+              <li><a ng-class="$root.state_id=='new'?'disabledTest':''" data-toggle="tab" href=".threshold" ng-click="$root.refreshSlider();$root.getDocumentsList($root.state_id)">Threshold</a></li>
+              <li><a ng-class="$root.state_id=='new'?'disabledTest':''" data-toggle="tab" href=".test" ng-click="$root.getTestList()">Test</a></li>
+              <li><a ng-class="$root.state_id=='new'?'disabledTest':''" data-toggle="tab" href=".train" ng-click="$root.getTrainDetails($root.state_id)">Train</a></li>
+          </ul>
+          <div class="tab-content">
+              <div class="tab-pane fade in active template" style="padding: 0px 20px 0px 25px;">
+                <div data-ui-view="templateUnStructured" class="insightdata-div"></div>
+              </div>
+               <div class="tab-pane fade threshold" style="padding: 0px 20px 0px 25px;">
+                <div data-ui-view="thresholdUnStructured" class="insightdata-div"></div>
+              </div>
+              <div class="tab-pane fade train" style="padding: 0px 20px 0px 25px;">
+                <div data-ui-view="trainUnStructured" class="insightdata-div"></div>
+              </div>
+              <div class="tab-pane fade test">
+                <div data-ui-view="testUnStructured" class="insightdata-div"></div>
+              </div>
+          </div>
+
+      </div>
+</div>

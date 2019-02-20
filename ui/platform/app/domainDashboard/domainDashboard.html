@@ -1,0 +1,345 @@
+<div class="DomainDashboard">
+	<div class="row minPadding">
+		<div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+			<div class="zeroMargin">
+				  <div class="dropdown">
+					  <a data-toggle="dropdown" class="noDecoration configureHeading"> domain <b class="caret"></b></a>
+					  <ul class="customdropdown-menu dropdown-menu">
+						  <li>
+							<a class="noDecoration">
+							  <img src="/app/images/Domain.png"/>
+							  <span>Domain Configuration</span>
+							</a>
+						  </li>
+                          <li>
+							  <a class="noDecoration" ui-sref="app.modelDashboard">
+                                    <img src="/app/images/model.png"/>
+                                    <span>Models</span>
+                              </a>
+						  </li>
+                          <li>
+							  <a class="noDecoration" ui-sref="app.function">
+                                <img src="/app/images/functionIcon.png"/>
+                                <span>Functions</span>
+                              </a>
+						  </li>
+						  <li>
+							  <a ui-sref="app.services" class="noDecoration">
+								  <img src="/app/images/Services-01.png"/>
+								  <span>Service Configuration</span>
+							  </a>
+						  </li>
+						  <li>
+							  <a ui-sref="app.pipeline" class="noDecoration">
+								  <img src="/app/images/pipeline.png"/>
+								  <span>Pipeline Configuration</span>
+							  </a>
+						  </li>
+						  <li>
+							  <a ui-sref="app.sourceConfiguration" class="noDecoration">
+								  <img src="/app/images/sources.png"/>
+								  <span>Sources</span>
+							  </a>
+						  </li>
+					  </ul>
+				  </div>
+			</div>
+		</div>
+		<div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 alignRight">
+			<!--<img class="helpImages" src="/app/images/comment-01.png"/>-->
+			<img class="helpImages" src="/app/images/help-01.png"/>
+		</div>
+	</div>
+
+	<div class="row row-eq-height">
+		<!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding">-->
+			<!--<div class="row">-->
+				<!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">-->
+					<!--<div class="panel panel-custom">-->
+						<!--<div class="panel-body" style="cursor:pointer;">-->
+							<!--<div class="row text-center" ui-sref="app.entities">-->
+								<!--<span>-->
+									<!--<img class="dashboardImage" src="/app/images/domainObject.png" style="width:50px;"/>-->
+								<!--</span>-->
+								<!--<div class="badge customBadge">{$ domainObjectsCount $}</div>-->
+								<!--<br>-->
+								<!--<h5 class="subHeadingText" style="color: #614ae2;">Configure Domain Object</h5>-->
+								<!--<span class="subHeadings">Entities, Attributes & Annotations</span>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+				<!--&lt;!&ndash;<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">&ndash;&gt;-->
+					<!--&lt;!&ndash;<div class="panel panel-custom">&ndash;&gt;-->
+						<!--&lt;!&ndash;<div class="panel-body" style="cursor:pointer;">&ndash;&gt;-->
+							<!--&lt;!&ndash;<div class="row text-center" ui-sref="app.nlp">&ndash;&gt;-->
+								<!--&lt;!&ndash;<img class="dashboardImage" src="/app/images/nlp.png" style="width:50px;"/>&ndash;&gt;-->
+								<!--&lt;!&ndash;<br>&ndash;&gt;-->
+								<!--&lt;!&ndash;<h5 class="subHeadingText" style="color:#29b2f5">NLP</h5>&ndash;&gt;-->
+								<!--&lt;!&ndash;<span class="subHeadings">Train & Test Language Models</span>&ndash;&gt;-->
+							<!--&lt;!&ndash;</div>&ndash;&gt;-->
+						<!--&lt;!&ndash;</div>&ndash;&gt;-->
+					<!--&lt;!&ndash;</div>&ndash;&gt;-->
+				<!--&lt;!&ndash;</div>&ndash;&gt;-->
+				<!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">-->
+					<!--<div class="panel panel-custom">-->
+						<!--<div class="panel-body" style="cursor:pointer;">-->
+							<!--<div class="row text-center" ui-sref="app.documentTemplate">-->
+								<!--<img class="dashboardImage" src="/app/images/template.png" style="width:50px;"/>-->
+								<!--<br>-->
+								<!--<h5 class="subHeadingText" style="color: #16d0a3;">Structured Extraction</h5>-->
+								<!--<span class="subHeadings">Document Templating </span>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<br>-->
+			<!--<div class="row">-->
+				<!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">-->
+					<!--<div class="panel panel-custom">-->
+						<!--<div class="panel-body" style="cursor:pointer;">-->
+							<!--<div class="row text-center" ui-sref="app.dataManagement">-->
+								<!--<img class="dashboardImage" src="/app/images/dictionary.png" style="width:43px;"/>-->
+								<!--<br>-->
+								<!--<h5 class="subHeadingText" style="color: #f57729;">Terminology</h5>-->
+								<!--<span class="subHeadings">Manage Terms </span>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+				<!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">-->
+					<!--<div class="panel panel-custom">-->
+						<!--<div class="panel-body" style="cursor:pointer;">-->
+							<!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+								<!--&lt;!&ndash;<div class="col-lg-2 col-sm-2 col-md-2 col-xs-2">&ndash;&gt;-->
+									<!--&lt;!&ndash;<img class="dashboardImage" src="/app/images/unstructured.png" style="width:43px;"/>&ndash;&gt;-->
+								<!--&lt;!&ndash;</div>&ndash;&gt;-->
+								<!--&lt;!&ndash;<div class="col-lg-10 col-sm-10 col-md-10 col-xs-10">&ndash;&gt;-->
+									<!--&lt;!&ndash;<div class="row" ui-sref="app.unstructuredForm">&ndash;&gt;-->
+										<!--&lt;!&ndash;<h5 class="subHeadingText" style="color: #45447b;">Unstructured Annotation</h5>&ndash;&gt;-->
+										<!--&lt;!&ndash;<span class="subHeadings">Entities + ER Models + Classification Models </span>&ndash;&gt;-->
+									<!--&lt;!&ndash;</div>&ndash;&gt;-->
+								<!--&lt;!&ndash;</div>&ndash;&gt;-->
+							<!--&lt;!&ndash;</div>&ndash;&gt;-->
+							<!--<div class="row text-center" ui-sref="app.unstructuredForm">-->
+								<!--<img class="dashboardImage" src="/app/images/unstructured.png" style="width:38px;"/>-->
+								<!--<br>-->
+								<!--<h5 class="subHeadingText" style="color:#45447b;">Unstructured Annotation</h5>-->
+								<!--<span class="subHeadings">Entities +  Classification Models</span>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<br>-->
+			<!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+				<!--&lt;!&ndash;<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">&ndash;&gt;-->
+					<!--&lt;!&ndash;<div class="panel panel-custom">&ndash;&gt;-->
+						<!--&lt;!&ndash;<div class="panel-body" style="cursor:pointer;padding: 45px !important;">&ndash;&gt;-->
+							<!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+								<!--&lt;!&ndash;<div class="col-lg-2 col-sm-2 col-md-2 col-xs-2">&ndash;&gt;-->
+									<!--&lt;!&ndash;<img class="dashboardImage" src="/app/images/unstructured.png" style="width:50px;"/>&ndash;&gt;-->
+								<!--&lt;!&ndash;</div>&ndash;&gt;-->
+								<!--&lt;!&ndash;<div class="col-lg-10 col-sm-10 col-md-10 col-xs-10">&ndash;&gt;-->
+									<!--&lt;!&ndash;<div class="row" ui-sref="app.unstructuredForm">&ndash;&gt;-->
+										<!--&lt;!&ndash;<h5 class="subHeadingText" style="color: #45447b;">Unstructured Annotation</h5>&ndash;&gt;-->
+										<!--&lt;!&ndash;<span class="subHeadings">Entities + ER Models + Classification Models </span>&ndash;&gt;-->
+									<!--&lt;!&ndash;</div>&ndash;&gt;-->
+								<!--&lt;!&ndash;</div>&ndash;&gt;-->
+							<!--&lt;!&ndash;</div>&ndash;&gt;-->
+						<!--&lt;!&ndash;</div>&ndash;&gt;-->
+					<!--&lt;!&ndash;</div>&ndash;&gt;-->
+				<!--&lt;!&ndash;</div>&ndash;&gt;-->
+			<!--&lt;!&ndash;</div>&ndash;&gt;-->
+			<!--<br>-->
+		<!--</div>-->
+		<!--<div class="col-lg-6 col-sm-6 col-md-6 col-xs-12 panel-custom helpDiv no-padding">-->
+			<!--<div>-->
+				<!--<h4 class="text-center" style="color:#bb4ae2;">Case Management</h4>-->
+				<!--<div class="row" style="color:#29b2f5;border-bottom: 1px solid #29b2f5;border-top: 1px solid #29b2f5;">-->
+					<!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center"  ui-sref="app.multipleEmailConfig" style="border-right: 1px solid #29b2f5;cursor:pointer;">-->
+						<!--<h4>@ Configure Email</h4>-->
+					<!--</div>-->
+					<!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center" ui-sref="app.bpmn" style="cursor:pointer;">-->
+						<!--<h4><img src="./app/images/workflow.png" style="width:20px;"/> Create New Workflow</h4>-->
+					<!--</div>-->
+				<!--</div>-->
+				<!--<div class="row">-->
+					<!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding text-center">-->
+						<!--<div class="helpDiv" style="padding:15px 0;">-->
+							<!--<div class="row">-->
+								<!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" ng-show="showBpmnSpin">-->
+									 <!--<i class="fa fa-cog fa-spin fa-spinner-icon"></i>-->
+									 <!--&lt;!&ndash;<i class="fa fa-spinner fa-pulse fa-3x fa-fw fa-spinner-icon margin-bottom"></i>&ndash;&gt;-->
+								<!--</div>-->
+
+								<!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" ng-repeat="file in ddc.allBpmnFiles track by $index" style="margin:15px 0;">-->
+									<!--<div class="panel panel-custom bpmnIcon-panel">-->
+										<!--<div class="panel-body" style="cursor:pointer;">-->
+											<!--<div class="row" style="margin: 0px 0 5px 0;">-->
+												<!--<div class="pull-right">-->
+													<!--<div class="pull-left" style="margin-right: 5px;margin-top: -1px;">Status</div>-->
+													<!--<label class="switch">-->
+														<!--<input type="checkbox" ng-disabled="file.status" ng-model="file.status" ng-change="ddc.setBpmnStatus(file,file.status)" class="ng-pristine ng-untouched ng-valid">-->
+														<!--<span class="slider round"></span>-->
+														<!--<div class="toggleText"></div>-->
+													<!--</label>-->
+												<!--</div>-->
+											<!--</div>-->
+
+											<!--<div class="row text-center" ui-sref="app.bpmn" ng-click="ddc.showBpmn(file )">-->
+												<!--<h4 class="subHeadingText"  ng-bind="file.name"></h4>-->
+												<!--<h5 class="subHeadingText"  ng-bind="file.created"></h5>-->
+												<!--<span class="subHeadings"></span>-->
+											<!--</div>-->
+										<!--</div>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+		<!--</div>-->
+        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+            <div class="panel panel-custom" ui-sref="app.entities" style="cursor:pointer">
+                <div class="panel-heading">
+					<img class="dashboardImage" src="/app/images/domain.png"/>
+					Domain Objects Configuration
+				</div>
+                 <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">Total Domain Objects</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 values">{$ dashboardCounts.domain_objects $}</div>
+                    </div>
+
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+							<span> Configure entities,attributes&amp; anotations.These domain objects are used in your solution lorem ipsum</span>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="panel-footer"><a href="#">know more &gt;</a></div>-->
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+            <div class="panel panel-custom" ui-sref="app.vocabulary" style="cursor:pointer">
+
+                <div class="panel-heading"  style="color: #ff5c33;background-color: #ffc2b3">
+					<img class="dashboardImage" src="/app/images/dictionarys.png"/>
+					Vocabulary Management</div>
+                 <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">Total Terms</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 values">2.2K</div>
+                    </div>
+
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+							<span>Manage dictionaries, corpus & ontology. Upload and manage terms.</span>
+                        </div>
+                    </div>
+
+                </div>
+                <!--<div class="panel-footer"><a href="#">know more &gt;</a></div>-->
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+            <div class="panel panel-custom" ui-sref="app.documentTemplate" style="cursor:pointer">
+                <div class="panel-heading"   style="color:#00cc66; background-color: #e6fff2">
+					<img class="dashboardImage" src="/app/images/templates.png"/>
+					Known Format Extraction</div>
+                 <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">Total Templates</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 values">{$ dashboardCounts.known_format_count $}</div>
+                    </div>
+
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+							<span>Define the templates for known format documents</span>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="panel-footer"><a href="#">Know more &gt;</a></div>-->
+            </div>
+        </div>
+    </div>
+	<br>
+    <div class="row">
+        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+            <div class="panel panel-custom" ui-sref="app.unstructuredForm" style="cursor:pointer">
+                <div class="panel-heading" style="color:#e6e600;background-color:#ffffcc">
+					<img class="dashboardImage" src="/app/images/unknown.png" style="width:43px;"/>Unknown Format Extraction</div>
+               <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">Total Templates</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 values">{$ dashboardCounts.unknown_format_count $}</div>
+                    </div>
+
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+							<span>Configure unstructured and unknown layout documents.</span>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="panel-footer"><a href="#">know more &gt;</a></div>-->
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+            <div class="panel panel-custom" ui-sref="app.caseManagement" style="cursor:pointer">
+                <div class="panel-heading"  style="color: #808080;background-color: #e6e6e6">
+					<img class="dashboardImage" src="/app/images/case.png" style="width:43px;"/>
+					Case Management</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+                            Workflows
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 values">{$ total_workflows $}</div>
+                    </div>
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+							<span>Create workflow and configure</span>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="panel-footer"><a href="#">know more &gt;</a></div>-->
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+            <div class="panel panel-custom" ui-sref="app.thresholds" style="cursor:pointer">
+                <div class="panel-heading"  style="color: #70b243;background-color: #eafbe9">
+					<img class="dashboardImage" src="/app/images/threshold_green.png" style="width:43px;"/>
+					Threshold</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 values"></div>
+                    </div>
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+							<span>Default thresholds for the solutions can be configured here. Need to change this text. </span>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="panel-footer"><a href="#">know more &gt;</a></div>-->
+            </div>
+        </div>
+	</div>
+</div>

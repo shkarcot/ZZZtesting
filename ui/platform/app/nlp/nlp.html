@@ -1,0 +1,498 @@
+<div class="row overlay" id="AddlanguageDiv">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<h4 class="push-left">
+			<span>Upload Language Models</span>
+			<span class="pull-right closeRule closebtn" ng-click="cancelLanguage()">&times;</span>
+		</h4>
+		<br>
+		<div class="row">
+			<div class="col-lg-8 col-sm-8 col-xs-8 col-md-12">
+				<label class="text-heading">Language</label>
+				<select class="form-control bottomLineInput">
+					<option>Select Language</option>
+					<option>English</option>
+					<option>Spanish</option>
+					<option>Chinese</option>
+					<option>Japanese</option>
+				</select>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-lg-8 col-sm-8 col-xs-8 col-md-12">
+				<label class="text-heading">Engine</label>
+				<select class="form-control bottomLineInput">
+					<option>Select Engine</option>
+				</select>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+				<label class="text-heading">Model</label>
+				<input type="text" class="form-control bottomLineInput" placeholder="Enter Cloud URL of Model" style="background: white;"/>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-lg-12 col-sm-12 col-md-12">
+				<button class="btn button-customSave btn-custom" ng-click="cancelLanguage()">
+					<i class="fa fa-floppy-o"></i>
+					Save
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="row overlay" id="uploadmodelDiv">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<h4 class="push-left">
+			<span>Upload Language Models</span>
+			<span class="pull-right closeRule closebtn" ng-click="cancelmodel()">&times;</span>
+		</h4>
+		<br>
+		<div class="row">
+			<div class="col-lg-8 col-sm-8 col-xs-8 col-md-12">
+				<label class="text-heading">Engine</label>
+				<select class="form-control bottomLineInput">
+					<option>Select Engine</option>
+				</select>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+				<label class="text-heading">Model</label>
+				<input type="text" class="form-control bottomLineInput" placeholder="Enter Cloud URL of Model" style="background: white;"/>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-lg-12 col-sm-12 col-md-12">
+				<button class="btn button-customSave btn-custom" ng-click="cancelmodel()">
+					<i class="fa fa-floppy-o"></i>
+					Save
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="row minPadding">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+        <h3 class="zeroMargin">
+              <div class="dropdown">
+                  <a data-toggle="dropdown" class="noDecoration configureHeading"> domain <b class="caret"></b></a>
+                      <ul class="customdropdown-menu dropdown-menu">
+                          <li>
+                            <a ui-sref="app.domainDashboard" class="noDecoration">
+                              <img src="/app/images/Domain.png"/>
+                              <span>Domain Configuration</span>
+                            </a>
+                          </li>
+                          <li>
+                              <a ui-sref="app.services" class="noDecoration">
+                                  <img src="/app/images/Services-01.png"/>
+                                  <span>Service Configuration</span>
+                              </a>
+                          </li>
+                          <li>
+                              <a ui-sref="app.pipeline" class="noDecoration">
+                                  <img src="/app/images/pipeline.png"/>
+                                  <span>Pipeline Configuration</span>
+                              </a>
+                          </li>
+                          <li>
+                              <a ui-sref="app.sourceConfiguration" class="noDecoration">
+                                  <img src="/app/images/sources.png"/>
+                                  <span>Sources</span>
+                              </a>
+                          </li>
+                      </ul>
+                      <span style="margin-left: 10px;font-size: 13px;">|</span>
+                      <span style="margin-left: 10px;font-size: 13px;color: #3babe1;"> Language Configuration</span>
+              </div>
+        </h3>
+    </div>
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 alignRight">
+        <img class="helpImages" src="/app/images/comment-01.png"/>
+        <img class="helpImages" src="/app/images/help-01.png"/>
+    </div>
+</div>
+
+<div class="well container-fluid nlpEngine">
+	<ul class="nav nav-tabs nav-custom-tabs">
+	  <li class="active"><a data-toggle="tab" href=".language">Languages</a></li>
+	  <li><a data-toggle="tab" href=".train">Train</a></li>
+	  <li><a data-toggle="tab" href=".test">Test</a></li>
+	</ul>
+	<br>
+	<div class="tab-content">
+		<div class="tab-pane fade in active language">
+			<div class="row">
+				<div class="col-lg-8 col-md-8 col-lg-8 lang">
+					<h5>Select Language</h5>
+					<p>More languages coming soon</p>
+					<br>
+					<div class="checkbox">
+						<form>
+							<label class="checkbox-inline">
+								<input type="checkbox" name="" value="">
+								<i class="helper"></i>English
+							</label>
+							<label class="checkbox-inline disabled">
+								<input type="checkbox" name="" value="">
+								<i class="helper"></i>Spanish
+							</label>
+							<label class="checkbox-inline">
+								<input type="checkbox" name="" value="">
+								<i class="helper"></i>Chinese
+							</label>
+							<label class="checkbox-inline">
+								<input type="checkbox" name="" value="">
+								<i class="helper"></i>Japanese
+							</label>
+						</form>
+					</div>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col-lg-8 col-md-8 col-sm-8 lang no-padding">
+					<div class="row" style="margin:15px;">
+						<div class="col-lg-10 col-md-10 col-sm-10">
+							<h5>Upload Language Models</h5>
+							<p>You can upload custom models that are supported by our models</p>
+						</div>
+						<div class="col-lg-2 col-md-2 col-sm-2" ng-click="addLanguage();" style="cursor:pointer;">
+							<img src="/app/images/Upload-01.png" style="width:20px;"/>
+							<span>Add More</span>
+						</div>
+					</div>
+					<br>
+					<div class="row" style="margin:15px;">
+						<div class="col-lg-6 col-md-6 col-sm-6">
+							<div class="panel panel-default nlp-panel">
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-lg-3 col-md-3 col-sm-3">
+											<p>Model 1</p>
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-3">
+											<span>English</span>
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-3">
+											<span>sPaCy</span>
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-3">
+											<label class="checkbox-inline">
+												<input type="checkbox" name="" value="">
+												<i class="helper"></i>Default
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-default nlp-panel">
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-lg-3 col-md-3 col-sm-3">
+											<p>Model 2</p>
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-3">
+											<span>English</span>
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-3 no-padding">
+											<span>Engine Type</span>
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-3">
+											<!--<label class="checkbox-inline">-->
+												<!--<input type="checkbox" name="" value="">-->
+												<!--<i class="helper"></i>Default-->
+											<!--</label>-->
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-default nlp-panel">
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-lg-3 col-md-3 col-sm-3">
+											<p>Model 3</p>
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-3">
+											<span>French</span>
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-3 no-padding">
+											<span>Engine Type</span>
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-3">
+											<!--<label class="checkbox-inline">-->
+												<!--<input type="checkbox" name="" value="">-->
+												<!--<i class="helper"></i>Default-->
+											<!--</label>-->
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tab-pane fade train" style="height:530px;">
+			<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 bhoechie-tab-menu no-padding" style="height:530px;background-color: #f1efef;">
+						<div class="list-group">
+							<a href="#" class="list-group-item active text-center">NER</a>
+							<a href="#" class="list-group-item text-center">Intent</a>
+						</div>
+					</div>
+					<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 bhoechie-tab">
+						<div class="bhoechie-tab-content active">
+							<div class="row">
+								<div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+									<label>Train with Entity Models</label>
+									<div class="row">
+										<div class="upload-div" style="height:480px;background-color:white;border:1px solid #ddd;">
+											<div class="row">
+												<div class="col-lg-12 col-sm-12 col-md-12" ng-click="uploadModel();" style="cursor:pointer;text-align: center;margin-top: 30px;margin-bottom: 30px;">
+													<img src="/app/images/Upload-01.png" style="width:30px;"/>
+													<span>Upload Model</span>
+												</div>
+											</div>
+											<br>
+											<br>
+											<br>
+											<div class="row">
+												<div class="col-lg-12 col-sm-12 col-md-12">
+													<h4>Uploaded Models</h4>
+													<span>You can activate one model to train</span>
+												</div>
+											</div>
+											<div class="modelBox">
+												<div class="row">
+													<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+														<label>Model 1</label><br>
+														<span>data set 1</span>
+													</div>
+													<div class="col-lg-4 col-sm-4 col-md-4 col-xs-4" style="margin-top: 15px;text-align:right;">
+														<label class="switch">
+															<input type="checkbox">
+															<span class="slider round"></span>
+														</label>
+													</div>
+												</div>
+											</div>
+											<div class="modelBox">
+												<div class="row">
+													<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+														<label>Model 2</label><br>
+														<span>data set 2</span>
+													</div>
+													<div class="col-lg-4 col-sm-4 col-md-4 col-xs-4" style="margin-top: 15px;text-align:right;">
+														<label class="switch">
+															<input type="checkbox">
+															<span class="slider round"></span>
+														</label>
+													</div>
+												</div>
+											</div>
+											<div class="modelBox">
+												<div class="row">
+													<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+														<label>Model 3</label><br>
+														<span>data set 3</span>
+													</div>
+													<div class="col-lg-4 col-sm-4 col-md-4 col-xs-4" style="margin-top: 15px;text-align:right;">
+														<label class="switch">
+															<input type="checkbox">
+															<span class="slider round"></span>
+														</label>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-8 col-sm-8 col-md-8 col-xs-8">
+									<label>Train By Data</label>
+									<div class="row">
+										<div class="upload-div" style="height:480px;background-color:white;border:1px solid #ddd;">
+											<br>
+											<div class="row">
+												<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+													New Text
+												</div>
+												<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+													<i class="fa fa-download"></i>
+													<span>Import Annonated Data</span>
+												</div>
+											</div>
+											<br>
+											<div class="row">
+												<div class="col-lg-12 col-sm-12 col-md-12">
+													<textarea class="form-control bottomLineInput" rows="5" placeholder="Type or paste the text here (brat component here)" style="margin-bottom:0px;border-radius:0px;"></textarea>
+												</div>
+												<div class="col-lg-12 col-sm-12 col-md-12">
+													<div class="tData">
+														<i class="fa fa-floppy-o"></i>
+														Save As Training Data
+													</div>
+												</div>
+											</div>
+											<br>
+											<div class="row">
+												<div class="col-lg-6 col-md-6 col-sm-6">
+													<label>Available Training Data Sets</label>
+													<br>
+													<span>Select data sets and click on Train Model</span>
+												</div>
+												<div class="col-lg-6 col-sm-6 col-md-6 text-right">
+													<button class="btn button-customSave btn-custom">Train Model</button>
+													<i class="fa fa-pencil"></i>
+													<i class="fa fa-download"></i>
+													<i class="fa fa-trash"></i>
+												</div>
+											</div>
+											<br>
+											<div class="panel panel-default training-panel">
+												<div class="panel-body">
+													<div class="col-lg-12 col-sm-12 col-md-12 no-padding" style="margin-bottom:15px;">
+														<div class="row" style="background-color:#ddd;">
+															<div class="col-lg-1 col-md-1 col-sm-1">
+																<label class="checkbox-inline">
+																	<input type="checkbox" name="" value="">
+																	<i class="helper"></i>
+																</label>
+															</div>
+															<div class="col-lg-11 col-md-11 col-sm-11">
+																<label>Data 1</label><br>
+																<span>2100 sentences</span>
+															</div>
+														</div>
+													</div>
+
+													<div class="col-lg-12 col-sm-12 col-md-12 no-padding"  style="margin-bottom:15px;">
+														<div class="row" style="background-color:#ddd;">
+															<div class="col-lg-1 col-md-1 col-sm-1">
+																<label class="checkbox-inline">
+																	<input type="checkbox" name="" value="">
+																	<i class="helper"></i>
+																</label>
+															</div>
+															<div class="col-lg-11 col-md-11 col-sm-11">
+																<label>Data 1</label><br>
+																<span>2100 sentences</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tab-pane fade test lang" style="height:530px;">
+			<div class="row test" style="padding:15px;">
+				<div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 no-padding" style="height:480px;background-color:white;border:1px solid #ddd;">
+					<div class="panel">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-lg-6 col-md-6 col-sm-6">
+									<label>Input Sentences</label><br>
+									<span class="spanClass">maximum of 100 sentences are supported</span>
+								</div>
+								<div class="col-lg-6 col-md-6 col-sm-6 text-right">
+									<span style="margin-right: 35px;color: #909090;">
+										<i class="fa fa-floppy-o"></i>
+										<span style="margin-left: 8px;">Export</span>
+									</span>
+									<span>
+										<i class="fa fa-download" style="color:#36aae4;"></i>
+										<span style="margin-left: 8px;">Import sentences</span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-lg-12 col-sm-12 col-md-12">
+									<i class="fa fa-plus-circle addColor" aria-hidden="true"></i>
+									<label class="addColor">ADD NEW SENTENCE</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-sm-12">
+									<div class="input-group">
+										<input type="text" class="form-control" placeholder="Type or paste the sentence here" style="height: 60px;border: 1px solid #36aae4;border-radius: 0px;">
+										<span class="input-group-btn">
+											<button class="btn btn-test" type="button">Test</button>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-5 col-sm-5 col-md-5 col-xs-5 no-padding" style="height:480px;background-color:white;">
+					<div class="panel">
+						<div class="panel-heading">
+							<div class="row" style="margin-bottom:7px;">
+								<div class="col-lg-12 col-md-12 col-sm-12">
+									<h4>Output</h4>
+								</div>
+							</div>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-lg-6 col-sm-6 col-md-6">
+									<label class="checkbox-inline">
+										<input type="checkbox" name="" value="">
+										<i class="helper"></i>POS
+									</label>
+								</div>
+								<div class="col-lg-6 col-sm-6 col-md-6">
+									<label class="checkbox-inline">
+										<input type="checkbox" name="" value="">
+										<i class="helper"></i>Entity Extraction
+									</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-6 col-sm-6 col-md-6">
+									<label class="checkbox-inline">
+										<input type="checkbox" name="" value="">
+										<i class="helper"></i>Dependency Parse
+									</label>
+								</div>
+								<div class="col-lg-6 col-sm-6 col-md-6">
+									<label class="checkbox-inline">
+										<input type="checkbox" name="" value="">
+										<i class="helper"></i>Intent Extraction
+									</label>
+								</div>
+							</div>
+							<hr class="clear-all"/>
+							<div class="row text-center" style="margin-top:25%;">
+								<img src="/app/images/addempty.png"/>
+								<p>Output will be shown here</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>

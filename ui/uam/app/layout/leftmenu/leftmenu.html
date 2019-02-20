@@ -1,0 +1,33 @@
+<nav>
+    <ul class="sidebar-nav">
+        <li ng-class="{'bg-nav':$root.currentState==='solution'}" ng-click="goToDash()">
+                <img class="side-menuImage" src="/app/images/Solution_white.png" ng-if="$root.currentState==='solution'"/>
+                <img class="side-menuImage" src="/app/images/Solution_blue.png" ng-if="$root.currentState!='solution'"/>
+        </li>
+
+        <li ng-class="{'bg-nav':$root.currentState==='userRole'}" ng-click="gotToUserRoles()">
+
+              <img class="side-menuImage" src="/app/images/Role_white.png" ng-if="$root.currentState==='userRole'"/>
+            <img class="side-menuImage" src="/app/images/Role_blue.png" ng-if="$root.currentState!='userRole'"/>
+
+        </li>
+        <li ng-class="{'bg-nav':$root.currentState==='users'}" ng-click="gotToUsers()">
+
+              <img class="side-menuImage" src="/app/images/User_white.png" ng-if="$root.currentState==='users'"/>
+              <img class="side-menuImage" src="/app/images/User_blue.png" ng-if="$root.currentState!='users'"/>
+
+        </li>
+        <li ng-class="{'bg-nav':$root.currentState==='userGroup'}" ng-click="gotToUserGroups()">
+
+              <img class="side-menuImage" src="/app/images/usergroup_white.png" ng-if="$root.currentState==='userGroup'"/>
+            <img class="side-menuImage" src="/app/images/usergroup_blue.png" ng-if="$root.currentState!='userGroup'"/>
+
+        </li>
+        <li ng-class="{'bg-nav':$root.currentState==='queue'}" ng-click="gotToQueue()">
+
+              <img class="side-menuImage" src="/app/images/queue.png"/>
+
+        </li>
+    </ul>
+</nav>
+

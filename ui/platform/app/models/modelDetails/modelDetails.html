@@ -1,0 +1,1102 @@
+
+<div class="modal fade trainModal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content" style="padding: 10px;
+    border-radius: 0px;">
+      <div class="modal-header" style="border-bottom: none;padding-bottom:0px;">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" style="font-size: 15px;font-weight: 600;">Confirmation</h4>
+      </div>
+      <div class="modal-body" style="padding: 10px 15px 10px 25px;">
+          <p style="padding:10px;font-size:12px;margin-bottom:16px;"> A new version will be created when you want to train. you will be taken to a new version screen. would you like to proceed? </p>
+          <button class="btn btn-add" style="margin-left:10px;color: #43ade4;" ng-click="mde.trainVersion()">
+              <span>Yes, Go ahead and Train</span>
+          </button>
+          <a data-dismiss="modal" style="font-size: 12px;
+                color: #43ade4;
+                text-decoration: none;
+                padding-left: 15px;">No, Skip it</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row overlay adaptContainer" id="datasetImport">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12"  style="margin-bottom:70px;">
+        <h4 class="push-left">
+          <span ng-bind="ImportDataset"></span>
+          <span class="pull-right closeRule closebtn" ng-click="canceldataSet()">&times;</span>
+        </h4>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <form ng-submit="mde.sendDataSet()">
+                    <div class="form-group">
+                        <label>Data Set Name</label>
+                        <input type="text" ng-model="mde.importDsObj.name" class="form-control custom-formControl" placeholder="Data Set Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea  rows="4" ng-model="mde.importDsObj.description" cols="50" class="form-control custom-formControl" placeholder="Description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Data Format</label>
+                        <select class="form-control custom-formControl" ng-model="mde.importDsObj.dataType">
+                            <option value="">Select data format</option>
+                            <option ng-repeat="option in mde.datasetTypeList" value="{$ option $}">{$ option $}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Data Set</label>
+                        <br>
+                        <label><b>Choose From Local</b></label>
+                            <div>
+                              <button class="btn left button-primary" alt="browse" title="browse" type="button" style="cursor:pointer;position:relative;display:inline;border-radius:0">
+                                <input class="hide_file" ngf-select ng-model="fileInput" name="file"
+                                       ngf-change="uploadFile(fileInput)" type="file" style="font-size:13px;"/>
+                                  Browse
+                              </button>
+                            </div>
+                            <label class="entity-filepath" style="overflow: hidden;width: 80%;border: 1px solid #3babe1;height: 33px;">
+                                <span style="display:inline;" class="ng-binding" ng-show="browseFileName == undefined || browseFileName == ''">Please select the file</span>
+                                <span style="display:inline;" class="ng-binding" >{$ browseFileName $}</span>
+                            </label>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="form-group">
+                        <button class="btn btn-custom" type="submit">
+                            <i class="fa fa-floppy-o"></i>
+                            Save
+                        </button>
+                        <div class="loading-spiner-holder" ng-show="enabledatasetLoader">
+                            <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving dataset ...</i></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<div class="modal fade evaluateModal" role="dialog">-->
+  <!--<div class="modal-dialog">-->
+
+    <!--&lt;!&ndash; Modal content&ndash;&gt;-->
+    <!--<div class="modal-content" style="padding: 10px;-->
+    <!--border-radius: 0px;">-->
+      <!--<div class="modal-header" style="border-bottom: none;padding-bottom:0px;">-->
+        <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+        <!--<h4 class="modal-title" style="font-size: 15px;font-weight: 600;">Confirmation</h4>-->
+      <!--</div>-->
+      <!--<div class="modal-body" style="padding: 10px 15px 10px 25px;">-->
+          <!--<p style="padding:10px;font-size:12px;margin-bottom:16px;"> No Golden dataset has been found to evaluate the model. Would like to load the dataset and continue evaluate the version? </p>-->
+          <!--<button class="btn btn-add" style="margin-left:10px;color: #43ade4;" ng-click="mde.evaluateVersion()">-->
+              <!--<span>Yes, Load Golden Data Set</span>-->
+          <!--</button>-->
+          <!--<a data-dismiss="modal" style="font-size: 12px;-->
+                <!--color: #43ade4;-->
+                <!--text-decoration: none;-->
+                <!--padding-left: 15px;">No, Skip it</a>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+
+<div class="row minPadding">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+        <p class="zeroMargin">
+            <span ui-sref="app.modelDashboard" style="cursor:pointer">Models Configuration </span><span> > </span> <span> {$ mde.modelDetailsObj.name $}</span>
+        </p>
+    </div>
+</div>
+
+<div class="row adaptContainer modelDetailsClass">
+    <div>
+        <ul class="nav nav-tabs nav-custom-tabs">
+            <li class="active appendActive" ng-click="mde.regenerateGraph()"><a data-toggle="tab" href=".dashboard" aria-expanded="false">Dashboard</a></li>
+            <li class="appendActive1" ng-click="mde.allVersionsTable()"><a data-toggle="tab" href=".allversion" aria-expanded="true">All Versions</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane dash-act-pane fade in active dashboard" style="margin: 0px 5px 0px 5px;">
+                <div class="row">
+                    <div class="col-sm-7 col-md-7 col-lg-7 col-xs-7">
+                        <div class="row">
+                            <div>
+                                <span class="modelNameStyle">{$ mde.modelName $}</span>
+                            </div>
+                            <div>
+                                <span class="algoStyle">{$ mde.modelDetailsObj.algo_type $}</span>
+                            </div>
+                        </div><br>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                <select class="customDropdown" ng-model="mde.filterGraphModel" ng-change="mde.graphFilter()">
+                                    <option value="all">All Versions</option>
+                                    <option value="tagged">Active and Tagged Versions</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding" style="position:relative;">
+                                <div id="versionsGraph" style="min-height: 29em;background-color: white;"></div>
+                            </div>
+                        </div><br>
+                        <div class="row">
+                            <div style="margin-bottom:3px;">
+                                <span class="modelNameStyle">Evaluation Results</span>
+                            </div>
+                        </div>
+                        <!--<div class="row">-->
+                            <!--<div class="col-sm-5 col-md-5 col-xs-5 col-lg-5 no-padding">-->
+                                <!--<div>-->
+                                    <!--<span class="evaluateHeadStyle">Evaluation Data Set: </span>-->
+                                    <!--<span class="evaluateValueStyle">{$ mde.modelDetailsObj.evaluation_dataset_name $}</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <br>
+                        <div class="row modelsTable">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th >Version Name</th>
+                                            <th ng-repeat="(key,value) in mde.lastEvaluatedResults[0].score" style="text-transform: capitalize">{$ key $}</th>
+                                            <th>Dataset</th>
+                                            <th style="width:10%"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="list in mde.lastEvaluatedResults" ng-mouseover="showIcons($index)" ng-mouseout="hideIcons($index)">
+                                            <td>
+                                                <span>{$ list.version_name $}</span>
+                                            </td>
+                                            <td ng-repeat="(key,value) in list.score">{$ value | number:3 $}</td>
+                                            <td>{$ list.dataset_name $}</td>
+                                            <td>
+                                              <span ng-show="showEditIcons[$index]">
+                                                <i class="fa fa-download iconColor" title="Download" ng-click="mde.downloadFile(list.output_file_path)" style="margin-right: 10px;"></i>
+                                              </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5 col-md-5 col-lg-5 col-xs-5">
+                        <div class="well wellClass">
+                            <div class="activeVerHead">Active Version</div>
+                            <hr>
+                            <div>
+                                <span class="activeVerStyle">{$ mde.activeVersionName $}</span>
+                            </div>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 no-padding">
+                                    <div class="" style="width:100%;overflow:auto;">
+                                        <table class="table confTableStyle">
+                                            <tbody>
+                                                <tr ng-if="mde.classHeadings!=undefined">
+                                                    <td colspan="{$ mde.classHeadings.length+2 $}" style="border: none !important;background: #f5faff !important;"><div style="font-weight:bold;font-size:16px;">Predicted</div></td>
+                                                </tr>
+                                                <tr class="confHeadClass">
+                                                    <td rowspan="{$ mde.classHeadings.length+1 $}" style="width: 10%;border: none !important;background: #f5faff !important;vertical-align: middle;padding: 0px;" ng-if="mde.classHeadings!=undefined"><div style="transform: rotate(270deg);font-weight:bold;font-size:16px;">Actual</div></td>
+                                                    <td ng-if="mde.classHeadings!=undefined"></td>
+                                                    <td ng-repeat="head in mde.classHeadings">
+                                                        {$ head $}
+                                                    </td>
+                                                </tr>
+                                                <tr ng-repeat="values in mde.modelDetailsObj.confusion_matrix">
+                                                    <td class="columnHeadAlign">{$ mde.classHeadings[$index] $}</td>
+                                                    <td ng-repeat="val in values track by $index">
+                                                        {$ val $}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div><br><br>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6 no-padding" style="padding-top:10px;" ng-repeat="(key,value) in mde.modelDetailsObj.model_score" ng-if="value!=null">
+                                    <div class="posNegValhead">{$ key $}</div>
+                                    <div class="metricValueStyle">
+                                        {$ value | number:3 $}
+                                    </div>
+                                </div>
+                            </div><br><br>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 no-padding">
+                                    <div class="posNegValhead">Dataset used to train</div>
+                                    <div>
+                                        <p class="timeClass">{$ mde.modelDetailsObj.dataset_name $}</p>
+                                    </div>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 no-padding">
+                                    <div class="posNegValhead">Date of training</div>
+                                    <div class="timeClass" ng-hide="mde.modelDetailsObj.training_ts==undefined">
+                                        {$ mde.formatDate(mde.modelDetailsObj.training_ts) $}
+                                    </div>
+                                </div>
+                            </div><br><br>
+                            <div class="row">
+                                <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 no-padding">
+                                    <button class="btn btn-view-custom" ng-click="mde.activeVersionDetails()" ng-disabled="mde.setDetailsFlag">View More Details</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane dash-act-pane fade allversion">
+                <div class="pull-right taggedCheckbox" ng-show="mde.versionTableShow">
+                    <label for="tagCheck"><input type="checkbox" id="tagCheck" name="tagged" ng-model="taggedVersionFlag" ng-change="mde.showTaggedVersions(taggedVersionFlag)"/> Show Tagged Versions
+                    </label>
+                </div>
+                <div class="row" style="padding: 20px;" ng-show="mde.versionTableShow">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th >Version Name</th>
+                                    <th >Created On</th>
+                                    <th ng-repeat="head in mde.modelDetailsObj.Available_scores">{$ head $}</th>
+                                    <th >Tagged?</th>
+                                    <th >Active</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="list in mde.modelDetailsObj.versions | filter:{is_tagged: taggedVersionFlag}" ng-hide="list.status == 'in_draft'">
+                                    <td ng-style="list.status == 'processing' && {'color':'#a8a8a8'}" ng-click="mde.navToVersionDetails(list)">
+                                        <span>{$ list.name $}</span>
+                                    </td>
+                                    <td ng-bind="mde.formatDate(list.training_ts)" ng-style="list.status == 'processing' && {'color':'#a8a8a8'}" ng-click="mde.navToVersionDetails(list)">
+
+                                    </td>
+                                    <td ng-show="list.status == 'ready'" ng-repeat="prop in mde.modelDetailsObj.Available_scores" ng-style="list.status == 'processing' && {'color':'#898888'}" ng-click="mde.navToVersionDetails(list)">{$ list.model_score[prop] | number:3 $}</td>
+                                    <td ng-show="list.status == 'ready'">
+                                        <label class="switch">
+                                            <input type="checkbox" ng-model="list.is_tagged" ng-change="mde.setTaggedToVersion(list)">
+                                            <span class="slider round"></span>
+                                            <div class="toggleText"></div>
+                                        </label>
+                                    </td>
+                                    <td ng-show="list.status == 'ready'">
+                                        <label class="switch">
+                                            <input type="checkbox" ng-model="list.is_active" ng-change="mde.setActiveToVersion(list)">
+                                            <span class="slider round"></span>
+                                            <div class="toggleText"></div>
+                                        </label>
+                                    </td>
+                                    <td colspan="{$ mde.modelDetailsObj.Available_scores.length+3 $}" ng-show="list.status == 'processing'" style="text-align:center;">
+                                        <div class="loading-spiner-holder">
+                                            <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom" style="color:#4a90e2"></i><span class=""><i> Version is being trained</i></span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row" ng-show="mde.versionDetailShow">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                        <div class="well wellClass">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-xs-6 col-lg-6 no-padding">
+                                    <i class="fa fa-chevron-left" aria-hidden="true" style="font-size:22px;" ng-click="mde.allVersionsTable()"></i>
+                                    <span style="font-size:22px;">{$ mde.versionSelectedDetail.name $} </span>
+                                </div>
+                                <div class="col-sm-6 col-md-6 col-xs-6 col-lg-6 no-padding">
+                                    <button class="btn btn-add pull-right" style="margin-left:10px" ng-click="mde.openEvaluateModel()">
+                                        <img src="/app/images/evaluate.png" style="width:10px;">
+                                        <span>Evaluate</span>
+                                    </button>
+                                    <button class="btn btn-add pull-right" style="margin-left:10px" ng-click="mde.openRunModel()">
+                                        <img src="/app/images/evaluate.png" style="width:10px;">
+                                        <span>Run</span>
+                                    </button>
+                                    <button class="btn btn-add pull-right" style="margin-left:10px" data-toggle="modal" data-target=".trainModal">
+                                        <img src="/app/images/train.png" style="width:10px;">
+                                        <span>Train</span>
+                                    </button>
+                                    <button class="btn btn-add pull-right" ng-click="mde.showEditModelFunct()">
+                                        <img src="/app/images/edit.png" style="width:10px;">
+                                        <span>Edit</span>
+                                    </button>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-sm-12 col-lg-12 col-lg-12 col-xs-12">
+                                    <div style="font-weight: 500;">Performance</div>
+                                    <hr><br>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 no-padding">
+                                            <div class="" style="width:100%;overflow:auto;">
+                                                <table class="table confTableStyle">
+                                                    <tbody>
+                                                        <tr ng-if="mde.classHeadings!=undefined">
+                                                            <td colspan="{$ mde.classHeadings.length+2 $}" style="border: none !important;background: #f5faff !important;">
+                                                                <div style="font-weight:bold;font-size:16px;">Predicted</div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="confHeadClass">
+                                                            <td rowspan="{$ mde.classHeadings.length+1 $}" style="width: 10%;border: none !important;background: #f5faff !important;vertical-align: middle;padding: 0px;" ng-if="mde.classHeadings!=undefined"><div style="transform: rotate(270deg);font-weight:bold;font-size:16px;">Actual</div></td>
+                                                            <td ng-if="mde.classHeadings!=undefined"></td>
+                                                            <td ng-repeat="head in mde.classHeadings">
+                                                                {$ head $}
+                                                            </td>
+                                                        </tr>
+                                                        <tr ng-repeat="values in mde.versionSelectedDetail.confusion_matrix">
+                                                            <td class="columnHeadAlign">{$ mde.classHeadings[$index] $}</td>
+                                                            <td ng-repeat="val in values track by $index">
+                                                                {$ val $}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div><br><br>
+                                    <div class="row">
+                                        <div class="col-sm-2 col-md-2 col-lg-2 col-xs-2 no-padding" ng-repeat="(key,value) in mde.versionSelectedDetail.model_score">
+                                            <div class="posNegValhead">{$ key $}</div>
+                                            <div class="metricValueStyle">
+                                                {$ value | number:3 $}
+                                            </div>
+                                        </div>
+                                    </div><br>
+                                    <div class="row">
+                                        <div class="col-sm-2 col-md-2 col-lg-2 col-xs-2 no-padding">
+                                            <div class="posNegValhead">Previous Version</div>
+                                            <div >
+                                                {$ mde.versionSelectedDetail.previous_version_name $}
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2 col-md-2 col-lg-2 col-xs-2 no-padding">
+                                            <div class="posNegValhead">Dataset used to train</div>
+                                            <div class="customPrevVersion">
+                                                {$ mde.modelDetailsObj.dataset_name $}
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2 col-md-2 col-lg-2 col-xs-2 no-padding">
+                                            <div class="posNegValhead">Date of Training</div>
+                                            <div class="customPrevVersion" ng-hide="mde.modelDetailsObj.training_ts==undefined">
+                                                {$ mde.formatDate(mde.modelDetailsObj.training_ts) $}
+                                            </div>
+                                        </div>
+                                    </div><br><br>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 no-padding">
+                                            <div style="font-weight: 500;">Models</div>
+                                            <hr><br>
+                                            <div>
+                                                <span class="algoStyle">Ensemble Strategy</span>
+                                            </div>
+                                            <div>
+                                                <span class="posNegValhead">Auto</span>
+                                            </div>
+                                        </div>
+                                    </div><br>
+                                   <div class="row">
+                                      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" ng-repeat="data in mde.ensembleModels">
+                                         <div class="panel documentPanel">
+                                            <div class="modelCardBody">
+                                               <div class="modelHeading">
+                                                   <label class="modelHeadStyle" title="{$ data.name $}">{$ data.name $}</label>
+                                               </div>
+                                                <div class="algoTypeStyle">{$ data.algo_type $}</div>
+                                               <div class="templateBody">
+                                                  <div class="row modelTopBody">
+                                                     <div class="col-lg-3 col-sm-3 col-md-3 no-padding" ng-repeat="(key,value) in data.model_score">
+                                                        <label class="modelLabel">{$ key $}</label>
+                                                        <div class="textSubLabel">{$ value | number:4 $}</div>
+                                                     </div>
+                                                  </div>
+                                               </div>
+                                            </div>
+                                         </div>
+                                      </div>
+                                   </div><br>
+                                    <div class="row" id="evaluateResultId" ng-show="mde.evaluationResultsShow">
+                                        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 no-padding">
+                                            <div style="font-weight: 500;">Evaluation Results</div>
+                                            <hr><br>
+                                        </div>
+                                    </div>
+                                    <!--<div class="well testVersionClass">-->
+                                        <!--<p ng-show="!mde.evaluateResultsShow">No test results available</p>-->
+                                        <!--&lt;!&ndash;<button class="btn btn-add">&ndash;&gt;-->
+                                            <!--&lt;!&ndash;<img src="/app/images/plus-default.png" style="width:10px;">&ndash;&gt;-->
+                                            <!--&lt;!&ndash;<span>Test This Version</span>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;</button>&ndash;&gt;-->
+                                        <!--<div ng-show="mde.evaluateResultsShow" class="row">-->
+                                            <!--<div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">-->
+                                                <!---->
+                                            <!--</div>-->
+                                            <!--<div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">-->
+
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <div class="row" ng-show="mde.evaluationResultsShow">
+                                        <div class="col-sm-3 col-xs-3 col-md-3 col-lg-3">
+                                            <div>
+                                                <span class="algoStyle">Dataset used for evaluation</span>
+                                            </div>
+                                            <div>
+                                                <span class="posNegValhead">{$ mde.evaluateDatasetSelect $}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3 col-xs-3 col-md-3 col-lg-3 ">
+                                            <!--<button class="btn btn-add" style="margin-left:10px">-->
+                                                <!--<img src="/app/images/plus-default.png" style="width:10px;">-->
+                                                <!--<span>Upload New Dataset</span>-->
+                                            <!--</button>-->
+                                        </div>
+                                        <div class="col-sm-3 col-xs-3 col-md-3 col-lg-3 ">
+                                            <a class="pull-right" style="color: #4a90e2;font-size:13px;" ng-click="mde.saveAsEvaluationSet()">Save it as Evaluation Data Set</a>
+                                        </div>
+                                        <div class="col-sm-3 col-xs-3 col-md-3 col-lg-3 ">
+                                            <a class="pull-right" style="color: #4a90e2;font-size:13px;" ng-click="mde.downloadEvaluationFile(mde.evaluationResult.output_file_path)">Download Results</a>
+                                        </div>
+                                    </div><br>
+                                    <div class="row" ng-show="mde.evaluationResultsShow">
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                                            <div class="panel">
+                                                <div class="panel-heading evaluateVerHead">
+                                                    This Version
+                                                </div>
+                                                <div class="panel-body" style="padding: 15px !important;">
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 no-padding">
+                                                            <div class="table-responsive">
+                                                                <table class="table confTableStyle">
+                                                                    <tbody>
+                                                                        <tr ng-if="mde.clsForEval!=undefined">
+                                                                            <td colspan="{$ mde.clsForEval.length+2 $}" style="border: none !important;background: #f5faff !important;"><div style="font-weight:bold;font-size:16px;">Predicted</div></td>
+                                                                        </tr>
+                                                                        <tr class="confHeadClass">
+                                                                            <td rowspan="{$ mde.clsForEval.length+1 $}" style="width: 10%;border: none !important;background: #f5faff !important;vertical-align: middle;padding: 0px;" ng-if="mde.clsForEval!=undefined"><div style="transform: rotate(270deg);font-weight:bold;font-size:16px;">Actual</div></td>
+                                                                            <td ng-if="mde.clsForEval!=undefined"></td>
+                                                                            <td ng-repeat="head in mde.clsForEval">
+                                                                                {$ head $}
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr ng-repeat="values in mde.confForEval">
+                                                                            <td class="columnHeadAlign">{$ mde.clsForEval[$index] $}</td>
+                                                                            <td ng-repeat="val in values track by $index">
+                                                                                {$ val $}
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div><br>
+                                                    <div class="row">
+                                                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3" ng-repeat="(key,value) in mde.evaluationResult.score">
+                                                            <div class="posNegValhead">{$ key $}</div>
+                                                            <div class="metricValueStyle">
+                                                                {$ value | number:3 $}
+                                                            </div>
+                                                        </div>
+                                                    </div><br>
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                                                            <div id="evalVersionsGraph" style="min-height: 29em;background-color: white;"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                                            <div class="panel">
+                                                <div class="panel-heading evaluateVerHead">
+                                                    Active Version
+                                                </div>
+                                                <div class="panel-body" style="padding: 15px !important;">
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 no-padding">
+                                                            <div class="table-responsive">
+                                                                <table class="table confTableStyle">
+                                                                    <tbody>
+                                                                        <tr ng-if="mde.clsForEvalWithActive!=undefined">
+                                                                            <td colspan="{$ mde.clsForEvalWithActive.length+2 $}" style="border: none !important;background: #f5faff !important;"><div style="font-weight:bold;font-size:16px;">Predicted</div></td>
+                                                                        </tr>
+                                                                        <tr class="confHeadClass">
+                                                                            <td rowspan="{$ mde.clsForEvalWithActive.length+1 $}" style="width: 10%;border: none !important;background: #f5faff !important;vertical-align: middle;padding: 0px;" ng-if="mde.clsForEvalWithActive!=undefined"><div style="transform: rotate(270deg);font-weight:bold;font-size:16px;">Actual</div></td>
+                                                                            <td ng-if="mde.clsForEvalWithActive!=undefined"></td>
+                                                                            <td ng-repeat="head in mde.clsForEvalWithActive">
+                                                                                {$ head $}
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr ng-repeat="values in mde.confForEvalWithActive">
+                                                                            <td class="columnHeadAlign">{$ mde.clsForEvalWithActive[$index] $}</td>
+                                                                            <td ng-repeat="val in values track by $index">
+                                                                                {$ val $}
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div><br>
+                                                    <div class="row">
+                                                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3" ng-repeat="(key,value) in mde.evaluateResultForActive.score">
+                                                            <div class="posNegValhead">{$ key $}</div>
+                                                            <div class="metricValueStyle">
+                                                                {$ value | number:3 $}
+                                                            </div>
+                                                        </div>
+                                                    </div><br>
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                                                            <div id="evalActVersionsGraph" style="min-height: 29em;background-color: white;"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="mde.showTrainVersion">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                        <div class="well wellClass">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-xs-6 col-lg-6 no-padding">
+                                    <i class="fa fa-chevron-left" aria-hidden="true" style="font-size:22px;" ng-click="mde.activeVersionDetails()"></i>
+                                    <span style="font-size:22px;"><span>{$ mde.trainVersionName $}</span><span ng-show="mde.trainVersionName=='' || mde.trainVersionName==undefined"><</span><span ng-show="mde.trainVersionName=='' || mde.trainVersionName==undefined">Untitled Version</span><span ng-show="mde.trainVersionName=='' || mde.trainVersionName==undefined">> </span> </span>
+                                </div>
+                                <!--<div class="col-sm-6 col-md-6 col-xs-6 col-lg-6 no-padding">-->
+                                    <!--<button class="btn btn-add pull-right" style="margin-left:10px">-->
+                                        <!--<img src="/app/images/evaluate.png" style="width:10px;">-->
+                                        <!--<span>Evaluate</span>-->
+                                    <!--</button>-->
+                                    <!--<button class="btn btn-add pull-right" style="margin-left:10px">-->
+                                        <!--<img src="/app/images/evaluate.png" style="width:10px;">-->
+                                        <!--<span>Run</span>-->
+                                    <!--</button>-->
+                                    <!--<button class="btn btn-add pull-right" style="margin-left:10px">-->
+                                        <!--<img src="/app/images/train.png" style="width:10px;">-->
+                                        <!--<span>Train</span>-->
+                                    <!--</button>-->
+                                <!--</div>-->
+                            </div><br>
+                            <div class="row">
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                    <label class="trainVersionLabel">Version Name</label>
+                                    <div>
+                                        <input type="text" class="form-control" ng-model="mde.trainVersionName" placeholder="Enter Version Name"/>
+                                    </div>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-sm-9 col-md-9 col-lg-9 col-xs-9">
+                                    <label class="trainVersionLabel">Select Models to Train</label>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th ><input type="checkbox"/> Model Name</th>
+                                                    <th ng-repeat="head in mde.modelDetailsObj.Available_scores">{$ head $}</th>
+                                                    <th >Weight</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="arr in mde.ensembleModels">
+                                                    <td><input type="checkbox"/> {$ arr.name $}</td>
+                                                    <td ng-repeat="prop in mde.modelDetailsObj.Available_scores">{$ arr.model_score[prop] | number:3 $}</td>
+                                                    <td>{$ arr.weight $}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                    <label class="trainVersionLabel">Choose Data Set to Train</label>
+                                    <div>
+                                        <select class="form-control" ng-model="mde.selectedDatasetInTrain">
+                                            <option value="">Select from Existing Data Sets</option>
+                                            <option ng-repeat="option in mde.listOfDataSets" value="{$ option.dataset_id $}">{$ option.name $}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-1 col-md-1 col-lg-1 col-xs-1">
+                                    <label class="trainVersionLabel"></label>
+                                    <div>OR</div>
+                                </div>
+                                <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                    <label class="trainVersionLabel"></label>
+                                    <div>
+                                        <button class="btn btn-add" ng-click="uploadDataset()">
+                                            <img src="/app/images/import.png" style="width:10px;">
+                                            <span>Import Data Set</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                                    <button class="btn btn-view-custom" ng-click="mde.retrainModel()" >Train</button>
+                                    <div class="loading-spiner-holder" ng-show="enableTrainLoader">
+                                        <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Submitting job ...</i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="mde.showEditModel">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                            <p class="editModelHead">Edit Ensemble<span class="pull-right"><i class="fa fa-times" ng-click="mde.backToVersionDashboard()"></i></span></p>
+                        </div>
+                    </div>
+                    <div class="row createEnsembleClass">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                            <div class="model-header-labels">
+                                 <ul class="nav nav-pills nav-pills-custom nav-justified">
+                                     <li class="modelsActive active">
+                                         <a href=".models" data-toggle="tab"> <span class="numbering">1</span>
+                                         <span>Select Or Add Models</span></a>
+                                     </li>
+                                     <li class="cwActive">
+                                         <a href=".configureWeights" data-toggle="tab"> <span class="numbering">2</span>
+                                         <span>Configure weights</span></a>
+                                     </li>
+                                     <li class="trainActive">
+                                         <a href=".train" data-toggle="tab"><span class="numbering">3</span>
+                                         <span>Train</span></a>
+                                     </li>
+                                  </ul>
+                            </div>
+
+                            <div class="tab-content" style="background: #fafcff;border: 1px solid #c8cccf;">
+                                <div class="tab-pane edit-tab-pane models fade active in">
+                                    <div class="row" style="padding-top:10px;">
+                                        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                                            <div ng-show="!mde.createModel">
+                                                <form ng-submit="mde.saveAllModels()" ng-show="!mde.showIframe">
+                                                    <!--<div class="form-group row">-->
+                                                        <!--<div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">-->
+                                                            <!--<label class="trainVersionLabel">Version Name</label>-->
+                                                            <!--<input type="text" class="form-control custom-formControl" ng-model="mde.versionName" placeholder="Type Version Name" required>-->
+                                                            <!--<i style="font-size: 11px;">A new version will be created when models are modified</i>-->
+                                                        <!--</div>-->
+                                                    <!--</div>-->
+                                                    <div class="form-group row" >
+                                                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                            <label class="trainVersionLabel">Models</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" ng-repeat="data in mde.ensembleModels">
+                                                             <div class="panel documentPanel">
+                                                                <div class="modelCardBody">
+                                                                   <div class="modelHeading row" ng-show="mde.algorithmType=='custom'">
+                                                                       <div class="col-sm-8 col-xs-8 col-lg-8 col-md-8 no-padding">
+                                                                           <label class="modelHeadStyle" title="{$ data.model_name $}">{$ data.model_name $}</label>
+                                                                       </div>
+                                                                       <div class="col-sm-4 col-xs-4 col-lg-4 col-md-4 no-padding" style="padding-left:5px;">
+                                                                           <img src="/app/images/edit.png" style="width:15px;cursor:pointer;float:right;" ng-click="mde.getJupiterNotebookUrl()">
+                                                                       </div>
+                                                                   </div>
+                                                                    <div class="modelHeading row" ng-show="mde.algorithmType=='platform'">
+                                                                       <div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 no-padding">
+                                                                           <label class="modelHeadStyle" title="{$ data.model_name $}">{$ data.model_name $}</label>
+                                                                       </div>
+                                                                    </div>
+                                                                    <div class="algoTypeStyle">{$ mde.modelDetailsObj.algo_type $}</div>
+                                                                   <div class="templateBody">
+                                                                      <div class="row modelTopBody">
+                                                                         <div class="col-lg-4 col-sm-4 col-md-4 no-padding" ng-repeat="(key,value) in data.model_score">
+                                                                            <label class="modelLabel">{$ key $}</label>
+                                                                            <div class="textSubLabel">{$ value | number:3 $}</div>
+                                                                         </div>
+                                                                      </div>
+                                                                   </div>
+                                                                </div>
+                                                             </div>
+                                                        </div>
+                                                        <!--<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" ng-click="mde.showCreateModel()">-->
+                                                            <!--<div class="panel documentPanel">-->
+                                                                <!--<div class="modelCardBody">-->
+                                                                   <!--<div class="modelHeading">-->
+                                                                       <!--<label class="modelHeadStyle">&nbsp;</label>-->
+                                                                   <!--</div>-->
+                                                                   <!--<div class="templateBody">-->
+                                                                      <!--<div class="row modelTopBody" style="text-align:center">-->
+                                                                          <!--<img src="/app/images/plus-default.png" style="width:10px;">-->
+                                                                          <!--&nbsp;Create New Model-->
+                                                                      <!--</div>-->
+                                                                   <!--</div>-->
+                                                                    <!--<div class="algoTypeStyle">&nbsp;</div>-->
+                                                                <!--</div>-->
+                                                             <!--</div>-->
+                                                        <!--</div>-->
+                                                    </div><br>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                                                            <button class="btn btn-custom" type="submit">
+                                                                Next
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <div class="row" ng-if="mde.showIframe">
+                                                    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 ">
+                                                        <div id="loadImg" class="loader"></div>
+                                                        <iframe ng-src="{$ mde.jupiterNoteBookUrl $}"
+                                                        style="margin-top: 1px;width:100%;height:480px;" onload="document.getElementById('loadImg').style.display='none';"></iframe>
+                                                    </div>
+                                                    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                                                        <button class="btn btn-custom" ng-click="mde.saveCustomModel('draft')">
+                                                            Save as draft
+                                                        </button>
+                                                        <button class="btn btn-custom" ng-click="mde.saveCustomModel('model')">
+                                                            Save as model
+                                                        </button>
+                                                        <div class="loading-spiner-holder" ng-show="enableCustomModel">
+                                                            <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving model ...</i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div ng-show="mde.createModel">
+                                                <h4 class="createModelHead">Create New Model<span class="pull-right"><i class="fa fa-times" ng-click="mde.backToCreateModel()"></i></span></h4>
+                                                <form ng-submit="mde.saveNewModel()">
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                                            <label class="trainVersionLabel">Name</label>
+                                                            <input type="text" class="form-control custom-formControl" ng-model="mde.createModelObj.name" placeholder="Type Model Name" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                                            <label class="trainVersionLabel">Description</label>
+                                                            <textarea  rows="4" cols="50" class="form-control custom-formControl" ng-model="mde.createModelObj.description" placeholder="Type Description"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                                            <label class="trainVersionLabel">Binaries</label>
+                                                            <select class="form-control custom-formControl" ng-model="mde.createModelObj.binary_id">
+                                                                <option value="">Select Binary</option>
+                                                            </select>
+                                                        </div>
+                                                    </div><br>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                                                            <button class="btn btn-custom" type="submit">
+                                                                Create Model
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane edit-tab-pane configureWeights fade">
+                                    <div class="form-group row">
+                                        <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                            <label class="trainVersionLabel">Name</label>
+                                            <input type="text" class="form-control custom-formControl" ng-model="mde.newStrategyVersionName" placeholder="Type Version Name" required>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="padding-top:15px;">
+                                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3">
+                                            <div style="padding-left:15px;color:#b1b3b5;font-weight:600;">
+                                                Ensemble Strategy
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                                            <div>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="optradio" ng-model="mde.trainMode" value="automatic" >Auto
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="optradio" ng-model="mde.trainMode" value="manual" >Manual
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div><br>
+                                    <div class="row">
+                                        <div class="col-sm-9 col-md-9 col-lg-9 col-xs-9">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th >Model Name</th>
+                                                            <th ng-repeat="head in mde.modelDetailsObj.Available_scores">{$ head $}</th>
+                                                            <th >Weight</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="data in mde.ensembleModels">
+                                                            <td>{$ data.model_name $}</td>
+                                                            <td ng-repeat="prop in mde.modelDetailsObj.Available_scores">{$ data.model_score[prop] | number:3 $}</td>
+                                                            <td>
+                                                                <input type="number" min="0" max="10" prevent-typing-greater ng-model="data.weight" ng-disabled="mde.trainMode=='automatic' || mde.ensembleModels.length==1" />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div><br>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                                            <button class="btn btn-custom" ng-click="mde.goToTrainTab()">
+                                                Next
+                                            </button>
+                                            <div class="loading-spiner-holder" ng-show="enableWeightsLoader">
+                                                <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving model weights ...</i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane edit-tab-pane train fade">
+                                    <!--<div class="row">-->
+                                        <!--<div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">-->
+                                            <!--<label class="trainVersionLabel">Version Name</label>-->
+                                            <!--<div>-->
+                                                <!--<input type="text" class="form-control" ng-model="mde.trainVersionName" placeholder="Enter Version Name"/>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div><br>--><br>
+                                    <div class="row">
+                                        <div class="col-sm-9 col-md-9 col-lg-9 col-xs-9">
+                                            <label class="trainVersionLabel">Select Models to Train</label>
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th ><input type="checkbox" /> Model Name</th>
+                                                            <th ng-repeat="head in mde.modelDetailsObj.Available_scores">{$ head $}</th>
+                                                            <th >Weight</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="data in mde.ensembleModels">
+                                                            <td><input type="checkbox" /> {$ data.model_name $}</td>
+                                                            <td ng-repeat="prop in mde.modelDetailsObj.Available_scores">{$ data.model_score[prop] | number:3 $}</td>
+                                                            <td>{$ data.weight $}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div><br>
+                                    <div class="row">
+                                        <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                            <label class="trainVersionLabel">Choose Data Set to Train</label>
+                                            <div>
+                                                <select class="form-control" ng-model="mde.selectedDatasetInTrain">
+                                                    <option value="">Select from Existing Data Sets</option>
+                                                    <option ng-repeat="option in mde.listOfDataSets" value="{$ option.dataset_id $}">{$ option.name $}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1 col-md-1 col-lg-1 col-xs-1">
+                                            <label class="trainVersionLabel"></label>
+                                            <div>OR</div>
+                                        </div>
+                                        <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                            <label class="trainVersionLabel"></label>
+                                            <div>
+                                                <button class="btn btn-add" ng-click="uploadDataset()">
+                                                    <img src="/app/images/import.png" style="width:10px;">
+                                                    <span>Import Data Set</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div><br>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 no-padding">
+                                            <button class="btn btn-view-custom" ng-click="mde.saveWeights()" >Train</button>
+                                            <div class="loading-spiner-holder" ng-show="enableTrainLoader">
+                                                <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Submitting job ...</i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row overlay" id="runModelId" style="background-color: white;">
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12"  style="margin-bottom:70px;">
+            <h4 class="push-left">
+              <span>Run Model</span>
+              <span class="pull-right closeRule closebtn" ng-click="mde.cancelRunModel()">&times;</span>
+            </h4>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <form>
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 no-padding">
+                                <label class="trainVersionLabel">Dataset</label>
+                                <div class="row">
+                                    <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8 no-padding">
+                                        <select class="form-control" ng-model="mde.datasetSelectedForRun">
+                                            <option value="">Select Dataset</option>
+                                            <option ng-repeat="option in mde.listOfDataSets" value="{$ option.dataset_id $}">{$ option.name $}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                        <button class="btn btn-view-custom" ng-click="mde.runModel()">Run</button>
+                                        <div class="loading-spiner-holder" ng-show="enableRunLoader">
+                                            <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Testing Model ...</i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form><br>
+                    <div class="row">
+                        <label class="trainVersionLabel">Previous Runs</label>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th >Name</th>
+                                        <th >Run on</th>
+                                        <th >Dataset Name</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="list in mde.priorRuns" ng-mouseover="showIconsRun($index)" ng-mouseout="hideIconsRun($index)">
+                                        <td>{$ list.name $}</td>
+                                        <td>{$ list.update_ts $}</td>
+                                        <td>{$ list.dataset_name $}</td>
+                                        <td>
+                                            <span ng-show="showEditIconsRuns[$index]">
+                                                <i class="fa fa-download iconColor" title="Download" ng-click="mde.downloadFileRuns(list.output_file_path)" style="margin-right: 10px;"></i>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row overlay" id="evaluateModelId" style="background-color: white;">
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12"  style="margin-bottom:70px;">
+            <h4 class="push-left">
+              <span>Evaluate Model</span>
+              <span class="pull-right closeRule closebtn" ng-click="mde.cancelEvaluateModel()">&times;</span>
+            </h4>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <form>
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 no-padding">
+                                <label class="trainVersionLabel">Dataset</label>
+                                <div class="row">
+                                    <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8 no-padding">
+                                        <select class="form-control" ng-model="mde.datasetSelectedForEvaluate">
+                                            <option value="">Select Dataset</option>
+                                            <option ng-repeat="option in mde.listOfDataSets" value="{$ option.dataset_id $}">{$ option.name $}</option>
+                                        </select>
+                                    </div>
+                                </div><br>
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4 no-padding">
+                                        <button class="btn btn-view-custom" ng-click="mde.evaluateModel()">Evaluate</button>
+                                        <div class="loading-spiner-holder" ng-show="enableEvaluateLoader">
+                                            <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Evaluating Model ...</i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form><br>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row overlay" id="evaluateModelId" style="background-color: white;">
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12"  style="margin-bottom:70px;">
+            <h4 class="push-left">
+              <span>Import Data Set</span>
+              <span class="pull-right closeRule closebtn" ng-click="mde.cancelEvaluateModel()">&times;</span>
+            </h4>
+            <br>
+            <br>
+            <form>
+                <div class="form-group">
+                    <label class="trainVersionLabel">Data Set Name</label>
+                    <input type="text" class="form-control custom-formControl" placeholder="Data Set Name" required>
+                </div>
+                <div class="form-group">
+                    <label class="trainVersionLabel">Description</label>
+                    <textarea  rows="4" cols="50" class="form-control custom-formControl" placeholder="Description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="trainVersionLabel">Data Format</label>
+                    <select class="form-control custom-formControl">
+                        <option value="">Select data format</option>
+                        <option ng-repeat="option in mde.datasetTypeList" value="{$ option $}">{$ option $}</option>
+                    </select>
+                </div><br>
+                <div class="form-group">
+                    <label class="trainVersionLabel">Data Set</label>
+                    <br>
+                    <label><b>Choose From Local</b></label>
+                    <div>
+                      <button class="btn left button-primary" alt="browse" title="browse" type="button" style="cursor:pointer;position:relative;display:inline;border-radius:0">
+                        <input class="hide_file" ngf-select ng-model="fileInput" name="file"
+                               ngf-change="uploadFile(fileInput)" type="file" style="font-size:13px;"/>
+                          Browse
+                      </button>
+                    </div>
+                    <label class="entity-filepath" style="overflow: hidden;width: 80%;border: 1px solid #3babe1;height: 33px;">
+                        <span style="display:inline;" class="ng-binding" ng-show="browseFileName == undefined || browseFileName == ''">Please select the file</span>
+                        <span style="display:inline;" class="ng-binding" >{$ browseFileName $}</span>
+                    </label>
+                </div>
+                <br>
+                <br>
+                <div class="form-group">
+                    <button class="btn btn-custom" type="submit">
+                        <i class="fa fa-floppy-o"></i>
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

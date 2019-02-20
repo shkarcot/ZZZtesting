@@ -1,0 +1,21 @@
+@import './footer/footer';
+@import './leftmenu/leftmenu';
+@import './bodycontent/bodycontent';
+
+.page-content-wrapper{
+    .row-eq-height {
+          display: -webkit-box;
+          display: -webkit-flex;
+          display: -ms-flexbox;
+          display: flex;
+          align-items:center;
+    }
+    .wrapper{
+        display: flex;
+        align-items: stretch;
+    }
+    .no-margin{
+        margin-left:0px;
+        margin-right:0px;
+    }
+}

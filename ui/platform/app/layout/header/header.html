@@ -1,0 +1,66 @@
+
+<nav class="navbar navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header" style="width:90%">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">
+        <div class="header-image"></div>
+      </a>
+      <!--<label class="navbar-brand viewSolutions" class="bottomPosition" style="cursor:auto;width: 500px;padding: 5px;">-->
+        <div class="sol-title">
+          <div class="left"><img src="./app/images/Automation-02.png" style="width:30px;"/></div>
+          <div class="left sol-div">
+            <span class="sol-name" alt="{$ solution_name $}" title="{$ solution_name $}">{$ solution_name $}</span><br>
+
+            <span ui-sref="solution" class="view-all">View All Solutions</span>
+          </div>
+          <div class="clear"></div>
+        </div>
+       <!--<div class="row row-eq-height" style="padding-top:10px;">
+         <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 no-padding">
+           <img src="./app/images/Automation-02.png" style="width:30px;"/>
+         </div>
+         <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 no-padding">
+           <span style="font-size: 20px;color:white;padding: 5px;margin-top: 15px;">{$ solution_name $}</span><br>
+           <span   ui-sref="solution" style="padding-left:5px;cursor:pointer;color:#5eb5eb;">View All Solutions</span>
+         </div>
+       </div>-->
+     <!--</label>-->
+    </div>
+
+
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <!--<li>-->
+          <!--<a class="navbar-brand viewSolutions"  class="bottomPosition" ui-sref="solution" style="color:white !important;font-weight:bold !important">-->
+            <!--View All Solutions-->
+          <!--</a>-->
+        <!--</li>-->
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <img src="/app/images/avatar.png" alt="Avatar" class="rounded-image">
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a>
+                <img src="/app/images/avatar.png" alt="Avatar" class="rounded-image">
+                {$ loginData.username $}
+              </a>
+            </li>
+            <li>
+              <a ng-click="logout()">
+                <img src="/app/images/logout.png" class="logout-image"/>
+                Logout
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

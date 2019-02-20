@@ -1,0 +1,123 @@
+
+
+<div class="row custom-header" style="padding:10px;">
+    <div class="col-lg-4 col-md-4 col-sm-4 no-padding extraction-title-container review-breadcrumb">
+        <!-- <ol class="breadcrumb">
+            <li class="breadcrumb-item breadcrumb-heading"><a ng-click="goToCaseDashboard()">Dashboard</a></li>
+            <li class="breadcrumb-item active">{$ mpc.multi_page_info.metadata.properties.filename $}</li>
+        </ol> -->
+        <ol class="breadcrumb">
+                <li>
+                    <a ui-sref="app.agentDashboard">
+                            <span class="ext-title">
+                                    Queues
+                                </span>
+                    </a> 
+                    <span class="ext-title" style="width: 10px;color:#555"> > </span>
+                </li>
+                <li class="breadcrumb-item ">
+                    <a ng-click="goToCaseDashboard()">
+                        <span class="ext-title">
+                            {$ currentQueueName $}
+                        </span>
+                        <span class="ext-title" style="width: 10px;color:#555;"> > </span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item " ng-if="parentfilename">
+                       
+                            <span class="ext-title">
+                                {$ parentfilename $}
+                            </span>
+                            <span class="ext-title" style="width: 10px;color:#555;"> > </span>
+                       
+                    </li>
+                <li class="breadcrumb-item active">
+                    <span class="ext-title">
+                        {$ mpc.multi_page_info.metadata.properties.filename $}</span>
+                    <span class="breadcrumbhover">
+                        <img ng-if="mpc.multi_page_info.metadata.properties.filename" src="./app/images/breadcrumb-1.png" class="breadcrumbimg" />
+                        <div id="breadcrumbdiv" class="hoverbreadcrumb">
+                            <ol class="breadcrumb">
+                                <li>Queues</li>
+                                <li class="breadcrumb-item ">
+                                    {$ currentQueueName $}
+                                </li>
+                                <li class="breadcrumb-item" ng-if="parentfilename">
+                                    {$ parentfilename $}
+                                </li>
+                                <li class="breadcrumb-item active">
+                                    <span class="ext-title">
+                                        {$ mpc.multi_page_info.metadata.properties.filename $}</span>
+                                </li>
+                            </ol>
+                        </div>
+                    </span>
+                </li>
+            </ol>
+    </div>
+
+</div>
+<div class="row multiPage row-eq-height">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center multiImages" style="max-height:{$ multiImage $}px;overflow:auto;">
+        <div class="btn-group" ng-hide="mpc.temp==1">
+            <button type="button" class="btn btn-default btn-zoom" ng-click="mpc.zoomoutColumn();" ng-disabled="noZoom">
+                <i class="fa fa-minus-circle" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn-default btn-zoom btn-magnifier">
+                <img src="/app/images/zoomIcon.png" style="width: 18px;"/>
+            </button>
+            <button type="button" class="btn btn-default btn-zoom" ng-click="mpc.zoominColumn();">
+                <i class="fa fa-plus-circle"></i>
+            </button>
+        </div>
+        <div class="row">
+            <a>
+                <div ng-class="mpc.mutlicolumns" ng-repeat="(key,value) in mpc.images track by $index" style="padding-bottom: 10px;">
+                    <img src="/static{$ mpc.volume  $}{$ value['metadata']['raw'].key $}" class="img-thumbnail">
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="background-color: #f3f7fb;max-height:{$ multiImage $}px;overflow:auto; ">
+        <h5>Provide page range and select document type to classify the document</h5>
+        <hr>
+        <div class="row" >
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <div>
+                    <div class="row" style="margin-bottom: 10px;border-bottom: 1px solid #dedede;">
+                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                            <label>Page Range</label>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                            <label>Document Type</label>
+                        </div>
+                    </div>
+                    <div class="row custom_margin" ng-repeat="obj in mpc.groups track by $index" ng-init="obj.index=$index">
+                        <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2">
+                            <input type="number" class="form-control" ng-model="obj.start_page" ng-blur="mpc.range_validations($event,$index,obj,'start_page')"/>
+                        </div>
+                        <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2">
+                            <input type="number" class="form-control" ng-model="obj.end_page"   ng-blur="mpc.range_validations($event,$index,obj,'end_page')"/>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            <select class="form-control" ng-model="obj.template_id" ng-change="mpc.change_classification(obj)">
+                                  <option ng-repeat="(key,value) in mpc.listOfDocumentTypes[obj.index] track by $index"  value="{$  value.template_id $}">{$  value.template_name $}</option>
+
+                            </select>
+                        </div>
+                        <label class="errorClass" ng-if="mpc.displayFlag">{$ mpc.displayMsg[$index] $}</label>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+            <span style="color:red">{$ mpc.displayMsg[100] $}</span>
+        <br>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <button class="btn btn-custom btn-block" ng-click="mpc.submitClassificationReview()" ng-disabled="mpc.displayFlag">Done</button>
+            </div>
+        </div>
+    </div>
+</div>

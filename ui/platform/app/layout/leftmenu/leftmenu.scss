@@ -1,0 +1,146 @@
+#wrapper.toggled #sidebar-wrapper {
+    width: 255px;
+}
+
+#sidebar-wrapper {
+    position: fixed;
+    overflow-y: auto;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    border-right: 1px solid #e0e0e0;
+    background-color:#000;
+    background-size:100% 100%;
+}
+.sidebar-nav {
+    position: absolute;
+    width: 70px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.sidebar-nav li {
+  line-height:60px;
+  text-align:center;
+}
+
+.sidebar-nav li a span{
+    text-decoration: none;
+    display:block;
+    font-size:10px;
+    line-height: 14px;
+    text-align: center;
+}
+
+.sidebar-nav li a {
+    text-decoration: none;
+    color:White;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    font-size: 18px;
+    line-height: 60px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: #999999;
+}
+.sidebar-nav > .sidebar-brand a:hover {
+    background: none;
+    color: #fff;
+}
+
+.bg-nav a {
+        text-decoration: none;
+    color: white !important;
+    font-weight: bold;
+    font-size:13px;
+    padding:7px;
+    line-height: 25px;
+    background-color:#5EB5EB;
+    display:block;
+    padding-left: 0;
+}
+
+.leftmenu-solution {
+    position: absolute;
+    bottom: 0;
+    width: 252px;
+    background: #313131;
+}
+.leftmenu-solution .solution-nav {
+  text-indent: 11px;
+  line-height: 40px;
+  margin-left: 4px;
+}
+.leftmenu-solution .solution-nav a{
+  text-decoration: none;
+  background-color: #313131;
+  color: #ffffff;
+  font-size: 13px;
+  margin-left: 10px;
+}
+
+.activeSolution{
+  color:$dark-sky-blue !important;
+}
+
+
+@media(min-width:768px) {
+
+    #sidebar-wrapper {
+        width: 0;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        width: 256px;
+    }
+
+    #wrapper.toggled-2 #sidebar-wrapper {
+        width: 50px;
+    }
+}
+.logoutStyle{
+    width:20px;
+    margin-right: 13px;
+}
+.dashboard-image{
+    width:45px;
+}
+.dashboard-image2{
+    width:35px;
+}
+
+.leftmenu-solution {
+    position: absolute;
+    bottom: 0;
+    width: 252px;
+    background: #5ea8d9;
+    border-top: 1px solid #ddd;
+}
+.leftmenu-solution .solution-nav a {
+    background-color:transparent;
+}
+.logout-image{
+    width:20px;
+}
+
+
+.icon-bar a {
+    display: block;
+    text-align: center;
+    padding: 16px;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 36px;
+}
+
+.icon-bar a:hover {
+    background-color: #000;
+}
+.bottomPosition{
+    position: fixed;
+    bottom: 10px;
+}

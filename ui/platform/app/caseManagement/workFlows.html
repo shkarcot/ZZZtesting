@@ -1,0 +1,179 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+
+
+<div class="work-flows">
+    <div class="row overlay adaptContainer" id="createWorkFlow">
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+            <h4 class="push-left">
+              <span>
+                  <b>Create New Workflow</b>
+              </span>
+              <span class="pull-right closeRule closebtn" ng-click="wfc.closeCreateWorkflow()">&times;</span>
+            </h4>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="margin-bottom: 70px;">
+                    <form ng-submit="wfc.createNewWorkflow()">
+                        <div class="form-group">
+                            <label>Display Name</label>
+                            <input type="text" class="form-control custom-formControl" ng-model="wfc.workFlowObj.name" placeholder="Type Case Workflow Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea  rows="4" cols="50" class="form-control custom-formControl"  ng-model="wfc.workFlowObj.description" placeholder="Type Description"></textarea>
+                        </div>
+
+                        <br>
+                        <div class="form-group">
+                            <button class="btn btn-custom" type="submit"><i class="fa fa-floppy-o"></i>Save </button>
+
+                            <button class="btn btn-custom" type="button" ng-click="wfc.closeCreateWorkflow()">Cancel  </button>
+
+                            <div class="loading-spiner-holder" ng-show="wfc.workflowSaveLoader">
+                                <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i>
+                                    <span class=""><i>Saving Workflow ...</i></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row minPadding" style="width:95%;">
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 dashboard-row">
+                    <h3 class="zeroMargin">
+                          <div class="dropdown">
+                              <a data-toggle="dropdown" class="noDecoration configureHeading"> domain <b class="caret"></b></a>
+                              <ul class="customdropdown-menu dropdown-menu">
+                                  <li>
+                                    <a ui-sref="app.domainDashboard" class="noDecoration">
+                                      <img src="/app/images/Domain.png"/>
+                                      <span>Domain Configuration</span>
+                                    </a>
+                                  </li>
+                                  <li>
+                                      <a class="noDecoration" ui-sref="app.modelDashboard">
+                                            <img src="/app/images/model.png"/>
+                                            <span>Models</span>
+                                      </a>
+                                  </li>
+                                  <li>
+                                      <a class="noDecoration" ui-sref="app.function">
+                                        <img src="/app/images/functionIcon.png"/>
+                                        <span>Functions</span>
+                                      </a>
+                                  </li>
+                                  <li>
+                                      <a ui-sref="app.services" class="noDecoration">
+                                          <img src="/app/images/Services-01.png"/>
+                                          <span>Service Configuration</span>
+                                      </a>
+                                  </li>
+                                  <li>
+                                      <a ui-sref="app.pipeline" class="noDecoration">
+                                          <img src="/app/images/pipeline.png"/>
+                                          <span>Pipeline Configuration</span>
+                                      </a>
+                                  </li>
+                                  <li>
+                                      <a ui-sref="app.sourceConfiguration" class="noDecoration">
+                                          <img src="/app/images/sources.png"/>
+                                          <span>Sources</span>
+                                      </a>
+                                  </li>
+                              </ul>
+                              <span style="margin-left: 10px;font-size: 13px;"> > </span>
+                              <span style="margin-left: 10px;font-size: 13px;">Case Management</span>
+                          </div>
+                    </h3>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 dashboard-row">
+                    <div class="row pull-right">
+                        <button class="btn btn-add" ng-click="wfc.createWorkflow();">
+                            <img src="/app/images/add.png" style="width:13px;"/>
+                            <span>Create Workflow</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="width:95%;">
+       <div class="row row-eq-height">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <div class=" pull-right" ng-show="no_of_pages>0" style="text-align: right;">
+                    <span>
+                        <button class="btn pagination-button" ng-disabled="current_page==1" ng-click="wfc.changePageNum('prev')"><i class="fa fa-chevron-left" style="color:white;font-size:12px;"></i></button>
+                    </span>
+                    <span class="pagination-textBox">
+                        <input type="number" class="pagination-text" ng-model="current_page" ng-keyup="wfc.keyEnter($event)"/>
+                    </span>
+                    <span>
+                        <button class="btn pagination-button" ng-disabled="current_page==no_of_pages" ng-click="wfc.changePageNum('next')"><i class="fa fa-chevron-right" style="color:white;font-size:12px;"></i></button>
+                    </span>
+                    <span>  of {$ no_of_pages $}</span>
+                </div>
+            </div>
+        </div>
+
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12 bodycontent-sidepadding-zero">
+            <table class="table" id="table-desc">
+                <thead>
+                    <tr>
+                        <th>Workflow ID</th>
+                        <th>Workflow name</th>
+                        <th>Enable/Disable</th>
+                        <th>Queues</th>
+                        <th>Created On</th>
+                        <th>Updated On</th>
+                        <th width="100px"></th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="workflow in wfc.allCaseWorkflowsObj track by $index" style="border-top: 1px solid #ddd;cursor:pointer;">
+                    <tr ng-mouseover="showEditIcons[$index]=true" ng-mouseleave="showEditIcons[$index]=false">
+                        <td ng-click="wfc.gotoCaseObjects(workflow)" ng-bind="workflow.id"></td>
+                        <td ng-click="wfc.gotoCaseObjects(workflow)" ng-bind="workflow.name"></td>
+                        <td>
+                            <label class="switch">
+                                <input type="checkbox" ng-model="workflow.is_enabled" ng-change="wfc.setWorkflowStatus($index,workflow,workflow.is_enabled)">
+                                <span class="slider round"></span>
+                                <div class="toggleText"></div>
+                            </label>
+                        </td>
+                        <td ng-click="wfc.gotoCaseObjects(workflow)" ng-bind="workflow.queue_count"></td>
+                        <td ng-click="wfc.gotoCaseObjects(workflow)" ng-bind="workflow.created_ts | date:'MMM d, y, h:mm a'"></td>
+                        <td ng-click="wfc.gotoCaseObjects(workflow)" ng-bind="workflow.updated_ts | date:'MMM d, y, h:mm a'"></td>
+                        <td class="text-center">
+                            <span ng-show="showEditIcons[$index]">
+                               <a style="margin-right:15px;" ng-click="wfc.editWorkflow($index,workflow)" title="edit" alt="edit">
+                                <i class="fa fa-pencil-square-o iconColor"></i></a>
+                               <a  style="color:#a79d9d;" ng-click="wfc.deleteWorkflow($index,workflow)" title="remove" alt="remove">
+                                <i class="fa fa-trash iconColor"></i></a>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+</div>

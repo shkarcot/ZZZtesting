@@ -1,0 +1,509 @@
+.newUnstructuredForm{
+        padding-left: 10px;
+        padding-right: 10px;
+
+    .well{
+        background-color:white;
+        box-shadow: 0px 0px 1px 1px rgba(124, 214, 241, 0.48);
+        padding: 0px;
+    }
+    .custom-formControl {
+        border-radius: 0px !important;
+        border: solid 1px rgba(51, 170, 227, 0.32);
+        box-shadow: none;
+    }
+    ::placeholder {
+        color: #000000;
+        opacity: 0.26;
+    }
+    .radio-inline{
+      width:30%;
+    }
+    .transparenttexBox{
+      border: none;
+      box-shadow: none;
+    }
+
+    .loader {
+      border: 4px solid #c3bbbb;
+      border-radius: 50%;
+      border-top: 4px solid #6d6767;
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      left: 45%;
+      top: 20%;
+      background-color: white;
+      -webkit-animation: spin 1s linear infinite; /* Safari */
+      animation: spin 1s linear infinite;
+    }
+
+    /* Safari */
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .customNewUnknownFormat{
+        padding-top:30px;
+    }
+    .custom-inputGroup{
+        background-color: aliceblue;
+        padding: 15px;
+    }
+    .labelKnown{
+        font-size:14px;
+        font-weight:500;
+    }
+    .knownDesc{
+        font-size:10px;
+        color:#989797;
+    }
+    .custom-radioallign{
+        transform:translateY(200%);
+    }
+    .sections{
+        padding:10px;
+        border: 1px solid #d0e8fd;
+        background-color: #f3f9ff;
+        margin-top:10px;
+    }
+    .UnknownPanel-custom{
+        border:1px solid #ddd;
+        .panel-heading{
+            background-color:white;
+            border-bottom: 1px solid #ddd;
+        }
+        .panel-body{
+            border-top:none !important;
+        }
+    }
+    .custom-addon{
+            background-color: transparent;
+            border: 1px solid rgba(51, 170, 227, 0.32);
+            border-left: none;
+    }
+    .fontDomainHead{
+        color: #7d7d7d;
+        font-weight: bold;
+        padding: 17px;
+        padding-left: 25px;
+        border-bottom: 1px solid #cacaca;
+    }
+    .tab {
+        float: left;
+    }
+    .tab button {
+        display: block;
+        background-color: inherit;
+        color: black;
+        padding: 16px 12px;
+        width: 100%;
+        border: none;
+        outline: none;
+        text-align: left;
+        border-bottom: 1px solid #e1e1e1;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .tab button:hover {
+        background-color: #ddd;
+    }
+    .tab button.active {
+        background-color: #dbf0fe;
+        color:#4a90e2;
+    }
+    .tabcontent {
+        float: left;
+        padding: 0px 12px;
+        border: 1px solid #ccc;
+        border-left: none;
+    }
+    .nopadding{
+        padding:0px;
+    }
+
+    .fontStyleForAttrHead{
+        font-size: 12px;
+        color: #bcbcbc;
+        padding-left: 12px;
+    }
+    .fontStyleForAttribute{
+        font-size: 10px;
+        color: black;
+        font-weight: normal;
+    }
+    .angular-ui-tree-handle:hover {
+        color: none;
+        background: none;
+        border: 1px solid #33aae3;
+    }
+    .fontNewEntity{
+        color: #5194e3;
+        font-size: 11px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .nav-custom-tabs{
+        padding: 15px 20px 15px 25px;
+    }
+    .disabledTest{
+        pointer-events: none;
+        cursor: not-allowed;
+        color: #bdbcbc !important;
+    }
+    .olStyle{
+        padding:0px;
+        list-style-type:none;
+    }
+    .olStyle1{
+        list-style-type:none;
+    }
+    .activeButton{
+            color: white !important;
+            background-color: #5db5eb !important;
+            padding: 10px;
+    }
+    .tablinks{
+        padding:10px;
+
+    }
+    .panel{
+        box-shadow:none;
+    }
+    .panel-group .panel-heading {
+        background-color:transparent;
+        border:none;
+    }
+    .panel-body{
+        border-top:none !important;
+    }
+    .btn-cancel{
+        background-color: transparent;
+        font-weight: 500;
+    }
+    .custom-panelBody{
+        border: solid 1px rgba(51, 170, 227, 0.32) !important;
+        margin-top: 10px;
+
+    }
+    .fa-3x{
+        font-size:16px;
+
+    }
+    .editImage{
+        width:20px;
+        margin-right:10px;
+    }
+    .deleteImage{
+        width:16px;
+
+    }
+    .dropdown-menu-form{
+        height:200px !important;
+    }
+    .cst-panel{
+        background-color: #f5faff;
+    }
+
+
+    .accepted {
+      height: 10px;
+      width: 10px;
+      background-color: #26ce3f;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .corrected{
+      height: 10px;
+      width: 10px;
+      background-color: #4a90e2;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .reviewed{
+      height: 10px;
+      width: 10px;
+      background-color: #fb9019;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .check-icon{
+    margin-left:5px;
+    cursor:pointer;
+    }
+    .check-icon-active{
+        color:green;
+    }
+    .edit-icon{
+        margin-left:5px;
+        cursor:pointer;
+    }
+    .edit-icon-active{
+        color:#43b3ee;
+    }
+    .del-icon{
+        margin-left:5px;
+        cursor:pointer;
+    }
+    .del-icon-active{
+        color:red;
+    }
+    .moreORless{
+        margin-left:5px;
+        color:#43b3ee;
+        font-size: 10px;
+        cursor:pointer;
+    }
+    .black-text{
+        color:black
+    }
+    .el-radio-btn{
+        display: flex;
+        margin-bottom: 5px;
+        align-items: center;
+    }
+    .el-redio-text{
+        margin-left: 3px;
+        margin-top: 4px;
+        font-weight: normal;
+        font-size: 11px;
+    }
+    .el-attribute-name{
+        color:#43b3ee !important;
+        font-size:13px;
+        word-wrap:break-word;
+        padding-left:5px;
+        font-weight:bold;
+    }
+    .el-attribute-input{
+        width: 100%;
+        color: black;
+        margin-left: 3px;
+        font-weight: normal;
+        font-size: 12px;
+    }
+    .pointer{
+        cursor:pointer;
+    }
+    .right-10{
+     margin-right:10px;
+    }
+    .save-icon-active{
+        color:#43b3ee;
+    }
+    .cancel-icon-active{
+        color:black;
+    }
+    .fontsize-10{
+        font-size:10px;
+    }
+    .newattributeSelect{
+        width: 100%;
+        background-color: white;
+        padding: 5px;
+        color: black;
+    }
+    .addAttribute-input-text{
+        font-size: 12px;
+        font-weight: normal;
+        padding: 0px;
+    }
+    .addAttribute-select{
+        font-size: 12px;
+        padding: 2px;
+        font-weight: normal;
+    }
+
+
+    .customSave {
+        display: inline-block;
+        color: #15bbed;
+        cursor: pointer;
+    }
+    .text-info1 {
+        color: #31708f;
+    }
+     .threshold-custom{
+        background-color: aliceblue;
+        padding: 10px;
+        margin-bottom: 20px;
+        overflow: auto;
+        border: 1px solid rgba(51, 170, 227, 0.32);
+    }
+    .threshold-custom label{
+        color: #000;
+        font-weight: 400;
+    }
+    .threshold-snippet{
+        padding :0px 0px 20px 0px;
+
+    }
+    .thresholdSesc{
+        font-size:12px;
+        color:#808080;
+        display: block;
+        padding-bottom: 20px;
+    }
+    .threshold-custom small{
+        font-size: 10px;
+        display: block;
+    }
+    .customThreshold{
+        background-image:url('/app/images/threshold.png');
+        background-position:center;
+        height: 100%;
+        background-repeat:no-repeat;
+    }
+    .thresholdImage{
+        width:17px;
+    }
+    .threshold-custom-desc{
+         position: absolute;
+        top: 60%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+    .threshold-custom-desc label{
+        text-align: center;
+        font-size:12px;
+        color: #808080;
+    }
+
+}
+
+.multiSelect{
+    .caret{
+        display:none;
+    }
+}
+.acceptColor{
+    color:green;
+}
+.accepted {
+  height: 10px;
+  width: 10px;
+  background-color: #26ce3f;
+  border-radius: 50%;
+  display: inline-block;
+}
+.corrected{
+  height: 10px;
+  width: 10px;
+  background-color: #4a90e2;
+  border-radius: 50%;
+  display: inline-block;
+}
+.reviewed{
+  height: 10px;
+  width: 10px;
+  background-color: #fb9019;
+  border-radius: 50%;
+  display: inline-block;
+}
+.listedStyle{
+    padding:10px !important;
+}
+.img-edit{
+    width: 25px;
+    padding-right: 10px;
+}
+.reviewPage{
+
+}
+.rzslider {
+        margin: 0px 0 2px 0;
+}
+.rzslider .rz-pointer {
+    top: -4px;
+    z-index: 3;
+    width: 13px;
+    height: 13px;
+    cursor: pointer;
+    background-color: #35aae3;
+    border-radius: 16px;
+}
+.rzslider .rz-bar {
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    background: #d6e1e5;
+    border-radius: 2px;
+}
+.rzslider .rz-pointer:after {
+    position: unset !important;
+    top: 8px;
+    left: 8px;
+    width: 8px;
+    height: 8px;
+    background:none;
+    border-radius: 0px;
+    content: '';
+}
+.rzslider .rz-bubble {
+    bottom: -30px;
+    padding: 1px 3px;
+    color: #55637d;
+    cursor: default;
+}
+
+.input-slider-value{
+    width: 28px;
+    margin: 0px 0 40px 0;
+    height: 20px;
+}
+.rzslider .rz-pointer:hover:after {
+    background-color: #fff0;
+}
+
+.rzslider .rz-pointer.rz-active:after {
+    background-color: #fff0;
+    border:0;
+    border-radius:0;
+    z-index:-100;
+}
+.overlay-threshold{
+    .form-control{
+        padding:20px;
+        border: solid 1px rgba(51, 170, 227, 0.32);
+    }
+    .custom-control{
+        height: 50px;
+        padding: 10px;
+    }
+    .form-group{
+        margin-top: 25px;
+    }
+    label{
+        font-weight: 500;
+    }
+}
+.threshold-custom{
+    .patient-details{
+        border:1px solid transparent;
+        background-color: #ffffff;
+        height: 4em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin:5px 0px;
+        box-shadow: 1px 1px 1px 1px #bfe6f9;
+
+    }
+    .patient-icon{
+        display: none;
+        text-align: center;
+    }
+    .patient-details:hover + .patient-icon, .patient-details:hover  .patient-icon{
+        display: block;
+    }
+    a{
+        text-decoration: none;
+    }
+}

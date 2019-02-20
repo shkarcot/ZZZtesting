@@ -1,0 +1,51 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="entities">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="entity">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="attributes">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="attribute" maxOccurs="unbounded" minOccurs="1">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="key_name" minOccurs="1"/>
+                          <xs:element name="synonym" minOccurs="1">
+                            <xs:complexType mixed="true">
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="syn" minOccurs="0"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element type="xs:string" name="type" minOccurs="1"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element type="xs:string" name="entity_name"/>
+              <xs:element name="entity_synonym">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="syn" minOccurs="0"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element type="xs:string" name="entity_type"/>
+              <xs:element name="primary_key">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="key" minOccurs="0"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,156 @@
+<div class="row overlay adaptContainer heightFull" id="ingestFile">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" ng-hide="fuc.newFiles.length>0">
+        <div class="row">
+            <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                <h4>Direct Ingestion</h4>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 dashboard-row text-right">
+                <span class="closeRule closebtn" ng-click="cancelIngest()">&times;</span>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                <div class="card sourceCard row row-eq-height" style="align-items: center;display: flex;flex-direction: row;">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center">
+                        <img src="/app/images/product-document.png" style="width: 40px;" />
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                        <input class="hide_file" ngf-select="uploadDic($files)" multiple="multiple" type="file" style="font-size:13px;" />
+                        <p class="textStyle">Upload PNG/ GIF/JPEG/ PDF/ ZIP/ rar/JSON Files</p>
+                        <span>
+                            < 25MB files are supported</span> <div ng-repeat="name in browseName">{$ name $}
+                    </div>
+                    <p ng-show="browseFileError" style="color:red">Please select the file</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+</div>
+<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" ng-hide="fuc.newFiles.length==0">
+    <div class="row">
+        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+            <h4>Selected Files</h4>
+        </div>
+        <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 dashboard-row text-right">
+            <span class="closeRule closebtn" ng-click="cancelIngest()">&times;</span>
+        </div>
+    </div>
+    <br>
+    <div class="row filesTable">
+        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>File Name</td>
+                        <td>Work Flow</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="file in fuc.newFiles track by $index">
+                    <tr>
+                        <td class="padding-none">
+                            <img src="/app/images/image-file.png" class="pull-left" />
+                            <span class="upload-file-name pull-left" title="{$ file.name $}">{$ file.name $}</span>
+                        </td>
+                        <td >
+                            <select ng-model="file.workflow_id" class="form-control cst-formControl work-flow" ng-if="fuc.workflowlist">
+                                <option value="">Select workflow</option>
+                                <option value="{$ workflow.id $}" ng-repeat="workflow in fuc.workflowlist |filter: { is_enabled: 'true' }">{$
+                                    workflow.name $}</option>
+                            </select>
+                        </td>
+                        <td >
+                            <label class="custom-checkbox" style="display: inline-block;">
+                                <span ng-style="(file.workflow_id==undefined || file.workflow_id=='') && {'cursor':'not-allowed'} || {'cursor':'pointer'}">Use for all</span>
+                                <input type="checkbox" ng-model="file.useforall" ng-disabled="file.workflow_id==undefined || file.workflow_id==''" name="useforall" ng-change="setworkflow($index,file.useforall,file.workflow_id)" />
+                                <span class="checkmark" ng-style="(file.workflow_id==undefined || file.workflow_id=='') && {'cursor':'not-allowed'} || {'cursor':'pointer'}"></span>
+                                <span style="margin-left:5px;"><i class="fa fa-times" ng-click="fuc.removeFile($index)"></i></span>
+                              </label>
+                            <span style="margin-left:5px;"><i class="fa fa-plus" ng-click="metadataindex=$index"></i></span>
+                        </td>
+                    </tr>
+                    <tr ng-show="metadataindex==$index">
+                        <td colspan="3">
+                            <input type="text" ng-model="file.file_metadata" placeholder="Enter the JSON" class="form-control" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+    <div class="row fixedBottom">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <button class="btn btn-custom btn-upload" ng-click="uploadfiles()">Upload</button>
+            <button class="btn btn-customCancel" ng-click="cancelIngest()">Cancel</button>
+        </div>
+    </div><br>
+</div>
+</div>
+<div class="sourceContainer">
+    <div class="row" ng-if="fuc.uploadedFiles.length==0">
+        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 text-center" style="padding-top:20%;">
+            <p>You can ingest files into the designated folder using ‘Ingest files’. Files of types
+                JPG, PNG, PDF, DOC, CSV, XLS, ZIP, TAR are supported</p>
+            <button class="btn btn-customIngest" ng-click="ingestFiles();">
+                <img src="/app/images/plus-default.png" style="width:15px;" />
+                Ingest Files
+            </button>
+
+        </div>
+    </div>
+    <div class="row uploadedlist" ng-if="fuc.uploadedFiles.length > 0">
+        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                <p class="fileupload-text">You can ingest files into the designated folder using ‘Ingest files’, Users can upload the file types
+                        like, JPG, PNG, PDF, JSON, CSV…</p>
+                    <button class="btn btn-customIngest file-injest-btn" ng-click="ingestFiles();">
+                        <img src="/app/images/plus-default.png" style="width:15px;" />
+                        Ingest Files
+                    </button>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead style="background-color:#e2e2e2;color:#7b7b7b;">
+                        <tr>
+                            <td>File Name</td>
+                            <td>Uploaded By</td>
+                            <td>Uploaded On</td>
+                            <td>Size</td>
+                            <td>WorkFlow</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="file in fuc.uploadedFiles track by $index">
+                            <td>
+                                <img src="/app/images/image-file.png" />
+                                <span>{$ file.name $}</span>
+                            </td>
+                            <td>
+                                <span>{$ file.uploaded_by $}</span>
+                            </td>
+                            <td>
+                                <span>{$ formatDate(file.updated_ts) $}</span>
+                            </td>
+                            <td>
+                                <span>{$ file.size $}</span>
+                            </td>
+                            <td>
+                                <select ng-disabled="true"  ng-model="file.workflow_id" class="form-control uploadDropdown" ng-if="fuc.workflowlist">
+                                    <option value="{$ workflow.id $}" ng-repeat="workflow in fuc.workflowlist">{$
+                                        workflow.name $}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <i ng-if="file.status=='uploading'" class="fa fa-spinner fa-spin" style="font-size:24px;color:#33aae3;"></i>
+                                <img ng-if="file.status=='failed'" src="./app/images/errorUpload.png" />
+                                <img ng-if="file.status=='success'" src="./app/images/checkmark.png" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,104 @@
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12">
+  <div class="row" style="padding-top:10px;">
+    <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3">
+      <label style="margin-top:7px">Select the Insight</label>
+    </div>
+    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+      <select class="form-control" id="sel-insights" ng-model="dic.selectedInsight" ng-change="dic.selectInsight(dic.selectedInsight)">
+        <option value="">Select the Insight</option>
+        <option ng-repeat="arr in dic.insightObj" value="{$ $index $}" ng-selected="$index==0">{$ arr.template_key $}</option>
+      </select>
+      <div class="loading-spiner-holder " ng-show="dic.spinGetInsightData">
+        <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Retrieving Insight functions...</i></span>
+      </div>
+      </div>
+    </div>
+    <div class="col-sm-5 col-md-5 col-lg-5 col-xs-5 error" style="padding-top: 7px;">
+      {$ dic.insightSelectError $}
+    </div>
+  </div>
+  <br>
+
+  <div class="row" style="padding:0;">
+   <div class="col-lg-12 col-md-12 col-sm-12" style="padding:0">
+
+     <div class="col-lg-6 col-md-6 col-sm-6">
+        <div class="insightConfigureHeading">Input</div>
+          <div class="col-lg-12 col-md-12 col-sm-12 configure-div">
+            <div class="loading-spiner-holder " ng-show="dic.spinGetInsightInOutPutData">
+              <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Retrieving input data...</i></span></div>
+            </div>
+            <div>
+              <table class="table table-bordered table-striped" style="margin-bottom:5px">
+              <thead>
+                <tr>
+                  <th width="60%">Key</th>
+                  <th width="40%">Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-ng-repeat="arr in  dic.inputData" ng-if="arr.key!='request_type'">
+                <td>
+                  <span ng-if="arr.default==true" ng-bind="arr.key"></span>
+                  <input ng-if="arr.default==false" type="text" ng-blur="dic.keyEmptyCheck(arr.key,$index)" ng-model="arr.key" />
+                </td>
+                <td>
+                  <select class="form-control" id="$index" data-ng-model="arr.type">
+                    <option value="string" ng-selected="arr.type == 'string'">String</option>
+                    <option value="image" ng-selected="arr.type == 'image'">Image</option>
+                  </select>
+                </td>
+                </tr>
+              </tbody>
+              </table>
+              <p class="red">{$  dic.messageForKeyEmpty $}</p>
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 dashboard-row">
+                <div class="row">
+                  <a style="color:#0093d7;text-decoration:none;" ng-click="dic.addInputKeys()">
+                    <i class="fa fa-plus"></i><span>Add</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            </div>
+        </div>
+      </div>
+     <div class="col-lg-6 col-md-6 col-sm-6">
+        <div class="insightConfigureHeading">Output</div>
+          <div class="col-lg-12 col-md-12 col-sm-12 configure-div"  style="padding:0">
+              <div class="loading-spiner-holder " ng-show="dic.spinGetInsightInOutPutData">
+                <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Retrieving output data...</i></span></div>
+              </div>
+            <div>
+              <table class="table table-bordered table-striped" style="margin-bottom:5px">
+              <thead>
+                <tr>
+                  <th width="60%">Key</th>
+                  <th width="40%">Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-ng-repeat="(key, value) in  dic.outputData">
+                <td ng-bind="key"></td>
+                <td ng-bind="value.type"></td>
+                </tr>
+              </tbody>
+              </table>
+            </div>
+
+      </div>
+    </div>
+</div>
+
+  <div class="configure">
+    <button class="btn button-primary ng-click-active" ng-click="dic.configureInsight()" ng-disabled="dic.isDisabled">Configure</button>
+  </div>
+  <div class="loading-spiner-holder configure" ng-show="dic.spinConfigure">
+    <div class="loading-spiner" style="margin-top: 10px;"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i></span>
+  </div>
+
+  </div>
+</div>
+</div>

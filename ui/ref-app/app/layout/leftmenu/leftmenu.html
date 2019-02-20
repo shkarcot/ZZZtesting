@@ -1,0 +1,32 @@
+<script>
+
+</script>
+<nav>
+    <ul class="navbar-primary-menu">
+        <li>
+            <a ui-sref="app.dashboard" ng-class="{'bg-nav':$root.currentState==='dashboard'}">
+                <img class="glyphicon dashboard-image2" ng-src="/app/images/speedometer.png" />
+                <span class="nav-label">Dashboard </span>
+            </a>
+            <a ui-sref="app.documentReview" ng-class="{'bg-nav':$root.currentState==='documentReview'}">
+                <img class="glyphicon dashboard-image2" ng-src="/app/images/document-review.png"/>
+                <span class="nav-label">Document Review</span>
+            </a>
+        </li>
+    </ul>
+    <!--<ul class="navbar-primary-menu" >-->
+          <!--<li ng-show="!$root.inSolution" ng-class="{'bg-nav':$root.currentState==='solution'}" >-->
+                <!--<a>-->
+                    <!--<i class="glyphicon glyphicon-list-alt"></i>-->
+                    <!--<span>View Solutions</span>-->
+                <!--</a>-->
+          <!--</li>-->
+    <!--</ul>-->
+    <div class="sidenav-logout" ng-click="logout()">
+            <span>
+                <img src="/app/images/logout.png" class="glyphicon dashboard-image"/>
+            </span>
+            <span class="nav-label" style="cursor:pointer;">Logout</span>
+
+    </div>
+</nav>

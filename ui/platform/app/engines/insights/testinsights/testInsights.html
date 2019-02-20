@@ -1,0 +1,128 @@
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12">
+  <div class="row" style="padding-top:10px;">
+    <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3">
+      <label style="margin-top:7px">Select the Insight</label>
+    </div>
+    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+     <select class="form-control" id="sel-testinsight" ng-model="tic.selectedInsight" ng-change="tic.selectInsight(tic.selectedInsight)">
+        <option value="">Select the Insight</option>
+        <option ng-repeat="arr in tic.insightObj" value="{$ $index $}" ng-selected="$index==0">{$ arr.template_key $}</option>
+      </select>
+      <div class="loading-spiner-holder " ng-show="tic.spinGetInsightData">
+        <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Retrieving Insights Data...</i></span>
+      </div>
+      </div>
+    </div>
+    <div class="col-sm-5 col-md-5 col-lg-5 col-xs-5 error" style="padding-top: 7px;">
+      {$ tic.insightSelectError $}
+    </div>
+  </div>
+  <br>
+
+  <div class="row" style="padding:0;">
+   <div class="col-lg-12 col-md-12 col-sm-12" style="padding:0">
+     <table class="table" style="margin-bottom:5px">
+      <thead>
+        <tr>
+          <th width="20%"></th>
+          <th width="80%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-ng-repeat="(key,value) in tic.inputData" ng-init="tic.testInsightObj[value.key]={'type':value.ui_type,'value':'','file_path':''}; tic.showLoaderIcon[value.key]=false;tic.browseFileError[value.key]=false;" ng-if="value.key!='request_type'">
+          <td ng-bind="value.key"></td>
+          <td>
+            <div ng-if="value.ui_type=='string'"><input style=" width: 100%;" type="text" id="{$ value.key $}" ng-blur="tic.emptyCheck(tic.testInsightObj[value.key].value,value.key)" ng-model="tic.testInsightObj[value.key].value" /></div>
+
+            <div ng-if="value.ui_type=='image'">
+              <button class="btn button-primary" ngf-select ng-model="dicFile" name="file" ngf-change="tic.uploadImage(dicFile,value.key)"  alt="Upload image" title="Upload image" type="button" style="display:inline">Upload image</button>
+              <span class="loading-spiner-holder" ng-show="tic.showLoaderIcon[value.key]">
+                <span class="loading-spiner">
+                  <i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i>
+                  <span class=""><i>Uploading ...</i></span>
+                </span>
+              </span>
+              <span ng-show="tic.browseFileError[value.key]" style="color:red">Please select the file</span>
+              <span ng-bind="tic.uploadStatus[value.key]" style="color:green"></span>
+            </div>
+          </td>
+
+          <!--<td><input type="text" ng-model="tic.testInsightObj[key].feedback" /></td>-->
+        </tr>
+      </tbody>
+    </table>
+     <div class="configure">
+        <button class="btn button-primary ng-click-active" ng-click="tic.testInsight()" ng-disabled="tic.isDisabled">Test Insight</button>
+     </div>
+     <div class="loading-spiner-holder configure" ng-show="tic.spinTestInsight">
+      <div class="loading-spiner" style="margin-top: 10px;"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i></span>
+     </div>
+    </div>
+  </div>
+
+  <div class="row" style="padding:0;">
+    <div class="col-lg-12 col-md-12 col-sm-12" style="padding:0">
+      <div class="testIsightResult"  ng-show="tic.ResponseOfTestInsightObj!=''">
+
+        <table cellpadding="3" cellspacing="3" width="100%">
+          <tbody data-ng-repeat="arr in tic.ResponseOfTestInsightObj">
+            <tr>
+              <td style="padding:5px;">Entity name</td>
+              <td>:</td>
+              <td data-ng-bind="arr.entity_name"></td>
+           </tr>
+          <tr>
+              <td style="padding:5px;">Value</td>
+              <td>:</td>
+              <td data-ng-bind="arr.value"></td>
+            </tr>
+          <tr>
+              <td style="padding:5px;">Intent verb</td>
+              <td>:</td>
+              <td data-ng-bind="arr.intent_verb"></td>
+            </tr>
+            <tr>
+              <td style="padding:5px;">Platform intent</td>
+              <td>:</td>
+              <td data-ng-bind="arr.platform_intent"></td>
+            </tr>
+            <tr>
+              <td style="padding:5px;">Intent confidence</td>
+              <td>:</td>
+              <td data-ng-bind="arr.intent_confidence"></td>
+            </tr>
+            <tr>
+              <td style="padding:5px;">Verb confidence</td>
+              <td>:</td>
+              <td data-ng-bind="arr.verb_confidence"></td>
+            </tr>
+          <tr><td colspan="3" style="border-bottom:1px solid #ccc"></td></tr>
+          </tbody>
+        </table>
+
+           <!-- "entity_name": "ADDRESS",
+            "intent_verb": "update",
+            "verb_confidence": 1,
+            "value": "100 Cedar Oak, Los Angeles, CA 30304",
+            "platform_intent": "update_entity",
+            "sentence": "Please update address to 100 Cedar Oak, Los Angeles, CA 30304.",
+            "intent_confidence": 0.3333333333333333-->
+      </div>
+      <!-- <div class="col-lg-3 col-md-3 col-sm-3">
+            <div class="col-lg-12 col-md-12 col-sm-12 configure-div">
+              <div class="loading-spiner-holder " ng-show="tic.spinGetInsightInOutPutData">
+                <div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Retrieving input data...</i></span></div>
+              </div>
+          </div>
+        </div>
+       <div class="col-lg-9 col-md-9 col-sm-9">
+            <div class="col-lg-12 col-md-12 col-sm-12 configure-div"  style="padding:0">
+            </div>
+       </div>-->
+    </div>
+  </div>
+
+
+  </div>
+</div>

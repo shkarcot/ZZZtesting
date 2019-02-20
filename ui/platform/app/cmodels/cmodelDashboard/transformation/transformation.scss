@@ -1,0 +1,265 @@
+.modelHeadStyle{
+    color: black;
+    font-weight: 500;
+    font-size: 15px;
+    margin-bottom: 0px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.modelHeading{
+    display: flex;
+    align-items: center;
+}
+
+.modelCardBody{
+     padding: 7px 7px 3px 13px !important;
+     border: none;
+}
+
+.algoTypeStyle{
+    color: #bebebe;
+    font-size: 11px;
+}
+
+.modelLabel{
+    font-size: 10px;
+    color: #757575;
+    font-weight: 500;
+}
+
+.modelTopBody{
+    padding-top: 10px;
+    height: 60px;
+}
+
+.modelContentStyle{
+    margin: 0px 20px 0px 20px;
+    background: #f5f7fa;
+    padding-top: 10px;
+}
+
+.radioFilterStyle{
+    padding: 0px 15px 0px 15px;
+}
+
+.filterLabelPad{
+    padding-left: 5px;
+}
+
+.uploadDiv{
+    background: #f1f1f1;
+    padding-top: 10px;
+}
+
+.uploadHeadStyle{
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.uploadLabel{
+    font-weight: 700;
+    margin-bottom: 0px;
+}
+.disabled {
+    pointer-events:none; //This makes it not clickable
+    opacity:0.6;         //This grays it out to look disabled
+}
+a {
+    position: relative;
+}
+
+.popover {
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    z-index: 9999;
+    display: block;
+    color: black;
+}
+.grphicon
+{
+  position: absolute;
+  background: url('/app/images/New/graphIcon16.png')no-repeat;
+  width:16px;
+  height:16px;
+  top:8px;
+}
+#nested-table{
+    margin-bottom: 0px;
+}
+#expanded-data {
+    margin-left: 20px;
+}
+.columdivider {
+
+     border-right: 1px solid #DEDEDE;
+     border-left: 1px solid #DEDEDE;
+    margin-right: -10px;
+    padding-right: 10px;
+}
+/*
+Generic reset.
+*/
+
+* {
+	padding: 0;
+	margin: 0;
+}
+
+.test {
+	border: 5px red solid;
+	padding: 10;
+	margin: 10;
+	font-family: "Times New Roman";
+	font-style: italic;
+}
+
+/*
+Styles for nodes and connectors.
+*/
+
+.node-rect {
+	stroke: black;
+	stroke-width: 2;
+}
+
+.mouseover-node-rect {
+	stroke: black;
+	stroke-width: 4;
+}
+
+.selected-node-rect {
+	stroke: red;
+	stroke-width: 3;
+}
+
+.connector-circle {
+    fill: white;
+    stroke: black;
+    stroke-width: 2;
+}
+
+.mouseover-connector-circle {
+    fill: white;
+    stroke: black;
+    stroke-width: 3;
+}
+
+/*
+Style for connections.
+*/
+
+.connection {
+}
+
+.connection-line {
+	stroke: gray;
+	stroke-width: 4;
+	fill: transparent;
+}
+
+.mouseover-connection-line {
+	stroke: gray;
+	stroke-width: 6;
+	fill: transparent;
+}
+
+.selected-connection-line {
+	stroke: red;
+	stroke-width: 4;
+	fill: transparent;
+}
+
+.connection-endpoint {
+	fill: gray;
+}
+
+.selected-connection-endpoint {
+	fill: red;
+}
+
+.mouseover-connection-endpoint {
+	fill: gray;
+}
+
+.connection-name{
+	fill: black;
+}
+
+.selected-connection-name{
+	fill: red;
+}
+
+.mouseover-connection-name{
+	fill: gray;
+}
+/*
+Style for the connection being dragged out.
+*/
+
+.dragging-connection {
+	pointer-events: none;
+}
+
+.dragging-connection-line {
+	stroke: gray;
+	stroke-width: 3;
+	fill: transparent;
+}
+
+.dragging-connection-endpoint {
+	fill: gray;
+}
+
+/*
+The element (in this case the SVG element) that contains the draggable elements.
+*/
+
+.draggable-container {
+	border: solid 1px blue;
+}
+
+/*
+Drag selection rectangle.
+*/
+
+.drag-selection-rect {
+	stroke: blue;
+	stroke-width: 2;
+	fill: transparent;
+}
+.inlinedate
+{
+display: inline-block;
+}
+.feedbackleftpadding
+{
+	padding-left: 10px;
+}
+.feedbackheaderalign
+{
+	display: block;
+    margin-left: 12px;
+    font-size: 16px;
+    padding-top: 4px;
+     color: blue;
+}
+.feedblabel
+{
+	    font-weight: normal!important;
+}
+.filterwidth
+{
+ width:6%;
+ padding-left:0px;
+}
+.rowpaddingfilter
+{
+ padding-top:15px;
+}
+.selectboxwidth
+{
+ width:413px!important;
+}

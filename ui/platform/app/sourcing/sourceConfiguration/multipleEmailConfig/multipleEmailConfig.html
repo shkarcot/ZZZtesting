@@ -1,0 +1,146 @@
+<style>
+  .form-group{
+    margin-bottom:25px;
+  }
+</style>
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12" >
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+
+<div class="row minPadding">
+    <div class="col-lg-7 col-sm-7 col-md-7 col-xs-7">
+        <div class="zeroMargin">
+              <div class="dropdown">
+                  <a data-toggle="dropdown" class="noDecoration configureHeading"> domain <b class="caret"></b></a>
+                  <ul class="customdropdown-menu dropdown-menu">
+                      <li>
+                        <a ui-sref="app.domainDashboard" class="noDecoration">
+                          <img src="/app/images/Domain.png"/>
+                          <span>Domain Configuration</span>
+                        </a>
+                      </li>
+                      <li>
+                          <a ui-sref="app.services" class="noDecoration">
+                              <img src="/app/images/Services-01.png"/>
+                              <span>Service Configuration</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a ui-sref="app.pipeline" class="noDecoration">
+                              <img src="/app/images/pipeline.png"/>
+                              <span>Pipeline Configuration</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a ui-sref="app.sourceConfiguration" class="noDecoration">
+                              <img src="/app/images/sources.png"/>
+                              <span>Sources</span>
+                          </a>
+                      </li>
+                  </ul>
+                  <span style="margin-left: 10px;">|</span>
+                  <span style="margin-left: 10px;">Case Management - Configure Email</span>
+              </div>
+        </div>
+    </div>
+    <div class="col-lg-5 col-sm-5 col-md-5 col-xs-5">
+        <button class="btn btn-add pull-right" alt="Create new work flow" title="Create new work flow" ng-click="addEmailConfig()">
+        <img src="/app/images/plus-default.png" class="create-new-plus">Add new</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12 well" style="background-color:white;border-radius:0px;">
+      <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Email</th>
+          <th scope="col">Password</th>
+          <th scope="col">Host</th>
+            <th scope="col">Port</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Status</th>
+            <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-ng-repeat="emailConfig in megc.multipleEmailConfigs">
+          <td ng-bind="emailConfig.mail_user"></td>
+          <td ng-bind="setpassword(emailConfig.mail_password)"></td>
+          <td ng-bind="emailConfig.mail_imaps_host"></td>
+          <td ng-bind="emailConfig.mail_imaps_port"></td>
+          <td ng-bind="emailConfig.subject"></td>
+          <td ng-bind="emailConfig.isActive"></td>
+          <td style="text-align: right;">
+              <a ng-click="megc.showUpdateEmailConfigView(emailConfig)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+              <a style="margin-left:15px;" ng-click="megc.deleteEmailConfig(emailConfig)"><i class="fa fa-trash" aria-hidden="true"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+</div>
+
+
+<div class="row overlay adaptContainer" id="emailConfigView" style="margin-top: 7px;">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12 well" style="background-color:white;border-radius:0px;padding-top:0px;">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="margin-top:10px;padding:0;">
+                    <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10" style="padding:0;" ng-click="addEmailConfig()"><h4>Configure Email</h4></div>
+                    <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2" style="padding:0;text-align: right;margin-top: 10px;" ng-click="cancelEmailConfig()"><i class="fa fa-window-close" aria-hidden="true"></i></div>
+                </div>
+            </div>
+            <form class="form-horizontal" validate-form ng-submit="megc.saveConfiguration()" style="margin-top:20px;">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                      <div class="form-group">
+                        <label class="control-label dashboard-row"  style="padding-top:10px;">Subject</label>
+                         <input type="text" class="form-control" ng-model="megc.config.subject" placeholder="Subject" required>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label dashboard-row"  style="padding-top:10px;">IMAP Host</label>
+                         <input type="text" class="form-control" ng-model="megc.config.host" placeholder="Host" required>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label dashboard-row"  style="padding-top:10px;">IMAP Port</label>
+                         <input type="number" class="form-control" ng-model="megc.config.port" placeholder="Port" required>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label dashboard-row"  style="padding-top:10px;">Email</label>
+                         <input type="email" class="form-control" ng-model="megc.config.email" placeholder="Email" required>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label dashboard-row"  style="padding-top:10px;">Password</label>
+                         <input type="password" class="form-control" ng-model="megc.config.password" placeholder="Password" required>
+                      </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-11 col-md-11 col-sm-11" style="padding-left:0px;">
+                      <button type="submit" class="btn btn-go btn-custom" ng-show="showBtnSave" ng-disabled="megc.isDisable">
+                          <i class="fa fa-floppy-o"></i> Save
+                      </button>
+                      <button type="button" class="btn btn-go btn-custom" ng-click="megc.updateEmailConfig()" ng-show="!showBtnSave" ng-disabled="megc.isDisableUpdateBtn">
+                          <i class="fa fa-pencil-square-o"></i> Update
+                      </button>
+                      <button type="button" class="btn btn-reset" ng-click="cancelEmailConfig()"
+                              style="margin-right: 29px;border-radius: 17px;width: 100px;">Cancel</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>

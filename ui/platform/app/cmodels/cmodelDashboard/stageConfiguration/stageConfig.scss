@@ -1,0 +1,64 @@
+.modelHeadStyle{
+    color: black;
+    font-weight: 500;
+    font-size: 15px;
+    margin-bottom: 0px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.modelHeading{
+    display: flex;
+    align-items: center;
+}
+
+.modelCardBody{
+     padding: 7px 7px 3px 13px !important;
+     border: none;
+}
+
+.algoTypeStyle{
+    color: #bebebe;
+    font-size: 11px;
+}
+
+.modelLabel{
+    font-size: 10px;
+    color: #757575;
+    font-weight: 500;
+}
+
+.modelTopBody{
+    padding-top: 10px;
+    height: 60px;
+}
+
+.modelContentStyle{
+    margin: 0px 20px 0px 20px;
+    background: #f5f7fa;
+    padding-top: 10px;
+}
+
+.radioFilterStyle{
+    padding: 0px 15px 0px 15px;
+}
+
+.filterLabelPad{
+    padding-left: 5px;
+}
+
+.uploadDiv{
+    background: #f1f1f1;
+    padding-top: 10px;
+}
+
+.uploadHeadStyle{
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.uploadLabel{
+    font-weight: 700;
+    margin-bottom: 0px;
+}

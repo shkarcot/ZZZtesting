@@ -1,0 +1,134 @@
+<div class="row custom-header">
+	<div class="col-lg-8 col-md-8 col-sm-8 custom-breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a ui-sref="app.dashboard" class="breadcrumbTitle" href="#/app/dashboard">Processing
+				Dashboard</a></li>
+			<li class="breadcrumb-item active">{$ recordData.file_name $}</li>
+		</ol>
+	</div>
+	<div class="col-lg-4 col-md-4 col-sm-4 text-right" style="margin-top:15px;" ng-show="showNavigation">
+		<span>{$ no_of_records $}</span> / {$ total_records $}<span></span>
+       <a style="text-decoration:none;" ng-click="pdc.navigatePage('prev')" ng-class="no_of_records==1?'prevCursor':''">< Previous</a>
+       <a style="margin-left:25px;text-decoration:none;" ng-click="pdc.navigatePage('next')" ng-class="no_of_records==total_records?'nextCursor':''">Next ></a>
+    </div>
+
+</div>
+<br>
+<div ng-show="!showIframeImage">
+	<div class="row">
+		<div class="col-sm-12 col-md-12 col-xs-12 col-lg-12" style="margin-bottom:20px;">
+			<div class="claim-bg">
+				<div class="row">
+					<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+						<h2>{$ recordData.file_name $} </h2>
+					</div>
+				</div>
+				<div class="row" style="margin-bottom:12px;">
+					<div class="col-lg-2 col-sm-2 col-md-2" ng-repeat="value in recordDataConfig.columns"
+						 style="margin-top: 35px;">
+						<span>{$ value.value $}</span>
+						<div><b>{$ recordData[value.key] $}</b></div>
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-2" >
+						<div ng-click="displayImage(recordData.processed_image_path)" style="cursor:pointer;" ng-if="recordData.doc_type=='image'">
+							<img ng-src="/app/images/processdetailsview.png" class="previewImage"/>
+							<span style="color:#1c7cb9;">Preview Document</span>
+						</div>
+						<div ng-click="download()" style="cursor:pointer;">
+							<img ng-src="/app/images/download.png" class="previewImage"/>
+							<span style="color:#1c7cb9;">Download JSON</span>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div id="container" style="display:none"></div>
+            <div class="row row-eq-height">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <!--<div class="pagination" ng-show="no_of_pages>1">-->
+                      <!--<a ng-repeat="(key,value) in pagesInfo" ng-click="pdc.changeDocumentInfo(value.page_no)" ng-class="current_page==value.page_no?'active':''">{$ value.page_no $}</a>-->
+                    <!--</div>-->
+					<div ng-show="no_of_pages>1">
+						<span>
+							<button class="btn pagination-button" ng-disabled="current_page==1" ng-click="pdc.changePageNum('prev')"><i class="fa fa-chevron-left" style="color:white;font-size:12px;"></i></button>
+						</span>
+						<span class="pagination-textBox">
+							<input type="number" class="pagination-text" ng-model="current_page" ng-keyup="pdc.keyEnter($event)"/>
+						</span>
+						<span>
+							<button class="btn pagination-button" ng-disabled="current_page==no_of_pages" ng-click="pdc.changePageNum('next')"><i class="fa fa-chevron-right" style="color:white;font-size:12px;"></i></button>
+						</span>
+						<span>  of {$ no_of_pages $}</span>
+					</div>
+                </div>
+            </div>
+
+			<br>
+
+			<table class="table table-responsive table-hovered table-scroll" ng-show="fieldsData.length>0"
+				   ng-if="pdc.documentType != 'digital'">
+				<thead class="tableHeading">
+				<th ng-repeat="heading in fieldsDataConfig.columns">{$ heading.value $}</th>
+				</thead>
+				<tbody>
+				<tr ng-repeat="row in fieldsData">
+					<td ng-repeat="heading in fieldsDataConfig.columns">
+
+						<span ng-show="heading.type=='string'">{$ row[heading.key] $}</span>
+						<img ng-src="/static{$ volume$}{$ row[heading.key] $}" ng-if="heading.type=='image'">
+					</td>
+
+				</tr>
+			</table>
+
+			<table class="table table-responsive table-hovered table-striped table-scroll" ng-show="tablesData.length>0"
+				   ng-if="pdc.documentType != 'digital'" ng-repeat = "table in tableDataList">
+				<thead class="tableHeading">
+				<th ng-repeat="heading in table.tables.headings">{$ heading[0] $}</th>
+				</thead>
+				<tbody>
+				<tr ng-repeat="row in table.tables.table">
+					<td ng-repeat="heading in table.tables.headings">
+
+						<span>{$ row[heading[0]].text $}</span>
+
+					</td>
+
+				</tr>
+				</tbody>
+			</table>
+
+
+		</div>
+	</div>
+	<div ng-repeat="att in pdc.digitalDocumentData"
+		 ng-show="pdc.documentType == 'digital'">
+
+		<!--<div class="attachmentClass">-->
+		<!--<span>Attachment {$ $parent.$index+1 $} : </span><span style="color:black">{$ key $}.{$ value.extn $}</span>-->
+		<!--</div>-->
+
+		<div style="padding: 13px 7px 25px 7px;">
+			<div ng-bind-html="emailAttachments(att.html_data)"></div>
+		</div>
+		<!--<div style="padding: 13px 7px 25px 7px;" ng-show="value.extn=='pdf'">-->
+		<!--<object data="static{$ value.pdf_path $}" type="application/pdf" width="100%" height="300px">-->
+		<!--</object>-->
+		<!--</div>-->
+
+	</div>
+</div>
+<div class="row" ng-show="showIframeImage">
+	<div class="col-sm-12 col-md-12 col-xs-12 col-lg-12 bg-div2" style="margin-bottom:40px;border-radius:5px;">
+		<div class="btn-back right">
+			<button type="button" class="btn right btn-cst-process ng-click-active" alt="back" title="back"
+					ng-click="backtoDetails()" style="background-color: #00A3E0;color:white;">Back
+			</button>
+		</div>
+		<image src="{$ config.base_url $}/app/images/loader.gif" ng-src="/static{$ iframeUrl $}"></image>
+	</div>
+</div>
+
+
+

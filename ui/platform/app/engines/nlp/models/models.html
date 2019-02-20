@@ -1,0 +1,145 @@
+<script type="text/ng-template" id="confirmDeleteBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+<div class="row" style="tab-content">
+      <!--trainIntentModel-->
+
+      <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12" style="min-height:260px;">
+          <!--<h3 style="margin-top: 10px;"><i class="fa fa-list-alt" aria-hidden="true" style="font-size:17px;"></i> Model</h3>-->
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default panel-entities">
+            <div class="panel-heading panel-headStyle" role="tab" id="headingOne" data-toggle="collapse" ng-click="expand()" data-parent="#accordion" href=".collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              <h4 class="panel-title">
+                <a role="button" class="titleColor">
+                  Add Model
+                </a>
+                <span class="right expand-icon">
+                  <i class="fa" ng-class="hideAndCollapse" aria-hidden="true"></i>
+                </span>
+              </h4>
+            </div>
+            <div class="panel-collapse collapseOne" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body panel-bodyStyle">
+
+                <form class="form-horizontal" validate-form ng-submit="saveModel()">
+
+                  <div class="col-sm-3 col-md-3 col-lg-3" style="padding-left:0">
+                    <select class="bottomLineInput" ng-model="modelObj.trainingSet" required>
+                      <option value="" ng-selected ="true">Select Training Set</option>
+                      <option ng-repeat="(key,value) in mm.trainingSetArray track by $index" value="{$ value $}">{$ value.file_name $}</option>
+                    </select>
+                  </div>
+
+                  <div class="col-sm-6 col-md-6 col-lg-6" style="padding-left:0">
+                    <input type="text" class="bottomLineInput" ng-model="modelObj.modelName" placeholder="Model Name" required />
+                  </div>
+
+                  <div class="col-sm-3 col-md-3 col-lg-3" style="padding-left:0">
+                    <select class="bottomLineInput" ng-model="modelObj.type" required>
+                      <option value="" ng-selected ="true">Select Type</option>
+                      <option  value="intent_classifier">Intent Classifier</option>
+                      <option  value="action_classifier">Action Classifier</option>
+                    </select>
+                  </div>
+
+                  <div class="col-lg-9 col-sm-9 col-md-9 col-xs-9" style="padding-left:0">
+                    <input type="text" class="bottomLineInput" ng-model="modelObj.modelDescription" placeholder="Description" />
+                  </div>
+
+
+                  <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3 text-right">
+                    <!--<button class="btn btn-default" ngf-select ng-model="dicFile" name="file" ngf-change="uploadDic(dicFile)" type="button" style="display:inline">Browse</button>-->
+                    <button type="submit" alt="Add" title="Add" class="btn button-primary">Train</button>
+                  </div>
+                  <div class="loading-spiner-holder" ng-show="isTrained" ><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i>Saving Model...</i></span></div></div>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+          <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12 " style="margin-top:20px;padding-left:0px;padding-right:0px;border:none;">
+            <div style="border-radius:5px;box-shadow:none;border-top:none;" ng-show="mm.modelsObjForIntent.length!=0;">
+              <span class="modelTrainHeading">INTENT CLASSIFIER</span>
+              <hr class="hrClassModel">
+              <table class="table table-bordered table-scroll" >
+               <thead class="tableHeading">
+                <tr>
+                  <td width="20%">Model Name </td>
+                  <td width="30%">Description</td>
+                  <!--<td width="10%">Type</td>-->
+                   <td width="25%">Last Trained</td>
+                  <td width="15%" style="text-align: center;">Enable/Disable</td>
+                  <td></td>
+                </tr>
+                </thead>
+                <tbody ng-repeat="arr in mm.modelsObjForIntent">
+                <tr ng-class="blinkingRow[arr._id]">
+                  <td>{$ arr.name $}</td>
+                  <td><span>{$ arr.description $}</span></td>
+                  <!--<td ng-bind="getClassifier(arr.type)"></td>-->
+                  <td ng-bind="arr.updated_ts | date: 'MMM d, y h:mm a' "></td>
+                   <td style="text-align:center">
+                     <label class="switch1" style="margin-bottom: -4px;" ng-init="mm.valEnable2[arr._id]=arr.is_enabled" >
+                       <input type="checkbox" ng-change="intentToggleStatus(mm.valEnable2[arr._id],arr,arr._id)" ng-checked="mm.valEnable2[arr._id]" ng-model="mm.valEnable2[arr._id]">
+                       <div class="slider1 round"></div>
+                     </label>
+
+                   </td>
+                  <td class="text-center">
+                     <a  style="color:#a79d9d;" title="delete" alt="delete" ng-click="deleteModel('intent',arr._id,arr.name)">
+                      <i class="fa fa-trash iconColor"></i></a>
+                   </td>
+                </tr>
+                </tbody>
+              </table>
+            </div><br>
+            <div style="border-radius:5px;box-shadow:none;border-top:none;" ng-show="mm.modelsObjForAction.length!=0;">
+              <span class="modelTrainHeading">ACTION CLASSIFIER</span>
+              <hr class="hrClassModel">
+              <table class="table table-bordered table-scroll" >
+               <thead class="tableHeading">
+                <tr>
+                  <td width="20%">Model Name </td>
+                  <td width="30%">Description</td>
+                  <!--<td width="10%">Type</td>-->
+                   <td width="25%">Last Trained</td>
+                  <td width="15%" style="text-align: center;">Enable/Disable</td>
+                  <td></td>
+                </tr>
+                </thead>
+                <tbody ng-repeat="arr in mm.modelsObjForAction">
+                <tr ng-class="blinkingRow[arr._id]">
+                  <td>{$ arr.name $}</td>
+                  <td><span>{$ arr.description $}</span></td>
+                  <!--<td ng-bind="getClassifier(arr.type)"></td>-->
+                  <td ng-bind="arr.updated_ts | date: 'MMM d, y h:mm a' "></td>
+                   <td style="text-align:center">
+                     <label class="switch1" style="margin-bottom: -4px;" ng-init="mm.valEnable2[arr._id]=arr.is_enabled" >
+                       <input type="checkbox" ng-change="intentToggleStatus(mm.valEnable2[arr._id],arr,arr._id)" ng-checked="mm.valEnable2[arr._id]" ng-model="mm.valEnable2[arr._id]">
+                       <div class="slider1 round"></div>
+                     </label>
+                   </td>
+                   <td class="text-center">
+                     <a  style="color:#a79d9d;" title="delete" alt="delete" ng-click="deleteModel('action',arr._id,arr.name)">
+                      <i class="fa fa-trash iconColor"></i></a>
+                   </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+      </div>
+    </div>

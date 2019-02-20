@@ -1,0 +1,80 @@
+<script type="text/ng-template" id="confirmBox">
+  <div class="popup-header">
+    <h3 class="text-primary"> Confirm Action </h3>
+    <hr class="popup-hr"/>
+    <p class="text-info" style="padding:10px"> {$ activePopupText $}  </p>
+    <br/>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 co-md-12">
+        <button class="btn btn-primary right" ng-click="onConfirmActivation()"> Confirm </button>
+      </div>
+    </div>
+  </div>
+</script>
+
+<div class="breadcrumb"><span class="firstlevel" ui-sref="app.services">Services</span> >
+    <span>Extract Document Text</span> </div>
+
+<div class="row" id="ExtractDocumentText-tabs">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+
+        <tabs id="engine-tabs">
+            <pane title="Configure">
+                <div data-ui-view="configureExtractDocumentText" class=""></div>
+                <div class="config-message">
+                    <div class="" ng-bind="configMessage"></div>
+                </div>
+            </pane>
+            <pane title="Test">
+                <!--<div data-ui-view="testExtractDocumentText" class=""></div>-->
+                <div class="row" style="padding: 50px 0;">
+                    <form class="form-horizontal">
+                    <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                         <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6" style="padding-left:0">
+                             <input type="text" class="form-control" ng-model="inputDocumentId"
+                                    value="" placeholder="Document Id"  />
+                         </div>
+                         <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3" style="padding-left:0">
+                             <button class="btn button-primary" ng-click="testDocId(inputDocumentId)">Test </button>
+                         </div>
+                    </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+
+                        <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12" style="padding: 0;" ng-show="showTable">
+
+                            <json-formatter class="jsonformatter" open="3" json="resposeData"></json-formatter>
+                        </div>
+                        <!--<table class="table table-striped" ng-show="showTable">
+                            <thead>
+                            <tr>
+                                <th>Label</th>
+                                <th>Score</th>
+                                <th>Domain Mapping</th>
+                                <th>Value Coordinates</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="documentList in resposeData.elements">
+                                <td ng-bind="documentList.label"></td>
+                                <td ng-bind="documentList.score"></td>
+                                <td ng-bind="documentList.domain_mapping"></td>
+                                <td ng-bind="showCoords(documentList.value_coordinates)">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>-->
+                    </div>
+                </div>
+            </pane>
+            <pane title="Train">
+                <div data-ui-view="trainExtractDocumentText" class=""></div>
+            </pane>
+        </tabs>
+    </div>
+</div>
+
+
+</div>

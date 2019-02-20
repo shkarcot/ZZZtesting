@@ -1,0 +1,69 @@
+
+.solDashHeading {
+    margin: 0!important;
+    font-size: 25px;
+    color: #1e1e1e;
+    font-weight:300;
+}
+
+.services{
+
+    padding:0px;
+
+    .engine-box {
+        cursor: pointer;
+        background: #fff;
+        position: relative;
+    }
+    .engine-box h2{
+        font-size: 18px;
+    }
+
+
+
+   .ralign-spinner{
+        line-height: 36px;
+        margin-right: 16px;
+    }
+
+}
+.panel-custom{
+    margin-bottom:0px;
+    border: none;
+    box-shadow: none;
+}
+
+.panel-customFooter {
+    padding: 10px 15px;
+
+}
+.no-padding{
+    padding-left:0px;
+    padding-right:0px;
+}
+.solutionsList{
+    margin-bottom:25px;
+}
+.panel-custom{
+
+    .padding-heading{
+        padding: 10px 15px;
+        border:0px !important;
+        border-bottom: 1px solid transparent;
+        border-top-right-radius: 3px;
+        border-top-left-radius: 3px;
+    }
+    .panel-body{
+        border-top:none;
+    }
+
+
+}
+
+.customContainer{
+    margin-top:65px;
+    padding:0px !important;
+    background-color:transparent !important;
+    border:none !important;
+}
+

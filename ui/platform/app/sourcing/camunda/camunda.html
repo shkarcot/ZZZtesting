@@ -1,0 +1,60 @@
+<style>
+     body{
+      background-image:url('/app/images/NifiBG.png');
+      background-size:150% 150%;
+  }
+
+</style>
+<div class="row minPadding">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+        <h3 class="zeroMargin">
+              <div class="dropdown">
+                  <a data-toggle="dropdown" class="noDecoration configureHeading">configure pipeline <b class="caret"></b></a>
+                  <ul class="customdropdown-menu dropdown-menu">
+                      <li>
+                        <a ui-sref="app.domainDashboard" class="noDecoration">
+                          <img src="/app/images/Domain.png"/>
+                          <span>Domain Configuration</span>
+                        </a>
+                      </li>
+                      <li>
+                          <a ui-sref="app.services" class="noDecoration">
+                              <img src="/app/images/Services-01.png"/>
+                              <span>Service Configuration</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a ui-sref="app.pipeline" class="noDecoration">
+                              <img src="/app/images/pipeline.png"/>
+                              <span>Pipeline Configuration</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a ui-sref="app.sourceConfiguration" class="noDecoration">
+                              <img src="/app/images/sources.png"/>
+                              <span>Sources</span>
+                          </a>
+                      </li>
+                  </ul>
+              </div>
+        </h3>
+    </div>
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 alignRight">
+        <img class="helpImages" src="/app/images/comment-01.png"/>
+        <img class="helpImages" src="/app/images/help-01.png"/>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 background"  style="padding:0px;">
+        <div class="well">
+          <div >
+              <iframe
+                      ng-src="http://camunda-dev.ranger.xpms.ai/camunda/app/cockpit/default/#/login"
+                      ng-style="{height: iframeHeight + 'px'}"
+                  style="margin-top: 1px;width:100%;float:right;"></iframe> <!--ng-src="http://ec2-52-24-184-239.us-west-2.compute.amazonaws.com:32772/camunda/app/cockpit/default/#/login"-->
+          </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>

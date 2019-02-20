@@ -1,0 +1,2991 @@
+
+<div class="row overlay" id="ruleOverlayDiv">
+
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 create-rule-height" style="overflow:auto">
+        <h4 class="push-left">
+			<span>&nbsp;</span>
+		  <span class="pull-right closeRule closebtn" ng-click="cancel()">&times;</span>
+		</h4>
+		<form ng-submit="mf.saveRule()">
+			<div class="row">
+				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+					<label style="color: #5eb5eb;font-weight: 400;cursor:pointer;font-size:12px;">
+						<input type="radio" name="optradio" ng-model="ruleSelection" value="vrule"/>
+						Validation rule
+					</label>
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+					<label style="color: #5eb5eb;font-weight: 400;cursor:pointer;font-size:12px;">
+						<input type="radio" name="optradio" ng-model="ruleSelection" value="srule"/>
+						Standardisation Rule
+					</label>
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+					<label style="color: #5eb5eb;font-weight: 400;cursor:pointer;font-size:12px;" ng-click="errorMsg=''">
+						<input type="radio" name="optradio" ng-model="ruleSelection" value="cusCondition"/>
+						Custom Condition
+					</label>
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+					<label style="color: #5eb5eb;font-weight: 400;cursor:pointer;font-size:12px;" ng-click="errorMsg=''">
+						<input type="radio" name="optradio" ng-model="ruleSelection" value="cusAction"/>
+						Custom Action
+					</label>
+				</div>
+			</div><br>
+			<div class="row" ng-show="ruleSelection == 'vrule' || ruleSelection == 'srule'">
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+					<label class="text-heading">Rule Name</label>
+					<input type="text" class="form-control bottomLineInput"
+						   placeholder="Enter Rule Name" ng-model="mf.ruleObj.rule_name" style="background: white;" required />
+				</div>
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                    <label class="text-heading">Validation Message<span style="font-size: 10px;">( This message appears in Business User Interface when validation fails  )</span></label>
+                    <input type="text" class="form-control bottomLineInput"
+                           placeholder="Enter validation message" ng-model="mf.ruleObj.validation_message" style="background: white;" required />
+                </div>
+			</div>
+			<div class="row" ng-show="ruleSelection == 'vrule' || ruleSelection == 'srule'">
+				<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+					<label>IF</label>
+					<div class="row" ng-repeat="ruleCond in mf.ruleObj.rule.conds" style="margin-bottom:10px;">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <select class="form-control" ng-model="ruleCond.fn">
+                                <option value="">Select function</option>
+                                <option ng-repeat="option in mf.functionsList" value="{$ option.fn $}">{$ option.display_name $}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <select class="form-control" ng-model="ruleCond.op" ng-change="mf.checkForOperator(ruleCond.op,ruleCond,$index)">
+                                <option value="">Select condition</option>
+                                <option ng-repeat="option in mf.operatorsList" value="{$ option.oper $}">{$ option.display_name $}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+							<select class="form-control" ng-model="ruleCond.rval" ng-if="ruleCond.op == 'lookup'">
+                                <option value="">Select Tag</option>
+                                <option ng-repeat="opt in mf.tagsArray" value="{$ opt $}">{$ opt $}</option>
+                            </select>
+                            <input type="text" class="form-control" ng-model="ruleCond.rval" ng-if="ruleCond.op != 'lookup'" placeholder="Enter value"/>
+                        </div>
+                        <div class="col-lg-1 col-md-1 col-sm-1">
+                            <a ng-click="mf.selectOperator('any')" ng-show="$index == 0">OR</a>
+                            <a ng-click="mf.addCondition()" ng-show="$index != 0"><span ng-show="mf.ruleObj.rule.run_type=='any'">OR</span><span ng-show="mf.ruleObj.rule.run_type=='all'">AND</span></a>
+                        </div>
+                        <div class="col-lg-1 col-md-1 col-sm-1">
+                            <a ng-click="mf.selectOperator('all')" ng-show="$index == 0">AND</a>
+                            <a ng-click="mf.delCond($index)" ng-show="$index != 0"><span class="fa fa-trash"></span></a>
+                        </div>
+                    </div>
+				</div>
+			</div>
+			<div class="row" ng-show="ruleSelection == 'srule'">
+				<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+					<label>THEN</label>
+					<div class="row" style="margin-bottom:10px;" ng-repeat="ruleAction in mf.ruleObj.rule.actions">
+						<div class="col-lg-5 col-md-5 col-sm-5">
+							<select class="form-control" ng-model="ruleAction.act" ng-change="mf.checkForAction(ruleAction.act,ruleAction,$index)">
+								<option value="">Select condition</option>
+								<option ng-repeat="option in mf.actionsList" value="{$ option.oper $}">{$ option.display_name $}</option>
+							</select>
+						</div>
+						<div class="col-lg-5 col-md-5 col-sm-5">
+							<input type="text" class="form-control" ng-model="ruleAction.attr.rval" placeholder="Enter value"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row" ng-show="ruleSelection == 'cusCondition'">
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+					<div class="row">
+                        <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6 " style="padding-left:0px;">
+                            <label class="text-heading">Custom Condition Name</label>
+							<input type="text" class="form-control bottomLineInput"
+						   		placeholder="Enter Condition Name" ng-model="customConditionName" style="background: white;" />
+                        </div>
+                        <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6 ">
+                            <label class="text-heading">Language</label>
+                            <select class="form-control" ng-model="lngForCondition" ng-change="conditionLng(lngForCondition)">
+                                <option value="javascript">Javascript</option>
+                                <option value="groovy">Groovy</option>
+                            </select>
+                        </div>
+                    </div>
+					<div id="aceEditorcusCondition" ui-ace="aceOptionsCon" ng-trim="true"></div><br>
+				</div>
+			</div>
+			<div class="row" ng-show="ruleSelection == 'cusAction'">
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+					<div class="row">
+                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6 " style="padding-left:0px;">
+                            <label class="text-heading">Custom Action Name</label>
+							<input type="text" class="form-control bottomLineInput"
+						   		placeholder="Enter Action Name" ng-model="customActionName" style="background: white;" />
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                            <label class="text-heading">Language</label>
+                            <select class="form-control" ng-model="lngForAction" ng-change="actionLng(lngForAction)">
+                                <option value="javascript">Javascript</option>
+                                <option value="groovy">Groovy</option>
+                            </select>
+                        </div>
+                    </div>
+					<div id="aceEditorcusAction" ui-ace="aceOptionsAct" ng-trim="true"></div><br>
+				</div>
+			</div>
+			<div class="alert alert-danger" ng-show="mf.conditionErr != ''">{$ mf.conditionErr $}</div>
+			<div class="row" ng-show="ruleSelection == 'vrule' || ruleSelection == 'srule'">
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+					<button type="submit" class="btn btn-custom">Save</button>
+					<div ng-show="showSpinnerRule" class="loading-spiner-holder ralign-spinner"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class="">Saving rule</span></div></div>
+					<div class="alert alert-danger" ng-show="mf.validateErr!=''">{$ mf.validateErr $}</div>
+				</div>
+			</div>
+			<div class="row" ng-show="ruleSelection == 'cusCondition' || ruleSelection == 'cusAction'">
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+					<button type="button" class="btn btn-custom" ng-click="mf.submitCustomRule(ruleSelection)">Save</button>
+					<div class="error">{$ errorMsg $}</div>
+					<div ng-show="showSpinnerRule" class="loading-spiner-holder ralign-spinner"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class="">Saving condition</span></div></div>
+				</div>
+			</div>
+		</form>
+		<br>
+		<hr>
+		<br>
+		<form ng-submit="mf.testRule()" ng-show="ruleSelection == 'vrule' || ruleSelection == 'srule'">
+			<div class="row">
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+					<input type="text" class="form-control bottomLineInput"
+						   placeholder="Enter Value" ng-model="mf.sourceValue" style="background: white;" required />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+					<button type="submit" class="btn btn-custom">Test</button>
+				</div>
+			</div><br>
+			<div class="row">
+				<div class="col-sm-12" ng-if="mf.ruleFailedmessage">
+					<span style="color:black">Valid : </span>
+					<span style="padding-left:10px;">
+						<i class="fa fa-times-circle red"></i>
+					</span>
+				</div>
+				<div class="col-sm-12" ng-if="mf.ruleSuccessmessage">
+					<span style="color:black">Valid : </span>
+					<span style="padding-left:10px;">
+						<i class="fa fa-check-circle ruleApplied"></i>
+					</span>
+					<br>
+					<span style="color:black" ng-show="mf.ruleResult != undefined">Result : </span><span>{$ mf.ruleResult $}</span>
+				</div>
+			</div>
+		</form>
+		<form ng-submit="mf.testCondition('cusCondition')" ng-show="ruleSelection == 'cusCondition'">
+			<div class="row">
+				<div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+					<input type="text" class="form-control bottomLineInput"
+						   placeholder="Enter Source Value" ng-model="mf.sourceConditionValue" style="background: white;" required />
+				</div>
+				<div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+					<input type="text" class="form-control bottomLineInput"
+						   placeholder="Enter Target Value" ng-model="mf.targetConditionValue" style="background: white;" required />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+					<button type="submit" class="btn btn-custom">Test</button>
+					<div ng-show="showSpinnertestCondition" class="loading-spiner-holder ralign-spinner"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class="">testing condition</span></div></div>
+				</div>
+			</div><br>
+			<div class="row">
+				<div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+					<span>Result : </span><span>{$ outputOfTestCondition $}</span>
+				</div>
+			</div>
+		</form>
+		<form ng-submit="mf.testCondition('cusAction')" ng-show="ruleSelection == 'cusAction'">
+			<div class="row">
+				<div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+					<input type="text" class="form-control bottomLineInput"
+						   placeholder="Enter Source Value" ng-model="mf.sourceActionValue" style="background: white;" required />
+				</div>
+				<div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+					<input type="text" class="form-control bottomLineInput"
+						   placeholder="Enter Target Value" ng-model="mf.targetActionValue" style="background: white;" required />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+					<button type="submit" class="btn btn-custom">Test</button>
+					<div ng-show="showSpinnertestAction" class="loading-spiner-holder ralign-spinner"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class="">testing action</span></div></div>
+				</div>
+			</div><br>
+			<div class="row">
+				<div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+					<span>Result : </span><span>{$ outputOfTestAction $}</span>
+				</div>
+			</div>
+		</form>
+        <br>
+        <div class="row" ng-show="mf.ruleIsValid">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12" ng-repeat="arr in pprc.testTransformResult">
+                <div class="row" ng-repeat="(key,value) in arr">
+                    <div class="col-sm-6 col-md-6 col-xs-6 col-lg-6">
+                        <label style="color:black">{$ key $}</label>
+                    </div>
+                    <div class="col-sm-1 col-md-1 col-xs-1 col-lg-1">
+                        <label style="color:black">:</label>
+                    </div>
+                    <div class="col-sm-5 col-md-5 col-xs-5 col-lg-5">
+                        {$ value $}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row overlay" id="existingruleDiv">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<h4 class="push-left">
+		  <span>Choose From Existing</span>
+		  <span class="pull-right closeRule closebtn" ng-click="cancelExisting()">&times;</span>
+		</h4>
+
+
+        <br>
+		<form>
+			<div class="image-style3" style="overflow: auto;">
+				<div class="row">
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						<label style="color: #5eb5eb;font-weight: 400;cursor:pointer;font-size:12px;">
+							<input type="radio" name="optradio" ng-model="mf.ruleListSelection" value="vlrule"/>
+							Validation rule
+						</label>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						<label style="color: #5eb5eb;font-weight: 400;cursor:pointer;font-size:12px;">
+							<input type="radio" name="optradio" ng-model="mf.ruleListSelection" value="slrule"/>
+							Standardisation Rule
+						</label>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						<label style="color: #5eb5eb;font-weight: 400;cursor:pointer;font-size:12px;">
+							<input type="radio" name="optradio" ng-model="mf.ruleListSelection" value="cusCondition"/>
+							Custom Condition
+						</label>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						<label style="color: #5eb5eb;font-weight: 400;cursor:pointer;font-size:12px;">
+							<input type="radio" name="optradio" ng-model="mf.ruleListSelection" value="cusAction"/>
+							Custom Action
+						</label>
+					</div>
+				</div>
+				<div class="row ruleMode" ng-show="mf.ruleListSelection == 'slrule'">
+					<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+						 <div class="panel-group" id="ruleAccordion{$ $index $}" ng-repeat="rule in mf.allRules" ng-show="rule.rule_type=='S'">
+							  <div class="panel panel-default">
+								<div class="panel-heading">
+								  <h4 class="panel-title">
+									<label class="checkbox-inline">
+										<input type="checkbox" ng-model="selectedRules[rule.rule_id]" value="{$ rule.rule_id $}">
+										<i class="helper" style="top: 6px;"></i>
+										{$ rule.rule_name $}
+									</label>
+									  <!--<i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>-->
+									  <i class="fa fa-trash pull-right" ng-click="mf.deleteRule(rule.rule_id)"></i>
+								  </h4>
+								</div>
+								<!--<div class="panel-collapse collapse in standaradRule{$ $index $}">-->
+								  <!--<div class="panel-body">-->
+									<!--{$ rule $}-->
+								  <!--</div>-->
+								<!--</div>-->
+							  </div>
+						 </div>
+					</div>
+				</div>
+
+				<div class="row ruleMode" ng-show="mf.ruleListSelection == 'vlrule'">
+					<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+						 <div class="panel-group" id="vruleAccordion" ng-repeat="rule in mf.allRules" ng-show="rule.rule_type=='V'">
+							  <div class="panel panel-default">
+								<div class="panel-heading">
+								  <h4 class="panel-title">
+									<label class="checkbox-inline">
+										<input type="checkbox" ng-model="selectedRules[rule.rule_id]" value="{$ rule.rule_id $}">
+										<i class="helper" style="top: 6px;"></i>
+										{$ rule.rule_name $}
+									</label>
+									  <!--<i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>-->
+									   <i class="fa fa-trash pull-right" ng-click="mf.deleteRule(rule.rule_id)"></i>
+								  </h4>
+								</div>
+								<!--<div class="panel-collapse collapse in validateRule">-->
+								  <!--<div class="panel-body">-->
+									<!--Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.-->
+								  <!--</div>-->
+								<!--</div>-->
+							  </div>
+							</div>
+					</div>
+				</div>
+				<div class="row ruleMode" ng-show="mf.ruleListSelection == 'cusCondition'">
+					<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+						 <div class="panel-group" ng-repeat="cond in mf.customConditionList" >
+							  <div class="panel panel-default">
+								<div class="panel-heading">
+								  <h4 class="panel-title">
+									<label class="checkbox-inline" style="cursor: default;">
+										{$ cond.name $}
+									</label>
+									  <i class="indicator glyphicon glyphicon-chevron-down  pull-right" style="margin-left: 12px;cursor:pointer" ng-click="mf.clearAllScopes()" data-toggle="collapse" data-target=".conditionAccordion{$ $index $}"></i>
+									  <i class="fa fa-trash pull-right" ng-click="mf.actionAndConditionDelete('condition',cond)"></i>
+								  </h4>
+								</div>
+								<div class="panel-collapse collapse conditionAccordion{$ $index $}">
+								  <div class="panel-body">
+									  <div class="row" style="padding-top:12px;">
+										  <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+											  <div class="row">
+                                                  <div class="col-sm-6 col-xs-6 col-lg-6 col-xs-6">
+                                                      <label class="text-heading">Custom Condition Name</label>
+													  <input type="text" class="form-control bottomLineInput"
+													  	 placeholder="Enter Condition Name" ng-model="cond.name" style="background: white;" />
+                                                  </div>
+                                                  <div class="col-sm-6 col-lg-6 col-xs-6 col-md-6">
+                                                      <label class="text-heading">Language</label>
+                                                      <select class="form-control" ng-model="cond.lang" disabled>
+                                                          <option value="js">Javascript</option>
+                                                          <option value="groovy">Groovy</option>
+                                                      </select>
+                                                  </div>
+                                              </div>
+											  <div id="aceEditorCondition{$ $index $}" ui-ace="aceOptionsCndEdt[$index]" ng-trim="true"></div><br>
+										  </div>
+									  </div>
+									  <div class="row">
+										  <div class="col-sm-12 col-lg-12 col-xs-12 col-md-12">
+											  <button class="btn btn-custom" ng-click="mf.editCustom(cond,$index)">Save</button>
+										  </div>
+									  </div><hr>
+                                      <div class="row">
+                                            <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                                <input type="text" class="form-control bottomLineInput"
+                                                       placeholder="Enter Source Value" ng-model="mf.sourceConditionValueInEdit" style="background: white;" required />
+                                            </div>
+                                            <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                                <input type="text" class="form-control bottomLineInput"
+                                                       placeholder="Enter Target Value" ng-model="mf.targetConditionValueInEdit" style="background: white;" required />
+                                            </div>
+                                      </div>
+                                      <div class="row">
+                                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                                <button type="submit" class="btn btn-custom" ng-click="mf.testConditionAndActionInEdit(cond,$index)">Test</button>
+                                            </div>
+                                      </div><br>
+                                      <div class="row">
+                                            <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                                                <span>Result : </span><span>{$ outputOfTestConditionInEdit $}</span>
+                                            </div>
+                                      </div>
+								  </div>
+								</div>
+							  </div>
+						 </div>
+					</div>
+				</div>
+				<div class="row ruleMode" ng-show="mf.ruleListSelection == 'cusAction'">
+					<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+						 <div class="panel-group" ng-repeat="cond in mf.customActionList" >
+							  <div class="panel panel-default">
+								<div class="panel-heading">
+								  <h4 class="panel-title">
+									<label class="checkbox-inline" style="cursor: default;">
+										{$ cond.name $}
+									</label>
+									  <i class="indicator glyphicon glyphicon-chevron-down  pull-right" style="margin-left: 12px;" ng-click="mf.clearAllScopes()" data-toggle="collapse" data-target=".actionAccordion{$ $index $}"></i>
+									  <i class="fa fa-trash pull-right" ng-click="mf.actionAndConditionDelete('action',cond)"></i>
+								  </h4>
+								</div>
+								<div class="panel-collapse collapse actionAccordion{$ $index $}">
+								  <div class="panel-body">
+									  <div class="row" style="padding-top:12px;">
+										  <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+											  <div class="row">
+                                                  <div class="col-sm-6 col-xs-6 col-lg-6 col-xs-6">
+                                                      <label class="text-heading">Custom Action Name</label>
+                                                      <input type="text" class="form-control bottomLineInput"
+															 placeholder="Enter Condition Name" ng-model="cond.name" style="background: white;" />
+                                                  </div>
+                                                  <div class="col-sm-6 col-lg-6 col-xs-6 col-md-6">
+                                                      <label class="text-heading">Language</label>
+                                                      <select class="form-control" ng-model="cond.lang" disabled>
+                                                          <option value="js">Javascript</option>
+                                                          <option value="groovy">Groovy</option>
+                                                      </select>
+                                                  </div>
+                                              </div>
+											  <div id="aceEditorAction{$ $index $}" ui-ace="aceOptionsActEdt[$index]" ng-trim="true"></div><br>
+										  </div>
+									  </div>
+									  <div class="row">
+										  <div class="col-sm-12 col-lg-12 col-xs-12 col-md-12">
+											  <button class="btn btn-custom" ng-click="mf.editCustom(cond,$index)">Save</button>
+										  </div>
+									  </div><hr>
+                                      <div class="row">
+                                            <div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                                <input type="text" class="form-control bottomLineInput"
+                                                       placeholder="Enter Source Value" ng-model="mf.sourceActionValueInEdit" style="background: white;" required />
+                                            </div>
+										  	<div class="col-lg-6 col-sm-6 col-xs-6 col-md-6">
+                                                <input type="text" class="form-control bottomLineInput"
+                                                       placeholder="Enter Target Value" ng-model="ec.targetActionValueInEdit" style="background: white;" required />
+                                            </div>
+                                      </div>
+                                      <div class="row">
+                                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                                <button type="submit" class="btn btn-custom" ng-click="mf.testConditionAndActionInEdit(cond,$index)">Test</button>
+                                            </div>
+                                      </div><br>
+                                      <div class="row">
+                                            <div class="col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                                                <span>Result : </span><span>{$ outputOfTestActionInEdit $}</span>
+                                            </div>
+                                      </div>
+								  </div>
+								</div>
+							  </div>
+						 </div>
+					</div>
+				</div>
+			</div>
+			<div class="row" ng-show="mf.ruleListSelection == 'vlrule' || mf.ruleListSelection == 'slrule'">
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+					<button type="submit" class="btn btn-custom" ng-click="mf.fromExistingRules(selectedRules)">Save</button>
+				</div>
+			</div>
+		</form>
+
+    </div>
+</div>
+
+
+<div class="row row-eq-height draftMode">
+    <div class="col-lg-6 col-md-6 col-sm-6 dashboard-row">
+        <!--<div class="pagination" ng-show="mf.documentDetails.no_of_pages>1">
+          <a ng-repeat="(key,value) in mf.documentDetails.pages" ng-click="mf.changeDocumentInfo(value.page_no)" ng-class="current_page==value.page_no?'active':''">{$ value.page_no $}</a>
+        </div> -->
+		<div class="row">
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
+				<div class="btn-group" >
+						<button type="button" class="btn btn-default btn-zoom" ng-click="mf.disableSelector()"><i
+								class="fa fa-minus-circle" aria-hidden="true"></i></button>
+						<button type="button" class="btn btn-default btn-zoom btn-magnifier" ng-disabled="true"><img src="/app/images/zoomIcon.png"
+																								  style="width: 18px;"/>
+						</button>
+						<button type="button" class="btn btn-default btn-zoom" ng-click="mf.enableSelector()"><i class="fa fa-plus-circle"
+																									  aria-hidden="true"></i>
+						</button>
+				</div>
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
+					<div ng-show="mf.documentDetails.no_of_pages>1 && mf.documentDetails.doc_type!='excel'">
+						<span>
+							<button class="btn pagination-button" ng-disabled="current_page==1" ng-click="mf.changePageNum('prev')"><i class="fa fa-chevron-left" style="color:white;font-size:12px;"></i></button>
+						</span>
+						<span class="pagination-textBox">
+							<input type="number" class="pagination-text" ng-model="current_page" ng-keyup="mf.keyEnter($event)"/>
+						</span>
+						<span>
+							<button class="btn pagination-button" ng-disabled="current_page==mf.documentDetails.no_of_pages" ng-click="mf.changePageNum('next')"><i class="fa fa-chevron-right" style="color:white;font-size:12px;"></i></button>
+						</span>
+						<span> of {$ mf.documentDetails.no_of_pages $}</span>
+					</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="col-lg-6 col-sm-6 col-md-6 text-right dashboard-row">
+		<label class="checkbox-inline">
+			<input type="checkbox" ng-model="mf.documentDetails.is_draft"
+				   ng-change="mf.changeDraft(mf.documentDetails.is_draft)">
+			<i class="helper"></i>Draft Mode
+		</label>
+	</div>
+</div>
+
+
+
+
+
+
+<div class="row row-eq-height">
+	<div class="col-sm-6 col-md-6 col-xs-12 col-lg-6 dashboard-row">
+		<div class="row image-style" id="scrollImage">
+			<div class="col-lg-12 col-md-12 col-sm-12">
+				<div id="ImageLocation" ng-class="zoomDisplay" style="position:relative;" ng-if="mf.documentDetails.doc_type==undefined || mf.documentDetails.doc_type=='image'">
+					<!--<div class='panel panel-default' form-image form-src="image.src" form-max width="image.maxWidth" form-selector="selector" form-drawer="drawer"></div>-->
+				</div>
+				<div ng-if="mf.documentDetails.doc_type=='excel'">
+					<div ng-bind-html="mf.renderHTMLData()"></div>
+					<div class="row" ng-if="mf.documentDetails.doc_type=='excel'">
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 excel-footer" style="background-color:aliceblue;text-align:left;">
+                                    <div class="btn-group" role="group" >
+                                      <button type="button" class="btn btn-sheet excel-btn" ng-class="excelBtnArr[$index]"style="
+            border-right: 1px solid black;" ng-repeat="data in  mf.documentDetails.pages" ng-click="getSheetData($index)">Sheet {$ $index+1 $}</button>
+                                    </div>
+                                </div>
+					</div>
+				</div>
+			</div>
+		</div >
+	</div>
+
+	<div class="col-sm-6 col-md-6 col-xs-12 col-lg-6 no-margin" style="background-color:white;border-top: 1px solid #ddd;">
+		<div class="row image-style1">
+			<div class="row " id="marker-from">
+				<div class="tab-content image-style2" id="scrollDiv" style="overflow-y:scroll">
+					<!--<div>-->
+						<!--<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">-->
+							<!--<div class="panel panel-default">-->
+								<!--<div class="panel-heading" role="tab" id="headingOne">-->
+									<!--<h4 class="panel-title">-->
+										<!--<a role="button" data-toggle="collapse" data-parent="#accordion"-->
+										   <!--href=".table" aria-expanded="true" aria-controls="table">-->
+											<!--Table-->
+										<!--</a>-->
+									<!--</h4>-->
+								<!--</div>-->
+								<!--<div class="panel-collapse collapse in table" role="tabpanel"-->
+									 <!--aria-labelledby="headingOne">-->
+									<!--<div class="panel-body">-->
+										<!--<div class="row text-right">-->
+											<!--<span class="dragDiv" ng-click="addTableRow()"><i-->
+													<!--class="fa fa-plus"></i> Add Table</span>-->
+										<!--</div>-->
+										<!--<div class="panel panel-default"-->
+											 <!--ng-repeat="datum in mf.addTable track by $index"-->
+											 <!--ng-show="showAddTable">-->
+											<!--<div class="panel-heading" role="tab" id="addtableData{$ $index $}">-->
+												<!--<h4 class="panel-title">-->
+													<!--<a class="collapsed" role="button" data-toggle="collapse"-->
+													   <!--data-parent="#accordionTable"-->
+													   <!--href=".addtableData{$ $index $}" aria-expanded="false"-->
+													   <!--aria-controls="addtableData {$ $index $}">-->
+														<!--{$ datum.table_name $}-->
+													<!--</a>-->
+												<!--</h4>-->
+											<!--</div>-->
+											<!--<div class="panel-body">-->
+												<!--<div class="panel-collapse collapse  addtableData{$ $index $}"-->
+													 <!--ng-class="$index==0?'in' :''" role="tabpanel"-->
+													 <!--aria-labelledby="addtableData{$ $index $}">-->
+                                                    <!--<form ng-submit="mf.saveNewTable()">-->
+                                                        <!--<div class="panel-body">-->
+                                                            <!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 dashboard-row">-->
+                                                                <!--<div class="headerdiv">-->
+                                                                    <!--<tags-input placeholder="Table Start Identifier"-->
+                                                                                <!--ng-model="datum.top_keys"-->
+                                                                                <!--replace-spaces-with-dashes="false"-->
+                                                                                <!--use-strings="true"-->
+                                                                                <!--add-on-comma="false"></tags-input>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
+                                                            <!--<div>-->
+                                                                <!--<div>-->
+                                                                    <!--<input type="text" ng-model="datum.table_name"-->
+                                                                           <!--class="form-control"-->
+                                                                           <!--placeholder="Table Name" required/>-->
+                                                                <!--</div>-->
+                                                                <!--<br>-->
+                                                                <!--<div class="panel">-->
+                                                                    <!--<div class="panel panel-default" style="border: 1px solid #ddd;">-->
+                                                                        <!--<div class="panel-heading">-->
+                                                                            <!--<div class="row">-->
+                                                                                <!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">-->
+                                                                                    <!--Column Headers-->
+                                                                                <!--</div>-->
+                                                                                <!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">-->
+                                                                                    <!--Multi-Column Headers-->
+                                                                                <!--</div>-->
+                                                                            <!--</div>-->
+                                                                        <!--</div>-->
+                                                                        <!--<div class="panel-body">-->
+                                                                            <!--<div class="row" ng-repeat="field in datum.headings  track by $index">-->
+                                                                                <!--<div class="col-lg-5 col-sm-5 col-md-5 col-xs-5 dashboard-row" style="position:relative;padding: 0px;">-->
+                                                                                    <!--<tags-input placeholder="Column header" ng-model="datum.headings[$index].column"-->
+                                                                                                            <!--replace-spaces-with-dashes="false"-->
+                                                                                                            <!--use-strings="true"-->
+                                                                                                            <!--add-on-comma="false" on-tag-added="columnAdded()" on-tag-removed="columnAdded()"></tags-input>-->
+                                                                                                    <!--&lt;!&ndash;<input type="text" class="form-control table-form" placeholder="Column header" ng-model="field" />&ndash;&gt;-->
+                                                                                                    <!--<i class="fa fa-times-circle"-->
+                                                                                                       <!--ng-click="removeTableColumn($parent.$index,$index)"-->
+                                                                                                       <!--style="    position: absolute;top: -4px;right: -8px;font-size: 18px;"></i>-->
+                                                                                <!--</div>-->
+                                                                                <!--<div class="col-lg-1 col-sm-1 col-xs-1 col-md-1 dashboard-row">-->
+                                                                                    <!--<hr>-->
+                                                                                <!--</div>-->
+                                                                                <!--<div class="col-lg-5 col-sm-5 col-xs-5 col-md-5 dashboard-row" ng-hide="field.subColumn">-->
+                                                                                    <!--<a ng-click="addSubColumn($parent.$index,$index)">Add Multi Column</a>-->
+                                                                                <!--</div>-->
+                                                                                <!--<div class="col-lg-5 col-sm-5 col-xs-5 col-md-5 dashboard-row" ng-show="field.subColumn">-->
+                                                                                    <!--<div ng-repeat="subColumn in datum.headings[$index].subColumn" style="position:relative">-->
+                                                                                        <!--<tags-input placeholder="Sub-column header" ng-model="datum.headings[$parent.$index].subColumn[$index]"-->
+                                                                                                            <!--replace-spaces-with-dashes="false"-->
+                                                                                                            <!--use-strings="true"-->
+                                                                                                            <!--add-on-comma="false" on-tag-added="columnAdded()" on-tag-removed="columnAdded()"></tags-input>-->
+                                                                                                    <!--&lt;!&ndash;<input type="text" class="form-control table-form" placeholder="Column header" ng-model="field" />&ndash;&gt;-->
+                                                                                                    <!--<i class="fa fa-times-circle"-->
+                                                                                                       <!--ng-click="removeTableSubColumn(datum.headings[$parent.$index],$index)"-->
+                                                                                                       <!--style="    position: absolute;top: -4px;right: -8px;font-size: 18px;"></i>-->
+                                                                                    <!--</div>-->
+                                                                                    <!--<span><i class="fa fa-plus" ng-click="addSubColumn($parent.$index,$index)"></i></span>-->
+                                                                                <!--</div>-->
+                                                                            <!--</div>-->
+                                                                        <!--</div>-->
+                                                                        <!--<div class="panel-footer">-->
+                                                                            <!--<a class="btnAddcol" ng-click="addTableColumn($index)">-->
+                                                                                <!--<i class="fa fa-plus" alt="Add column"></i>-->
+                                                                                <!--<span>Add column</span>-->
+                                                                            <!--</a>-->
+                                                                        <!--</div>-->
+                                                                    <!--</div>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
+                                                            <!--<br>-->
+                                                            <!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 dashboard-row">-->
+                                                                <!--<div class="footerdiv">-->
+                                                                    <!--<tags-input placeholder="Table End Identifier"-->
+                                                                                <!--ng-model="datum.bottom_keys"-->
+                                                                                <!--replace-spaces-with-dashes="false"-->
+                                                                                <!--use-strings="true"-->
+                                                                                <!--add-on-comma="false"></tags-input>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
+                                                            <!--<div class="row">-->
+                                                                <!--<div class="col-lg-12 col-sm-12 col-md-12">-->
+                                                                    <!--<span>No of empty rows to identify end of the table <input-->
+                                                                            <!--class="table-form form-container"-->
+                                                                            <!--placeholder="rows" type="text"-->
+                                                                            <!--ng-model="datum.row_gap"/></span>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
+                                                            <!--<br>-->
+                                                            <!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+                                                            <!--&lt;!&ndash;<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 right dashboard-row">&ndash;&gt;-->
+                                                            <!--&lt;!&ndash;<button type="button" class="btn btn-primary " ng-click="mf.addedColumns()">Done</button>&ndash;&gt;-->
+                                                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                                            <!--<label>-->
+                                                                <!--Select Domain Object for Table-->
+                                                            <!--</label>-->
+
+                                                            <!--<div class="row">-->
+                                                                <!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 ">-->
+                                                                    <!--<select class="form-control"-->
+                                                                            <!--ng-model="datum.entity"-->
+                                                                            <!--ng-change="getAttribute(datum.entity)">-->
+                                                                        <!--<option value="" ng-selected="true">Select-->
+                                                                            <!--Domain Object-->
+                                                                        <!--</option>-->
+                                                                        <!--<option ng-repeat="(d,key) in entitiesList" value="{$ d $}">{$-->
+                                                                            <!--d $}-->
+                                                                        <!--</option>-->
+                                                                    <!--</select>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
+                                                            <!--<br>-->
+
+                                                            <!--<div class="row" ng-show="mf.showTableMapping">-->
+                                                                <!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 ">-->
+                                                                    <!--<table class="table  table-bordered">-->
+                                                                        <!--<thead>-->
+                                                                        <!--<th>Column</th>-->
+                                                                        <!--<th>Attribute</th>-->
+                                                                        <!--</thead>-->
+                                                                        <!--<tbody>-->
+                                                                        <!--<tr ng-repeat="keys in datum.forDomainMapping">-->
+                                                                            <!--<td>-->
+                                                                                <!--<p ng-repeat="column in keys.column track by $index" style="color:black">-->
+                                                                                    <!--{$ column $}<span-->
+                                                                                        <!--ng-show="keys.column.length-1>$index">,</span>-->
+                                                                                <!--</p>-->
+                                                                                <!--<p ng-repeat="column in keys.subColumn[0] track by $index" ng-show="keys.subColumn != undefined">-->
+                                                                                    <!--{$ column $}<span-->
+                                                                                        <!--ng-show="keys.column.length-1>$index">,</span>-->
+                                                                                <!--</p>-->
+                                                                            <!--</td>-->
+                                                                            <!--<td>-->
+                                                                                <!--<select class="form-control"-->
+                                                                                        <!--ng-model="keys.attribute">-->
+                                                                                    <!--<option value=""-->
+                                                                                            <!--ng-selected="true">-->
+                                                                                        <!--Select Attribute-->
+                                                                                    <!--</option>-->
+                                                                                    <!--<option ng-repeat="d in listOfAttributes track by $index" value="{$ d $}">-->
+                                                                                        <!--{$ d $}-->
+                                                                                    <!--</option>-->
+
+                                                                                <!--</select>-->
+
+                                                                            <!--</td>-->
+                                                                        <!--</tr>-->
+                                                                        <!--</tbody>-->
+                                                                    <!--</table>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                        <!--<div class="panel-footer" style="background:none;">-->
+                                                            <!--<button type="button" class="btn btn-custom "-->
+                                                                    <!--ng-click="mf.addedColumns()"-->
+                                                                    <!--ng-show="mf.showDone">Done-->
+                                                            <!--</button>-->
+                                                            <!--<button type="submit" class="btn btn-custom"-->
+                                                                    <!--ng-show="!mf.showDone">Save-->
+                                                            <!--</button>-->
+                                                            <!--<button type="button" class="btn button-customCancel"-->
+                                                                    <!--ng-click="mf.cancelTable()">Cancel-->
+                                                            <!--</button>-->
+                                                        <!--</div>-->
+                                                    <!--</form>-->
+												<!--</div>-->
+											<!--</div>-->
+										<!--</div>-->
+										<!--<br>-->
+									<!--</div>-->
+									<!--<div class="panel panel-default"-->
+										 <!--ng-repeat="datum in mf.data track by $index" ng-show="!showAddTable">-->
+										<!--<div class="panel-heading" role="tab" id="tableData{$ $index $}">-->
+											<!--<h4 class="panel-title">-->
+												<!--<a class="collapsed" role="button" data-toggle="collapse"-->
+												   <!--data-parent="#accordionTable" href=".tableData{$ $index $}"-->
+												   <!--aria-expanded="false" aria-controls="tableData {$ $index $}">-->
+													<!--{$ datum.table_name $}<a class="btnAddcol pull-right"-->
+																			 <!--ng-click="deleteTable(datum,$index, datum.table_name)"><i-->
+														<!--class="fa fa-trash"></i></a>-->
+												<!--</a>-->
+											<!--</h4>-->
+										<!--</div>-->
+										<!--<div class="panel-collapse collapse  tableData{$ $index $}"-->
+											 <!--ng-class="$index==0?'in' :''" role="tabpanel"-->
+											 <!--aria-labelledby="tableData{$ $index $}">-->
+
+                                                <!--<div class="panel-body">-->
+                                                     <!--<form ng-submit="mf.saveTableData(datum,$index)">-->
+                                                        <!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 dashboard-row">-->
+                                                            <!--<div class="headerdiv">-->
+                                                                <!--<tags-input placeholder="Table Start Identifier"-->
+                                                                            <!--replace-spaces-with-dashes="false"-->
+                                                                            <!--use-strings="true" ng-model="datum.top_keys"-->
+                                                                            <!--add-on-comma="false"></tags-input>-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                        <!--<div>-->
+                                                            <!--<div class="heading{$ $index $}">-->
+                                                                <!--<input type="text" ng-model="datum.table_name "-->
+                                                                       <!--class="form-control" use-strings="true"-->
+                                                                       <!--placeholder="Table Name" required/>-->
+
+                                                            <!--</div>-->
+
+                                                            <!--<div class="panel">-->
+                                                                <!--<div class="panel panel-default" style="border: 1px solid #ddd;">-->
+                                                                    <!--<div class="panel-heading">-->
+                                                                        <!--<div class="row">-->
+                                                                            <!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">-->
+                                                                                <!--Column Headers-->
+                                                                            <!--</div>-->
+                                                                            <!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">-->
+                                                                                <!--Multi-Column Headers-->
+                                                                            <!--</div>-->
+                                                                        <!--</div>-->
+                                                                    <!--</div>-->
+                                                                    <!--<div class="panel-body">-->
+                                                                        <!--<div class="row" ng-repeat="field in datum.headings  track by $index">-->
+                                                                            <!--<div class="col-lg-5 col-sm-5 col-md-5 col-xs-5 dashboard-row" style="position:relative;padding: 0px;">-->
+                                                                                <!--<tags-input placeholder="Column header" ng-model="datum.headings[$index].column"-->
+                                                                                                        <!--replace-spaces-with-dashes="false"-->
+                                                                                                        <!--use-strings="true"-->
+                                                                                                        <!--add-on-comma="false" on-tag-added="columnAddedInEdit($parent.$index)" on-tag-removed="columnAddedInEdit($parent.$index)"></tags-input>-->
+                                                                                                <!--&lt;!&ndash;<input type="text" class="form-control table-form" placeholder="Column header" ng-model="field" />&ndash;&gt;-->
+                                                                                                <!--<i class="fa fa-times-circle"-->
+                                                                                                   <!--ng-click="removeColumn($parent.$index,$index)"-->
+                                                                                                   <!--style="    position: absolute;top: -4px;right: -8px;font-size: 18px;"></i>-->
+                                                                            <!--</div>-->
+                                                                            <!--<div class="col-lg-1 col-sm-1 col-xs-1 col-md-1 dashboard-row">-->
+                                                                                <!--<hr>-->
+                                                                            <!--</div>-->
+                                                                            <!--<div class="col-lg-5 col-sm-5 col-xs-5 col-md-5 dashboard-row" ng-hide="field.subColumn">-->
+                                                                                <!--<a ng-click="addSubColumnInEdit($parent.$index,$index)">Add Multi Column</a>-->
+                                                                            <!--</div>-->
+                                                                            <!--<div class="col-lg-5 col-sm-5 col-xs-5 col-md-5 dashboard-row" ng-show="field.subColumn">-->
+                                                                                <!--<div ng-repeat="subColumn in datum.headings[$index].subColumn" style="position:relative">-->
+                                                                                    <!--<tags-input placeholder="Sub-column header" ng-model="datum.headings[$parent.$index].subColumn[$index]"-->
+                                                                                                        <!--replace-spaces-with-dashes="false"-->
+                                                                                                        <!--use-strings="true"-->
+                                                                                                        <!--add-on-comma="false" on-tag-added="columnAddedInEdit($parent.$index)" on-tag-removed="columnAddedInEdit($parent.$index)"></tags-input>-->
+                                                                                                <!--&lt;!&ndash;<input type="text" class="form-control table-form" placeholder="Column header" ng-model="field" />&ndash;&gt;-->
+                                                                                                <!--<i class="fa fa-times-circle"-->
+                                                                                                   <!--ng-click="removeTableSubColumnInedit(datum.headings[$parent.$index],$index,$parent.$index)"-->
+                                                                                                   <!--style="    position: absolute;top: -4px;right: -8px;font-size: 18px;"></i>-->
+                                                                                <!--</div>-->
+                                                                                <!--<span><i class="fa fa-plus" ng-click="addSubColumnInEdit($parent.$index,$index)"></i></span>-->
+                                                                            <!--</div>-->
+                                                                        <!--</div>-->
+                                                                    <!--</div>-->
+                                                                    <!--<div class="panel-footer">-->
+                                                                        <!--<a class="btnAddcol" ng-click="addColumn($index)">-->
+                                                                            <!--<i class="fa fa-plus" alt="Add column"></i>-->
+                                                                            <!--<span>Add column</span>-->
+                                                                        <!--</a>-->
+                                                                    <!--</div>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                        <!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 dashboard-row">-->
+                                                            <!--<div class="footerdiv">-->
+                                                                <!--<tags-input placeholder="Table End Identifier"-->
+                                                                            <!--ng-model="datum.bottom_keys"-->
+                                                                            <!--replace-spaces-with-dashes="false"-->
+                                                                            <!--use-strings="true"-->
+                                                                            <!--add-on-comma="false"></tags-input>-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                        <!--<div class="col-lg-12 col-sm-12 col-md-12">-->
+                                                            <!--<span>No of empty rows to identify end of the table <input-->
+                                                                    <!--class="table-form form-container" placeholder="rows"-->
+                                                                    <!--type="text" ng-model="datum.row_gap"/></span>-->
+                                                        <!--</div>-->
+                                                        <!--<br>-->
+                                                        <!--<label>-->
+                                                            <!--Selected Domain Object for Table :-->
+                                                        <!--</label>-->
+
+                                                        <!--<div class="row">-->
+                                                            <!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 ">-->
+                                                                <!--<label ng-show="!mf.tableEditDomain[$index]"><b>{$ datum.entity $}</b><span ng-click="mf.tableEdit(datum,$index);editDomain[$index]=datum.entity " class="editDomainObj"><i class="fa fa-pencil"></i></span></label>-->
+                                                            <!--</div>-->
+                                                            <!--<div class="row" ng-show="mf.tableEditDomain[$index]">-->
+                                                                    <!--<div class="col-lg-10 col-sm-10 col-xs-10 col-md-10 ">-->
+                                                                        <!--<select class="form-control"-->
+                                                                                <!--ng-model="datum.entity"-->
+                                                                                <!--ng-change="getAttribute(datum.entity)">-->
+                                                                            <!--<option value="">Select-->
+                                                                                <!--Domain Object-->
+                                                                            <!--</option>-->
+                                                                            <!--<option ng-repeat="(d,key) in entitiesList" ng-selected="d==datum.entity" value="{$ d $}">{$-->
+                                                                                <!--d $}-->
+                                                                            <!--</option>-->
+                                                                        <!--</select>-->
+                                                                    <!--</div>-->
+                                                                    <!--<div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 removeEditDomain">-->
+                                                                        <!--<span ng-click="mf.removeTableEdit(datum,$index,editDomain[$index]);datum.entity=editDomain[$index]"><i class="fa fa-times-circle"></i></span>-->
+                                                                    <!--</div>-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+
+                                                        <!--<br>-->
+
+                                                        <!--<div class="row">-->
+                                                            <!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 ">-->
+                                                                <!--<table class="table  table-bordered">-->
+                                                                    <!--<thead>-->
+                                                                    <!--<th>Column</th>-->
+
+                                                                    <!--<th>Attribute</th>-->
+                                                                    <!--</thead>-->
+                                                                    <!--<tbody>-->
+                                                                    <!--<tr ng-repeat="keys in datum.forDomainMapping">-->
+                                                                        <!--<td>-->
+                                                                            <!--<p ng-repeat="column in keys.column track by $index" style="color:black;">-->
+                                                                                <!--{$ column $}<span-->
+                                                                                    <!--ng-show="keys.column.length-1>$index">,</span>-->
+                                                                            <!--</p>-->
+                                                                            <!--<p ng-repeat="column in keys.subColumn[0] track by $index" ng-show="keys.subColumn != undefined">-->
+                                                                                <!--{$ column $}<span-->
+                                                                                    <!--ng-show="keys.column.length-1>$index">,</span>-->
+                                                                            <!--</p>-->
+                                                                        <!--</td>-->
+                                                                        <!--<td>-->
+                                                                            <!--<label ng-show="!mf.tableAttrEditDomain[$parent.$index][$index]">{$ keys.attribute $}<span ng-click="mf.tableAttrEdit(keys,$parent.$index,$index,datum.entity);editDomainAttr[$parent.$index][$index]=keys.attribute " class="editDomainObj"><i class="fa fa-pencil"></i></span></label>-->
+                                                                            <!--<div class="row" ng-show="mf.tableAttrEditDomain[$parent.$index][$index]">-->
+                                                                                <!--<div class="col-lg-10 col-sm-10 col-xs-10 col-md-10 ">-->
+                                                                                    <!--<select class="form-control"-->
+                                                                                    <!--ng-model="keys.attribute">-->
+                                                                                        <!--<option value="">Select Attribute-->
+                                                                                        <!--</option>-->
+                                                                                        <!--<option ng-repeat="d in listOfAttributes track by $index" ng-selected="d ==keys.attribute" value="{$ d $}">{$-->
+                                                                                            <!--d $}-->
+                                                                                        <!--</option>-->
+                                                                                    <!--</select>-->
+                                                                                <!--</div>-->
+                                                                                <!--<div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 removeEditDomain">-->
+                                                                                    <!--<span ng-click="mf.removeTableAttrEdit(keys,$parent.$index,$index);keys.attribute=editDomainAttr[$parent.$index][$index]"><i class="fa fa-times-circle"></i></span>-->
+                                                                                <!--</div>-->
+
+
+
+                                                                            <!--</div>-->
+
+                                                                        <!--</td>-->
+                                                                    <!--</tr>-->
+                                                                    <!--</tbody>-->
+                                                                <!--</table>-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                        <!--<br>-->
+                                                        <!--<div class="row">-->
+                                                            <!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 dashboard-row">-->
+                                                                <!--<div ng-show="showSpinner" class="loading-spiner-holder ralign-spinner"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class=""><i></i></span></div></div>-->
+                                                                <!--<button type="submit" class="btn btn-primary right">Save</button>-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                    <!--</form>-->
+                                                <!--</div>-->
+
+										<!--</div>-->
+
+									<!--</div>-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--<div class="panel panel-default">-->
+								<!--<div class="panel-heading" role="tab" id="headingTwo">-->
+									<!--<h4 class="panel-title">-->
+										<!--<a class="collapsed" role="button" data-toggle="collapse"-->
+										   <!--data-parent="#accordion" href=".fields" aria-expanded="false"-->
+										   <!--aria-controls="fields">-->
+											<!--Fields-->
+										<!--</a>-->
+									<!--</h4>-->
+								<!--</div>-->
+								<!--<div class="panel-collapse collapse fields" role="tabpanel"-->
+									 <!--aria-labelledby="headingTwo">-->
+									<!--<div class="panel-body">-->
+										<!--<div class="alert alert-danger" ng-if="croppingError">-->
+											<!--<span>{$ cropMsg $}</span>-->
+										<!--</div>-->
+										<!--<div class="row right" ng-click="mf.addField()" ng-show="!showConfig">-->
+											<!--<label class="dragDiv"><i class="fa fa-plus"></i> Add Fields</label>-->
+										<!--</div>-->
+										<!--<br>-->
+										<!--<div class="fieldConfiguration" ng-show="showConfig">-->
+											<!--<div class="row row-custom-margin">-->
+												<!--<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">-->
+													<!--<label>Does the field have a label</label>-->
+												<!--</div>-->
+												<!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 right">-->
+													<!--<form>-->
+														<!--<input type="radio" name="optradio"-->
+															   <!--ng-model="mf.dataObj.has_label" value="yes"-->
+															   <!--ng-change="mf.changeLabel(mf.dataObj.has_label)">-->
+														<!--Yes-->
+														<!--<input type="radio" name="optradio"-->
+															   <!--ng-model="mf.dataObj.has_label_false" value="no"-->
+															   <!--ng-change="mf.changeLabel(mf.dataObj.has_label_false)">-->
+														<!--No-->
+
+													<!--</form>-->
+													<!--&lt;!&ndash;<toggle-switch id="checkbox1" ng-model="mf.dataObj.has_label" ng-change="mf.changeLabel(mf.dataObj.has_label)" class="switch-mini right" knob-label="?" knob-label-color="red" on-label="Yes" off-label="No"></toggle-switch>&ndash;&gt;-->
+												<!--</div>-->
+											<!--</div>-->
+											<!--<div ng-show="mf.dataObj.has_label || mf.dataObj.has_label_false=='no'">-->
+												<!--<div class="row row-custom-margin"-->
+													 <!--ng-show="mf.dataObj.has_label=='yes'">-->
+													<!--<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">-->
+														<!--<label>Select the label</label>-->
+													<!--</div>-->
+													<!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">-->
+														<!--<button type="button" class="btn btn-primary"-->
+																<!--ng-click="mf.addLabel(true)"-->
+																<!--ng-disabled="addFieldLabel">Done-->
+														<!--</button>-->
+														<!--&lt;!&ndash;<toggle-switch id="checkbox2" ng-model="mf.dataObj.label_selected" ng-change="mf.addLabel(mf.dataObj.label_selected)" class="switch-mini right" knob-label="?" on-label="Yes" off-label="No"></toggle-switch>&ndash;&gt;-->
+													<!--</div>-->
+												<!--</div>-->
+												<!--<div class="row row-custom-margin"-->
+													 <!--ng-show="mf.dataObj.has_label_false=='no' || addFieldLabel || addValueLabel">-->
+													<!--<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">-->
+														<!--<label>Select the area where the value would be-->
+															<!--present</label>-->
+													<!--</div>-->
+													<!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">-->
+														<!--<button type="button" class="btn btn-primary"-->
+																<!--ng-click="mf.addValue(true)"-->
+																<!--ng-disabled="addValueLabel">Done-->
+														<!--</button>-->
+														<!--&lt;!&ndash;<toggle-switch id="checkbox3"  ng-model="mf.dataObj.value_selected" ng-change="mf.addValue(mf.dataObj.value_selected)" class="switch-mini right" knob-label="?" on-label="Yes" off-label="No"></toggle-switch>&ndash;&gt;-->
+													<!--</div>-->
+												<!--</div>-->
+												<!--<div class="row row-custom-margin" ng-show="showDomainObj">-->
+													<!--<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">-->
+														<!--<label>is field variable ?</label>-->
+													<!--</div>-->
+													<!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">-->
+														<!--<form>-->
+															<!--&lt;!&ndash;<input type="radio" name="optradio" ng-model="mf.dataObj.variable_label"  value="yes" ng-change="mf.changeVariable(mf.dataObj.variable_label)"> Yes&ndash;&gt;-->
+															<!--&lt;!&ndash;<input type="radio" name="optradio" ng-model="mf.dataObj.variable_label_false"  value="no"  ng-change="mf.changeVariable(mf.dataObj.variable_label_false)"> No&ndash;&gt;-->
+															<!--<label class="checkbox-inline">-->
+																<!--<input type="checkbox" name="variable"-->
+																   <!--ng-model="mf.dataObj.variable_label">-->
+																<!--<i class="helper"></i>-->
+															<!--</label>-->
+														<!--</form>-->
+													<!--</div>-->
+												<!--</div>-->
+												<!--<div ng-show="mf.dataObj.variable_label">-->
+													<!--<div class="row row-custom-margin">-->
+														<!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 dashboard-row">-->
+															<!--<div class="headerdiv">-->
+																<!--<tags-input placeholder="Top Keys"-->
+																			<!--ng-model="mf.dataObj.top_keys"-->
+																			<!--replace-spaces-with-dashes="false"-->
+																			<!--use-strings="true"-->
+																			<!--add-on-comma="false"></tags-input>-->
+															<!--</div>-->
+														<!--</div>-->
+														<!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 dashboard-row">-->
+															<!--<div class="headerdiv">-->
+																<!--<tags-input placeholder="Bottom Keys"-->
+																			<!--ng-model="mf.dataObj.bottom_keys"-->
+																			<!--replace-spaces-with-dashes="false"-->
+																			<!--use-strings="true"-->
+																			<!--add-on-comma="false"></tags-input>-->
+															<!--</div>-->
+														<!--</div>-->
+													<!--</div>-->
+												<!--</div>-->
+
+												<!--<br>-->
+												<!--<form ng-show="showDomainObj">-->
+													<!--<div class="row">-->
+														<!--<form>-->
+															<!--<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">-->
+																<!--<label style="color: #5eb5eb;font-weight: 400;cursor:pointer;">-->
+																  <!--<input type="radio" name="optradio" ng-model="mf.dataObj.isDomain" value="yes"> Domain Object-->
+																<!--</label>-->
+															<!--</div>-->
+															<!--<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">-->
+																<!--<label style="color: #5eb5eb;font-weight: 400;cursor:pointer;">-->
+																  <!--<input type="radio" name="optradio" ng-model="mf.dataObj.isDomain" value="no"> Document Variable-->
+																<!--</label>-->
+															<!--</div>-->
+														<!--</form>-->
+													<!--</div>-->
+													<!--<div class="row" ng-show="(mf.dataObj.isDomain  == 'yes') && showDomainObj">-->
+														<!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">-->
+															<!--<div class="form-group">-->
+
+																<!--<select class="form-control"-->
+																		<!--ng-model="mf.dataObj.entity"-->
+																		<!--ng-change="getAttribute(mf.dataObj.entity)">-->
+																	<!--<option value="" ng-selected="true">Select-->
+																		<!--Domain-->
+																		<!--Objects-->
+																	<!--</option>-->
+																	<!--<option ng-repeat="(d,value) in entitiesList" value="{$ d $}">{$-->
+																		<!--d $}-->
+																	<!--</option>-->
+
+																<!--</select>-->
+															<!--</div>-->
+														<!--</div>-->
+														<!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">-->
+															<!--<div class="form-group">-->
+
+																<!--<select class="form-control"-->
+																		<!--ng-model="mf.dataObj.attribute">-->
+																	<!--<option value="" ng-selected="true">Select-->
+																		<!--Attribute-->
+																	<!--</option>-->
+																	<!--<option ng-repeat="d in listOfAttributes track by $index" value="{$ d $}">{$-->
+																		<!--d $}-->
+																	<!--</option>-->
+
+																<!--</select>-->
+															<!--</div>-->
+														<!--</div>-->
+													<!--</div>-->
+													<!--<div ng-show="(mf.dataObj.isDomain  == 'no') && showDomainObj ">-->
+														<!--<div class="row">-->
+															<!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">-->
+																<!--<div class="form-group">-->
+																	<!--<input type="text" placeholder="Enter Variable Name" ng-model="mf.dataObj.document_variable" class="form-control"/>-->
+																<!--</div>-->
+															<!--</div>-->
+															<!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">-->
+																<!--<select class="form-control" ng-model="mf.dataObj.variable_type">-->
+																	<!--<option value="">Data Type</option>-->
+																	<!--<option ng-repeat="option in mf.typeList" value="{$ option $}">{$ option $}</option>-->
+																<!--</select>-->
+															<!--</div>-->
+														<!--</div>-->
+													<!--</div>-->
+													<!--<div class="row draftMode" ng-show="showDomainObj && (mf.dataObj.isDomain  == 'no')">-->
+														<!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">-->
+															<!--<label class="checkbox-inline">-->
+																<!--<input type="checkbox" ng-model="enableRule">-->
+																<!--<i class="helper"></i>Enable Rules-->
+															<!--</label>-->
+														<!--</div>-->
+													<!--</div>-->
+													<!--<br>-->
+													<!--<div class="row" ng-show="enableRule == true">-->
+														<!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">-->
+															<!--<div class="customCreateRules">-->
+																<!--<div class="row">-->
+																	<!--<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">-->
+																		<!--<a ng-click="addRuleForVariable()" style="text-decoration:none;color:#5eb5eb;">-->
+																			<!--<img src="./app/images/add.png" style="width:15px;"/>-->
+																			<!--Create Rule-->
+																		<!--</a>-->
+																	<!--</div>-->
+																	<!--<div class="col-lg-1 col-sm-1 col-md-1 col-xs-1" style="color:#5eb5eb;font-weight:bold;">-->
+																		<!--OR-->
+																	<!--</div>-->
+																	<!--<div class="col-lg-5 col-sm-5 col-md-5 col-xs-5">-->
+																		<!--<a ng-click="existingRulesdiv()" style="text-decoration:none;color:#5eb5eb;">-->
+																			<!--<img src="./app/images/existing.png" style="width:15px;"/>-->
+																			<!--Choose Existing Rule-->
+																		<!--</a>-->
+
+																	<!--</div>-->
+																<!--</div>-->
+																<!--<br>-->
+																<!--<div class="row">-->
+																	<!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12" style="border-bottom:1px solid #eee;">-->
+																		<!--<label>Associated Rules</label>-->
+																	<!--</div>-->
+																<!--</div>-->
+																<!--<div class="row rulesPadding" ng-repeat="rule in mf.selectedRulesWithObj">-->
+																	<!--<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">-->
+																		<!--{$ rule.rule_name $}-->
+																	<!--</div>-->
+																	<!--<div class="col-lg-2 col-sm-2 col-md-2 col-xs-2">-->
+																		<!--<img src="./app/images/edit.png" title="Edit rule" style="width:15px;cursor:pointer;" ng-click="mf.editRule(rule)"/>-->
+																	<!--</div>-->
+																<!--</div>-->
+															<!--</div>-->
+														<!--</div>-->
+													<!--</div>-->
+											  	<!--</form>-->
+
+
+											<!--</div>-->
+											<!--<br>-->
+											<!--<div class="row">-->
+												<!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 dashboard-row">-->
+													<!--<button type="button" class="btn remove-button"-->
+															<!--ng-click="mf.cancelField()">Cancel-->
+													<!--</button>-->
+													<!--<button type="button"-->
+															<!--class="btn btn-primary right btn-customSave"-->
+															<!--ng-click="mf.saveField('new','','')"-->
+															<!--ng-disabled="!showDomainObj">-->
+														<!--Save-->
+													<!--</button>-->
+												<!--</div>-->
+												<!--<p class="error pull-right">{$ mf.validateDocument $}</p>-->
+												<!--<div ng-show="showFieldSave" class="loading-spiner-holder ralign-spinner pull-right"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class="">Saving field</span></div></div>-->
+											<!--</div>-->
+										<!--</div>-->
+										<!--<div class="showFieldsData" ng-show="!showConfig">-->
+											<!--<div class="panel-group" id="accordionFieldsData" role="tablist"-->
+												 <!--aria-multiselectable="true">-->
+												<!--<div class="panel panel-default"-->
+													 <!--ng-repeat="list in listOfFields">-->
+													<!--<div class="panel-heading" role="tab">-->
+														<!--<h4 class="panel-title">-->
+															<!--<a class="collapsed" role="button"-->
+															   <!--data-toggle="collapse"-->
+															   <!--data-parent="#accordionFieldsData"-->
+															   <!--href=".fieldsData{$ $index $}"-->
+															   <!--aria-expanded="false"-->
+															   <!--aria-controls="fieldsData{$ $index $}" ng-click="mf.clearAllRules(list)">-->
+																<!--Field {$ $index+1 $}-->
+															<!--</a><a class="btnAddcol pull-right"-->
+																   <!--ng-click="mf.deleteField(list,$index)"><i-->
+																<!--class="fa fa-trash"></i></a>-->
+														<!--</h4>-->
+													<!--</div>-->
+													<!--<div class="panel-collapse fieldCollapse collapse fieldsData{$ $index $}" id="fieldsData{$ $index $}"-->
+														 <!--role="tabpanel"-->
+														 <!--aria-labelledby="fieldsData{$ $index $}">-->
+														<!--<div class="panel-body">-->
+															<!--<div class="row row-custom-margin">-->
+																<!--<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">-->
+																	<!--<label>Does the field have a label</label>-->
+																<!--</div>-->
+																<!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">-->
+																	<!--<form>-->
+																		<!--<input type="radio" name="optradio"-->
+																			   <!--ng-model="list.has_label"-->
+																			   <!--value="yes" ng-change="mf.changeLabelForEdit(list,list.has_label,$index)"> Yes-->
+																		<!--<input type="radio" name="optradio"-->
+																			   <!--ng-model="list.has_label_false"-->
+																			   <!--value="no" ng-change="mf.changeLabelForEdit(list,list.has_label_false,$index)"> No-->
+
+																	<!--</form>-->
+																	<!--&lt;!&ndash;<toggle-switch id="checkbox1" ng-model="mf.dataObj.has_label" ng-change="mf.changeLabel(mf.dataObj.has_label)" class="switch-mini right" knob-label="?" knob-label-color="red" on-label="Yes" off-label="No"></toggle-switch>&ndash;&gt;-->
+																<!--</div>-->
+															<!--</div>-->
+															<!--<div ng-show="list.has_label || list.has_label_false=='no'">-->
+																<!--<div class="row row-custom-margin"-->
+																	 <!--ng-show="list.has_label=='yes'">-->
+																	<!--<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">-->
+																		<!--<label>Select the label</label>-->
+																	<!--</div>-->
+																	<!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">-->
+																		<!--<button type="button" class="btn btn-success btn-circle" ng-disabled="!mf.editFiledLabelData[$index]" ng-click="mf.doneEditLabelField(list,$index)" ng-show="!list.default_label">-->
+																			<!--<i class="fa fa-check"></i>-->
+																		<!--</button>-->
+																		<!--<button type="button" class="btn btn-success btn-circle" ng-show="list.default_label" ng-click="mf.doneAddLabelField(true,list,$index)">-->
+																			<!--<i class="fa fa-check"></i>-->
+																		<!--</button>-->
+																		<!--<button type="button" class="btn btn-info btn-circle" ng-click="mf.editFieldLabel(list,$index)" ng-show="!mf.editFiledLabelData[$index] && !list.default_label">-->
+																			<!--<i class="fa fa-pencil"></i>-->
+																		<!--</button>-->
+																		<!--<button type="button" class="btn btn-info btn-circle" ng-click="mf.clearLabel($index)" ng-show="mf.editFiledLabelData[$index]">-->
+																			<!--<i class="fa fa-times-circle"></i>-->
+																		<!--</button>-->
+																		<!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+																			<!--&lt;!&ndash;<div class="col-lg-2 col-sm-2 col-md-2 col-xs-2">&ndash;&gt;-->
+																				<!--&lt;!&ndash;<button type="button"&ndash;&gt;-->
+																					<!--&lt;!&ndash;class="btn btn-primary"&ndash;&gt;-->
+																					<!--&lt;!&ndash;ng-disabled="true">Done&ndash;&gt;-->
+																				<!--&lt;!&ndash;</button>&ndash;&gt;-->
+																			<!--&lt;!&ndash;</div>&ndash;&gt;-->
+																			<!--&lt;!&ndash;<div class="col-lg-2 col-sm-2 col-md-2 col-xs-2">&ndash;&gt;-->
+																				<!--&lt;!&ndash;<span>&ndash;&gt;-->
+																					<!--&lt;!&ndash;<i class="fa fa-pencil"></i>&ndash;&gt;-->
+																				<!--&lt;!&ndash;</span>&ndash;&gt;-->
+																			<!--&lt;!&ndash;</div>&ndash;&gt;-->
+																		<!--&lt;!&ndash;&ndash;&gt;-->
+																		<!--&lt;!&ndash;</div>    &ndash;&gt;-->
+																		<!--&lt;!&ndash;<toggle-switch id="checkbox2" ng-model="list.label_selected"  class="switch-mini right" knob-label="?" on-label="Yes" off-label="No"></toggle-switch>&ndash;&gt;-->
+																	<!--</div>-->
+																<!--</div>-->
+																<!--<div class="row row-custom-margin">-->
+																	<!--<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">-->
+																		<!--<label>Select the area where the value would be present</label>-->
+																	<!--</div>-->
+																	<!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">-->
+																		<!--<button type="button" class="btn btn-success btn-circle" ng-disabled="!mf.editFiledValueData[$index]" ng-click="mf.doneEditValueField(list,$index)">-->
+																			<!--<i class="fa fa-check"></i>-->
+																		<!--</button>-->
+																		<!--<button type="button" class="btn btn-info btn-circle" ng-click="mf.editValueField(list,$index)" ng-show="!mf.editFiledValueData[$index]">-->
+																			<!--<i class="fa fa-pencil"></i>-->
+																		<!--</button>-->
+																		<!--<button type="button" class="btn btn-info btn-circle" ng-click="mf.clearValue($index)" ng-show="mf.editFiledValueData[$index]">-->
+																			<!--<i class="fa fa-times-circle"></i>-->
+																		<!--</button>-->
+																		<!--&lt;!&ndash;<toggle-switch id="checkbox3"  ng-model="list.value_selected" class="switch-mini right" knob-label="?" on-label="Yes" off-label="No"></toggle-switch>&ndash;&gt;-->
+																	<!--</div>-->
+																<!--</div>-->
+																<!--<div class="row row-custom-margin">-->
+																	<!--<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">-->
+																		<!--<label>is field variable ?</label>-->
+																	<!--</div>-->
+																	<!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">-->
+																		<!--<form>-->
+																			<!--&lt;!&ndash;<input type="radio" name="optradio" ng-model="mf.dataObj.variable_label"  value="yes" ng-change="mf.changeVariable(mf.dataObj.variable_label)"> Yes&ndash;&gt;-->
+																			<!--&lt;!&ndash;<input type="radio" name="optradio" ng-model="mf.dataObj.variable_label_false"  value="no"  ng-change="mf.changeVariable(mf.dataObj.variable_label_false)"> No&ndash;&gt;-->
+																			<!--<input type="checkbox"-->
+																				   <!--name="variable"-->
+																				   <!--ng-model="list.variable_label">-->
+
+																		<!--</form>-->
+																	<!--</div>-->
+																<!--</div>-->
+																<!--<br>-->
+																<!--<div ng-show="list.variable_label">-->
+																	<!--<div class="row row-custom-margin">-->
+																		<!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 dashboard-row">-->
+																			<!--<div class="headerdiv">-->
+																				<!--<tags-input-->
+																						<!--placeholder="Top Keys"-->
+																						<!--ng-model="list.top_keys"-->
+																						<!--replace-spaces-with-dashes="false"-->
+																						<!--use-strings="true"-->
+																						<!--add-on-comma="false"></tags-input>-->
+																			<!--</div>-->
+																		<!--</div>-->
+																		<!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 dashboard-row">-->
+																			<!--<div class="headerdiv">-->
+																				<!--<tags-input-->
+																						<!--placeholder="Bottom Keys"-->
+																						<!--ng-model="list.bottom_keys"-->
+																						<!--replace-spaces-with-dashes="false"-->
+																						<!--use-strings="true"-->
+																						<!--add-on-comma="false"></tags-input>-->
+																			<!--</div>-->
+																		<!--</div>-->
+																	<!--</div>-->
+																<!--</div>-->
+																<!--<div class="row">-->
+																	<!--<form>-->
+																		<!--<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">-->
+																			<!--<label style="color: #5eb5eb;font-weight: 400;cursor:pointer;">-->
+																			  <!--<input type="radio" name="domainradio" ng-model="list.isDomain" ng-change="mf.changeMapping(list,list.isDomain,$index)" value="yes"> Domain Object-->
+																			<!--</label>-->
+																		<!--</div>-->
+																		<!--<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">-->
+																			<!--<label style="color: #5eb5eb;font-weight: 400;cursor:pointer;">-->
+																			  <!--<input type="radio" name="domainradio" ng-model="list.isDomain" ng-change="mf.changeMapping(list,list.isDomain,$index)" value="no"> Document Variable-->
+																			<!--</label>-->
+																		<!--</div>-->
+																	<!--</form>-->
+																<!--</div>-->
+																<!--<div class="row" ng-show="list.isDomain == 'yes'">-->
+																	<!--<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">-->
+																		<!--<div class="form-group">-->
+																			<!--<span  style="font-size:13px;">Domain Object</span><br>-->
+																			<!--<label class="domainSelected"  ng-show="!showeditableDomain[$index]">{$ list.entity $}</label>-->
+																			<!--<select class="form-control" ng-model="list.entity" ng-change="getAttribute(list.entity)" ng-show="showeditableDomain[$index]">-->
+																				<!--<option value="" ng-selected="true">Select Domain Objects</option>-->
+																				<!--<option ng-repeat="(d,key) in entitiesList" value="{$ d $}">{$ d $}</option>-->
+																			<!--</select>-->
+																		<!--</div>-->
+																	<!--</div>-->
+																	<!--<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">-->
+																		<!--<div class="form-group">-->
+																			<!--<span style="font-size:13px;">Attribute</span><br>-->
+																			<!--<label class="domainSelected" ng-show="!showeditableDomain[$index]">{$ list.attribute $}</label>-->
+																			<!--<select class="form-control" ng-model="list.attribute" ng-show="showeditableDomain[$index]">-->
+																				<!--<option value="" ng-selected="true">Select Attribute</option>-->
+																				<!--<option ng-repeat="d in listOfAttributes track by $index" ng-selected="list.attribute==d" value="{$ d $}">{$ d $}</option>-->
+																			<!--</select>-->
+																		<!--</div>-->
+																	<!--</div>-->
+																	<!--<div class="col-lg-2 col-sm-2 col-md-2 col-xs-12" style="margin-top:20px;">-->
+																		<!--<button type="button" class="btn btn-info btn-circle" ng-click="mf.editDomainObjField($index,list.entity);fieldDomain[$index]=list.entity;fieldAttr[$index]=list.attribute;" ng-show="!showeditableDomain[$index]">-->
+																			<!--<i class="fa fa-pencil" ></i>-->
+																		<!--</button>-->
+																		<!--<button type="button" class="btn btn-info btn-circle" ng-click="mf.clearDomainObjField($index);list.entity=fieldDomain[$index];list.attribute=fieldAttr[$index];" ng-show="showeditableDomain[$index]">-->
+																			<!--<i class="fa fa-times-circle"></i>-->
+																		<!--</button>-->
+
+																	<!--</div>-->
+																<!--</div>-->
+																<!--<div ng-show="list.isDomain  == 'no' ">-->
+																	<!--<div class="row">-->
+																		<!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">-->
+																			<!--<div class="form-group">-->
+																				<!--<input type="text" placeholder="Enter Variable Name" ng-model="list.document_variable" class="form-control"/>-->
+																			<!--</div>-->
+																		<!--</div>-->
+																		<!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">-->
+																			<!--<select class="form-control" ng-model="list.variable_type">-->
+																				<!--<option value="">Data Type</option>-->
+																				<!--<option ng-repeat="option in mf.typeList" value="{$ option $}">{$ option $}</option>-->
+																			<!--</select>-->
+																		<!--</div>-->
+																	<!--</div>-->
+																<!--</div>-->
+																<!--<div class="row draftMode" ng-show="list.isDomain  == 'no' ">-->
+																	<!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" >-->
+																		<!--<label class="checkbox-inline">-->
+																			<!--<input type="checkbox" ng-model="mf.enableRuleEdit[$index]">-->
+																			<!--<i class="helper"></i>Enable Rules-->
+																		<!--</label>-->
+																	<!--</div>-->
+																<!--</div>-->
+																<!--<br>-->
+																<!--<div class="row" ng-show="mf.enableRuleEdit[$index] == true && list.isDomain  == 'no'">-->
+																	<!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">-->
+																		<!--<div class="customCreateRules">-->
+																			<!--<div class="row">-->
+																				<!--<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">-->
+																					<!--<a ng-click="addRuleForVariable()" style="text-decoration:none;color:#5eb5eb;">-->
+																						<!--<img src="./app/images/add.png" style="width:15px;"/>-->
+																						<!--Create Rule-->
+																					<!--</a>-->
+																				<!--</div>-->
+																				<!--<div class="col-lg-1 col-sm-1 col-md-1 col-xs-1" style="color:#5eb5eb;font-weight:bold;">-->
+																					<!--OR-->
+																				<!--</div>-->
+																				<!--<div class="col-lg-5 col-sm-5 col-md-5 col-xs-5">-->
+																					<!--<a ng-click="existingRulesdivforEdit(list)" style="text-decoration:none;color:#5eb5eb;">-->
+																						<!--<img src="./app/images/existing.png" style="width:15px;"/>-->
+																						<!--Choose Existing Rule-->
+																					<!--</a>-->
+
+																				<!--</div>-->
+																			<!--</div>-->
+																			<!--<br>-->
+																			<!--<div class="row">-->
+																				<!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12" style="border-bottom:1px solid #eee;">-->
+																					<!--<label ng-show="mf.selectedRulesWithObj.length>0">Associated Rules</label>-->
+																				<!--</div>-->
+																			<!--</div>-->
+																			<!--<div class="row rulesPadding" ng-repeat="rule in mf.selectedRulesWithObj">-->
+																				<!--<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">-->
+																					<!--{$ rule.rule_name $}-->
+																				<!--</div>-->
+																				<!--<div class="col-lg-2 col-sm-2 col-md-2 col-xs-2">-->
+																					<!--<img src="./app/images/edit.png" style="width:15px;cursor:pointer" title="edit rule" ng-click="mf.editRule(rule)"/>-->
+																				<!--</div>-->
+																			<!--</div>-->
+																		<!--</div>-->
+																	<!--</div>-->
+																<!--</div>-->
+															<!--</div>-->
+														<!--</div>-->
+														<!--<div class="panel-footer text-right">-->
+															<!--<button id="cancel" name="cancel" class="btn remove-button"-->
+																	<!--ng-click="mf.cancelEditField(list,$index);">Cancel</button>-->
+															<!--<button class="btn btn-custom" ng-click="mf.saveField('edit',list,$index);">Save</button>-->
+															<!--<p class="error">{$ mf.validateDocument $}</p>-->
+															<!--<div ng-show="showFieldSave" class="loading-spiner-holder ralign-spinner"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class="">Saving field</span></div></div>-->
+														<!--</div>-->
+													<!--</div>-->
+												<!--</div>-->
+											<!--</div>-->
+										<!--</div>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--<div class="panel panel-default">-->
+								<!--<div class="panel-heading" role="tab" id="headingThree">-->
+									<!--<h4 class="panel-title">-->
+										<!--<a class="collapsed" role="button" data-toggle="collapse"-->
+										   <!--data-parent="#accordion" href=".omr" aria-expanded="false"-->
+										   <!--aria-controls="omr">-->
+											<!--OMR Fields-->
+										<!--</a>-->
+									<!--</h4>-->
+								<!--</div>-->
+								<!--<div class="panel-collapse collapse omr" role="tabpanel"-->
+									 <!--aria-labelledby="headingThree">-->
+									<!--<div class="panel-body">-->
+										<!--<div class="alert alert-danger" ng-if="croppingOMRError">-->
+											<!--<span>{$ cropOMRMsg $}</span>-->
+										<!--</div>-->
+										<!--<div class="row right" ng-click="mf.addOMRField()"-->
+											 <!--ng-show="!showOMRConfig">-->
+											<!--<label class="dragDiv"><i class="fa fa-plus"></i> Add OMR-->
+												<!--Field</label>-->
+										<!--</div>-->
+										<!--<br>-->
+										<!--<div class="OMRConfiguration" ng-show="showOMRConfig">-->
+											<!--<div class="row row-custom-margin">-->
+												<!--<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">-->
+													<!--<label> OMR has label region ?</label>-->
+												<!--</div>-->
+												<!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 right">-->
+													<!--<form>-->
+														<!--<input type="radio" name="optradio"-->
+															   <!--ng-model="mf.dataOMRObj.has_label" value="yes"-->
+															   <!--ng-change="mf.changeOMRLabel(mf.dataOMRObj.has_label)">-->
+														<!--Yes-->
+														<!--<input type="radio" name="optradio"-->
+															   <!--ng-model="mf.dataOMRObj.has_label_false"-->
+															   <!--value="no"-->
+															   <!--ng-change="mf.changeOMRLabel(mf.dataOMRObj.has_label_false)">-->
+														<!--No-->
+
+													<!--</form>-->
+													<!--&lt;!&ndash;<toggle-switch id="checkbox1" ng-model="mf.dataObj.has_label" ng-change="mf.changeLabel(mf.dataObj.has_label)" class="switch-mini right" knob-label="?" knob-label-color="red" on-label="Yes" off-label="No"></toggle-switch>&ndash;&gt;-->
+												<!--</div>-->
+											<!--</div>-->
+											<!--<div ng-show="mf.dataOMRObj.has_label || mf.dataOMRObj.has_label_false=='no'">-->
+												<!--<div class="row row-custom-margin"-->
+													 <!--ng-show="mf.dataOMRObj.has_label=='yes'">-->
+													<!--<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">-->
+														<!--<label>Select OMR label region </label>-->
+													<!--</div>-->
+													<!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">-->
+														<!--<button type="button" class="btn btn-primary"-->
+																<!--ng-click="mf.addOMRLabel(true)"-->
+																<!--ng-disabled="addOMRFieldLabel">Done-->
+														<!--</button>-->
+														<!--&lt;!&ndash;<toggle-switch id="checkbox2" ng-model="mf.dataObj.label_selected" ng-change="mf.addLabel(mf.dataObj.label_selected)" class="switch-mini right" knob-label="?" on-label="Yes" off-label="No"></toggle-switch>&ndash;&gt;-->
+													<!--</div>-->
+												<!--</div>-->
+												<!--<div class="row row-custom-margin"-->
+													 <!--ng-show="mf.dataOMRObj.has_label_false=='no' || addOMRFieldLabel || addOMRValueLabel">-->
+													<!--<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">-->
+														<!--<label>Select complete OMR region</label>-->
+													<!--</div>-->
+													<!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">-->
+														<!--<button type="button" class="btn btn-primary"-->
+																<!--ng-click="mf.addOMRValue(true)"-->
+																<!--ng-disabled="addOMRValueLabel">Done-->
+														<!--</button>-->
+														<!--&lt;!&ndash;<toggle-switch id="checkbox3"  ng-model="mf.dataObj.value_selected" ng-change="mf.addValue(mf.dataObj.value_selected)" class="switch-mini right" knob-label="?" on-label="Yes" off-label="No"></toggle-switch>&ndash;&gt;-->
+													<!--</div>-->
+												<!--</div>-->
+												<!--&lt;!&ndash;<div class="row row-custom-margin" ng-show="addOMRValueLabel">&ndash;&gt;-->
+												<!--&lt;!&ndash;<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">&ndash;&gt;-->
+												<!--&lt;!&ndash;<label>More than one group ?</label>&ndash;&gt;-->
+												<!--&lt;!&ndash;</div>&ndash;&gt;-->
+												<!--&lt;!&ndash;<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 right">&ndash;&gt;-->
+												<!--&lt;!&ndash;<form>&ndash;&gt;-->
+												<!--&lt;!&ndash;<input type="radio" name="optradio" ng-model="mf.dataOMRObj.group_label"  value="yes" ng-change="mf.changeOMRGroup(mf.dataOMRObj.group_label)"> Yes&ndash;&gt;-->
+												<!--&lt;!&ndash;<input type="radio" name="optradio" ng-model="mf.dataOMRObj.group_label_false"  value="no"  ng-change="mf.changeOMRGroup(mf.dataOMRObj.group_label_false)"> No&ndash;&gt;-->
+
+												<!--&lt;!&ndash;</form>&ndash;&gt;-->
+												<!--&lt;!&ndash;&lt;!&ndash;<toggle-switch id="checkbox1" ng-model="mf.dataObj.has_label" ng-change="mf.changeLabel(mf.dataObj.has_label)" class="switch-mini right" knob-label="?" knob-label-color="red" on-label="Yes" off-label="No"></toggle-switch>&ndash;&gt;&ndash;&gt;-->
+												<!--&lt;!&ndash;</div>&ndash;&gt;-->
+												<!--&lt;!&ndash;</div>&ndash;&gt;-->
+												<!--&lt;!&ndash;<br>&ndash;&gt;-->
+												<!--&lt;!&ndash;<div class="row" ng-show="mf.dataOMRObj.is_multiGroup" ng-click="mf.addMultiGroup()">&ndash;&gt;-->
+												<!--&lt;!&ndash;<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">&ndash;&gt;-->
+												<!--&lt;!&ndash;<button class="btn btn-primary right">&ndash;&gt;-->
+												<!--&lt;!&ndash;<i class="fa fa-plus"> Add Group</i>&ndash;&gt;-->
+												<!--&lt;!&ndash;</button>&ndash;&gt;-->
+												<!--&lt;!&ndash;</div>&ndash;&gt;-->
+												<!--&lt;!&ndash;</div>&ndash;&gt;-->
+												<!--<br>-->
+												<!--<div ng-repeat="group in mf.dataOMRObj.groups track by $index">-->
+													<!--<div>-->
+														<!--<div>-->
+															<!--&lt;!&ndash;<div ng-show="mf.dataOMRObj.is_multiGroup">&ndash;&gt;-->
+															<!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+															<!--&lt;!&ndash;<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">&ndash;&gt;-->
+															<!--&lt;!&ndash;Does group has label region ?&ndash;&gt;-->
+															<!--&lt;!&ndash;</div>&ndash;&gt;-->
+															<!--&lt;!&ndash;<div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">&ndash;&gt;-->
+															<!--&lt;!&ndash;<form>&ndash;&gt;-->
+															<!--&lt;!&ndash;<input type="radio" name="optradio" ng-model="group.label"  value="yes" ng-change="mf.changeGroupLabel(group,group.label)"> Yes&ndash;&gt;-->
+															<!--&lt;!&ndash;<input type="radio" name="optradio" ng-model="group.label_false"  value="no"  ng-change="mf.changeGroupLabel(group,group.label_false)"> No&ndash;&gt;-->
+
+															<!--&lt;!&ndash;</form>&ndash;&gt;-->
+															<!--&lt;!&ndash;</div>&ndash;&gt;-->
+															<!--&lt;!&ndash;</div>&ndash;&gt;-->
+															<!--&lt;!&ndash;<br>&ndash;&gt;-->
+															<!--&lt;!&ndash;<div class="row" ng-show="group.has_label">&ndash;&gt;-->
+															<!--&lt;!&ndash;<div class="col-lg-8 col-sm-8 col-md-8 col-xs-8">&ndash;&gt;-->
+															<!--&lt;!&ndash;Select the group label region&ndash;&gt;-->
+															<!--&lt;!&ndash;</div>&ndash;&gt;-->
+															<!--&lt;!&ndash;<div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">&ndash;&gt;-->
+															<!--&lt;!&ndash;<button class="btn btn-primary" ng-click="mf.addGroupLabel(group,$index)" ng-disabled="group.addGroupField">&ndash;&gt;-->
+															<!--&lt;!&ndash;Done&ndash;&gt;-->
+															<!--&lt;!&ndash;</button>&ndash;&gt;-->
+															<!--&lt;!&ndash;</div>&ndash;&gt;-->
+															<!--&lt;!&ndash;</div>&ndash;&gt;-->
+															<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+															<!--<div class="row " ng-show="group.addGroupField">-->
+																<!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+																	<!--<label class="right"-->
+																		   <!--ng-click="mf.addOption(group)">-->
+																		<!--<i class="fa fa-plus"> Add Option </i>-->
+																	<!--</label>-->
+																<!--</div>-->
+															<!--</div>-->
+															<!--<br>-->
+															<!--<div ng-repeat="option in group.options track by $index">-->
+																<!--<div class="card">-->
+																	<!--<div class="card-header"-->
+																		 <!--data-toggle="collapse"-->
+																		 <!--href=".optionCollapse{$ $index $} "-->
+																		 <!--aria-expanded="false"-->
+																		 <!--aria-controls="optionCollapse">-->
+																		<!--Option {$ $index+1 $}<a-->
+																			<!--class="btnAddcol pull-right"-->
+																			<!--ng-click="mf.deleteOMROption($index)"><i-->
+																			<!--class="fa fa-trash"></i></a>-->
+																	<!--</div>-->
+																	<!--<div class="card-body collapse optionCollapse{$ $index $}"-->
+																		 <!--ng-class="$index==group.options.length-1?'in':''">-->
+																		<!--<div class="row">-->
+																			<!--<div class="col-lg-8 col-sm-8 col-md-8 col-xs-8">-->
+																				<!--Select the Option value region-->
+																			<!--</div>-->
+																			<!--<div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">-->
+																				<!--<button class="btn btn-primary"-->
+																						<!--ng-click="mf.addOMROptionValue(option,$parent.$index,$index)"-->
+																						<!--ng-disabled="option.optionValue">-->
+																					<!--Done-->
+																				<!--</button>-->
+																			<!--</div>-->
+																		<!--</div>-->
+																		<!--<br>-->
+																		<!--<div class="row"-->
+																			 <!--ng-show="option.optionValue">-->
+																			<!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">-->
+																				<!--<input type="text"-->
+																					   <!--class="form-control"-->
+																					   <!--placeholder="Enter option text"-->
+																					   <!--ng-model="option.label"/>-->
+																			<!--</div>-->
+																		<!--</div>-->
+																	<!--</div>-->
+																<!--</div>-->
+															<!--</div>-->
+															<!--<div class="row row-custom-margin"-->
+																 <!--ng-show="group.addGroupField">-->
+																<!--<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">-->
+																	<!--<label>is multi select ?</label>-->
+																<!--</div>-->
+																<!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">-->
+																	<!--<form>-->
+																		<!--&lt;!&ndash;<input type="radio" name="optradio" ng-model="mf.dataObj.variable_label"  value="yes" ng-change="mf.changeVariable(mf.dataObj.variable_label)"> Yes&ndash;&gt;-->
+																		<!--&lt;!&ndash;<input type="radio" name="optradio" ng-model="mf.dataObj.variable_label_false"  value="no"  ng-change="mf.changeVariable(mf.dataObj.variable_label_false)"> No&ndash;&gt;-->
+																		<!--<input type="checkbox" name="variable"-->
+																			   <!--ng-model="group.is_multiOption">-->
+
+																	<!--</form>-->
+																<!--</div>-->
+															<!--</div>-->
+														<!--</div>-->
+													<!--</div>-->
+												<!--</div>-->
+												<!--<br>-->
+												<!--<div class="row" ng-show="showOMRDomainObj">-->
+													<!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">-->
+														<!--<div class="form-group">-->
+															<!--<span>Domain Objects</span>-->
+															<!--<select class="form-control"-->
+																	<!--ng-model="mf.dataOMRObj.entity"-->
+																	<!--ng-change="getAttribute(mf.dataOMRObj.entity)">-->
+																<!--<option value="" ng-selected="true">Select-->
+																	<!--Domain-->
+																	<!--Objects-->
+																<!--</option>-->
+																<!--<option ng-repeat="(d,key) in entitiesList" value="{$ d $}">{$-->
+																	<!--d $}-->
+																<!--</option>-->
+
+															<!--</select>-->
+														<!--</div>-->
+													<!--</div>-->
+													<!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">-->
+														<!--<div class="form-group">-->
+															<!--<span>Attributes</span>-->
+															<!--<select class="form-control"-->
+																	<!--ng-model="mf.dataOMRObj.attribute">-->
+																<!--<option value="" ng-selected="true">Select-->
+																	<!--Attribute-->
+																<!--</option>-->
+																<!--<option ng-repeat="d in listOfAttributes track by $index" value="{$ d$}">{$-->
+																	<!--d $}-->
+																<!--</option>-->
+
+															<!--</select>-->
+														<!--</div>-->
+													<!--</div>-->
+												<!--</div>-->
+											<!--</div>-->
+											<!--<br>-->
+											<!--<div class="row">-->
+												<!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 dashboard-row">-->
+													<!--<button type="button" class="btn btn-default remove-button"-->
+															<!--ng-click="mf.cancelOMRField()">Cancel-->
+													<!--</button>-->
+													<!--<button type="button"-->
+															<!--class="btn btn-primary right btn-customSave"-->
+															<!--ng-click="mf.saveOMRField('new','','')"-->
+															<!--ng-disabled="!showOMRDomainObj">Save-->
+													<!--</button>-->
+												<!--</div>-->
+											<!--</div>-->
+										<!--</div>-->
+										<!--<div class="showFieldsData" ng-show="!showOMRConfig">-->
+											<!--<div class="panel-group" id="accordionOMRData" role="tablist"-->
+												 <!--aria-multiselectable="true">-->
+												<!--<div class="panel panel-default"-->
+													 <!--ng-repeat="list in listOfOMRFields">-->
+													<!--<div class="panel-heading" role="tab">-->
+														<!--<h4 class="panel-title">-->
+															<!--<a class="collapsed" role="button"-->
+															   <!--data-toggle="collapse"-->
+															   <!--data-parent="#accordionOMRData"-->
+															   <!--href=".OMRData{$ $index $}" aria-expanded="false"-->
+															   <!--aria-controls="OMRData{$ $index $}">-->
+																<!--OMR Field {$ $index+1 $}-->
+															<!--</a><a class="btnAddcol pull-right"-->
+																   <!--ng-click="mf.deleteOMRField(list,$index)"><i-->
+																<!--class="fa fa-trash"></i></a>-->
+														<!--</h4>-->
+													<!--</div>-->
+													<!--<div class="panel-collapse collapse OMRData{$ $index $}" id=" OMRData{$ $index $}"-->
+														 <!--role="tabpanel" aria-labelledby="OMRData{$ $index $}">-->
+														<!--<div class="panel-body">-->
+															<!--<div class="row row-custom-margin">-->
+																<!--<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">-->
+																	<!--<label>Does the field have a label</label>-->
+																<!--</div>-->
+																<!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">-->
+																	<!--<form>-->
+																		<!--<input type="radio" name="optradio"-->
+																			   <!--ng-model="list.has_label"-->
+																			   <!--value="yes" ng-change="mf.changeOMRForEdit(list,list.has_label,$index)"> Yes-->
+																		<!--<input type="radio" name="optradio"-->
+																			   <!--ng-model="list.has_label_false"-->
+																			   <!--value="no" ng-change="mf.changeOMRForEdit(list,has_label_false,$index)"> No-->
+
+																	<!--</form>-->
+																	<!--&lt;!&ndash;<toggle-switch id="checkbox1" ng-model="mf.dataObj.has_label" ng-change="mf.changeLabel(mf.dataObj.has_label)" class="switch-mini right" knob-label="?" knob-label-color="red" on-label="Yes" off-label="No"></toggle-switch>&ndash;&gt;-->
+																<!--</div>-->
+															<!--</div>-->
+															<!--<div ng-show="list.has_label || list.has_label_false=='no'">-->
+																<!--<div class="row row-custom-margin"-->
+																	 <!--ng-show="list.has_label=='yes'">-->
+																	<!--<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">-->
+																		<!--<label>Select the label</label>-->
+																	<!--</div>-->
+																	<!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">-->
+																		<!--<button type="button" class="btn btn-success btn-circle" ng-disabled="!mf.editOMRLabelData[$index]" ng-click="mf.doneEditLabelOMR(list,$index)" ng-show="!list.default_label">-->
+																			<!--<i class="fa fa-check"></i>-->
+																		<!--</button>-->
+																		<!--<button type="button" class="btn btn-success btn-circle" ng-show="list.default_label" ng-click="mf.doneAddLabelOMR(true,list,$index)">-->
+																			<!--<i class="fa fa-check"></i>-->
+																		<!--</button>-->
+																		<!--<button type="button" class="btn btn-info btn-circle" ng-click="mf.editOMRLabel(list,$index)" ng-show="!mf.editOMRLabelData[$index] && !list.default_label">-->
+																			<!--<i class="fa fa-pencil"></i>-->
+																		<!--</button>-->
+																		<!--<button type="button" class="btn btn-info btn-circle" ng-click="mf.clearOMRLabel($index)" ng-show="mf.editOMRLabelData[$index]">-->
+																			<!--<i class="fa fa-times-circle"></i>-->
+																		<!--</button>-->
+																		<!--&lt;!&ndash;<toggle-switch id="checkbox2" ng-model="list.label_selected"  class="switch-mini right" knob-label="?" on-label="Yes" off-label="No"></toggle-switch>&ndash;&gt;-->
+																	<!--</div>-->
+																<!--</div>-->
+																<!--<div class="row row-custom-margin">-->
+																	<!--<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">-->
+																		<!--<label>Select the area where the value-->
+																			<!--would-->
+																			<!--be present</label>-->
+																	<!--</div>-->
+																	<!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">-->
+																		<!--<button type="button" class="btn btn-success btn-circle" ng-disabled="!mf.editOMRValueData[$index]" ng-click="mf.doneEditValueOMR(list,$index)">-->
+																			<!--<i class="fa fa-check"></i>-->
+																		<!--</button>-->
+																		<!--<button type="button" class="btn btn-info btn-circle" ng-click="mf.editValueOMR(list,$index)" ng-show="!mf.editOMRValueData[$index]">-->
+																			<!--<i class="fa fa-pencil"></i>-->
+																		<!--</button>-->
+																		<!--<button type="button" class="btn btn-info btn-circle" ng-click="mf.clearOMRValue($index)" ng-show="mf.editOMRValueData[$index]">-->
+																			<!--<i class="fa fa-times-circle"></i>-->
+																		<!--</button>-->
+																		<!--&lt;!&ndash;<toggle-switch id="checkbox3"  ng-model="list.value_selected" class="switch-mini right" knob-label="?" on-label="Yes" off-label="No"></toggle-switch>&ndash;&gt;-->
+																	<!--</div>-->
+																<!--</div>-->
+																<!--<div ng-repeat="group in list.groups track by $index">-->
+																	<!--<div>-->
+																		<!--<div>-->
+																			<!--<div class="row ">-->
+																				<!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+																					<!--<label class="right"-->
+																						   <!--ng-click="mf.addOptionInEdit(group)">-->
+																						<!--<i class="fa fa-plus"> Add Option </i>-->
+																					<!--</label>-->
+																				<!--</div>-->
+																			<!--</div>-->
+																			<!--<br>-->
+																			<!--<div ng-repeat="option in group.options track by $index">-->
+																				<!--<div class="card">-->
+																					<!--<div class="card-header"-->
+																						 <!--data-toggle="collapse"-->
+																						 <!--href=".optionCollapse{$ $index $} "-->
+																						 <!--aria-expanded="false"-->
+																						 <!--aria-controls="optionCollapse">-->
+																						<!--Option {$ $index+1 $}<a-->
+																			<!--class="btnAddcol pull-right"-->
+																			<!--ng-click="mf.deleteOMROptionInEdit(list,$index)"><i-->
+																			<!--class="fa fa-trash"></i></a>-->
+																					<!--</div>-->
+																					<!--<div class="card-body collapse optionCollapse{$ $index $}"-->
+																						 <!--ng-class="$index==group.options.length-1?'in':''">-->
+																						<!--<div class="row">-->
+																							<!--<div class="col-lg-8 col-sm-8 col-md-8 col-xs-8">-->
+																								<!--Select the-->
+																								<!--Option-->
+																								<!--value region-->
+																							<!--</div>-->
+																							<!--<div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">-->
+																								<!--<button type="button" class="btn btn-success btn-circle" ng-disabled="!option.edit" ng-click="mf.doneEditOptionValueOMR(list,option,$index)" ng-show="!option.new">-->
+																									<!--<i class="fa fa-check"></i>-->
+																								<!--</button>-->
+																								<!--<button type="button" class="btn btn-success btn-circle" ng-show="option.new" ng-click="mf.addOMROptionValueInEdit(list,option,$parent.$index,$index)">-->
+																									<!--<i class="fa fa-check"></i>-->
+																								<!--</button>-->
+																								<!--<button type="button" class="btn btn-info btn-circle" ng-click="mf.editOptionValueOMR(list,option,$index)" ng-show="!option.edit && !option.new">-->
+																									<!--<i class="fa fa-pencil"></i>-->
+																								<!--</button>-->
+																								<!--<button type="button" class="btn btn-info btn-circle" ng-click="mf.clearOMROptionValue(option,$index)" ng-show="option.edit">-->
+																									<!--<i class="fa fa-times-circle"></i>-->
+																								<!--</button>-->
+																							<!--</div>-->
+																						<!--</div>-->
+																						<!--<br>-->
+																						<!--<div class="row">-->
+																							<!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">-->
+																								<!--<input type="text"-->
+																									   <!--class="form-control"-->
+																									   <!--placeholder="Enter option text"-->
+																									   <!--ng-model="option.label"-->
+																									   <!--/>-->
+																							<!--</div>-->
+																						<!--</div>-->
+																					<!--</div>-->
+																				<!--</div>-->
+																			<!--</div>-->
+																			<!--<div class="row row-custom-margin">-->
+																				<!--<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">-->
+																					<!--<label>is multi select-->
+																						<!--?</label>-->
+																				<!--</div>-->
+																				<!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">-->
+																					<!--<form>-->
+																						<!--&lt;!&ndash;<input type="radio" name="optradio" ng-model="mf.dataObj.variable_label"  value="yes" ng-change="mf.changeVariable(mf.dataObj.variable_label)"> Yes&ndash;&gt;-->
+																						<!--&lt;!&ndash;<input type="radio" name="optradio" ng-model="mf.dataObj.variable_label_false"  value="no"  ng-change="mf.changeVariable(mf.dataObj.variable_label_false)"> No&ndash;&gt;-->
+																						<!--<input type="checkbox"-->
+																							   <!--name="variable"-->
+																							   <!--ng-model="group.is_multiOption">-->
+
+																					<!--</form>-->
+																				<!--</div>-->
+																			<!--</div>-->
+																		<!--</div>-->
+																	<!--</div>-->
+																<!--</div>-->
+																<!--<div class="row">-->
+																	<!--<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">-->
+																		<!--<div class="form-group">-->
+																			<!--<span  style="font-size:13px;">Domain Objects</span><br>-->
+																			<!--<label ng-show="!showOMRDomain[$index]">{$ list.entity $}</label>-->
+																			<!--<select class="form-control" ng-model="list.entity" ng-change="getAttribute(list.entity)" ng-show="showOMRDomain[$index]">-->
+																				<!--<option value="" ng-selected="true">Select Domain Objects</option>-->
+																				<!--<option ng-repeat="(d,key) in entitiesList" value="{$ d $}">{$ d $}</option>-->
+																			<!--</select>-->
+																		<!--</div>-->
+																	<!--</div>-->
+																	<!--<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">-->
+																		<!--<div class="form-group">-->
+																			<!--<span style="font-size:13px;">Attributes</span><br>-->
+																			<!--<label ng-show="!showOMRDomain[$index]">{$ list.attribute $}</label>-->
+																			<!--<select class="form-control" ng-model="list.attribute" ng-show="showOMRDomain[$index]">-->
+																				<!--<option value="" ng-selected="true">Select Attribute</option>-->
+																				<!--<option ng-repeat="d in listOfAttributes track by $index" ng-selected="list.attribute==d" value="{$ d $}">{$ d $}</option>-->
+																			<!--</select>-->
+																		<!--</div>-->
+																	<!--</div>-->
+																	<!--<div class="col-lg-2 col-sm-2 col-md-2 col-xs-12" style="margin-top:20px;">-->
+																		<!--<button type="button" class="btn btn-info btn-circle" ng-click="mf.editDomainObjOMR($index,list.entity);OMRDomain[$index]=list.entity;OMRAttr[$index]=list.attribute;" ng-show="!showOMRDomain[$index]">-->
+																			<!--<i class="fa fa-pencil" ></i>-->
+																		<!--</button>-->
+																		<!--<button type="button" class="btn btn-info btn-circle" ng-click="mf.clearDomainObjOMR($index);list.entity=OMRDomain[$index];list.attribute=OMRAttr[$index];" ng-show="showOMRDomain[$index]">-->
+																			<!--<i class="fa fa-times-circle"></i>-->
+																		<!--</button>-->
+
+																	<!--</div>-->
+																<!--</div>-->
+															<!--</div>-->
+														<!--</div>-->
+														<!--<div class="panel-footer text-right">-->
+                                                            <!--<button class="btn remove-button" ng-click="mf.cancelEditOMRField(list,$index)">Cancel</button>-->
+															<!--<button class="btn btn-custom" ng-click="mf.saveOMRField('edit',list,$index);">Save</button>-->
+														<!--</div>-->
+													<!--</div>-->
+												<!--</div>-->
+											<!--</div>-->
+										<!--</div>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--<div class="panel panel-default">-->
+								<!--<div class="panel-heading" role="tab" id="headingFour">-->
+									<!--<h4 class="panel-title">-->
+										<!--<a class="collapsed" role="button" data-toggle="collapse"-->
+										   <!--data-parent="#accordion" href=".paragraphs" aria-expanded="false"-->
+										   <!--aria-controls="paragraphs">-->
+											<!--Paragraphs-->
+										<!--</a>-->
+									<!--</h4>-->
+								<!--</div>-->
+								<!--<div class="panel-collapse collapse paragraphs" role="tabpanel"-->
+									 <!--aria-labelledby="headingFour">-->
+									<!--<div class="panel-body">-->
+										<!--<div class="alert alert-danger" ng-if="croppingParagraphError">-->
+											<!--<span>{$ cropParagraphMsg $}</span>-->
+										<!--</div>-->
+										<!--<div class="row right" ng-click="mf.addParagraph()" ng-show="!showParagraph">-->
+											<!--<label class="dragDiv"><i class="fa fa-plus"></i> Add Paragraph</label>-->
+										<!--</div>-->
+										<!--<br>-->
+										<!--<div class="fieldConfiguration" ng-show="showParagraph">-->
+
+											<!--<div>-->
+
+
+
+												<!--<div>-->
+													<!--<div class="row row-custom-margin">-->
+														<!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 dashboard-row">-->
+															<!--<div class="headerdiv">-->
+																<!--<tags-input placeholder="Top Keys"-->
+																			<!--ng-model="mf.dataParagraphObj.top_keys"-->
+																			<!--replace-spaces-with-dashes="false"-->
+																			<!--use-strings="true"-->
+																			<!--add-on-comma="false"></tags-input>-->
+															<!--</div>-->
+														<!--</div>-->
+														<!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 dashboard-row">-->
+															<!--<div class="headerdiv">-->
+																<!--<tags-input placeholder="Bottom Keys"-->
+																			<!--ng-model="mf.dataParagraphObj.bottom_keys"-->
+																			<!--replace-spaces-with-dashes="false"-->
+																			<!--use-strings="true"-->
+																			<!--add-on-comma="false"></tags-input>-->
+															<!--</div>-->
+														<!--</div>-->
+													<!--</div>-->
+												<!--</div>-->
+
+												<!--<br>-->
+												<!--<div class="row">-->
+													<!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">-->
+														<!--<div class="form-group">-->
+															<!--<span>Domain Objects</span>-->
+															<!--<select class="form-control"-->
+																	<!--ng-model="mf.dataParagraphObj.entity"-->
+																	<!--ng-change="getAttribute(mf.dataParagraphObj.entity)">-->
+																<!--<option value="" ng-selected="true">Select-->
+																	<!--Domain-->
+																	<!--Objects-->
+																<!--</option>-->
+																<!--<option ng-repeat="(d,value) in entitiesList" value="{$ d $}">{$-->
+																	<!--d $}-->
+																<!--</option>-->
+
+															<!--</select>-->
+														<!--</div>-->
+													<!--</div>-->
+
+												<!--</div>-->
+											<!--</div>-->
+											<!--<br>-->
+											<!--<div class="row">-->
+												<!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 dashboard-row">-->
+													<!--<button type="button" class="btn remove-button"-->
+															<!--ng-click="mf.cancelParagraph()">Cancel-->
+													<!--</button>-->
+													<!--<button type="button"-->
+															<!--class="btn btn-primary right btn-customSave"-->
+															<!--ng-click="mf.saveParagraph('new','','')"-->
+															<!--&gt;-->
+														<!--Save-->
+													<!--</button>-->
+												<!--</div>-->
+											<!--</div>-->
+										<!--</div>-->
+										<!--<div ng-show="!showParagraph">-->
+											<!--<div class="panel-group" id="accordionParagraphData" role="tablist"-->
+												 <!--aria-multiselectable="true">-->
+												<!--<div class="panel panel-default"-->
+													 <!--ng-repeat="list in listOfParagraphs">-->
+													<!--<div class="panel-heading" role="tab">-->
+														<!--<h4 class="panel-title">-->
+															<!--<a class="collapsed" role="button"-->
+															   <!--data-toggle="collapse"-->
+															   <!--data-parent="#accordionParagraphData"-->
+															   <!--href=".fieldsParagraphData{$ $index $}"-->
+															   <!--aria-expanded="false"-->
+															   <!--aria-controls="fieldsParagraphData{$ $index $}">-->
+																<!--Paragraph {$ $index+1 $}-->
+															<!--</a><a class="btnAddcol pull-right"-->
+																   <!--ng-click="mf.deleteParagraph(list,$index)"><i-->
+																<!--class="fa fa-trash"></i></a>-->
+														<!--</h4>-->
+													<!--</div>-->
+													<!--<div class="panel-collapse collapse fieldsParagraphData{$ $index $}" id="fieldsParagraphData{$ $index $}"-->
+														 <!--role="tabpanel"-->
+														 <!--aria-labelledby="fieldsParagraphData{$ $index $}">-->
+														<!--<div class="panel-body">-->
+															<!--<div>-->
+																<!--<div class="row row-custom-margin">-->
+																	<!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 dashboard-row">-->
+																		<!--<div class="headerdiv">-->
+																			<!--<tags-input placeholder="Top Keys"-->
+																						<!--ng-model="list.top_keys"-->
+																						<!--replace-spaces-with-dashes="false"-->
+																						<!--use-strings="true"-->
+																						<!--add-on-comma="false"></tags-input>-->
+																		<!--</div>-->
+																	<!--</div>-->
+																	<!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 dashboard-row">-->
+																		<!--<div class="headerdiv">-->
+																			<!--<tags-input placeholder="Bottom Keys"-->
+																						<!--ng-model="list.bottom_keys"-->
+																						<!--replace-spaces-with-dashes="false"-->
+																						<!--use-strings="true"-->
+																						<!--add-on-comma="false"></tags-input>-->
+																		<!--</div>-->
+																	<!--</div>-->
+																<!--</div>-->
+															<!--</div>-->
+
+															<!--<br>-->
+															<!--<div class="row">-->
+																<!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">-->
+																	<!--<div class="form-group">-->
+																		<!--<span>Domain Objects</span>-->
+																		<!--<select class="form-control"-->
+																				<!--ng-model="list.domain_mapping"-->
+																				<!--ng-change="getAttribute(list.domain_mapping)">-->
+																			<!--<option value="" ng-selected="true">Select-->
+																				<!--Domain-->
+																				<!--Objects-->
+																			<!--</option>-->
+																			<!--<option ng-repeat="(d,value) in entitiesList" value="{$ d $}">{$-->
+																				<!--d $}-->
+																			<!--</option>-->
+
+																		<!--</select>-->
+																	<!--</div>-->
+																<!--</div>-->
+
+												            <!--</div>-->
+														<!--</div>-->
+														<!--<div class="panel-footer text-right">-->
+															<!--<button class="btn btn-custom" ng-click="mf.saveParagraph('edit',list,$index);">Save</button>-->
+														<!--</div>-->
+													<!--</div>-->
+												<!--</div>-->
+											<!--</div>-->
+										<!--</div>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+
+					<!-- new code  -->
+					<div class="panel-group" id="SectionsAccordion" role="tablist" aria-multiselectable="true">
+						  <div class="panel panel-default" ng-repeat="item in menuItems track by $index" style="border: solid 1px #d8d8d8;">
+							<div class="panel-heading" role="tab" id="Sectionsheading{$ item.temp_id $}">
+							  <h4 class="panel-title">
+								<div role="button" data-toggle="collapse" href=".{$ item.temp_id $}" data-parent="#SectionsAccordion" aria-expanded="false" aria-controls="{$ item.temp_id $}">
+								  <span>{$item.name$}</span>
+								</div>
+							  </h4>
+							</div>
+							<div  class="panel-collapse collapse in {$ item.temp_id $}" role="tabpanel" aria-labelledby="{$ item.temp_id $}">
+							  <div class="panel-body" style="background-color: #eee;">
+								  <div class="row sectionRow">
+										  <div class="equal-width" ng-click="addElement(this,'section')" ng-show="item.type=='section'">
+											  <img src="/app/images/subsection.png"/>
+											  <br>
+											  <label>Add Sub Section</label>
+										  </div>
+										  <div class="equal-width" ng-click="addElement(this,'table')" ng-show="item.type=='section'">
+											  <img src="/app/images/table.png"/>
+											  <br>
+											  <label>Table</label>
+										  </div>
+										  <div class="equal-width" ng-click="addElement(this,'field')" ng-show="item.type=='section'">
+											  <img src="/app/images/fields.png" class="largeImage"/>
+											  <br>
+											  <label>Fields</label>
+										  </div>
+										  <div class="equal-width" ng-click="addElement(this,'omr')" ng-show="item.type=='section'">
+											 <img src="/app/images/fields.png"  class="largeImage"/>
+											  <br>
+											  <label>OMR Fields</label>
+										  </div>
+										  <div class="equal-width" ng-click="addElement(this,'paragraph')" ng-show="item.type=='section'">
+											  <img src="/app/images/freetext.png"/>
+											  <br>
+											  <label>Free Text</label>
+										  </div>
+								  </div>
+								   <div ng-if="item.elements && item.elements.length" ng-include="'menu.html'"></div>
+							  </div>
+							</div>
+						  </div>
+					</div>
+
+
+
+				</div>
+				<div class="tab-pane fade sortfield">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/ng-template" id="menu.html">
+	<div class="markerForm">
+		<div class="panel-group" style="margin-top:10px;" id="SubSectionAccordion{$ item.temp_id$}" role="tablist" aria-multiselectable="true" >
+			<div class="panel panel-default" ng-repeat="item in item.elements  track by $index" style="border: solid 1px #d8d8d8;" ng-hide="item.is_delete">
+				<div class="panel-heading" role="tab" id="SubsectionHeading{$ item.temp_id $}">
+                  <h4 class="panel-title">
+						  <label ng-if="item.is_deleted==undefined">
+							  <input type="text" class="form-control formTextstyle" ng-model="item.name" placeholder="{$ 'Enter ' + item.type + ' name' $}"/>
+						  </label>
+                        <label ng-if="item.is_deleted!=undefined" style="padding:10px;">
+                            <span ng-show="!item.name_edit">{$ item.name $}</span>
+
+                            <input type="text" class="form-control formTextstyle" ng-model="item.name" ng-show="item.name_edit"/>
+                        </label>
+						<label class="right headingStyle" role="button" data-toggle="collapse" href=".{$ item.temp_id $}" data-parent="#SubSectionAccordion{$ item.temp_id$}" aria-expanded="false" aria-controls="{$ item.temp_id $}" ng-click="mf.clearAllRules(item)">
+									 <i class="more-less icons_style fa fa-chevron-down"></i>
+						 </label>
+                        <label class="right" ng-if="item.is_deleted!=undefined" style="padding:10px;">
+							<span  ng-show="item.name_edit" ng-click="item.name_edit=false">
+								<i class="fa fa-check"></i>
+							</span>
+							<span ng-click="item.name_edit=false;item.name=temp"  ng-show="item.name_edit">
+								<img class="editImage" src="/app/images/remove.png"/>
+							</span>
+                            <!--<button type="button" class="btn btn-success btn-circle" >-->
+                                <!--<i class="fa fa-check"></i>-->
+                            <!--</button>-->
+                            <!--<button type="button" class="btn btn-info btn-circle">-->
+                                <!--<i class="fa fa-times-circle"></i>-->
+                            <!--</button>-->
+                            <span style="margin-right:10px;">
+                                <img class="editImage" src="/app/images/editsec.png" ng-show="!item.name_edit" ng-click="item.name_edit=true;temp=item.name"/>
+                            </span>
+                            <span>
+                                <img class="deleteImage" src="/app/images/delete.png" ng-click="mf.deleteElement(item)"/>
+                            </span>
+                        </label>
+                  </h4>
+                </div>
+				<div class="panel-collapse collapse {$ item.temp_id $}" role="tabpanel" aria-labelledby="{$ item.temp_id $}">
+				  <div class="panel-body">
+					<div class="row sectionRow" ng-class="item.id==undefined?'emptySelection':''">
+							  <div class="equal-width" ng-click="addElement(this,'section')" ng-show="item.type=='section'">
+								  <img src="/app/images/subsection.png"/>
+								  <br>
+								  <label>Add Sub Section</label>
+							  </div>
+							  <div class="equal-width" ng-click="addElement(this,'table')" ng-show="item.type=='section'">
+								  <img src="/app/images/table.png"/>
+								  <br>
+								  <label>Table</label>
+							  </div>
+							  <div class="equal-width" ng-click="addElement(this,'field')" ng-show="item.type=='section'">
+								  <img src="/app/images/fields.png" class="largeImage"/>
+								  <br>
+								  <label>Fields</label>
+							  </div>
+							  <div class="equal-width" ng-click="addElement(this,'omr')" ng-show="item.type=='section'">
+								 <img src="/app/images/fields.png"  class="largeImage"/>
+								  <br>
+								  <label>OMR Fields</label>
+							  </div>
+							  <div class="equal-width" ng-click="addElement(this,'paragraph')" ng-show="item.type=='section'">
+								  <img src="/app/images/freetext.png"/>
+								  <br>
+								  <label>Free Text</label>
+							  </div>
+					</div>
+					<div class="row" ng-show="item.type=='section'">
+						<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 text-center">
+							<div class="text-center"  ng-hide="item.is_section_selected">
+								<img src="/app/images/subsectiondrag.png"/>
+								<label>Click on the document & drag the area to select the section</label>
+							</div>
+                            <br>
+							<div class="row">
+								<div class="col-sm-3 col-lg-3 col-md-3 col-xs-3 no-padding">
+									<label>Selected Area</label>
+								</div>
+								<div class="col-sm-9 col-lg-9 col-md-9 col-xs-9 no-padding text-center">
+									<label class="clickStyle" style="border: 2px solid #6d6d6d;width:25%" ng-hide="item.is_section_selected" ng-click="mf.addSection(item)">
+										Done
+									</label>
+								</div>
+								<label class="clickStyle success"  ng-if="!item.value_edit"  ng-show="item.is_section_selected">
+									<i class="fa fa-check" style="font-size:12px;"></i>
+								</label>
+								<label class="clickStyle success"   ng-show="item.value_edit" ng-click="mf.doneSection(item)">
+									<i class="fa fa-check"  style="font-size:12px;"></i>
+								</label>
+								<label class="clickStyle" ng-click="mf.editSection(item)" ng-show="item.is_section_selected&&!item.value_edit">
+									Edit the Area
+								</label>
+								<label class="clickStyle" ng-click="mf.clearSection(item)" ng-show="item.value_edit">
+									Remove the Selected Area
+								</label>
+							</div>
+						</div>
+						 <div class="panel-footer pull-right" style="background:none;" >
+								<button type="submit" class="btn btn-custom"
+										ng-show="item.showSectionObj" ng-click="mf.saveSection(item)">Save
+								</button>
+								<button type="button" class="btn button-customCancel"
+										ng-click="mf.cancelField(item)">Cancel
+								</button>
+				         </div>
+					</div>
+
+					<div ng-if="item.elements && item.elements.length" ng-include="'menu.html'"></div>
+					  <div ng-if="item.type=='table'" ng-include="'table.html'"></div>
+					  <div ng-if="item.type=='field'" ng-include="'field.html'"></div>
+					  <div ng-if="item.type=='omr'" ng-include="'omr.html'"></div>
+					<div ng-if="item.type=='paragraph'" ng-include="'paragraph.html'"></div>
+
+				  </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--<ul class="multiple-sectionsListStyle">-->
+		<!--<li  class="mutiplesections">-->
+
+			<!--<button  ng-click="addElement(this,'section')" ng-show="item.type=='section'">Subsection</button>-->
+			<!--<button  ng-click="addElement(this,'element')" ng-show="item.type=='section'">Table</button>-->
+			<!--<button   ng-click="addElement(this,'element')"ng-show="item.type=='section'">Field</button>-->
+			<!--&lt;!&ndash;<div ng-if="item.section && item.section.length" ng-include="'menu.html'"></div>&ndash;&gt;-->
+		<!--</li>-->
+	<!--</ul>-->
+
+</script>
+
+<script type="text/ng-template" id="table.html">
+	<div class="TableData">
+			<div class="panel panel-default">
+				<form>
+							<div class="panel-body" style="border-top:none;n">
+								<div class="row">
+									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+										<label style="margin-top: 5%;">Start Identifier</label>
+									</div>
+									<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 dashboard-row">
+										<div class="headerdiv">
+											<tags-input placeholder="Table Start Identifier"
+														ng-model="item.top_keys"
+														replace-spaces-with-dashes="false"
+														use-strings="true"
+														add-on-comma="false" min-length=1></tags-input>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+										<label style="margin-top: 5%;">End Identifier</label>
+									</div>
+									<div class="col-lg-8 col-sm-8 col-xs-8 col-md-8 dashboard-row">
+										<div class="footerdiv">
+											<tags-input placeholder="Table End Identifier"
+														ng-model="item.bottom_keys"
+														replace-spaces-with-dashes="false"
+														use-strings="true"
+														add-on-comma="false" min-length=1></tags-input>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+									</div>
+									<div class="col-lg-8 col-sm-8 col-xs-8 col-md-8 dashboard-row draftMode">
+											<form>
+												<label class="checkbox-inline">
+													<input type="checkbox" name="variable"
+													   ng-model="item.is_transpose">
+													<i class="helper"></i>Is Transpose
+												</label>
+											</form>
+									</div>
+								</div>
+								<!--<div>-->
+									<!--<div>-->
+										<!--<input type="text" ng-model="datum.table_name"-->
+											   <!--class="form-control"-->
+											   <!--placeholder="Table Name" required/>-->
+									<!--</div>-->
+								<!--</div>-->
+								<br>
+								<div class="panel">
+										<div class="panel panel-default">
+											<div class="panel-heading" style="padding:10px 0px 10px 0px;border-top:1px solid #ececec;">
+												<div class="row">
+													<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+														Column Headers
+													</div>
+													<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+														Multi-Column Headers
+													</div>
+												</div>
+											</div>
+											<div class="panel-body" style="padding-top: 10px !important;">
+												<div class="row" ng-repeat="field in item.headings  track by $index">
+													<div class="col-lg-5 col-sm-5 col-md-5 col-xs-5 dashboard-row" style="position:relative;padding: 0px;">
+														<tags-input placeholder="Column header" ng-model="item.headings[$index].column"
+																				replace-spaces-with-dashes="false"
+																				use-strings="true"
+																				add-on-comma="false" on-tag-added="columnAdded(item)" on-tag-removed="columnAdded(item)" min-length=1></tags-input>
+																		<!--<input type="text" class="form-control table-form" placeholder="Column header" ng-model="field" />-->
+																		<i class="fa fa-times-circle"
+																		   ng-click="removeTableColumn(item,$index)"
+																		   style="    position: absolute;top: -4px;right: -8px;font-size: 18px;"></i>
+													</div>
+													<div class="col-lg-1 col-sm-1 col-xs-1 col-md-1 dashboard-row">
+														<hr>
+													</div>
+													<div class="col-lg-5 col-sm-5 col-xs-5 col-md-5 dashboard-row" ng-hide="field.subColumn">
+														<a ng-click="addSubColumn(item,$index)">Add Multi Column</a>
+													</div>
+													<div class="col-lg-5 col-sm-5 col-xs-5 col-md-5 dashboard-row" ng-show="field.subColumn">
+														<div ng-repeat="subColumn in item.headings[$index].subColumn" style="position:relative">
+															<tags-input placeholder="Sub-column header" ng-model="item.headings[$parent.$index].subColumn[$index]"
+																				replace-spaces-with-dashes="false"
+																				use-strings="true"
+																				add-on-comma="false" on-tag-added="columnAdded(item)" on-tag-removed="columnAdded(item)" min-length=1></tags-input>
+																		<!--<input type="text" class="form-control table-form" placeholder="Column header" ng-model="field" />-->
+																		<i class="fa fa-times-circle"
+																		   ng-click="removeTableSubColumn(item,item.headings[$parent.$index],$index)"
+																		   style="    position: absolute;top: -4px;right: -8px;font-size: 18px;"></i>
+														</div>
+														<span><i class="fa fa-plus" ng-click="addSubColumn(item,$index)"></i></span>
+													</div>
+												</div>
+											</div>
+											<div class="panel-footer" style="background-color:transparent;">
+												<button class=" btn btn-add" ng-click="addTableColumn(item)">
+													<i class="fa fa-plus" alt="Add column"></i>
+													<span>Add column</span>
+												</button>
+											</div>
+										</div>
+									</div>
+								<br>
+
+								<div class="row">
+									<div class="col-lg-12 col-sm-12 col-md-12">
+										<span>No of empty rows to identify end of the table <input
+												class="table-form form-container"
+												placeholder="rows" type="text"
+												ng-model="item.row_gap"/></span>
+									</div>
+								</div>
+								<br>
+								<!--<div class="row">-->
+								<!--<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 right dashboard-row">-->
+								<!--<button type="button" class="btn btn-custom " ng-click="mf.addedColumns()">Done</button>-->
+								<!--</div>-->
+								<!--</div>-->
+								<div class="row">
+									<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 ">
+										<label>Choose Domain Object</label>
+										<select class="form-control"
+												ng-model="item.entity"
+												>
+											<option value="" ng-selected="true">Select
+												Domain Object
+											</option>
+											<option ng-repeat="(d,key) in entitiesList" value="{$ d $}">{$
+												d $}
+											</option>
+										</select>
+									</div>
+								</div>
+								<br>
+
+								<div class="row" ng-if="item.entity!=''">
+									<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 ">
+										<table class="table  table-bordered">
+											<thead>
+											<th>Column</th>
+											<th>Attribute</th>
+											</thead>
+											<tbody>
+											<tr ng-repeat="keys in item.forDomainMapping">
+												<td>
+													<p ng-repeat="column in keys.column track by $index" style="color:black">
+														{$ column $}<span
+															ng-show="keys.column.length-1>$index">,</span>
+													</p>
+													<p ng-repeat="column in keys.subColumn[0] track by $index" ng-show="keys.subColumn != undefined">
+														{$ column $}<span
+															ng-show="keys.column.length-1>$index">,</span>
+													</p>
+												</td>
+												<td>
+													<select class="form-control"
+															ng-model="keys.attribute">
+														<option value=""
+																ng-selected="true">
+															Select Attribute
+														</option>
+														<option ng-repeat="d in entitiesList[item.entity] track by $index" value="{$ d $}">
+															{$ d $}
+														</option>
+
+													</select>
+
+												</td>
+											</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="panel-footer" style="background:none;">
+								<div class="row">
+									<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 dashboard-row text-right">
+										<button type="button" class="btn btn-custom "
+										ng-click="mf.addedColumns()"
+										ng-if="item.entity==''">Done
+								</button>
+								<button type="button" class="btn btn-custom"
+										ng-show="item.entity!=''" ng-click="mf.saveTable(item)">Save
+								</button>
+								<button type="button" class="btn button-customCancel"
+										ng-click="mf.cancelField(item)">Cancel
+								</button>
+									</div>
+									<p class="error pull-right">{$ mf.validateDocument $}</p>
+								</div>
+							</div>
+						</form>
+			</div>
+	</div>
+</script>
+<script type="text/ng-template" id="field.html">
+	<div class="fieldsSection">
+		<div class="panel panel-default">
+            <div>
+                <div class="panel-body">
+                    <div class="alert alert-danger" ng-if="croppingError">
+                        <span>{$ cropMsg $}</span>
+                    </div>
+                    <div class="fieldConfiguration">
+                        <div class="row row-custom-margin">
+                            <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                                <label>Does the field have a label</label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 right">
+                                <form>
+                                    <input class="sg-replace-icons" type="radio" name="optradio"
+                                           ng-model="item.has_label" value="yes"
+                                           ng-change="mf.changeLabel(item,item.has_label)">
+                                    <span  style="color: #5eb5eb;font-weight: 400;cursor:pointer;">Yes</span>
+                                    <input type="radio" name="optradio"
+                                           ng-model="item.has_label_false" value="no"
+                                           ng-change="mf.changeLabel(item,item.has_label_false)">
+                                    <span  style="color: #5eb5eb;font-weight: 400;cursor:pointer;">No</span>
+
+                                </form>
+                                <!--<toggle-switch id="checkbox1" ng-model="mf.dataObj.has_label" ng-change="mf.changeLabel(mf.dataObj.has_label)" class="switch-mini right" knob-label="?" knob-label-color="red" on-label="Yes" off-label="No"></toggle-switch>-->
+                            </div>
+                        </div>
+                        <div ng-show="item.has_label || item.has_label_false=='no'">
+                            <div class="row row-custom-margin"
+                                 ng-show="item.has_label=='yes'">
+                                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                                    <label>Select the label</label>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+									<label class="clickStyle" ng-click="mf.addLabel(item,true)" ng-hide="item.addFieldLabel">
+										Click on the document & drag the area to select Label
+									</label>
+
+									<label class="clickStyle success"  ng-if="!item.label_edit"  ng-show="item.addFieldLabel">
+
+											<i class="fa fa-check" style="font-size:12px;"></i>
+
+									</label>
+									<label class="clickStyle success"   ng-show="item.label_edit" ng-click="mf.doneAddLabelField(item)">
+
+											<i class="fa fa-check"  style="font-size:12px;"></i>
+
+									</label>
+									<label class="clickStyle" ng-click="mf.editFieldLabel(item)" ng-show="item.addFieldLabel&&!item.label_edit">
+										Edit the Label
+									</label>
+									<label class="clickStyle" ng-click="mf.clearLabel(item)" ng-show="item.label_edit">
+										Remove the Selected Label
+									</label>
+                                    <!--<toggle-switch id="checkbox2" ng-model="mf.dataObj.label_selected" ng-change="mf.addLabel(mf.dataObj.label_selected)" class="switch-mini right" knob-label="?" on-label="Yes" off-label="No"></toggle-switch>-->
+                                </div>
+                            </div>
+                            <div class="row row-custom-margin"
+                                 ng-show="item.has_label_false=='no' || item.addFieldLabel || item.addValueLabel">
+                                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                                    <label>Select the area where the value would be
+                                        present</label>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <label class="clickStyle" ng-click="mf.addValue(item,true)" ng-hide="item.addValueLabel">
+										Click on the document & drag the area to select Value
+									</label>
+
+                                    <label class="clickStyle success"  ng-if="!item.value_edit"  ng-show="item.addValueLabel">
+
+											<i class="fa fa-check" style="font-size:12px;"></i>
+
+									</label>
+									<label class="clickStyle success"  ng-show="item.value_edit" ng-click="mf.doneEditValueField(item)">
+
+											<i class="fa fa-check"  style="font-size:12px;"></i>
+
+									</label>
+                                    <label class="clickStyle" ng-click="mf.editValueField(item)" ng-show="item.addValueLabel&&!item.value_edit">
+										Edit the Value
+									</label>
+									<label class="clickStyle" ng-click="mf.clearValue(item)" ng-show="item.value_edit">
+										Remove the Selected Value
+									</label>
+                                    <!--<toggle-switch id="checkbox3"  ng-model="mf.dataObj.value_selected" ng-change="mf.addValue(mf.dataObj.value_selected)" class="switch-mini right" knob-label="?" on-label="Yes" off-label="No"></toggle-switch>-->
+                                </div>
+                            </div>
+                            <div class="row row-custom-margin" ng-show="item.showDomainObj">
+                                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                                    <label>is field variable ?</label>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 draftMode">
+                                    <form>
+                                        <!--<input type="radio" name="optradio" ng-model="mf.dataObj.variable_label"  value="yes" ng-change="mf.changeVariable(mf.dataObj.variable_label)"> Yes-->
+                                        <!--<input type="radio" name="optradio" ng-model="mf.dataObj.variable_label_false"  value="no"  ng-change="mf.changeVariable(mf.dataObj.variable_label_false)"> No-->
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="variable"
+                                               ng-model="item.variable_label">
+                                            <i class="helper"></i>
+                                        </label>
+                                    </form>
+                                </div>
+                            </div>
+                            <div ng-show="item.variable_label">
+                                <div class="row row-custom-margin">
+                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                                        <div class="headerdiv">
+                                            <tags-input placeholder="Top Keys"
+                                                        ng-model="item.top_keys"
+                                                        replace-spaces-with-dashes="false"
+                                                        use-strings="true"
+                                                        add-on-comma="false" min-length=1></tags-input>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                                        <div class="headerdiv">
+                                            <tags-input placeholder="Bottom Keys"
+                                                        ng-model="item.bottom_keys"
+                                                        replace-spaces-with-dashes="false"
+                                                        use-strings="true"
+                                                        add-on-comma="false" min-length=1></tags-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <form ng-show="item.showDomainObj">
+                                <div class="row">
+                                    <form>
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                            <label style="color: #5eb5eb;font-weight: 400;cursor:pointer;">
+                                              <input type="radio" name="optradio" ng-model="item.isDomain" value="yes" ng-change="mf.changeMapping(item,item.isDomain)"> Domain Object
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                            <label style="color: #5eb5eb;font-weight: 400;cursor:pointer;">
+                                              <input type="radio" name="optradio" ng-model="item.isDomain" value="no" ng-change="mf.changeMapping(item,item.isDomain)"> Document Variable
+                                            </label>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="row" ng-show="(item.isDomain  == 'yes') && item.showDomainObj">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="form-group">
+
+                                            <select class="form-control"
+                                                    ng-model="item.entity"
+                                                    >
+                                                <option value="" ng-selected="true">Select
+                                                    Domain
+                                                    Objects
+                                                </option>
+                                                <option ng-repeat="(d,value) in entitiesList" value="{$ d $}">{$
+                                                    d $}
+                                                </option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="form-group">
+
+                                            <select class="form-control"
+                                                    ng-model="item.attribute">
+                                                <option value="" ng-selected="true">Select
+                                                    Attribute
+                                                </option>
+                                                <option ng-repeat="d in entitiesList[item.entity] track by $index" value="{$ d $}">{$
+                                                    d $}
+                                                </option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-show="(item.isDomain  == 'no') && item.showDomainObj ">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                            <div class="form-group">
+                                                <input type="text" placeholder="Enter Variable Name" ng-model="item.document_variable" class="form-control"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                            <select class="form-control" ng-model="item.variable_type">
+                                                <option value="">Data Type</option>
+                                                <option ng-repeat="option in mf.typeList" value="{$ option $}">{$ option $}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row draftMode" ng-show="item.showDomainObj && (item.isDomain  == 'no')">
+                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" ng-model="mf.enableRule">
+                                            <i class="helper"></i>Enable Rules
+                                        </label>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row" ng-show="item.isDomain  == 'no' && mf.enableRule == true">
+                                    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                                        <div class="customCreateRules">
+                                            <div class="row">
+                                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                                                    <a ng-click="addRuleForVariable()" style="text-decoration:none;color:#5eb5eb;">
+                                                        <img src="./app/images/add.png" style="width:15px;"/>
+                                                        Create Rule
+                                                    </a>
+                                                </div>
+                                                <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1" style="color:#5eb5eb;font-weight:bold;">
+                                                    OR
+                                                </div>
+                                                <div class="col-lg-5 col-sm-5 col-md-5 col-xs-5">
+                                                    <a ng-click="existingRulesdiv()" style="text-decoration:none;color:#5eb5eb;">
+                                                        <img src="./app/images/existing.png" style="width:15px;"/>
+                                                        Choose Existing Rule
+                                                    </a>
+
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12" style="border-bottom:1px solid #eee;">
+                                                    <label>Associated Rules</label>
+                                                </div>
+                                            </div>
+                                            <div class="row rulesPadding" ng-repeat="rule in mf.selectedRulesWithObj">
+                                                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                                                    {$ rule.rule_name $}
+                                                </div>
+                                                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-2">
+                                                    <img src="./app/images/edit.png" title="Edit rule" style="width:15px;cursor:pointer;" ng-click="mf.editRule(rule)"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 dashboard-row text-right">
+                                <button type="button" class="btn remove-button"
+                                        ng-click="mf.cancelField(item)">Cancel
+                                </button>
+                                <button type="button"
+                                        class="btn btn-custom right btn-customSave"
+                                        ng-click="mf.saveField(item)"
+                                        ng-disabled="!item.showDomainObj">
+                                    Save
+                                </button>
+                            </div>
+                            <p class="error pull-right">{$ mf.validateDocument $}</p>
+                            <!--<div ng-show="showFieldSave" class="loading-spiner-holder ralign-spinner pull-right"><div class="loading-spiner"><i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i><span class="">Saving field</span></div></div>-->
+                        </div>
+                    </div>
+                    <!--<div class="row right" ng-click="mf.addField()" ng-show="!showConfig">-->
+                        <!--<label class="dragDiv"><i class="fa fa-plus"></i> Add Fields</label>-->
+                    <!--</div>-->
+                    <br>
+
+                </div>
+            </div>
+        </div>
+	</div>
+</script>
+<script type="text/ng-template" id="omr.html">
+	<div class="omrField">
+		<form ng-submit="mf.saveOMRField(item)">
+			<div class="alert alert-danger" ng-if="croppingOMRError">
+							<span>{$ cropOMRMsg $}</span>
+			</div>
+			<div class="OMRConfiguration">
+				<div class="row row-custom-margin">
+					<div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+						<label> OMR has label region ?</label>
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 right">
+						<form>
+							<input type="radio" name="optradio"
+								   ng-model="item.has_label" value="yes"
+								   ng-change="mf.changeOMRLabel(item,item.has_label)">
+							Yes
+							<input type="radio" name="optradio"
+								   ng-model="item.has_label_false"
+								   value="no"
+								   ng-change="mf.changeOMRLabel(item,item.has_label_false)">
+							No
+
+						</form>
+						<!--<toggle-switch id="checkbox1" ng-model="mf.dataObj.has_label" ng-change="mf.changeLabel(mf.dataObj.has_label)" class="switch-mini right" knob-label="?" knob-label-color="red" on-label="Yes" off-label="No"></toggle-switch>-->
+					</div>
+				</div>
+				<div ng-show="item.has_label || item.has_label_false=='no'">
+					<div class="row row-custom-margin"
+						 ng-show="item.has_label=='yes'">
+						<div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+							<label>Select OMR label region </label>
+						</div>
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+							<label class="clickStyle" ng-click="mf.addOMRLabel(item)" ng-hide="item.addOMRFieldLabel">
+								Click on the document & drag the area to select Label
+							</label>
+
+							<label class="clickStyle success"   ng-if="!item.label_edit"  ng-show="item.addOMRFieldLabel">
+									<i class="fa fa-check"  style="font-size:12px;"></i>
+							</label>
+							<label class="clickStyle success"  ng-show="item.label_edit" ng-click="mf.doneEditLabelOMR(item)">
+									<i class="fa fa-check"  style="font-size:12px;"></i>
+							</label>
+							<label class="clickStyle"  ng-click="mf.editOMRLabel(item)" ng-show="item.addOMRFieldLabel&&!item.label_edit">
+								Edit the Area
+							</label>
+							<label class="clickStyle" ng-click="mf.clearOMRLabel(item)" ng-show="item.label_edit">
+								Remove the Selected Area
+							</label>
+
+
+							<!--<toggle-switch id="checkbox2" ng-model="mf.dataObj.label_selected" ng-change="mf.addLabel(mf.dataObj.label_selected)" class="switch-mini right" knob-label="?" on-label="Yes" off-label="No"></toggle-switch>-->
+						</div>
+					</div>
+					<div class="row row-custom-margin"
+						 ng-show="item.has_label_false=='no' || item.addOMRFieldLabel || item.addOMRValueLabel">
+						<div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+							<label>Select complete OMR region</label>
+						</div>
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+							<label class="clickStyle" ng-click="mf.addOMRValue(item)" ng-hide="item.addOMRValueLabel">
+								Click on the document & drag the area to select OMR region
+							</label>
+
+							<label class="clickStyle success" ng-if="!item.value_edit"  ng-show="item.addOMRValueLabel">
+									<i class="fa fa-check"  style="font-size:12px;"></i>
+							</label>
+							<label class="clickStyle success"  ng-show="item.value_edit" ng-click="mf.doneEditValueOMR(item)">
+									<i class="fa fa-check"  style="font-size:12px;"></i>
+							</label>
+							<label class="clickStyle" ng-click="mf.editValueOMR(item)" ng-show="item.addOMRValueLabel&&!item.value_edit">
+								Edit the Area
+							</label>
+							<label class="clickStyle" ng-click="mf.clearOMRValue(item)" ng-show="item.value_edit">
+								Remove the Selected Area
+							</label>
+
+							<!--<toggle-switch id="checkbox3"  ng-model="mf.dataObj.value_selected" ng-change="mf.addValue(mf.dataObj.value_selected)" class="switch-mini right" knob-label="?" on-label="Yes" off-label="No"></toggle-switch>-->
+						</div>
+					</div>
+					<div ng-repeat="group in item.groups track by $index">
+						<div>
+							<div>
+								<div class="row ">
+									<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+										<label class="right"
+											   ng-click="mf.addOption(group)">
+											<i class="fa fa-plus" style="font-size:12px;"> Add Option </i>
+										</label>
+									</div>
+								</div>
+								<div ng-repeat="option in group.options track by $index">
+									<div class="card">
+										<div class="card-header">
+											<span data-toggle="collapse" href=".optionCollapse{$ $index $} " aria-expanded="false" aria-controls="optionCollapse">
+												Option {$ $index+1 $}
+											</span>
+											<a
+												class="btnAddcol pull-right"
+												ng-click="mf.deleteOMROption(item,$index)"><i
+												class="fa fa-trash"></i>
+											</a>
+										</div>
+										<div class="card-body collapse optionCollapse{$ $index $}"
+											 ng-class="$index==group.options.length-1?'in':''" style="margin:0px;padding-left:0px;">
+											<div class="row">
+												<div class="col-lg-6 col-sm-6 col-md-6 col-xs-8">
+													Select the Option value region
+												</div>
+												<div class="col-lg-6 col-sm-6 col-md-6 col-xs-4">
+													<label class="clickStyle" ng-click="mf.addOMROptionValue(option,$parent.$index,$index,item)" ng-hide="option.optionValue">
+														Click on the document & drag the area to select Option value region
+													</label>
+
+													<label class="clickStyle success" ng-if="!option.edit"  ng-show="option.optionValue">
+															<i class="fa fa-check"  style="font-size:12px;"></i>
+													</label>
+													<label class="clickStyle success" ng-show="option.edit"  ng-click="mf.doneEditOptionValueOMR(item,option)">
+															<i class="fa fa-check"  style="font-size:12px;"></i>
+													</label>
+													<label class="clickStyle" ng-click="mf.editOptionValueOMR(option)" ng-show="option.optionValue&&!option.edit">
+														Edit the Area
+													</label>
+													<label class="clickStyle" ng-click="mf.clearOMROptionValue(item,option)" ng-show="option.edit">
+														Remove the Selected Area
+													</label>
+												</div>
+											</div>
+											<br>
+											<div class="row"
+												 ng-show="option.optionValue">
+												<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+													<input type="text"
+														   class="form-control"
+														   placeholder="Enter option text"
+														   ng-model="option.label" required/>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row row-custom-margin">
+									<div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+										<label>is multi select ?</label>
+									</div>
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+										<form>
+											<!--<input type="radio" name="optradio" ng-model="mf.dataObj.variable_label"  value="yes" ng-change="mf.changeVariable(mf.dataObj.variable_label)"> Yes-->
+											<!--<input type="radio" name="optradio" ng-model="mf.dataObj.variable_label_false"  value="no"  ng-change="mf.changeVariable(mf.dataObj.variable_label_false)"> No-->
+											<input type="checkbox" name="variable"
+												   ng-model="group.is_multiOption">
+
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="row" ng-show="item.showOMRDomainObj">
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+							<div class="form-group">
+								<span>Domain Objects</span>
+								<select class="form-control"
+										ng-model="item.entity"
+										>
+									<option value="" ng-selected="true">Select
+										Domain
+										Objects
+									</option>
+									<option ng-repeat="(d,key) in entitiesList" value="{$ d $}">{$
+										d $}
+									</option>
+
+								</select>
+							</div>
+						</div>
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+							<div class="form-group">
+								<span>Attributes</span>
+								<select class="form-control"
+										ng-model="item.attribute">
+									<option value="" ng-selected="true">Select
+										Attribute
+									</option>
+									<option ng-repeat="d in entitiesList[item.entity] track by $index" value="{$ d$}">{$
+										d $}
+									</option>
+
+								</select>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 dashboard-row text-right">
+							<button type="button" class="btn btn-default remove-button"
+									ng-click="mf.cancelField(item)">Cancel
+							</button>
+							<button type="submit"
+									class="btn btn-custom right btn-customSave"
+									ng-disabled="!item.showOMRDomainObj">Save
+							</button>
+						</div>
+						 <p class="error pull-right">{$ mf.validateDocument $}</p>
+					</div>
+					<br>
+				</div>
+			</div>
+		</form>
+	</div>
+
+</script>
+<script type="text/ng-template" id="paragraph.html">
+	<div class="paragraph">
+		<div class="fieldConfiguration">
+			<div>
+				<div>
+					<div class="row row-custom-margin">
+						<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 dashboard-row">
+							<div class="headerdiv">
+								<tags-input placeholder="Top Keys"
+											ng-model="item.top_keys"
+											replace-spaces-with-dashes="false"
+											use-strings="true"
+											add-on-comma="false" min-length=1></tags-input>
+							</div>
+						</div>
+						<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 dashboard-row">
+							<div class="headerdiv">
+								<tags-input placeholder="Bottom Keys"
+											ng-model="item.bottom_keys"
+											replace-spaces-with-dashes="false"
+											use-strings="true"
+											add-on-comma="false" min-length=1></tags-input>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 dashboard-row">
+						<div class="form-group">
+							<span>Domain Objects</span>
+							<select class="form-control"
+									ng-model="item.domain_mapping"
+									>
+								<option value="" ng-selected="true">Select
+									Domain
+									Objects
+								</option>
+								<option ng-repeat="(d,value) in entitiesList" value="{$ d $}">{$
+									d $}
+								</option>
+
+							</select>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 dashboard-row">
+					<button type="button" class="btn remove-button"
+							ng-click="mf.cancelField(item)">Cancel
+					</button>
+					<button type="button"
+							class="btn btn-custom right btn-customSave"
+							ng-click="mf.saveFreeText('Free Text',item)"
+							>
+						Save
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<div id='caption1' class="nivo-html-caption" style="position:fixed;bottom:110px"></div>
